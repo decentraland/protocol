@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e -x
 
 # Download the main branch ref zip
 protocol_main_zip_url="https://github.com/decentraland/protocol/archive/refs/heads/main.zip"
