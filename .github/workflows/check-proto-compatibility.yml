@@ -11,4 +11,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: run the check script
-      run: echo TODO
+      run: ./scripts/check-proto-compabitility.sh
