@@ -1,11 +1,10 @@
 on:
   push:
-    branches:
-      - "main"
+  pull-request:
 
 name: Check compatibilty with main version
 jobs:
-  verify_version:
+  check_compatibility_proto:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
