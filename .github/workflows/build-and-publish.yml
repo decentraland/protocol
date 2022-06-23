@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: install proto-compatibilty tool
-        run: npm i -g proto-compatibility-tool
+        run: npm i -g proto-compatibility-tool protobufjs
       - name: run the check script
         run: ./scripts/check-proto-compabitility.sh
       - name: publish packages

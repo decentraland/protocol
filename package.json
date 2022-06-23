@@ -10,5 +10,8 @@
     "scene-apis",
     "renderer-protocol",
     "component-definitions"
-  ]
+  ],
+  "dependencies": {
+    "protobufjs": "^6.11.3"
+  }
 }
