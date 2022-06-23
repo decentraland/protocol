@@ -2,16 +2,10 @@
   "name": "@dcl/protocol",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "proto-compatibility-tool": "^1.0.0"
-  },
   "files": [
     "scene-apis",
     "renderer-protocol",

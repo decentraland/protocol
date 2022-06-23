@@ -15,6 +15,8 @@ jobs:
       dcl_protocol_s3_bucket_key: ${{ steps.publish_dcl_protocol.outputs.s3-bucket-key }}
     steps:
       - uses: actions/checkout@v2
+      - name: install proto-compatibilty tool
+        run: npm i -g proto-compatibility-tool
       - name: run the check script
         run: ./scripts/check-proto-compabitility.sh
       - name: publish packages
@@ -23,7 +25,6 @@ jobs:
         with:
           registry-url: 'https://registry.npmjs.org'
           access: public
-          cwd: ./static
           ## use action runId instead of current date to generate snapshot numbers
           deterministic-snapshot: true
 
