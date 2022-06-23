@@ -1,6 +1,8 @@
 on:
   push:
-  pull-request:
+    branches:
+      - main
+  pull_request:
 
 name: Check compatibilty with main version
 jobs:
