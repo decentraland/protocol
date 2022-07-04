@@ -116,7 +116,9 @@ message ManyEntityAction {
     repeated EntityAction actions = 1;
 }
 
-message SendBatchResponse {}
+message SendBatchResponse {
+  repeated EventData events = 1;
+}
 
 message UnsubscribeRequest {
     string event_id = 1;
