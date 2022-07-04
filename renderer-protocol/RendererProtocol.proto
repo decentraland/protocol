@@ -13,9 +13,3 @@ service CRDTService {
   rpc SendCrdt(CRDTManyMessages) returns (CRDTResponse){}
   rpc CrdtNotificationStream(CRDTStreamRequest) returns (stream CRDTManyMessages) {}
 }
-
-message PingRequest {}
-message PongResponse {}
-service PingPongService {
-  rpc Ping(PingRequest) returns (PongResponse) {}
-}
