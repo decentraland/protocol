@@ -15,10 +15,12 @@ jobs:
       dcl_protocol_s3_bucket_key: ${{ steps.publish_dcl_protocol.outputs.s3-bucket-key }}
     steps:
       - uses: actions/checkout@v2
-      - name: install proto-compatibilty tool
-        run: npm i -g proto-compatibility-tool protobufjs
-      - name: run the check script
-        run: ./scripts/check-proto-compabitility.sh
+# TODO: After we release, check .proto compatibility
+# Release track: https://github.com/decentraland/sdk/issues?q=is%3Aopen+is%3Aissue+milestone%3A%22ECS+7.0.0+-+Internal+beta%22
+#      - name: install proto-compatibilty tool
+#        run: npm i -g proto-compatibility-tool protobufjs 
+#      - name: run the check script
+#        run: ./scripts/check-proto-compabitility.sh
       - name: publish packages
         uses: menduz/oddish-action@master
         id: publish_dcl_protocol
