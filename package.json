@@ -13,8 +13,8 @@
     "proto-compatibility-tool": "^1.0.0"
   },
   "files": [
-    "scene-apis",
+    "kernel",
     "renderer-protocol",
-    "component-definitions"
+    "ecs"
   ]
 }
