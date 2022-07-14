@@ -7,9 +7,18 @@ message CRDTManyMessages {
 
 message CRDTResponse {}
 
-message CRDTStreamRequest {}
+message PullCRDTRequest {
+  string sceneId = 1;
+}
+
+// CRDTStreamRequest is deprecated
+message CRDTStreamRequest {
+  option deprecated = true;
+}
 
 service CRDTService {
   rpc SendCrdt(CRDTManyMessages) returns (CRDTResponse){}
+  rpc PullCrdt(PullCRDTRequest) returns (CRDTManyMessages) {}
+  // CrdtNotificationStream is deprecated
   rpc CrdtNotificationStream(CRDTStreamRequest) returns (stream CRDTManyMessages) {}
 }
