@@ -2,10 +2,10 @@
 
 import "common/id.proto";
 option (ecs_component_id) = 1061;
-import "common/Button.proto";
+import "common/ActionButton.proto";
 
 message PBOnPointerUp {
-  Button button = 1;
+  ActionButton button = 1;
   string hover_text = 2;
   float distance = 3;
   bool show_feedback = 4;

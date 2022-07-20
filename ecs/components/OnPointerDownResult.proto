@@ -3,10 +3,10 @@
 import "common/id.proto";
 option (ecs_component_id) = 1066;
 import "common/Vector3.proto";
-import "common/Button.proto";
+import "common/ActionButton.proto";
 
 message PBOnPointerDownResult {
-  Button button = 2;
+  ActionButton button = 2;
   string meshName = 3;
   Vector3 origin = 4;
   Vector3 direction = 5;
