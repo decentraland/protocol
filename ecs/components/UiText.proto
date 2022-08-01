@@ -1,7 +1,7 @@
 ﻿syntax = "proto3";
 
 import "common/id.proto";
-option (ecs_component_id) = 1030;
+option (ecs_component_id) = 1052;
 
 import "common/Color3.proto";
 
