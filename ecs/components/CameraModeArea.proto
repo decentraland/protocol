@@ -3,7 +3,7 @@ syntax = "proto3";
 import "common/id.proto";
 option (ecs_component_id) = 1071;
 import "common/Vector3.proto";
-import "common/CameraMoveValue.proto";
+import "common/CameraModeValue.proto";
 
 message PBCameraModeArea {
   Vector3 area = 1;
