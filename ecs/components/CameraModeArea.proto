@@ -10,6 +10,6 @@ enum CameraMode {
 }
 
 message PBCameraModeArea {
-  Vector3 area = 1;
-  CameraMode mode = 2;
+  optional Vector3 area = 1;
+  optional CameraMode mode = 2;
 }

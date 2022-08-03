@@ -10,7 +10,7 @@ enum AvatarModifier {
 }
 
 message PBAvatarModifierArea {
-  Vector3 area = 1;
+  optional Vector3 area = 1;
   repeated string exclude_ids = 2;
   repeated AvatarModifier modifiers = 3;
 }
