@@ -8,11 +8,11 @@ message PBAnimator {
 }
 
 message PBAnimationState {
-  string name = 1;
-  string clip = 2;
-  bool playing = 3;
-  float weight = 4;
-  float speed = 5;
-  bool loop = 6;
-  bool should_reset = 7;
+  optional string name = 1;
+  optional string clip = 2;
+  optional bool playing = 3;
+  optional float weight = 4;
+  optional float speed = 5;
+  optional bool loop = 6;
+  optional bool should_reset = 7;
 }

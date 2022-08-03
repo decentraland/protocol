@@ -11,6 +11,6 @@ enum AvatarAnchorPoint {
 }
 
 message PBAvatarAttach {
-  string avatar_id = 1;
-  AvatarAnchorPoint anchor_point_id = 2;
+  optional string avatar_id = 1;
+  optional AvatarAnchorPoint anchor_point_id = 2;
 }
