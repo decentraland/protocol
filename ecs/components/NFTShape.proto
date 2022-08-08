@@ -6,10 +6,10 @@ option (ecs_component_id) = 1040;
 import "common/Color3.proto";
 
 message PBNFTShape {
-  optional bool with_collisions = 1;
-  optional bool is_pointer_blocker = 2;
-  optional bool visible = 3;
-  optional string src = 4;
+  optional bool with_collisions = 1; // default=true
+  optional bool is_pointer_blocker = 2; // default=true
+  optional bool visible = 3; // default=true
+  string src = 4;
   optional string asset_id = 5;
   optional int32 style = 6;
   optional Color3 color = 7;
