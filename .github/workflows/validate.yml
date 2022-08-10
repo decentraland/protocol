@@ -3,9 +3,10 @@ on:
     branches-ignore:
       - "main"
 
-name: build-deploy
+name: validate-compatibility
 jobs:
-  check_and_build:
+  compat:
+    name: "Validate compatibility with main branch"
     runs-on: ubuntu-latest
     outputs:
       dcl_protocol_s3_bucket_key: ${{ steps.publish_dcl_protocol.outputs.s3-bucket-key }}
