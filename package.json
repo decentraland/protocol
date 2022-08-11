@@ -8,9 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "devDependencies": {
-    "proto-compatibility-tool": "^1.0.0"
+    "proto-compatibility-tool": "^1.1.1-20220811001836.commit-414739b"
   },
   "files": [
     "kernel",
