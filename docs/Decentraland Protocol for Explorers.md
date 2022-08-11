@@ -1,4 +1,4 @@
-# Decentraland Protocol
+# Decentraland Protocol for Explorers
 
 ## Introduction
 
@@ -64,7 +64,6 @@ The content server stores and synchronizes _Entities_.
 An [Entity](https://github.com/decentraland/common-schemas/blob/be7213b40a2180a9a99035eb87e8a5d4b8438e7f/src/platform/entity.ts#L21-L37) is a signed data structure holding a list of content files, a deployment date and pointers. A pointer is a human readable "shortcut" to the entity i.e. the [`0,0`](https://peer.decentraland.org/content/entities/scenes?pointer=0,0) representation of a LAND. Every time an entity is deployed and accepted by the network, the pointers for that entity will now point to the newest entity for that set of pointers. That is the mechanism used to change the content of the land, wearables and emotes.
 
 Unlike LAND, wearables and emotes have [URN pointers](https://github.com/decentraland/urn-resolver/blob/b11aeb677e06e1a9e1d7994efa98a5f11867f854/test/urn.spec.ts#L138-L147). URN are used to reference any asset inside Decentraland, the technology was selected in pursue of a common identifier that enables [extensibility to other networks or remote assets](https://github.com/decentraland/urn-resolver/blob/b11aeb677e06e1a9e1d7994efa98a5f11867f854/test/urn.spec.ts#L269-L280) and [interoperability](https://github.com/common-metaverse/urn-namespaces) with other platforms.
-
 
 > TODO: Describe entities format
 
