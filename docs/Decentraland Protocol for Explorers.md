@@ -45,7 +45,7 @@ Collections are generic smart contracts that are designed to fulfill a wide vari
 
 #### DAO
 
-Historically, there was many implementations of governance apps for Decentraland. Starting with [Agora][] (off-chain signatures), then Aragon and lastly a [snapshot-based][https://snapshot.org/#/snapshot.dcl.eth]. Nowadays, the governance process happens entirely in the [Governance App][dao] and on-chain proposals are enacted using Aragon by the [DAO Committee](https://governance.decentraland.org/transparency). Their principal responsibility is to enact binding proposals on-chain like listing Point of Interests, sending Grants, and any other operations involving the DAO's smart contracts.
+Historically, there was many implementations of governance apps for Decentraland. Starting with [Agora][] (off-chain signatures), then Aragon and lastly a [snapshot-based](https://snapshot.org/#/snapshot.dcl.eth). Nowadays, the governance process happens entirely in the [Governance App][dao] and on-chain proposals are enacted using Aragon by the [DAO Committee](https://governance.decentraland.org/transparency). Their principal responsibility is to enact binding proposals on-chain like listing Point of Interests, sending Grants, and any other operations involving the DAO's smart contracts.
 
 ### Content layer
 
@@ -89,19 +89,19 @@ This endpoint is used by the tooling to upload content.
 
 Used to discover the map around the user. This endpoint is used by the explorer.
 
-##### `GET /snapshot` Get a snapshot of all the active entities and their signature
+##### TODO: Get and Deploy profiles
 
-This endpoint is used by the content-server synchronization. Snapshots are stored as NDJSON files and stored as IPFS CIDs in the `/ipfs/:cid` endpoint.
+#### Identity Storage
 
-##### `GET /pointer-changes` Get a the changes in the entities
-
-This endpoint is used by the content-server synchronization to fetch changes in the entities in-between snapshots.
+> TODO: Persistence layer for profiles, separate Profile from Avatar.
+> TODO: Validations of the served content (lambdas) to check ownership
 
 ### Interactive layer
 
 > TODO: Write about comms
+> TODO: Write about messages to share profiles via comms
 
-> TODO: Write about matrix
+> TODO: Write about matrix and login using AuthChain
 
 ### Runtime layer
 
@@ -125,7 +125,7 @@ Ethereum accounts are globally used in Decentraland to identify the users. Publi
 
 In order to protect the assets of the community, to keep a reasonable level of trust with user actions, and to enhance the UX of the platform e.g. not needing the users to accept a transaction every time they want to open a door. An [ephemeral key](https://en.wikipedia.org/wiki/Ephemeral_key) is created and signed using their Ethereum account. That establishes a certified trust chain. This way, messages can be signed with the in-memory ephemeral key. Both the initial signature of the ephemeral key by the real account, and the message signed with the ephemeral key are used as the [AuthChain](https://github.com/decentraland/decentraland-crypto) to authorize requests across all services required to make Decentraland work.
 
-
+### AuthChain
 
 [Agora]: https://agora.decentraland.org (Agora, the first governance app)
 [genesis-city]: map.png  "Decentraland's Genesis City"
