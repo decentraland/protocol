@@ -1,14 +1,16 @@
 syntax = "proto3";
 
 message CRDTManyMessages {
-  string sceneId = 1;
+  string scene_id = 1;
   bytes	payload = 2;
+  int32 scene_number = 3;
 }
 
 message CRDTResponse {}
 
 message PullCRDTRequest {
-  string sceneId = 1;
+  string scene_id = 1;
+  int32  scene_number = 3;
 }
 
 // CRDTStreamRequest is deprecated
