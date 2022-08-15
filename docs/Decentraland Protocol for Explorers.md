@@ -75,7 +75,7 @@ Unlike LAND, wearables and emotes have [URN pointers](https://github.com/decentr
 
 #### Endpoints that are part of the protocol
 
-##### `GET /ipfs/:cid` Download an entity or content file
+##### `GET /contents/:cid` Download an entity or content file
 
 Used to download the content. This endpoint is used by the content-server synchronization and by the explorer.
 
