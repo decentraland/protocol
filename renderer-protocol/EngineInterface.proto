@@ -221,6 +221,7 @@ message PB_LoadParcelScenes {
 message PB_CreateUIScene {
     string id = 1;
     string baseUrl = 2;
+    int32 sceneNumber = 99;
 }
 
 message PB_UnloadScene {
