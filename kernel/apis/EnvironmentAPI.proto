@@ -1,9 +1,6 @@
 syntax = "proto3";
 
-message ContentMapping {
-    string file = 1;
-    string hash = 2;
-}
+import "common/ContentMapping.proto";
 
 message MinimalRunnableEntity {
     repeated ContentMapping content = 1;

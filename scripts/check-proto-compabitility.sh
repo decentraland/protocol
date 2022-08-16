@@ -5,18 +5,16 @@ set -e -x
 protocol_main_zip_url="https://github.com/decentraland/protocol/archive/refs/heads/main.zip"
 protocol_main_zip_local="./protocol-main.zip"
 
+TMP_ZIP_DIR=$(mktemp -d)
+
 curl -L "$protocol_main_zip_url" -o "$protocol_main_zip_local"
-rm -rf ./temp || true
-unzip "$protocol_main_zip_local" -d ./temp
+unzip "$protocol_main_zip_local" -d "$TMP_ZIP_DIR"
 rm "$protocol_main_zip_local" || true
 
+ln -s "$(pwd)/node_modules" "$TMP_ZIP_DIR/protocol-main/node_modules"
 
 # Run the `proto-compatibility-tool` and exclude the downloaded folder.
 echo "Checking the compatibility against $base_url"
-for i in `find * -name "*.proto" -type f`; do
-    if [[ $i != temp* ]]; then
-        proto-compatibility-tool "$i" "./temp/protocol-main/${i}"
-    fi
-done
+./node_modules/.bin/proto-compatibility-tool --recursive "$TMP_ZIP_DIR/protocol-main" "."
 
-rm -rf ./temp || true
+# rm -rf "$TMP_ZIP_DIR" || true
