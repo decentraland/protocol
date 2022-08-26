@@ -14,7 +14,7 @@ message PBAvatarShape {
   optional string expression_trigger_id = 7;
   optional int64 expression_trigger_timestamp = 8; // default = timestamp
   optional bool talking = 9;
-  optional repeated string wearables = 10; // default = [ "urn:decentraland:off-chain:base-avatars:f_eyes_00",
+  repeated string wearables = 10; // default = [ "urn:decentraland:off-chain:base-avatars:f_eyes_00",
                                            //    "urn:decentraland:off-chain:base-avatars:f_eyebrows_00",
                                            //    "urn:decentraland:off-chain:base-avatars:f_mouth_00",
                                            //    "urn:decentraland:off-chain:base-avatars:standard_hair",
