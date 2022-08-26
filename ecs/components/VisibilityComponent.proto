@@ -3,4 +3,6 @@ syntax = "proto3";
 import "common/id.proto";
 option (ecs_component_id) = 1081;
 
-message PBHidden { }
+message PBVisibilityComponent {
+    optional bool visible = 1; // default=true
+}
