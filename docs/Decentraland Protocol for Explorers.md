@@ -98,10 +98,18 @@ Used to discover the map around the user. This endpoint is used by the explorer.
 
 ### Interactive layer
 
-> TODO: Write about comms
-> TODO: Write about messages to share profiles via comms
+#### Chat
+To have a complete social experience Explorers need to support some kind of chat among users. There will be three types of chats, private dms, channels and global. 
 
-> TODO: Write about matrix and login using AuthChain
+Global chat (as in chatting with people around in world) will be supported by the comms service, leveraging the p2p protocol which connects people within a single island (or whatever virtual network available). Everyone is allowed to talk in the global chat, even guests.
+
+For private and channel support we will be leveraging the matrix protocol, explorers should connect to a matrix homeserver and all interactions will be saved in a single matrix instance (as expected by the protocol), data will not be shared amongst matrix instances. So, if a given explorer is connected to a matrix instance, when switching homeservers, the data will not be synchronized between instances. 
+
+On the homeserver side the main responsibility, besides implementing the matrix protocol, is to support authentication via an AuthChain. This will enable login using a wallet, allowing explorers to use different devices maintaining the same information.
+
+> TODO: Write about comms
+
+> TODO: Write about messages to share profiles via comms
 
 ### Runtime layer
 
