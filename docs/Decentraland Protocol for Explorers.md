@@ -103,7 +103,7 @@ To have a complete social experience Explorers need to support some kind of chat
 
 Global chat (as in chatting with people around in world) will be supported by the comms service, leveraging the p2p protocol which connects people within a single island (or whatever virtual network available). Everyone is allowed to talk in the global chat, even guests.
 
-For private and channel support we will be leveraging the matrix protocol, explorers should connect to a [Matrix](https://matrix.org/) [homeserver](https://matrix.org/faq/#can-i-write-a-matrix-homeserver%3F) and all interactions will be saved in a single Matrix instance (as expected by the protocol), data will not be shared amongst Matrix instances. So, if a given explorer is connected to a Matrix instance, when switching homeservers, the data will not be synchronized between instances. 
+The [Matrix protocol](https://matrix.org/) will be leveraged for private and channel support, explorers should connect to a Matrix [homeserver](https://matrix.org/faq/#can-i-write-a-matrix-homeserver%3F) and all interactions will be saved in a single Matrix instance (as expected by the protocol), data will not be shared amongst Matrix instances. So, if a given explorer is connected to a Matrix instance, when switching homeservers, the data will not be synchronized between instances. 
 
 On the homeserver side the main responsibility, besides implementing the Matrix protocol, is to support authentication via an AuthChain. This will enable login using a wallet, allowing explorers to use different devices maintaining the same information. Since a wallet is used for login, users will be required to own one for chatting with other users via this method.
 
