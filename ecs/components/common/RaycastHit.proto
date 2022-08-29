@@ -1,5 +1,5 @@
 ﻿syntax = "proto3";
-import "common/Vector3.proto";
+import "Vector3.proto";
 
 message RaycastHit {
   Vector3 world_position = 1;
