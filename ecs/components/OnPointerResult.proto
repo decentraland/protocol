@@ -1,15 +1,15 @@
 ﻿syntax = "proto3";
 
 import "common/id.proto";
-import "common/RaycastHit.proto";
+import "RaycastHit.proto";
 option (ecs_component_id) = 1065;
 import "common/ActionButton.proto";
 
 enum PointerEventType {
-  StateEnum_UP = 0;
-  StateEnum_DOWN = 1;
-  StateEnum_HOVER_ENTER = 2;
-  StateEnum_HOVER_LEAVE = 3;
+  UP = 0;
+  DOWN = 1;
+  HOVER_ENTER = 2;
+  HOVER_LEAVE = 3;
 }
 
 // the renderer will set this component to the root entity once per frame with all the events
