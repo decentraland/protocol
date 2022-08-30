@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package protocol.comms.v2;
+
 message CommsMessage {
     double time = 1;
     oneof data {
