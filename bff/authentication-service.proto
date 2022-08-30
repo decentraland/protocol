@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package decentraland.bff;
+
 message GetChallengeRequest {
   string address = 1;
 }

@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./scripts/check-proto-compabitility.sh"
   },
   "keywords": [],
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
-    "proto-compatibility-tool": "^1.1.1-20220811001836.commit-414739b"
+    "proto-compatibility-tool": "^1.1.2-20220830184910.commit-565508d"
   },
   "files": [
     "kernel",
