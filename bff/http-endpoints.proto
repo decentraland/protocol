@@ -21,7 +21,7 @@ message AboutResponse {
   }
 
   message AboutConfiguration {
-    string realm_name = 1;
+    optional string realm_name = 1;
   }
   message ContentInfo {
     // common properties
