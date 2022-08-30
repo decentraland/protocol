@@ -80,7 +80,7 @@ enum YGEdge {
 
 message PBUiTransform {
   int32 parent = 79;
-  int32 rightOf = 80;
+  int32 right_of = 80;
 
   YGPositionType position_type = 1;
 
