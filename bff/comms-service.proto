@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package decentraland.bff;
+
 message Subscription {
   uint32 subscription_id = 1;
 }
