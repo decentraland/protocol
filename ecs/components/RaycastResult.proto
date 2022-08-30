@@ -2,18 +2,8 @@
 
 import "common/id.proto";
 option (ecs_component_id) = 1162;
-
+import "common/RaycastHit.proto";
 import "common/Vector3.proto";
-
-message RaycastHit {
-    Vector3 world_position = 1;
-    Vector3 origin = 2;
-    optional string mesh_name = 3;
-    int32 entity_id = 4;
-    Vector3 world_normal_hit = 5;
-    float length = 6;
-}
-
 
 message PBRaycastResult {
   int32 timestamp = 1;
