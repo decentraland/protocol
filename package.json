@@ -10,11 +10,12 @@
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
-    "proto-compatibility-tool": "^1.1.2-20220830184910.commit-565508d"
+    "proto-compatibility-tool": "^1.1.2-20220830190053.commit-de57caa"
   },
   "files": [
     "kernel",
     "renderer-protocol",
-    "ecs"
+    "ecs",
+    "bff"
   ]
 }
