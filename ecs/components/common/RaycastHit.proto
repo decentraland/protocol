@@ -9,5 +9,5 @@ message RaycastHit {
   Vector3 normal_hit = 4;
   float length = 5;
   optional string mesh_name = 6;
-  int64 entity_id = 7;
+  optional int64 entity_id = 7;
 }
