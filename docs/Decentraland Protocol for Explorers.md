@@ -59,7 +59,7 @@ To do so, a [content-server](https://github.com/decentraland/catalyst) was creat
 
 > A _catalyst node_ is a bundle of services that self-contain a copy of Decentraland. The DAO [governs a curated list of trusted catalysts](https://governance.decentraland.org/?type=catalyst) that hold a working copy of Decentraland. It contains everything necessary to make the Explorer work.
 
-The content server stores and synchronizes _Entities_. When a new wearable is created, or when a user uploads a scene to their LAND/parcel, all necessary files (3d models, textures, music, etc) are uploaded to a `Content Server`. Each server will verify against the blockchain that the user making the upload is actually allowed to do so. For example, in the case of scenes, the server will check that the deployer owns all the parcels they are trying to modify.
+The content server stores and synchronizes _Entities_. When a new wearable is created, or when a user uploads a scene to their LAND/parcel, all necessary files (3d models, textures, music, etc) are uploaded to a `Content Server`. Each server will verify against the blockchain that the user making the upload is actually allowed to do so. For example, in the case of scenes, the server will check that the deployer address has permissions for all the parcels they are trying to modify.
 
 And the most important part is that all content servers will then sync with each other. So, for example, if a scene is modified in one server, the update itself will be broadcasted to the other ones. Then, in the case a content server goes down for some reason, all content will still be present in the other ones.
 
@@ -120,8 +120,8 @@ Every entity uploaded to the content server must be signed by the deployer, in o
 An auth chain is a chain of signatures, where:
 
 - The first element of the chain is the original signer, and the one who will be used to validate against the blockchain
-- The last element of the chain contains the EHash and a signature
-- In between are ephemeral keys that can be used for signing
+- The last element of the chain contains the entity hash and a signature
+- In between are [ephemeral keys](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt2r1.pdf) that can be used for signing, every ephemeral key is signed with the previous one generating a trust chain. All keys and their signatures conform the AuthChain.
 
 The idea is that the user signs an ephemeral key with a certain expiration date. Then that key can be used for signing entities for as long as it remains valid. Therefore, the user only has to sign once until the ephemeral key expires.
 
@@ -178,6 +178,8 @@ Global chat (as in chatting with people around in world) will be supported by th
 The [Matrix protocol](https://matrix.org/) will be leveraged for private and channel support, explorers should connect to a Matrix [homeserver](https://matrix.org/faq/#can-i-write-a-matrix-homeserver%3F) and all interactions will be saved in a single Matrix instance (as expected by the protocol), data will not be shared amongst Matrix instances. So, if a given explorer is connected to a Matrix instance, when switching homeservers, the data will not be synchronized between instances. 
 
 On the homeserver side the main responsibility, besides implementing the Matrix protocol, is to support authentication via an AuthChain. This will enable login using a wallet, allowing explorers to use different devices maintaining the same information. Since a wallet is used for login, users will be required to own one for chatting with other users via this method.
+
+#### Communication Service (comms)
 
 The communications are managed by the Archipielago server in the Catalyst, it's the orchestrator of islands. The islands are the minimal unit of users groups. The universe that a user can see, talk and interact with is delimeted by the island. There will be available [different transports to support this communication: P2P, livekit and websocket](https://github.com/decentraland/adr/blob/main/docs/ADR-70-new-comms.md).
 

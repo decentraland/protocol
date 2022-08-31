@@ -21,7 +21,7 @@ So the workflow looks like this.
 3. Then it performs all validations
 4. If it ends up being valid, then it will be deployed locally
 
-It is important to re-iterate that before updating its own vision of the Metaverse, each node will validate the entity again (the auth chain, the hashes, everything). If the validation fails, then that change will be ignored. There is no trust involved in the process.
+It is important to re-iterate that before updating its own vision of the Metaverse, each node will validate the entity again (the auth chain, the hashes, everything). If the validation fails, then that change will be ignored. Besides cryptographic signatures and smart contracts, there are no trusted parties involved in the process.
 
 The full mechanism of Content Sync is defined in [ADR-52](https://github.com/decentraland/adr/blob/main/docs/ADR-52-content-new-sync.md)
 
@@ -33,7 +33,7 @@ The lib used is [snapshots-fetcher](https://github.com/decentraland/snapshots-fe
 
 This endpoint returns the hash id of a file that contains all the active entities of the server. Then, the file can be downloaded from the server and parsed to deploy the changes locally.
 
-The format of the snapshots is a list of JSONs, so it can be read line by line and each of them can be parsed as a valid JSON.
+The format of the snapshots is a list of JSONs also known as [ndjson](http://ndjson.org/), so it can be read line by line and each of them can be parsed as a valid JSON.
 
 #### GET /content/contents/{hashId}
 
