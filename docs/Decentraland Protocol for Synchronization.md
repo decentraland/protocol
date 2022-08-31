@@ -25,6 +25,9 @@ It is important to re-iterate that before updating its own vision of the Metaver
 
 The full mechanism of Content Sync is defined in [ADR-52](https://github.com/decentraland/adr/blob/main/docs/ADR-52-content-new-sync.md)
 
+
+![Content Sequence][content-sync]
+
 ### Which endpoints are used?
 
 The lib used is [snapshots-fetcher](https://github.com/decentraland/snapshots-fetcher)
@@ -42,3 +45,7 @@ Endpoint to retrieve all files: snapshots files, entity.json files and content f
 #### GET /content/pointer-changes
 
 Enpoint that returns all the deployed entities in a period of time.
+
+
+
+[content-sync]: content-sequence.svg  "Sync sequence"
