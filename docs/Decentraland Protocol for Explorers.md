@@ -59,57 +59,131 @@ To do so, a [content-server](https://github.com/decentraland/catalyst) was creat
 
 > A _catalyst node_ is a bundle of services that self-contain a copy of Decentraland. The DAO [governs a curated list of trusted catalysts](https://governance.decentraland.org/?type=catalyst) that hold a working copy of Decentraland. It contains everything necessary to make the Explorer work.
 
-The content server stores and synchronizes _Entities_.
+The content server stores and synchronizes _Entities_. When a new wearable is created, or when a user uploads a scene to their LAND/parcel, all necessary files (3d models, textures, music, etc) are uploaded to a `Content Server`. Each server will verify against the blockchain that the user making the upload is actually allowed to do so. For example, in the case of scenes, the server will check that the deployer address has permissions for all the parcels they are trying to modify.
 
-An [Entity](https://github.com/decentraland/common-schemas/blob/be7213b40a2180a9a99035eb87e8a5d4b8438e7f/src/platform/entity.ts#L21-L37) is a signed data structure holding a list of content files, a deployment date and pointers. A pointer is a human readable "shortcut" to the entity i.e. the [`0,0`](https://peer.decentraland.org/content/entities/scenes?pointer=0,0) representation of a LAND. Every time an entity is deployed and accepted by the network, the pointers for that entity will now point to the newest entity for that set of pointers. That is the mechanism used to change the content of the land, wearables and emotes.
+And the most important part is that all content servers will then sync with each other. So, for example, if a scene is modified in one server, the update itself will be broadcasted to the other ones. Then, in the case a content server goes down for some reason, all content will still be present in the other ones.
+
+#### Entities
+
+An [Entity](https://github.com/decentraland/common-schemas/blob/be7213b40a2180a9a99035eb87e8a5d4b8438e7f/src/platform/entity.ts#L21-L37) is a signed data structure holding a list of content files, a deployment date and pointers. An entity is the minimal object used to organize the content. An entity can represent an scene, a wearable, a profile, a user store, an emote, etc.
+
+An entity has the following properties:
+
+- A type (one of scenes, profiles or wearables, etc
+- Content (files that are referenced or used by the entity)
+- Metadata (for example in the case of profiles, it could be a description)
+- Pointers (indices that reference the entity)
+- A timestamp (when the entity was created)
+
+Entities are immutable. That means that if any of these properties were to change, then the updated version is considered as a completely new entity.
+
+#### Pointers
+
+The identifier of the entity is named `pointer`, a unique string. A pointer is a human readable "shortcut" to the entity, i.e. the [`0,0`](https://peer.decentraland.org/content/entities/scenes?pointer=0,0) is the pointer representation of a LAND associated to an scene.
+
+Every time an entity is deployed and accepted by the network, the pointers for that entity will now point to the newest entity for that set of pointers. That is the mechanism used to change the content of the land, wearables and emotes, the entity with the biggest timestamp is the one considered as active.
 
 Unlike LAND, wearables and emotes have [URN pointers](https://github.com/decentraland/urn-resolver/blob/b11aeb677e06e1a9e1d7994efa98a5f11867f854/test/urn.spec.ts#L138-L147). URN are used to reference any asset inside Decentraland, the technology was selected in pursue of a common identifier that enables [extensibility to other networks or remote assets](https://github.com/decentraland/urn-resolver/blob/b11aeb677e06e1a9e1d7994efa98a5f11867f854/test/urn.spec.ts#L269-L280) and [interoperability](https://github.com/common-metaverse/urn-namespaces) with other platforms.
 
-> TODO: Describe entities format
+#### Entities format
 
-> TODO: Describe entities content restrictions
+Entities must be compliant with the defined schema in [Entities Schemas](https://github.com/decentraland/common-schemas/blob/main/src/platform/entity.ts) acording to [ADR-45](https://github.com/decentraland/adr/blob/main/docs/ADR-45-entities-v4.md)
 
-> TODO: Describe entities IPFS CIDs
+The format of the entities is:
 
-> TODO: Describe AuthChain
+```yaml
+{
+  version: { type: 'string', enum: ['v3'] },
+  id: { type: 'string', oneOf: [IPFSv1.schema, IPFSv2.schema] },
+  type: { type: 'string' },
+  pointers: { type: 'array', items: { type: 'string', minLength: 1 } },
+  timestamp: { type: 'number', minimum: 0 },
+  content: { type: 'array', items: ContentMapping.schema },
+  metadata: { type: 'object', nullable: true }
+}
+```
+
+#### Entities Content Restrictions
+
+Each entity type has its own restrictions on the data that is present in the JSON. All the required validations are listed in [ADR-51](https://github.com/decentraland/adr/blob/main/docs/ADR-51-catalyst-content-validations.md), [ADR-62](https://github.com/decentraland/adr/blob/main/docs/ADR-62-merkle-proofed-entities.md), [ADR-74](https://github.com/decentraland/adr/blob/main/docs/ADR-74-add-emote-schema.md).
+
+#### IPFS CIDs
+
+The identifier of the entity is the Hash of its content, the algorithm used is [IPFS with cid version 1](https://github.com/decentraland/hashing).
+
+Every file referenced in the entity is also identified by its hash.
+
+#### Auth Chain
+
+Every entity uploaded to the content server must be signed by the deployer, in order to prove ownership of the pointers that they want to modify.
+
+An auth chain is a chain of signatures, where:
+
+- The first element of the chain is the original signer, and the one who will be used to validate against the blockchain
+- The last element of the chain contains the entity hash and a signature
+- In between are [ephemeral keys](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt2r1.pdf) that can be used for signing, every ephemeral key is signed with the previous one generating a trust chain. All keys and their signatures conform the AuthChain.
+
+The idea is that the user signs an ephemeral key with a certain expiration date. Then that key can be used for signing entities for as long as it remains valid. Therefore, the user only has to sign once until the ephemeral key expires.
+
+In order for the server to validate the authenticity of a deployment, the client will need to send the full chain of signatures. This is an example:
+
+```yaml
+[
+  {
+    type: "SIGNER",
+    payload: "0x716954738e57686a08902d9dd586e813490fee23"
+  },
+  {
+    type: "ECDSA_EPHEMERAL",
+    payload: "Decentraland Login\nEphemeral address: 0x90a43461d3e970785B945FFe8f7628F2BC962D6a\nExpiration: 2021-07-10T20:55:42.215Z",
+    signature: "0xe64e46fdd7d8789c0debec54422ae77e31b77e5a28287e072998e1114e252c57328c17756400d321e9e77032347c9d05e63fb59a3b6c3ab754565f9db86b8c481b"
+  },
+  {
+    type: "ECDSA_SIGNED_ENTITY",
+    payload: "QmNMZBy7khBxdigikA8mcJMyv6yeBXfMv3iAcUiBr6n72C",
+    signature: "0xbed22719dcdc19580353108027c41c65863404879592c65014d806efa961c629777adc76986193eaee4e48f278ec59feb1c289827254230af85b2955157ec8061b"
+  }
+]
+```
+
 
 #### Endpoints that are part of the protocol
 
 ##### `GET /contents/:cid` Download an entity or content file
 
-Used to download the content. This endpoint is used by the content-server synchronization and by the explorer.
+Used to download the content files. This endpoint is used by the content-server synchronization and by the explorer.
 
 ##### `POST /entity` Upload a new entity
 
 The `POST /entity` must run validations to either accept or reject an entity. Depending on its type and querying the Consensus layer.
 
-This endpoint is used by the tooling to upload content.
+This endpoint is used by the tooling to upload content (like scenes and wearables) and the explorer (for profiles).
 
 ##### `POST /entities/active` Query active entities
 
-Used to discover the map around the user. This endpoint is used by the explorer.
-
-##### TODO: Get and Deploy profiles
+Used to discover the map and all the assets as other profiles and wearables around the user. This endpoint is used by the explorer.
 
 #### Identity Storage
 
-> TODO: Persistence layer for profiles, separate Profile from Avatar.
-> TODO: Validations of the served content (lambdas) to check ownership
+- To store profiles with their avatars the endpoint `POST /content/entities` is the one used.
+- To retrieve profiles the endpoint `POST /entities/active` with the addresses of the users is the one that needs to be used, that will retrieve the latest stored version of the profile so the ownership of the assets may have changed in the Blockchain.
 
 ### Interactive layer
 
 #### Chat
 To have a complete social experience Explorers need to support some kind of chat among users. There will be three types of chats, private dms, channels and global. 
 
-Global chat (as in chatting with people around in world) will be supported by the comms service, leveraging the p2p protocol which connects people within a single island (or whatever virtual network available). Everyone is allowed to talk in the global chat, even guests.
+Global chat (as in chatting with people around in world) will be supported by the comms service, leveraging the P2P protocol which connects people within a single island (or whatever virtual network available). Everyone is allowed to talk in the global chat, even guests.
 
 The [Matrix protocol](https://matrix.org/) will be leveraged for private and channel support, explorers should connect to a Matrix [homeserver](https://matrix.org/faq/#can-i-write-a-matrix-homeserver%3F) and all interactions will be saved in a single Matrix instance (as expected by the protocol), data will not be shared amongst Matrix instances. So, if a given explorer is connected to a Matrix instance, when switching homeservers, the data will not be synchronized between instances. 
 
 On the homeserver side the main responsibility, besides implementing the Matrix protocol, is to support authentication via an AuthChain. This will enable login using a wallet, allowing explorers to use different devices maintaining the same information. Since a wallet is used for login, users will be required to own one for chatting with other users via this method.
 
-> TODO: Write about comms
+#### Communication Service (comms)
 
-> TODO: Write about messages to share profiles via comms
+The communications are managed by the Archipielago server in the Catalyst, it's the orchestrator of islands. The islands are the minimal unit of users groups. The universe that a user can see, talk and interact with is delimeted by the island. There will be available [different transports to support this communication: P2P, livekit and websocket](https://github.com/decentraland/adr/blob/main/docs/ADR-70-new-comms.md).
+
+When an user is connected through P2P with the others in the same island, and they change their profile, then that change and the new profile entity itself is sent through comms to avoid the explorer to request the Catalysts servers.
 
 ### Runtime layer
 
