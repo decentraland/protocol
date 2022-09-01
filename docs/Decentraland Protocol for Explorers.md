@@ -91,7 +91,7 @@ Entities must be compliant with the defined schema in [Entities Schemas](https:/
 
 The format of the entities is:
 
-```json
+```yaml
 {
   version: { type: 'string', enum: ['v3'] },
   id: { type: 'string', oneOf: [IPFSv1.schema, IPFSv2.schema] },
@@ -127,7 +127,7 @@ The idea is that the user signs an ephemeral key with a certain expiration date.
 
 In order for the server to validate the authenticity of a deployment, the client will need to send the full chain of signatures. This is an example:
 
-```json
+```yaml
 [
   {
     type: "SIGNER",
