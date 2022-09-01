@@ -11,18 +11,18 @@ enum PointerEventType {
   HOVER_LEAVE = 3;
 }
 
-message PointerEvent {
+message PBPointerEvent {
   optional ActionButton button = 1; // default=ActionButton.ANY
   optional string hover_text = 2; // default='Interact'
   optional float max_distance = 3; // default=10
   optional bool show_feedback = 4; // default=true
 }
 
-message PointerEventEntry{
+message PBPointerEventEntry{
   PointerEventType eventType = 1;
-  PointerEvent eventInfo = 2;
+  PBPointerEvent eventInfo = 2;
 }
 
 message PBPointerEvents {
-  repeated PointerEventEntry pointerEvents = 1;
+  repeated PBPointerEventEntry pointerEvents = 1;
 }
