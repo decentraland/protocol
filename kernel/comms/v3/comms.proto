@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package protocol;
+package protocol.comms.v3;
 
 message Position {
     double time = 2;

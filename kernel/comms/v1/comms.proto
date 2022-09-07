@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package protocol;
+package protocol.comms.v1;
 
 message AuthData {
     string signature = 1;
