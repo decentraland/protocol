@@ -18,7 +18,7 @@ message PBPointerEvent {
   optional bool show_feedback = 4; // default=true
 }
 
-message PointerEventEntry{
+message PBPointerEventEntry {
   PointerEventType eventType = 1;
   PBPointerEvent eventInfo = 2;
 }
