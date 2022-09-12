@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+import "shared/Common.proto";
+import "google/protobuf/empty.proto";
+
+message Teleport {
+  message FromKernel {
+    message Teleport {
+      Common.Vector3 position = 1;
+      Common.Vector3 camera_target = 2;
+      bool rotateIfTargetIsNotSet = 3;
+    }
+
+    message RequestTeleport {
+      string destination = 1;
+    }
+  }
+
+  message FromRenderer {
+    oneof message {
+      TeleportTo teleport_to = 3;
+      TeleportToCrowd teleport_to_crowd = 4;
+      TeleportToMagic teleport_to_magic = 5;
+      JumpIn jump_in = 6;
+    }
+
+    message TeleportTo {
+      int32 x = 1;
+      int32 y = 2;
+    }
+
+    message TeleportToMagic {}
+    message TeleportToCrowd {}
+
+    message JumpIn {
+      string realm = 1;
+      int32 parcel_x = 2;
+      int32 parcel_y = 3;
+    }
+  }
+}
+service TeleportService {
+  rpc Teleport(Teleport.FromKernel.Teleport) returns (google.protobuf.Empty) {}
+  rpc RequestTeleport(Teleport.FromKernel.RequestTeleport) returns (google.protobuf.Empty) {}
+  rpc OnMessage(google.protobuf.Empty) returns (stream Teleport.FromRenderer) {}
+}
+  

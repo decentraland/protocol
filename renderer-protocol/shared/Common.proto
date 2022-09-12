@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package Common;
+
+message Vector2 {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+message Vector3 {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+message Quaternion {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+  float w = 4;
+}
+
+message Color4 {
+  float r = 1;
+  float g = 2;
+  float b = 3;
+  float a = 4;
+}
+
+message Color3 {
+  float r = 1;
+  float g = 2;
+  float b = 3;
+}
