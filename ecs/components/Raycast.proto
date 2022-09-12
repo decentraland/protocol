@@ -1,11 +1,11 @@
 ﻿syntax = "proto3";
 
 import "common/id.proto";
-option (ecs_component_id) = 1161;
+option (ecs_component_id) = 1067;
 
 import "common/Vector3.proto";
 
-enum QueryType {
+enum RaycastQueryType {
     HIT_FIRST = 0;
     QUERY_ALL = 1;
 }
@@ -15,6 +15,5 @@ message PBRaycast {
   Vector3 origin = 2;
   Vector3 direction = 3;
   float max_distance = 4;
-  QueryType query_type = 5;
-
+  RaycastQueryType query_type = 5;
 }
