@@ -1,0 +1,45 @@
+// This file maps to the definition in https://rfc.decentraland.org/rfc/RFC-5
+// It is mandatory to also update that RFC when modifying this file
+
+syntax = "proto3";
+
+package protocol.comms.rfc5;
+
+message WsWelcome {
+  uint32 alias = 1;
+  map<uint32, string> peer_identities = 2;
+}
+
+message WsPeerJoin {
+  uint32 alias = 1;
+  string identity = 2;
+}
+
+message WsPeerUpdate {
+  uint32 from_alias = 1;
+  bytes body = 2;
+}
+
+message WsChallengeRequired {
+  string challenge_to_sign = 1;
+  bool already_connected = 2;
+}
+
+message WsSignedChallenge {
+  string auth_chain_json = 1;
+}
+
+message WsPacket {
+  oneof message {
+    // direction: server->client
+    WsWelcome welcome_message = 1;
+    // direction: server->client
+    WsPeerJoin peer_join_message = 2;
+    // direction: both ways
+    WsPeerUpdate peer_update_message = 3;
+    // direction: server->client
+    WsChallengeRequired challenge_message = 4;
+    // direction: client->server
+    WsSignedChallenge signed_challenge_for_server = 5;
+  }
+}
