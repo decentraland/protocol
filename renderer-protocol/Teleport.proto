@@ -2,8 +2,6 @@ syntax = "proto3";
 
 import "shared/Common.proto";
 
-message Empty {}
-
 message Teleport {
   message FromKernel {
     message Teleport {
@@ -12,12 +10,18 @@ message Teleport {
       bool rotateIfTargetIsNotSet = 3;
     }
 
+    message TeleportResponse {}
+
     message RequestTeleport {
       string destination = 1;
     }
+
+    message RequestTeleportResponse {}
   }
 
   message FromRenderer {
+    message StreamRequest {}
+
     oneof message {
       TeleportTo teleport_to = 3;
       TeleportToCrowd teleport_to_crowd = 4;
@@ -41,8 +45,8 @@ message Teleport {
   }
 }
 service TeleportService {
-  rpc Teleport(Teleport.FromKernel.Teleport) returns (Empty) {}
-  rpc RequestTeleport(Teleport.FromKernel.RequestTeleport) returns (Empty) {}
-  rpc OnMessage(Empty) returns (stream Teleport.FromRenderer) {}
+  rpc Teleport(Teleport.FromKernel.Teleport) returns (Teleport.FromKernel.TeleportResponse) {}
+  rpc RequestTeleport(Teleport.FromKernel.RequestTeleport) returns (Teleport.FromKernel.RequestTeleportResponse) {}
+  rpc OnMessage(Teleport.FromRenderer.StreamRequest) returns (stream Teleport.FromRenderer) {}
 }
   
