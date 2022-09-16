@@ -39,7 +39,7 @@ message WsPeerUpdate {
 
 /**
  * Sent to the clients as first message, it contains a challenge string and a
- * hint about if the same address is connected to another island. In such case,
+ * hint about if the same address is connected to another room. In such case,
  * after authentication, the server may decide to end the former connection. This
  * hint exists for UX purposes of the explorers for cases like multiple running
  * instances of the explorer.
