@@ -56,6 +56,14 @@ message WsSignedChallenge {
   string auth_chain_json = 1;
 }
 
+/**
+ * This is the first message sent by the clients, it us used to identify the client
+ * in the server.
+ */
+message WsIdentification {
+  string address = 1;
+}
+
 message WsPacket {
   oneof message {
     // direction: server->client
@@ -70,5 +78,7 @@ message WsPacket {
     WsSignedChallenge signed_challenge_for_server = 5;
     // direction: server->client
     WsPeerLeave peer_leave_message = 6;
+    // direction: server->client
+    WsIdentification peer_identification = 7;
   }
 }
