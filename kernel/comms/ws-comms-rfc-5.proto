@@ -64,21 +64,37 @@ message WsIdentification {
   string address = 1;
 }
 
+/**
+ * This message is received by the peers when the same address logs in in a
+ * different session. It should signal that the client should be shut down and not
+ * retry any new comms connection.
+ */
+message WsKicked {}
+
 message WsPacket {
   oneof message {
     // direction: server->client
     WsWelcome welcome_message = 1;
+
     // direction: server->client
     WsPeerJoin peer_join_message = 2;
-    // direction: both ways
+
+    // direction: client->(server)->client
     WsPeerUpdate peer_update_message = 3;
+
     // direction: server->client
     WsChallengeRequired challenge_message = 4;
+
     // direction: client->server
     WsSignedChallenge signed_challenge_for_server = 5;
+
     // direction: server->client
     WsPeerLeave peer_leave_message = 6;
-    // direction: server->client
+
+    // direction: client->server
     WsIdentification peer_identification = 7;
+
+    // direction: server->client
+    WsKicked peer_kicked = 8;
   }
 }
