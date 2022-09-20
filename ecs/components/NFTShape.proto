@@ -33,6 +33,6 @@ message PBNFTShape {
   }
 
   string src = 1;
-  optional PictureFrameStyle style = 2;
-  optional Color3 color = 3;
+  optional PictureFrameStyle style = 2; // default = PictureFrameStyle.Classic
+  optional Color3 color = 3; // default = Color3(0.6404918, 0.611472, 0.8584906)
 }
