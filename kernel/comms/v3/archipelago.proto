@@ -2,6 +2,11 @@ syntax = "proto3";
 
 package protocol.comms.v3;
 
+enum TransportType {
+  TRANSPORT_LIVEKIT = 0;
+  TRANSPORT_WS = 1;
+}
+
 message Position3DMessage {
   double x = 1;
   double y = 2;
@@ -39,4 +44,34 @@ message IslandData {
 
 message IslandStatusMessage {
   repeated IslandData data = 1;
+}
+
+message TransportInit {
+  TransportType type = 1;
+  uint32 max_island_size = 2;
+}
+
+message TransportHeartbeat {
+  uint32 available_seats = 1;
+  uint32 users_count = 2;
+}
+
+message TransportAuthorizationRequest {
+  string request_id = 1;
+  string room_id = 2;
+  repeated string user_ids = 3;
+}
+
+message TransportAuthorizationResponse {
+  string request_id = 1;
+  map<string, string> conn_strs = 2;
+}
+
+message TransportMessage {
+  oneof message {
+    TransportInit init = 1;
+    TransportHeartbeat heartbeat = 2;
+    TransportAuthorizationRequest authRequest = 3;
+    TransportAuthorizationResponse authResponse = 4;
+  }
 }
