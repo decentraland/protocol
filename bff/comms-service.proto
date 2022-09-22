@@ -2,10 +2,6 @@ syntax = "proto3";
 
 package decentraland.bff;
 
-message Subscription {
-  uint32 subscription_id = 1;
-}
-
 message SubscriptionRequest {
   string topic = 1;
 }
@@ -14,11 +10,6 @@ message PeerTopicSubscriptionResultElem {
   bytes payload = 1;
   string topic = 2;
   string sender = 3;
-}
-
-message SystemTopicSubscriptionResultElem {
-  bytes payload = 1;
-  string topic = 2;
 }
 
 message PublishToTopicRequest {
@@ -30,20 +21,9 @@ message PublishToTopicResult {
   bool ok = 1;
 }
 
-message UnsubscriptionResult {
-  bool ok = 1;
-}
-
 service CommsService {
-  rpc SubscribeToPeerMessages(SubscriptionRequest) returns (Subscription) {}
-  rpc GetPeerMessages(Subscription) returns (stream PeerTopicSubscriptionResultElem) {}
-  rpc UnsubscribeToPeerMessages(Subscription) returns (UnsubscriptionResult) {}
-
-  rpc SubscribeToSystemMessages(SubscriptionRequest) returns (Subscription) {}
-  rpc GetSystemMessages(Subscription) returns (stream SystemTopicSubscriptionResultElem) {}
-  rpc UnsubscribeToSystemMessages(Subscription) returns (UnsubscriptionResult) {}
-
-
+  // subscribe to a topic. The subscription ends with the stream
+  rpc TopicSubscription(SubscriptionRequest) returns (stream PeerTopicSubscriptionResultElem) {}
   // send a peer message to a topic
   rpc PublishToTopic(PublishToTopicRequest) returns (PublishToTopicResult) {}
 }
