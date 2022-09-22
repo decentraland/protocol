@@ -14,6 +14,7 @@ message Packet {
     Chat chat = 5;
     Scene scene = 6;
     Voice voice = 7;
+    Ping ping = 8;
   }
 }
 
@@ -68,4 +69,8 @@ message Voice {
   enum VoiceCodec {
     VoiceCodec_OPUS = 0;
   }
+}
+
+message Ping {
+  uint32 nonce = 1;
 }
