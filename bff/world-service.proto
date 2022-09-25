@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "common/Entity.proto";
+import "common/Vectors.proto";
+import "google/api/annotations.proto";
+
+package decentraland.bff;
+
+message WorldCommand {
+  oneof command {
+    SetCommsAdapter set_comms_adapter = 1;
+  }
+}
+
+message SetCommsAdapter {
+  string connection_string = 1;
+}
+
+message Heartbeat {
+  decentraland.common.Position position = 1;
+}
+
+message PointOfInterest {
+  string location = 1;
+}
+
+message PoisResponse {
+  repeated PointOfInterest pois = 1;
+}
+
+message RequestEntities {
+  repeated string pointers = 1;
+}
+
+message EntitiesResponse {
+  repeated decentraland.common.Entity entities = 1;
+}
+
+service WorldManagementService {
+  rpc GetEntities(RequestEntities) returns (EntitiesResponse) {
+    option (google.api.http) = { post: "/world/entities" };
+  }
+  rpc GetPois(google.protobuf.Empty) returns (PoisResponse) {
+    option (google.api.http) = { get: "/world/pois" };
+  }
+
+  // Send heartbeat position
+  rpc SendHeartbeat(Heartbeat) returns (google.protobuf.Empty) {}
+  rpc GetWorldManagementCommands(google.protobuf.Empty) returns (stream WorldCommand) {}
+}

@@ -19,8 +19,8 @@ jobs:
 # Release track: https://github.com/decentraland/sdk/issues?q=is%3Aopen+is%3Aissue+milestone%3A%22ECS+7.0.0+-+Internal+beta%22
 #      - name: install proto-compatibilty tool
 #        run: npm i -g proto-compatibility-tool protobufjs 
-#      - name: run the check script
-#        run: ./scripts/check-proto-compabitility.sh
+      - name: run the test
+        run: ./scripts/test.sh
       - name: publish packages
         uses: menduz/oddish-action@master
         id: publish_dcl_protocol

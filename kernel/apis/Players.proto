@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "common/UserData.proto";
+import "kernel/apis/common-sdk/UserData.proto";
 
 message Player {
     string user_id = 1;

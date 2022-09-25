@@ -43,7 +43,6 @@ service CommsService {
   rpc GetSystemMessages(Subscription) returns (stream SystemTopicSubscriptionResultElem) {}
   rpc UnsubscribeToSystemMessages(Subscription) returns (UnsubscriptionResult) {}
 
-
   // send a peer message to a topic
   rpc PublishToTopic(PublishToTopicRequest) returns (PublishToTopicResult) {}
 }

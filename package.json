@@ -10,12 +10,14 @@
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
-    "proto-compatibility-tool": "^1.1.2-20220830190053.commit-de57caa"
+    "@protobuf-ts/protoc": "^2.8.1",
+    "proto-compatibility-tool": "^1.1.2-20220830190053.commit-de57caa",
+    "typescript": "^4.8.3"
   },
-  "files": [
-    "kernel",
-    "renderer-protocol",
-    "ecs",
-    "bff"
-  ]
+  "config": {
+    "protocVersion": "21.6"
+  },
+  "dependencies": {
+    "ts-proto": "^1.126.1"
+  }
 }

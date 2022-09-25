@@ -5,7 +5,7 @@ import "common/ContentMapping.proto";
 message MappingsResponse  {
     string parcel_id = 1;
     string root_cid = 2;
-    repeated ContentMapping contents = 3;
+    repeated decentraland.common.ContentMapping contents = 3;
 }
 
 message Land {

@@ -3,7 +3,7 @@ syntax = "proto3";
 import "common/ContentMapping.proto";
 
 message MinimalRunnableEntity {
-    repeated ContentMapping content = 1;
+    repeated decentraland.common.ContentMapping content = 1;
     string metadata_json = 2;
 }
 
