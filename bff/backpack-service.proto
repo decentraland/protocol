@@ -22,5 +22,5 @@ message Emote {
 }
 
 service BackpackService {
-  rpc GetBackpack(BackpackResponse) returns (BackpackResponse) {}
+  rpc GetBackpack(BackpackRequest) returns (BackpackResponse) {}
 }
