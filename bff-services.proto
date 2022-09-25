@@ -1,6 +1,9 @@
 syntax = "proto3";
 
-package decentraland.bff;
+// This version is used to check compatibility between Kernel<>BFF
+// Update it manually using semantic versioning. Patches may be skipped.
+package v1_0_0;
+
 // This file only imports all the services for the BFF to help the compiler
 // resolve all dependencies
 
