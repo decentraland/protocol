@@ -6,6 +6,7 @@ package decentraland.bff;
 
 import public "bff/authentication-service.proto";
 import public "bff/backpack-service.proto";
+import public "bff/comms-service.proto";
 import public "bff/http-endpoints.proto";
 import public "bff/topics-service.proto";
 import public "bff/world-service.proto";

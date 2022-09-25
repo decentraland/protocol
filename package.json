@@ -19,5 +19,6 @@
   },
   "dependencies": {
     "ts-proto": "^1.126.1"
-  }
+  },
+  "files": ["bff", "common", "ecs", "kernel", "renderer-protocol"]
 }
