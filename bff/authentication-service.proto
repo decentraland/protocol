@@ -17,6 +17,9 @@ message SignedChallenge {
 
 message WelcomePeerInformation {
   string peer_id = 1;
+
+  // list of available modules in this BFF
+  repeated string available_modules = 2;
 }
 
 service BffAuthenticationService {
