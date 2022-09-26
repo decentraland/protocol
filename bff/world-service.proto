@@ -7,20 +7,6 @@ import "google/api/annotations.proto";
 
 package decentraland.bff;
 
-message WorldCommand {
-  oneof command {
-    SetCommsAdapter set_comms_adapter = 1;
-  }
-}
-
-message SetCommsAdapter {
-  string connection_string = 1;
-}
-
-message Heartbeat {
-  decentraland.common.Position position = 1;
-}
-
 message PointOfInterest {
   string location = 1;
 }
@@ -79,7 +65,4 @@ service WorldManagementService {
   rpc GetRealms(google.protobuf.Empty) returns (ExploreRealmsResponse) {
     option (google.api.http) = { get: "/explore/realms" };
   }
-
-  // rpc SendHeartbeat(Heartbeat) returns (google.protobuf.Empty) {}
-  // rpc GetWorldManagementCommands(google.protobuf.Empty) returns (stream WorldCommand) {}
 }
