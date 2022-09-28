@@ -34,6 +34,7 @@ message WsPeerLeave {
 message WsPeerUpdate {
   uint32 from_alias = 1;
   bytes body = 2;
+  bool unreliable = 3;
 }
 
 
