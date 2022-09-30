@@ -288,6 +288,8 @@ message PB_AvatarShape {
 
   string expressionTriggerId = 12;
   uint64 expressionTriggerTimestamp = 14;
+
+  repeated string emotes = 15;
 }
 
 message PB_Wearable {

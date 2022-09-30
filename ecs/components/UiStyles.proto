@@ -1,0 +1,10 @@
+﻿syntax = "proto3";
+
+import "common/id.proto";
+option (ecs_component_id) = 1053;
+
+import "common/Color4.proto";
+
+message PBUiStyles {
+  optional Color4 background_color = 1; // default=(0.0, 0.0, 0.0, 0.0)
+}
