@@ -54,7 +54,7 @@ message ProfileResponse {
 
 message Chat {
   string message = 1;
-  uint64 timestamp = 2;
+  double timestamp = 2;
 }
 
 message Scene {
