@@ -15,6 +15,7 @@ message Position3DMessage {
 
 message HeartbeatMessage {
   Position3DMessage position = 1;
+  string preferred_island_id = 2;
 }
 
 message IslandChangedMessage {
