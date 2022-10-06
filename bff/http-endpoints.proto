@@ -16,6 +16,8 @@ message AboutResponse {
   message AboutConfiguration {
     optional string realm_name = 1;
     uint32 network_id = 2;
+    optional string scenes_url = 3;
+    repeated string scene_urns = 4;
   }
 
   message ContentInfo {
