@@ -11,3 +11,6 @@ import public "bff/authentication-service.proto";
 import public "bff/http-endpoints.proto";
 import public "bff/topics-service.proto";
 import public "bff/comms-director-service.proto";
+
+// TO BE DELETED
+import public "bff/comms-service.proto";
