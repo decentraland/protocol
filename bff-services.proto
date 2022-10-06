@@ -15,5 +15,4 @@ import public "bff/world-service.proto";
 import public "bff/comms-director-service.proto";
 
 // TO BE DELETED & replaced by topics-service
-=======
 import public "bff/comms-service.proto";
