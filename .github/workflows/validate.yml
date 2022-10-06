@@ -8,12 +8,11 @@ jobs:
   compat:
     name: "Validate compatibility with main branch"
     runs-on: ubuntu-latest
-    outputs:
-      dcl_protocol_s3_bucket_key: ${{ steps.publish_dcl_protocol.outputs.s3-bucket-key }}
     steps:
       - uses: actions/checkout@v2
-      # TODO: After we release, check .proto compatibility
       - name: install
         run: npm i
+      - name: compile
+        run: ./scripts/test.sh
       - name: run the check script
         run: ./scripts/check-proto-compabitility.sh

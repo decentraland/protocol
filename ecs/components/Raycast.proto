@@ -1,9 +1,9 @@
 ﻿syntax = "proto3";
 
-import "common/id.proto";
+import "ecs/components/common/id.proto";
 option (ecs_component_id) = 1067;
 
-import "common/Vector3.proto";
+import "ecs/components/common/Vector3.proto";
 
 enum RaycastQueryType {
     HIT_FIRST = 0;

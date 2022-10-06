@@ -13,10 +13,6 @@ message Position3DMessage {
   double z = 3;
 }
 
-message HeartbeatMessage {
-  Position3DMessage position = 1;
-}
-
 message IslandChangedMessage {
   string island_id = 1;
   string conn_str = 2;

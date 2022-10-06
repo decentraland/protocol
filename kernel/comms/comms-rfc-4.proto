@@ -45,6 +45,7 @@ message ProfileRequest {
 
 message ProfileResponse {
   string serialized_profile = 1;
+  string base_url = 2;
 
   // Extension: when Lambdas serializes profiles for the RPC, we could extend
   // this format to prevent transmitting the serialized JSON and leverage protobuf

@@ -1,33 +1,10 @@
 syntax = "proto3";
 
+import public "bff/topics-service.proto";
 package decentraland.bff;
 
 message Subscription {
   uint32 subscription_id = 1;
-}
-
-message SubscriptionRequest {
-  string topic = 1;
-}
-
-message PeerTopicSubscriptionResultElem {
-  bytes payload = 1;
-  string topic = 2;
-  string sender = 3;
-}
-
-message SystemTopicSubscriptionResultElem {
-  bytes payload = 1;
-  string topic = 2;
-}
-
-message PublishToTopicRequest {
-  string topic = 1;
-  bytes payload = 2;
-}
-
-message PublishToTopicResult {
-  bool ok = 1;
 }
 
 message UnsubscriptionResult {
@@ -42,7 +19,6 @@ service CommsService {
   rpc SubscribeToSystemMessages(SubscriptionRequest) returns (Subscription) {}
   rpc GetSystemMessages(Subscription) returns (stream SystemTopicSubscriptionResultElem) {}
   rpc UnsubscribeToSystemMessages(Subscription) returns (UnsubscriptionResult) {}
-
 
   // send a peer message to a topic
   rpc PublishToTopic(PublishToTopicRequest) returns (PublishToTopicResult) {}
