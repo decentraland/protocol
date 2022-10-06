@@ -11,7 +11,7 @@ message AboutResponse {
   ContentInfo content = 3;
   CommsInfo comms = 4;
   LambdasInfo lambdas = 5;
-  BffInfo bff = 6;
+  optional BffInfo bff = 6;
 
   message AboutConfiguration {
     optional string realm_name = 1;
