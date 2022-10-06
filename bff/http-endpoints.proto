@@ -13,11 +13,18 @@ message AboutResponse {
   LambdasInfo lambdas = 5;
   optional BffInfo bff = 6;
 
+  message MinimapConfiguration {
+    bool enabled = 1;
+    optional string data_image = 2;
+    optional string estate_image = 3;
+  }
+
   message AboutConfiguration {
     optional string realm_name = 1;
     uint32 network_id = 2;
     repeated string global_scenes_urn = 3;
     repeated string scenes_urn = 4;
+    optional MinimapConfiguration minimap = 5;
   }
 
   message ContentInfo {
