@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "google/protobuf/descriptor.proto";
+import "ecs/components/google/protobuf/descriptor.proto";
 
 extend google.protobuf.FileOptions {
   optional int32 ecs_component_id = 50000;

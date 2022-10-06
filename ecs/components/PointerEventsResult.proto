@@ -1,10 +1,10 @@
 ﻿syntax = "proto3";
 
-import "common/id.proto";
-import "RaycastResult.proto";
-import "PointerEvents.proto";
+import "ecs/components/common/id.proto";
+import "ecs/components/RaycastResult.proto";
+import "ecs/components/PointerEvents.proto";
 option (ecs_component_id) = 1063;
-import "common/ActionButton.proto";
+import "ecs/components/common/ActionButton.proto";
 
 // the renderer will set this component to the root entity once per frame with all the events
 message PBPointerEventsResult {
