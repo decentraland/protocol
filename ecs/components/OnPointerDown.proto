@@ -1,8 +1,8 @@
 ﻿syntax = "proto3";
 
-import "common/id.proto";
+import "ecs/components/common/id.proto";
 option (ecs_component_id) = 1060;
-import "common/ActionButton.proto";
+import "ecs/components/common/ActionButton.proto";
 
 message PBOnPointerDown {
   optional ActionButton button = 1; // default=ActionButton.ANY

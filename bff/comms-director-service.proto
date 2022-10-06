@@ -20,7 +20,6 @@ message SetCommsAdapter {
 message Heartbeat {
   decentraland.common.Position position = 1;
   optional string desired_room = 2;
-  optional string current_adapter = 3;
 }
 
 service CommsDirectorService {

@@ -6,7 +6,7 @@ Inside each proto, we need to have at least this template:
 ```proto
 syntax = "proto3";
 
-import "common/id.proto";
+import "ecs/components/common/id.proto";
 option (ecs_component_id) = XXXX;
 
 message PBComponentName {
