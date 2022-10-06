@@ -37,7 +37,7 @@ message AboutResponse {
     bool healthy = 1;
     optional string version = 2;
     optional string commit_hash = 3;
-    string public_url = 4;
+    optional string public_url = 4;
     // specific properties
     string protocol = 50;
     optional int32 users_count = 51;
