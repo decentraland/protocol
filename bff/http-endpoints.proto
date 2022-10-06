@@ -19,13 +19,18 @@ message AboutResponse {
     optional string estate_image = 3;
   }
 
+  message SkyboxConfiguration {
+    // only one value at a time
+    optional float fixed_hour = 1;
+  }
+
   message AboutConfiguration {
     optional string realm_name = 1;
     uint32 network_id = 2;
     repeated string global_scenes_urn = 3;
     repeated string scenes_urn = 4;
     optional MinimapConfiguration minimap = 5;
-    double time = 6;
+    optional SkyboxConfiguration skybox = 6;
   }
 
   message ContentInfo {
