@@ -25,6 +25,7 @@ message AboutResponse {
     repeated string global_scenes_urn = 3;
     repeated string scenes_urn = 4;
     optional MinimapConfiguration minimap = 5;
+    double time = 6;
   }
 
   message ContentInfo {
