@@ -1,8 +1,8 @@
 ﻿syntax = "proto3";
 
-import "common/id.proto";
+import "ecs/components/common/id.proto";
 option (ecs_component_id) = 1062;
-import "common/ActionButton.proto";
+import "ecs/components/common/ActionButton.proto";
 
 enum PointerEventType {
   UP = 0;

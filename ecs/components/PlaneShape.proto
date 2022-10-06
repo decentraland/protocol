@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-import "common/id.proto";
+import "ecs/components/common/id.proto";
 option (ecs_component_id) = 1014;
 
 message PBPlaneShape {  
