@@ -8,11 +8,6 @@ package v1_0_0;
 // resolve all dependencies
 
 import public "bff/authentication-service.proto";
-import public "bff/backpack-service.proto";
 import public "bff/http-endpoints.proto";
 import public "bff/topics-service.proto";
-import public "bff/world-service.proto";
 import public "bff/comms-director-service.proto";
-
-// to be replaced by topics-service
-import public "bff/comms-service.proto";
