@@ -4,8 +4,8 @@ import "ecs/components/common/id.proto";
 option (ecs_component_id) = 1090;
 
 enum BillboardMode {
-  AllAxes = 0,
-  YAxe = 1
+  AllAxes = 0;
+  YAxe = 1;
 }
 
 message PBBillboard {
