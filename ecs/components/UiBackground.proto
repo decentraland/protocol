@@ -5,6 +5,6 @@ option (ecs_component_id) = 1053;
 
 import "ecs/components/common/Color4.proto";
 
-message PBUiStyles {
+message PBUiBackground {
   optional Color4 background_color = 1; // default=(0.0, 0.0, 0.0, 0.0)
 }
