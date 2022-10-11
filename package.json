@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "bash scripts/install-buff.sh",
     "test": "./scripts/check-proto-compabitility.sh"
   },
   "keywords": [],
@@ -20,5 +21,13 @@
   "dependencies": {
     "ts-proto": "^1.126.1"
   },
-  "files": ["bff", "common", "ecs", "kernel", "renderer-protocol", "*.proto", "out-ts"]
+  "files": [
+    "bff",
+    "common",
+    "ecs",
+    "kernel",
+    "renderer-protocol",
+    "*.proto",
+    "out-ts"
+  ]
 }

@@ -6,8 +6,8 @@ option (common.ecs_component_id) = 1070;
 import "decentraland/common/vectors.proto";
 
 enum AvatarModifier {
-  HIDE_AVATARS = 0;
-  DISABLE_PASSPORTS = 1;
+  AVATAR_MODIFIER_HIDE_AVATARS = 0;
+  AVATAR_MODIFIER_DISABLE_PASSPORTS = 1;
 }
 
 message PBAvatarModifierArea {

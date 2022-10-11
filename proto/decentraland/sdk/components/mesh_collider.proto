@@ -5,9 +5,9 @@ import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1019;
 
 enum ColliderLayer {
-    NONE = 0;
-    POINTER = 1;
-    PHYSICS = 2;
+    COLLIDER_LAYER_NONE = 0;
+    COLLIDER_LAYER_POINTER = 1;
+    COLLIDER_LAYER_PHYSICS = 2;
 }
 
 message PBMeshCollider {    

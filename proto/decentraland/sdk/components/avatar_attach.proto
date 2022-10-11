@@ -5,10 +5,10 @@ import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1073;
 
 enum AvatarAnchorPoint {
-  POSITION = 0;
-  NAME_TAG = 1;
-  LEFT_HAND = 2;
-  RIGHT_HAND = 3;
+  AVATAR_ANCHOR_POINT_POSITION = 0;
+  AVATAR_ANCHOR_POINT_NAME_TAG = 1;
+  AVATAR_ANCHOR_POINT_LEFT_HAND = 2;
+  AVATAR_ANCHOR_POINT_RIGHT_HAND = 3;
 }
 
 message PBAvatarAttach {

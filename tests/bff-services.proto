@@ -7,10 +7,10 @@ package v1_0_0;
 // This file only imports all the services for the BFF to help the compiler
 // resolve all dependencies
 
-import public "bff/authentication-service.proto";
-import public "bff/http-endpoints.proto";
-import public "bff/topics-service.proto";
-import public "bff/comms-director-service.proto";
+import public "decentraland/bff/authentication_service.proto";
+import public "decentraland/bff/http_endpoints.proto";
+import public "decentraland/bff/topics_service.proto";
+import public "decentraland/bff/comms_director_service.proto";
 
 // TO BE DELETED
-import public "bff/comms-service.proto";
+import public "decentraland/bff/comms_service.proto";

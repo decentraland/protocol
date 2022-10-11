@@ -6,10 +6,10 @@ option (common.ecs_component_id) = 1062;
 import "decentraland/sdk/components/common/action_button.proto";
 
 enum PointerEventType {
-  UP = 0;
-  DOWN = 1;
-  HOVER_ENTER = 2;
-  HOVER_LEAVE = 3;
+  POINTER_EVENT_TYPE_UP = 0;
+  POINTER_EVENT_TYPE_DOWN = 1;
+  POINTER_EVENT_TYPE_HOVER_ENTER = 2;
+  POINTER_EVENT_TYPE_HOVER_LEAVE = 3;
 }
 
 message PBPointerEvents {

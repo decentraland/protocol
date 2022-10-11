@@ -28,13 +28,19 @@ lint:
     - IMPORT_NO_WEAK
     - IMPORT_NO_PUBLIC
     - IMPORT_USED
-    # - ENUM_VALUE_PREFIX
-    # - ENUM_ZERO_VALUE_SUFFIX
+    - ENUM_VALUE_PREFIX
     - FILE_LOWER_SNAKE_CASE
+    
+    # Ignored because the default value is used
+    # - ENUM_ZERO_VALUE_SUFFIX
+    
+    # It's not a feature wished
+    # - PACKAGE_VERSION_SUFFIX
+
+    # TODO: See if this needs to be added
     # - RPC_REQUEST_RESPONSE_UNIQUE
     # - RPC_REQUEST_STANDARD_NAME
     # - RPC_RESPONSE_STANDARD_NAME
-    # - PACKAGE_VERSION_SUFFIX
     # - SERVICE_SUFFIX
   ignore:
     - google

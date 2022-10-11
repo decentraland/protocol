@@ -12,7 +12,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: install
         run: npm i
-      - name: compile
+      - name: buf lint
+        ./node_modules/.bin/buf lint proto/
+      - name: buf build
+        ./node_modules/.bin/buf build proto/
+      - name: build and compile test
         run: ./scripts/test.sh
       - name: run the check script
         run: ./scripts/check-proto-compabitility.sh

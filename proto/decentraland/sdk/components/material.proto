@@ -7,26 +7,26 @@ option (common.ecs_component_id) = 1017;
 import "decentraland/common/colors.proto";
 
 enum TextureWrapMode {
-    REPEAT = 0;
-    CLAMP = 1;
-    MIRROR = 2;
-    MIRROR_ONCE = 3;
+    TEXTURE_WRAP_MODE_REPEAT = 0;
+    TEXTURE_WRAP_MODE_CLAMP = 1;
+    TEXTURE_WRAP_MODE_MIRROR = 2;
+    TEXTURE_WRAP_MODE_MIRROR_ONCE = 3;
 }
 
 enum FilterMode
 {
-    POINT = 0;
-    BILINEAR = 1;
-    TRILINEAR = 2;
+    FILTER_MODE_POINT = 0;
+    FILTER_MODE_BILINEAR = 1;
+    FILTER_MODE_TRILINEAR = 2;
 }
 
 enum TransparencyMode
 {
-    OPAQUE = 0;
-    ALPHA_TEST = 1;
-    ALPHA_BLEND = 2;
-    ALPHA_TEST_AND_ALPHA_BLEND = 3;
-    AUTO = 4;
+    TRANSPARENCY_MODE_OPAQUE = 0;
+    TRANSPARENCY_MODE_ALPHA_TEST = 1;
+    TRANSPARENCY_MODE_ALPHA_BLEND = 2;
+    TRANSPARENCY_MODE_ALPHA_TEST_AND_ALPHA_BLEND = 3;
+    TRANSPARENCY_MODE_AUTO = 4;
 }
 
 message PBMaterial {  

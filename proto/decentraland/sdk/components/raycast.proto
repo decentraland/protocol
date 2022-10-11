@@ -7,8 +7,8 @@ option (common.ecs_component_id) = 1067;
 import "decentraland/common/vectors.proto";
 
 enum RaycastQueryType {
-    HIT_FIRST = 0;
-    QUERY_ALL = 1;
+    RAYCAST_QUERY_TYPE_HIT_FIRST = 0;
+    RAYCAST_QUERY_TYPE_QUERY_ALL = 1;
 }
 
 message PBRaycast {
