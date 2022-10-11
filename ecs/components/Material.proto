@@ -42,7 +42,7 @@ message PBMaterial {
     }
 
     oneof texture {
-        Texture pathTexture = 1; // default = null
+        Texture srcTexture = 1; // default = null
         AvatarTexture avatarTexture = 2; // default = null
     }
     
