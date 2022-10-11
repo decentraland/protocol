@@ -30,8 +30,8 @@ message ProfileData {
     string profile_version = 1;
     string user_id = 2;
     enum ProfileType {
-        DEPLOYED = 0;
-        LOCAL = 1;
+        PROFILE_TYPE_DEPLOYED = 0;
+        PROFILE_TYPE_LOCAL = 1;
     }
     ProfileType profile_type = 3;
 }

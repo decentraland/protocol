@@ -10,13 +10,13 @@ message AuthData {
 }
 
 enum Category {
-     UNKNOWN = 0;
-     POSITION = 1;
-     PROFILE = 2;
-     CHAT = 3;
-     SCENE_MESSAGE = 4;
-     PROF_REQ = 5;
-     PROF_RES = 6;
+     CATEGORY_UNKNOWN = 0;
+     CATEGORY_POSITION = 1;
+     CATEGORY_PROFILE = 2;
+     CATEGORY_CHAT = 3;
+     CATEGORY_SCENE_MESSAGE = 4;
+     CATEGORY_PROF_REQ = 5;
+     CATEGORY_PROF_RES = 6;
 }
 
 message DataHeader {
@@ -41,8 +41,8 @@ message ProfileData {
     double time = 2;
     string profile_version = 3;
     enum ProfileType {
-        LOCAL = 0;
-        DEPLOYED = 1;
+        PROFILE_TYPE_LOCAL = 0;
+        PROFILE_TYPE_DEPLOYED = 1;
     }
     ProfileType profile_type = 4;
 }

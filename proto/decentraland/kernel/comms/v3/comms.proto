@@ -17,8 +17,8 @@ message Profile {
     double time = 2;
     string profile_version = 3;
     enum ProfileType {
-        LOCAL = 0;
-        DEPLOYED = 1;
+        PROFILE_TYPE_LOCAL = 0;
+        PROFILE_TYPE_DEPLOYED = 1;
     }
     ProfileType profile_type = 4;
 }

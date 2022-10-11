@@ -3,8 +3,8 @@ syntax = "proto3";
 package decentraland.kernel.comms.v3;
 
 enum TransportType {
-  TRANSPORT_LIVEKIT = 0;
-  TRANSPORT_WS = 1;
+  TRANSPORT_TYPE_TRANSPORT_LIVEKIT = 0;
+  TRANSPORT_TYPE_TRANSPORT_WS = 1;
 }
 
 message Position3DMessage {
