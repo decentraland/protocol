@@ -41,7 +41,7 @@ message PBMaterial {
         optional FilterMode filterMode = 3; // default = FilterMode.Bilinear
     }
 
-    optional oneof texture {
+    oneof texture {
         Texture texture = 1; // default = null
         AvatarTexture avatarTexture = 2; // default = null
     }
