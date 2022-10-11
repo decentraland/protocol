@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "bash scripts/install-buff.sh",
     "test": "./scripts/check-proto-compabitility.sh"
   },
   "keywords": [],
