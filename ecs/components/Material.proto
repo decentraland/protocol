@@ -35,7 +35,17 @@ message PBMaterial {
         optional FilterMode filterMode = 3; // default = FilterMode.Bilinear
     }
 
-    optional Texture texture = 1; // default = null
+    message AvatarTexture {
+        string userId = 1;
+        optional TextureWrapMode wrapMode = 2; // default = TextureWrapMode.Clamp
+        optional FilterMode filterMode = 3; // default = FilterMode.Bilinear
+    }
+
+    oneof texture {
+        optional Texture texture = 1; // default = null
+        optional AvatarTexture avatarTexture = 2; // default = null
+    }
+    
     optional float alphaTest = 2; // default = 0.5. range value: from 0 to 1
     optional bool castShadows = 3; // default =  true
 
