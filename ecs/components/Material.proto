@@ -41,29 +41,29 @@ message PBMaterial {
         optional FilterMode filterMode = 3; // default = FilterMode.Bilinear
     }
 
-    oneof texture {
-        optional Texture texture = 1; // default = null
-        optional AvatarTexture avatarTexture = 2; // default = null
+    optional oneof texture {
+        Texture texture = 1; // default = null
+        AvatarTexture avatarTexture = 2; // default = null
     }
     
-    optional float alphaTest = 2; // default = 0.5. range value: from 0 to 1
-    optional bool castShadows = 3; // default =  true
+    optional float alphaTest = 1; // default = 0.5. range value: from 0 to 1
+    optional bool castShadows = 2; // default =  true
 
-    optional Texture alphaTexture = 4; // default = null
-    optional Texture emissiveTexture = 5; // default = null
-    optional Texture bumpTexture = 6; // default = null
+    optional Texture alphaTexture = 3; // default = null
+    optional Texture emissiveTexture = 4; // default = null
+    optional Texture bumpTexture = 5; // default = null
 
-    optional Color3 albedoColor = 7; // default = white;
-    optional Color3 emissiveColor = 8; // default = black;
-    optional Color3 reflectivityColor = 9; // default = white;
+    optional Color3 albedoColor = 6; // default = white;
+    optional Color3 emissiveColor = 7; // default = black;
+    optional Color3 reflectivityColor = 8; // default = white;
 
-    optional TransparencyMode transparencyMode = 10; // default = TransparencyMode.Auto
+    optional TransparencyMode transparencyMode = 9; // default = TransparencyMode.Auto
 
-    optional float metallic = 11; // default = 0.5
-    optional float roughness = 12; // default = 0.5
-    optional float glossiness = 13; // default = 1
+    optional float metallic = 10; // default = 0.5
+    optional float roughness = 11; // default = 0.5
+    optional float glossiness = 12; // default = 1
 
-    optional float specularIntensity = 14; // default = 1
-    optional float emissiveIntensity = 15; // default = 2
-    optional float directIntensity = 16; // default = 1
+    optional float specularIntensity = 13; // default = 1
+    optional float emissiveIntensity = 14; // default = 2
+    optional float directIntensity = 15; // default = 1
 }
