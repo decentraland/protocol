@@ -22,9 +22,9 @@ jobs:
       - name: install
         run: npm i
       - name: run buf lint
-        ./node_modules/.bin/buf lint proto/
+        run: ./node_modules/.bin/buf lint proto/
       - name: run buf build
-        ./node_modules/.bin/buf build proto/
+        run: ./node_modules/.bin/buf build proto/
       - name: run the test
         run: ./scripts/test.sh
       - name: publish packages
