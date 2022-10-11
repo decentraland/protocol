@@ -1,0 +1,12 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1071;
+import "decentraland/common/vectors.proto";
+import "decentraland/sdk/components/common/camera_mode_value.proto";
+
+message PBCameraModeArea {
+  decentraland.common.Vector3 area = 1;
+  common.CameraModeValue mode = 2;
+}

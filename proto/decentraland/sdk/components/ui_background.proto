@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1053;
+
+import "decentraland/common/colors.proto";
+
+message PBUiBackground {
+  optional decentraland.common.Color4 background_color = 1; // default=(0.0, 0.0, 0.0, 0.0)
+}

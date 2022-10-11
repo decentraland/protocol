@@ -1,0 +1,12 @@
+syntax = "proto3";
+package decentraland.kernel.apis;
+
+message RealSendRequest {
+    string message = 1;
+}
+
+message RealSendResponse {}
+
+service CommunicationsControllerService {
+    rpc Send(RealSendRequest) returns (RealSendResponse) {}
+}

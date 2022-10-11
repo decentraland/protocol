@@ -1,0 +1,7 @@
+syntax = "proto3";
+package decentraland.sdk.components.common;
+
+enum CameraModeValue {
+  FIRST_PERSON = 0;
+  THIRD_PERSON = 1;
+}

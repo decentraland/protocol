@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+import "decentraland/sdk/components/raycast_result.proto";
+import "decentraland/sdk/components/pointer_events.proto";
+option (common.ecs_component_id) = 1063;
+import "decentraland/sdk/components/common/action_button.proto";
+
+// the renderer will set this component to the root entity once per frame with all the events
+message PBPointerEventsResult {
+  // a list of the last N pointer commands (from the engine)
+  repeated PointerCommand commands = 1;
+
+  // this message represents a pointer event, used both for UP and DOWN actions
+  message PointerCommand {
+    common.ActionButton button = 1; // identifier of the input
+    RaycastHit hit = 2;
+    PointerEventType state = 4;
+    int32 timestamp = 5; // could be a Lamport timestamp
+    optional float analog = 6; // if the input is analog then we store it here
+  }
+}

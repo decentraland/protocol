@@ -1,0 +1,713 @@
+// WARNING: This protocol is deprecated, it only exists as a migration plan to the
+// new CRDT based protocol.
+
+syntax = "proto3";
+package decentraland.renderer;
+
+import "google/protobuf/empty.proto";
+
+message PBCreateEntity {
+    string id = 1;
+}
+
+message PBRemoveEntity {
+    string id = 1;
+}
+
+message PBSetEntityParent {
+    string entity_id = 1;
+    string parent_id = 2;
+}
+
+message PBComponentRemoved {
+    string entity_id = 1;
+    string name = 2;
+}
+
+message PBComponent {
+    oneof model {
+        PBTransform transform = 1;
+        PBUUIDCallback uuid_callback = 8;
+
+        PBBoxShape box = 16;
+        PBSphereShape sphere = 17;
+        PBPlaneShape plane = 18;
+        PBConeShape cone = 19;
+        PBCylinderShape cylinder = 20;
+
+        PBTextShape text = 21;
+
+        PBNFTShape nft = 22;
+
+        PBUIContainerRect container_rect = 25;
+        PBUIContainerStack container_stack = 26;
+
+        PBUITextShape ui_text_shape = 27;
+        PBUIInputText ui_input_text_shape = 28;
+        PBUIImage ui_image_shape = 29;
+
+        PBCircleShape circle = 31;
+        PBBillboard billboard = 32;
+
+        PBGLTFShape gltf = 54;
+        PBOBJShape obj = 55;
+        PBAvatarShape avatar = 56;
+
+        PBBasicMaterial basic_material = 64;
+
+        PBTexture texture = 68;
+        PBAudioClip audio_clip = 200;
+        PBAudioSource audio_source = 201;
+    }
+}
+
+message PBColor4 {
+    float r = 1;
+    float g = 2;
+    float b = 3;
+    float a = 4;
+}
+message PBColor3 {
+    float r = 1;
+    float g = 2;
+    float b = 3;
+}
+
+message PBTextShapeModel {
+    bool billboard = 1;
+    string value = 2;
+    PBColor3 color = 3;
+    float opacity = 4;
+    float font_size = 5;
+    bool font_auto_size = 6;
+    string font_weight = 7;
+    string h_text_align = 8;
+    string v_text_align = 9;
+    float width = 10;
+    float height = 11;
+    bool adapt_width = 12;
+    bool adapt_height = 13;
+    float padding_top = 14;
+    float padding_right = 15;
+    float padding_bottom = 16;
+    float padding_left = 17;
+    float line_spacing = 18;
+    int32 line_count = 19;
+    bool text_wrapping = 20;
+    float shadow_blur = 21;
+    float shadow_offset_x = 22;
+    float shadow_offset_y = 23;
+    PBColor3 shadow_color = 24;
+    float outline_width = 25;
+    PBColor3 outline_color = 26;
+}
+
+message PBVector3
+{
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+message PBQuaternion
+{
+    double x = 1;
+    double y = 2;
+    double z = 3;
+    double w = 4;
+}
+
+message PBTransform {
+    PBVector3 position = 1;
+    PBQuaternion  rotation = 2;
+    PBVector3 scale = 3;
+}
+
+message PBUpdateEntityComponent {
+    string entity_id = 1;
+    int32 class_id = 2;
+    string name = 3;
+    string data = 4;
+}
+
+message PBComponentCreated {
+    string id = 1;
+    int32 classid = 2;
+    string name = 3;
+}
+
+message PBAttachEntityComponent {
+    string entity_id = 1;
+    string name = 2;
+    string id = 3;
+}
+
+message PBComponentDisposed {
+    string id = 1;
+}
+
+message PBComponentUpdated {
+    string id = 1;
+    string json = 2;
+}
+
+message PBRay {
+    PBVector3 origin = 1;
+    PBVector3 direction = 2;
+    float distance = 3;
+}
+
+message PBRayQuery {
+    string query_id = 1;
+    string query_type = 2;
+    PBRay ray = 3;
+}
+
+message PBQuery {
+    string query_id = 1;
+    string payload = 2;
+}
+
+message PBSendSceneMessage {
+    string scene_id = 1;
+    string tag = 2;
+    oneof payload {
+        PBCreateEntity create_entity = 3;
+        PBRemoveEntity remove_entity = 4;
+        PBSetEntityParent set_entity_parent = 5;
+        PBUpdateEntityComponent update_entity_component = 6;
+        PBAttachEntityComponent attach_entity_component  = 7;
+        PBComponentCreated component_created  = 8;
+        PBComponentDisposed component_disposed = 9;
+        PBComponentRemoved component_removed = 10;
+        PBComponentUpdated component_updated = 11;
+        PBQuery query = 12;
+        google.protobuf.Empty scene_started = 13;
+        PBOpenExternalUrl open_external_url = 14;
+        PBOpenNFTDialog open_nft_dialog = 15;
+    }
+    int32 scene_number = 99;
+}
+
+message PBSetPosition {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+message PBContentMapping {
+    string file = 1;
+    string hash = 2;
+}
+
+message PBPosition {
+    float x = 1;
+    float y = 2;
+}
+
+message PBLoadParcelScenes {
+    string id = 1;
+    PBPosition base_position = 2;
+    repeated PBPosition parcels = 3;
+    repeated PBContentMapping contents = 4;
+    string base_url = 5;
+    // ILand land = 6;
+    int32 scene_number = 99;
+}
+
+message PBCreateUIScene {
+    string id = 1;
+    string base_url = 2;
+    int32 scene_number = 99;
+}
+
+message PBUnloadScene {
+    string scene_id = 1;
+    int32 scene_number = 99;
+}
+
+message PBDclMessage {
+    oneof message {
+        google.protobuf.Empty set_debug = 1;
+        google.protobuf.Empty set_scene_debug_panel = 2;
+        google.protobuf.Empty set_engine_debug_panel = 3;
+        PBSendSceneMessage send_scene_message = 4;
+        PBLoadParcelScenes load_parcel_scenes = 5;
+        PBUnloadScene unload_scene = 6;
+        PBSetPosition set_position = 7;
+        google.protobuf.Empty reset = 8;
+        PBCreateUIScene create_ui_scene = 9;
+    }
+}
+
+
+message PBAnimationState {
+  string clip = 1;
+  bool looping = 2;
+  float weight = 3;
+  bool playing = 4;
+  bool should_reset = 5;
+  float speed = 6;
+}
+
+message PBAnimator {
+  bool with_collisions = 1;
+  bool visible = 2;
+}
+
+message PBAudioClip {
+  string url = 1;
+  bool loop = 2;
+  float volume = 3;
+}
+
+message PBAudioSource {
+  PBAudioClip audio_clip = 1;
+  string audio_clip_id = 2;
+  bool loop = 3;
+  float volume = 4;
+  bool playing = 5;
+  float pitch = 6;
+}
+
+message PBAvatarShape {
+  string id = 1;
+  string base_url = 2;
+  string name = 3;
+  PBWearable body_shape = 4;
+  repeated PBWearable wearables = 5;
+  PBSkin skin = 6;
+  PBHair hair = 7;
+  PBEyes eyes = 8;
+  PBFace eyebrows = 9;
+  PBFace mouth = 10;
+  bool use_dummy_model = 11;
+
+  string expression_trigger_id = 12;
+  uint64 expression_trigger_timestamp = 14;
+
+  repeated string emotes = 15;
+}
+
+message PBWearable {
+  string categody = 1;
+  string content_name = 2;
+  repeated PBContentMapping contents = 3;
+}
+
+message PBFace {
+  string texture = 1;
+}
+
+message PBEyes {
+  string texture = 1;
+  string mask = 2;
+  PBColor4 color = 3;
+}
+
+message PBHair {
+  PBColor4 color = 1;
+}
+
+message PBSkin {
+  PBColor4 color = 1;
+}
+
+message PBBasicMaterial {
+  PBTexture texture = 1;
+  float alpha_test = 2;
+}
+
+message PBBillboard {
+  bool x = 1;
+  bool y = 2;
+  bool z = 3;
+}
+
+message PBBoxShape {
+  bool with_collisions = 1;
+  bool visible = 2;
+  repeated float uvs = 3;
+}
+
+message PBCircleShape {
+  bool with_collisions = 1;
+  bool visible = 2;
+  float segments = 3;
+  float arc = 4;
+}
+
+message PBConeShape {
+  bool with_collisions = 1;
+  bool visible = 2;
+  float radius_top = 3;
+  float radius_bottom = 4;
+  float segments_height = 5;
+  float segments_radial = 6;
+  bool open_ended = 7;
+  float radius = 8;
+  float arc = 9;
+}
+
+message PBCylinderShape {
+  bool with_collisions = 1;
+  bool visible = 2;
+  float radius_top = 3;
+  float radius_bottom = 4;
+  float segments_height = 5;
+  float segments_radial = 6;
+  bool open_ended = 7;
+  float radius = 8;
+  float arc = 9;
+}
+
+message PBGlobalPointerDown {
+
+}
+
+message PBGlobalPointerUp {
+
+}
+
+message PBGLTFShape {
+  bool with_collisions = 1;
+  bool visible = 2;
+  string src = 3;
+}
+
+message PBMaterial {
+  float alpha = 1;
+  PBColor3 albedo_color = 2;
+  PBColor3 emissive_color = 3;
+  float metallic = 4;
+  float roughness = 5;
+  PBColor3 ambient_color = 6;
+  PBColor3 reflection_color = 7;
+  PBColor3 reflectivity_color = 8;
+  float direct_intensity = 9;
+  float micro_surface = 10;
+  float emissive_intensity = 11;
+  float environment_intensity = 12;
+  float specular_intensity = 13;
+  PBTexture albedo_texture = 14;
+  PBTexture alpha_texture = 15;
+  PBTexture emissive_texture = 16;
+  PBTexture bump_texture = 17;
+  PBTexture refraction_texture = 18;
+  bool disable_lighting = 19;
+  float transparency_mode = 20;
+  bool has_alpha = 21;
+}
+
+message PBNFTShape {
+  bool with_collisions = 1;
+  bool visible = 2;
+  string src = 3;
+  PBColor3 color = 4;
+}
+
+message PBOBJShape {
+  bool with_collisions = 1;
+  bool visible = 2;
+  string src = 3;
+}
+
+message PBPlaneShape {
+  bool with_collisions = 1;
+  bool visible = 2;
+  float width = 3;
+  float height = 4;
+  repeated float uvs = 5;
+}
+
+message PBShape {
+  bool with_collisions = 1;
+  bool visible = 2;
+}
+
+message PBSphereShape {
+  bool with_collisions = 1;
+  bool visible = 2;
+}
+
+message PBTextShape {
+  bool with_collisions = 1;
+  bool visible = 2;
+  float outline_width = 3;
+  PBColor3 outline_color = 4;
+  PBColor3 color = 5;
+  float font_size = 6;
+  string font_weight = 7;
+  float opacity = 8;
+  string value = 9;
+  string line_spacing = 10;
+  float line_count = 11;
+  bool resize_to_fit = 12;
+  bool text_wrapping = 13;
+  float shadow_blur = 14;
+  float shadow_offset_x = 15;
+  float shadow_offset_y = 16;
+  PBColor3 shadow_color = 17;
+  float z_index = 18;
+  string h_text_align = 19;
+  string v_text_align = 20;
+  float width = 21;
+  float height = 22;
+  float padding_top = 23;
+  float padding_right = 24;
+  float padding_bottom = 25;
+  float padding_left = 26;
+  bool is_pickable = 27;
+  bool billboard = 28;
+}
+
+message PBTexture {
+  string src = 1;
+  float sampling_mode = 2;
+  float wrap = 3;
+  bool has_alpha = 4;
+}
+
+message PBUIButton {
+  string name = 1;
+  bool visible = 2;
+  float opacity = 3;
+  string h_align = 4;
+  string v_align = 5;
+  string width = 6;
+  string height = 7;
+  string position_x = 8;
+  string position_y = 9;
+  bool is_pointer_blocker = 10;
+  PBUIShape parent = 11;
+  float font_size = 12;
+  string font_weight = 13;
+  float thickness = 14;
+  float corner_radius = 15;
+  PBColor4 color = 16;
+  PBColor4 background = 17;
+  float padding_top = 18;
+  float padding_right = 19;
+  float padding_bottom = 20;
+  float padding_left = 21;
+  float shadow_blur = 22;
+  float shadow_offset_x = 23;
+  float shadow_offset_y = 24;
+  PBColor4 shadow_color = 25;
+  string text = 26;
+}
+
+message PBUICanvas {
+  string name = 1;
+  bool visible = 2;
+  float opacity = 3;
+  string h_align = 4;
+  string v_align = 5;
+  string width = 6;
+  string height = 7;
+  string position_x = 8;
+  string position_y = 9;
+  bool is_pointer_blocker = 10;
+  PBUIShape parent = 11;
+}
+
+message PBUIContainerRect {
+  string name = 1;
+  bool visible = 2;
+  float opacity = 3;
+  string h_align = 4;
+  string v_align = 5;
+  string width = 6;
+  string height = 7;
+  string position_x = 8;
+  string position_y = 9;
+  bool is_pointer_blocker = 10;
+  PBUIShape parent = 11;
+  bool adapt_width = 12;
+  bool adapt_height = 13;
+  float thickness = 14;
+  PBColor4 color = 15;
+  bool alignment_uses_size = 16;
+}
+
+message PBUIContainerStack {
+  string name = 1;
+  bool visible = 2;
+  float opacity = 3;
+  string h_align = 4;
+  string v_align = 5;
+  string width = 6;
+  string height = 7;
+  string position_x = 8;
+  string position_y = 9;
+  bool is_pointer_blocker = 10;
+  PBUIShape parent = 11;
+  bool adapt_width = 12;
+  bool adapt_height = 13;
+  PBColor4 color = 14;
+  PBUIStackOrientation stack_orientation = 15;
+  float spacing = 16;
+}
+
+enum PBUIStackOrientation {
+  VERTICAL = 0;
+  HORIZONTAL = 1;
+}
+
+message PBUIImage {
+  string name = 1;
+  bool visible = 2;
+  float opacity = 3;
+  string h_align = 4;
+  string v_align = 5;
+  string width = 6;
+  string height = 7;
+  string position_x = 8;
+  string position_y = 9;
+  bool is_pointer_blocker = 10;
+  PBUIShape parent = 11;
+  float source_left = 12;
+  float source_top = 13;
+  float source_width = 14;
+  float source_height = 15;
+  PBTexture source = 16;
+  float padding_top = 17;
+  float padding_right = 18;
+  float padding_bottom = 19;
+  float padding_left = 20;
+  bool size_in_pixels = 21;
+  PBUUIDCallback on_click = 22;
+}
+
+message PBUUIDCallback {
+  string type = 1;
+  string uuid = 2;
+}
+
+message PBUIInputText {
+  string name = 1;
+  bool visible = 2;
+  float opacity = 3;
+  string h_align = 4;
+  string v_align = 5;
+  string width = 6;
+  string height = 7;
+  string position_x = 8;
+  string position_y = 9;
+  bool is_pointer_blocker = 10;
+  PBUIShape parent = 11;
+  float outline_width = 12;
+  PBColor4 outline_color = 13;
+  PBColor4 color = 14;
+  float thickness = 15;
+  float font_size = 16;
+  string font_weight = 17;
+  string value = 18;
+  PBColor4 placeholder_color = 19;
+  string placeholder = 20;
+  float margin = 21;
+  float max_width = 22;
+  string h_text_align = 23;
+  string v_text_align = 24;
+  bool auto_stretch_width = 25;
+  PBColor4 background = 26;
+  PBColor4 focused_background = 27;
+  bool text_wrapping = 28;
+  float shadow_blur = 29;
+  float shadow_offset_x = 30;
+  float shadow_offset_y = 31;
+  PBColor4 shadow_color = 32;
+  float padding_top = 33;
+  float padding_right = 34;
+  float padding_bottom = 35;
+  float padding_left = 36;
+  PBUUIDCallback on_text_submit = 37;
+  PBUUIDCallback on_changed = 38;
+  PBUUIDCallback on_focus = 39;
+  PBUUIDCallback on_blur = 40;
+}
+
+message PBUIScrollRect {
+  string name = 1;
+  bool visible = 2;
+  float opacity = 3;
+  string h_align = 4;
+  string v_align = 5;
+  string width = 6;
+  string height = 7;
+  string position_x = 8;
+  string position_y = 9;
+  bool is_pointer_blocker = 10;
+  PBUIShape parent = 11;
+  float value_x = 12;
+  float value_y = 13;
+  PBColor4 border_color = 14;
+  PBColor4 background_color = 15;
+  bool is_horizontal = 16;
+  bool is_vertical = 17;
+  float padding_top = 18;
+  float padding_right = 19;
+  float padding_bottom = 20;
+  float padding_left = 21;
+  PBUUIDCallback on_changed = 22;
+}
+
+message PBUIShape {
+  string name = 1;
+  bool visible = 2;
+  float opacity = 3;
+  string h_align = 4;
+  string v_align = 5;
+  string width = 6;
+  string height = 7;
+  string position_x = 8;
+  string position_y = 9;
+  bool is_pointer_blocker = 10;
+  PBUIShape parent = 11;
+}
+
+message PBUITextShape {
+  string name = 1;
+  bool visible = 2;
+  float opacity = 3;
+  string h_align = 4;
+  string v_align = 5;
+  string width = 6;
+  string height = 7;
+  string position_x = 8;
+  string position_y = 9;
+  bool is_pointer_blocker = 10;
+  PBUIShape parent = 11;
+  float outline_width = 12;
+  PBColor4 outline_color = 13;
+  PBColor4 color = 14;
+  float font_size = 15;
+  bool font_auto_size = 16;
+  string font_weight = 17;
+  string value = 18;
+  float line_spacing = 19;
+  float line_count = 20;
+  bool adapt_width = 21;
+  bool adapt_height = 22;
+  bool text_wrapping = 23;
+  float shadow_blur = 24;
+  float shadow_offset_x = 25;
+  float shadow_offset_y = 26;
+  PBColor4 shadow_color = 27;
+  string h_text_align = 28;
+  string v_text_align = 29;
+  float padding_top = 30;
+  float padding_right = 31;
+  float padding_bottom = 32;
+  float padding_left = 33;
+}
+
+message PBOpenExternalUrl {
+    string url = 1;
+}
+
+message PBOpenNFTDialog {
+    string asset_contract_address = 1;
+    string token_id = 2;
+    string comment = 3;
+}
