@@ -8,7 +8,7 @@ rm -rf "$(pwd)/out-cs" || true
 mkdir -p "$(pwd)/out-ts"
 mkdir -p "$(pwd)/out-cs"
 
-for file in "$(pwd)"/tests/*.proto; do 
+for file in "$(pwd)"/public/*.proto; do 
   echo "> Generating $file"
   node_modules/.bin/protoc \
     --plugin=./node_modules/.bin/protoc-gen-ts_proto \
@@ -16,7 +16,7 @@ for file in "$(pwd)"/tests/*.proto; do
     --ts_proto_opt=esModuleInterop=true,returnObservable=false,outputServices=generic-definitions,fileSuffix=.gen \
     --ts_proto_out="$(pwd)/out-ts" \
     -I="$(pwd)/proto" \
-    -I="$(pwd)/tests" \
+    -I="$(pwd)/public" \
     "$file";
 done
 

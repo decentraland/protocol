@@ -22,6 +22,7 @@
   },
   "files": [
     "proto",
-    "out-ts"
+    "out-ts",
+    "public"
   ]
 }
