@@ -30,7 +30,7 @@ enum PictureFrameStyle {
   WOOD_WIDE = 19;
   WOOD_TWIGS = 20;
   CANVAS = 21;
-  NONE = 22;
+  WITHOUT_FRAME = 22;
 }
 
 message PBNFTShape {
