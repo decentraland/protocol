@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1073;
+
+enum AvatarAnchorPoint {
+  AAP_POSITION = 0;
+  AAP_NAME_TAG = 1;
+  AAP_LEFT_HAND = 2;
+  AAP_RIGHT_HAND = 3;
+}
+
+message PBAvatarAttach {
+  string avatar_id = 1;
+  AvatarAnchorPoint anchor_point_id = 2;
+}

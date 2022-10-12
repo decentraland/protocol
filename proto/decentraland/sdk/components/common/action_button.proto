@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package decentraland.sdk.components.common;
+
+enum ActionButton {
+  AB_POINTER = 0;
+  AB_PRIMARY = 1;
+  AB_SECONDARY = 2;
+  AB_ANY = 3;
+  AB_FORWARD = 4;
+  AB_BACKWARD = 5;
+  AB_RIGHT = 6;
+  AB_LEFT = 7;
+  AB_JUMP = 8;
+  AB_WALK = 9;
+  AB_ACTION_3 = 10;
+  AB_ACTION_4 = 11;
+  AB_ACTION_5 = 12;
+  AB_ACTION_6 = 13;
+}

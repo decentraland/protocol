@@ -21,6 +21,12 @@ jobs:
 #        run: npm i -g proto-compatibility-tool protobufjs 
       - name: install
         run: npm i
+      - name: install buff
+        run: bash scripts/install-buf.sh
+      - name: run buf lint
+        run: ./node_modules/.bin/buf lint proto/
+      - name: run buf build
+        run: ./node_modules/.bin/buf build proto/
       - name: run the test
         run: ./scripts/test.sh
       - name: publish packages

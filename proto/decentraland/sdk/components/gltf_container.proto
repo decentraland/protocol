@@ -1,0 +1,13 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1041;
+
+message PBGltfContainer {
+   // which file to load
+  string src = 1;
+  
+  // SDK7xx which node to load
+  // SDK7xx optional string scene_name = 2;
+}

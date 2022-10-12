@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package decentraland.sdk;
+// This file only imports all the modules exposed to the scenes to help the compiler
+// resolve all files without conflicts
+
+import public "decentraland/kernel/apis/communications_controller.proto";
+import public "decentraland/kernel/apis/dev_tools.proto";
+import public "decentraland/kernel/apis/engine_api.proto";
+import public "decentraland/kernel/apis/environment_api.proto";
+import public "decentraland/kernel/apis/ethereum_controller.proto";
+import public "decentraland/kernel/apis/experimental_api.proto";
+import public "decentraland/kernel/apis/parcel_identity.proto";
+import public "decentraland/kernel/apis/permissions.proto";
+import public "decentraland/kernel/apis/players.proto";
+import public "decentraland/kernel/apis/portable_experiences.proto";
+import public "decentraland/kernel/apis/restricted_actions.proto";
+import public "decentraland/kernel/apis/signed_fetch.proto";
+import public "decentraland/kernel/apis/social_controller.proto";
+import public "decentraland/kernel/apis/user_action_module.proto";
+import public "decentraland/kernel/apis/user_identity.proto";
