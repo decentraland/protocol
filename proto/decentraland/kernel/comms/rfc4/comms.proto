@@ -68,6 +68,6 @@ message Voice {
   uint32 index = 2;
   VoiceCodec codec = 3;
   enum VoiceCodec {
-    OPUS = 0;
+    VC_OPUS = 0;
   }
 }

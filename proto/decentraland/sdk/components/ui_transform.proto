@@ -1,82 +1,84 @@
 syntax = "proto3";
+
 package decentraland.sdk.components;
 
 import "decentraland/sdk/components/common/id.proto";
+
 option (common.ecs_component_id) = 1050;
 
 enum YGPositionType {
-  STATIC = 0;
-  RELATIVE = 1;
-  ABSOLUTE = 2;
+  YGP_STATIC = 0;
+  YGP_RELATIVE = 1;
+  YGP_ABSOLUTE = 2;
 }
 
 enum YGAlign {
-  AUTO = 0;
-  FLEX_START = 1;
-  CENTER = 2;
-  FLEX_END = 3;
-  STRETCH = 4;
-  BASELINE = 5;
-  SPACE_BETWEEN = 6;
-  SPACE_AROUND = 7;
+  YGA_AUTO = 0;
+  YGA_FLEX_START = 1;
+  YGA_CENTER = 2;
+  YGA_FLEX_END = 3;
+  YGA_STRETCH = 4;
+  YGA_BASELINE = 5;
+  YGA_SPACE_BETWEEN = 6;
+  YGA_SPACE_AROUND = 7;
 }
 
 enum YGUnit {
-  UNDEFINED = 0;
-  POINT = 1;
-  PERCENT = 2;
-  AUTO = 3;
+  YGU_UNDEFINED = 0;
+  YGU_POINT = 1;
+  YGU_PERCENT = 2;
+  YGU_AUTO = 3;
 }
 
 enum YGDirection {
-  INHERIT = 0;
-  LTR = 1;
-  RTL = 2;
+  YGD_INHERIT = 0;
+  YGD_LTR = 1;
+  YGD_RTL = 2;
 }
 
 enum YGFlexDirection {
-  COLUMN = 0;
-  COLUMN_REVERSE = 1;
-  ROW = 2;
-  ROW_REVERSE = 3;
+  YGFD_COLUMN = 0;
+  YGFD_COLUMN_REVERSE = 1;
+  YGFD_ROW = 2;
+  YGFD_ROW_REVERSE = 3;
 }
 
 enum YGWrap {
-  NO_WRAP = 0;
-  WRAP = 1;
-  WRAP_REVERSE = 2;
+  YGW_NO_WRAP = 0;
+  YGW_WRAP = 1;
+  YGW_WRAP_REVERSE = 2;
 }
 
 enum YGJustify {
-  FLEX_START = 0;
-  CENTER = 1;
-  FLEX_END = 2;
-  SPACE_BETWEEN = 3;
-  SPACE_AROUND = 4;
-  SPACE_EVENLY = 5;
+  YGJ_FLEX_START = 0;
+  YGJ_CENTER = 1;
+  YGJ_FLEX_END = 2;
+  YGJ_SPACE_BETWEEN = 3;
+  YGJ_SPACE_AROUND = 4;
+  YGJ_SPACE_EVENLY = 5;
 }
 
 enum YGOverflow {
-  VISIBLE = 0;
-  HIDDEN = 1;
-  SCROLL = 2;
+  YGO_VISIBLE = 0;
+  YGO_HIDDEN = 1;
+  YGO_SCROLL = 2;
 }
 
 enum YGDisplay {
-  FLEX = 0;
-  NONE = 1;
+  YGD_FLEX = 0;
+  YGD_NONE = 1;
 }
 
 enum YGEdge {
-  LEFT = 0;
-  TOP = 1;
-  RIGHT = 2;
-  BOTTOM = 3;
-  START = 4;
-  END = 5;
-  HORIZONTAL = 6;
-  VERTICAL = 7;
-  ALL = 8;
+  YGE_LEFT = 0;
+  YGE_TOP = 1;
+  YGE_RIGHT = 2;
+  YGE_BOTTOM = 3;
+  YGE_START = 4;
+  YGE_END = 5;
+  YGE_HORIZONTAL = 6;
+  YGE_VERTICAL = 7;
+  YGE_ALL = 8;
 }
 
 message PBUiTransform {
@@ -159,5 +161,3 @@ message PBUiTransform {
   reserved 77; // YGUnit border_bottom_unit = 77;
   float border_bottom = 78;
 }
-
-

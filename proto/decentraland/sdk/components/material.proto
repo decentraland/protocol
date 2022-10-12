@@ -8,24 +8,24 @@ import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1017;
 
 enum TextureWrapMode {
-  REPEAT = 0;
-  CLAMP = 1;
-  MIRROR = 2;
-  MIRROR_ONCE = 3;
+  TWM_REPEAT = 0;
+  TWM_CLAMP = 1;
+  TWM_MIRROR = 2;
+  TWM_MIRROR_ONCE = 3;
 }
 
 enum FilterMode {
-  POINT = 0;
-  BILINEAR = 1;
-  TRILINEAR = 2;
+  FM_POINT = 0;
+  FM_BILINEAR = 1;
+  FM_TRILINEAR = 2;
 }
 
 enum TransparencyMode {
-  OPAQUE = 0;
-  ALPHA_TEST = 1;
-  ALPHA_BLEND = 2;
-  ALPHA_TEST_AND_ALPHA_BLEND = 3;
-  AUTO = 4;
+  TM_OPAQUE = 0;
+  TM_ALPHA_TEST = 1;
+  TM_ALPHA_BLEND = 2;
+  TM_ALPHA_TEST_AND_ALPHA_BLEND = 3;
+  TM_AUTO = 4;
 }
 
 message PBMaterial {

@@ -3,33 +3,33 @@ syntax = "proto3";
 package decentraland.kernel.comms.v1;
 
 enum MessageType {
-  UNKNOWN_MESSAGE_TYPE = 0;
-  WELCOME = 1;
-  CONNECT = 2;
-  WEBRTC_OFFER = 3;
-  WEBRTC_ANSWER = 4;
-  WEBRTC_ICE_CANDIDATE = 5;
-  PING = 6;
-  SUBSCRIPTION = 7;
-  AUTH = 8;
+  MT_UNKNOWN_MESSAGE_TYPE = 0;
+  MT_WELCOME = 1;
+  MT_CONNECT = 2;
+  MT_WEBRTC_OFFER = 3;
+  MT_WEBRTC_ANSWER = 4;
+  MT_WEBRTC_ICE_CANDIDATE = 5;
+  MT_PING = 6;
+  MT_SUBSCRIPTION = 7;
+  MT_AUTH = 8;
 
-  TOPIC = 9;
-  TOPIC_FW = 10;
+  MT_TOPIC = 9;
+  MT_TOPIC_FW = 10;
 
-  TOPIC_IDENTITY = 11;
-  TOPIC_IDENTITY_FW = 12;
+  MT_TOPIC_IDENTITY = 11;
+  MT_TOPIC_IDENTITY_FW = 12;
 }
 
 enum Role {
-  UNKNOWN_ROLE = 0;
-  CLIENT = 1;
-  COMMUNICATION_SERVER = 2;
+  R_UNKNOWN_ROLE = 0;
+  R_CLIENT = 1;
+  R_COMMUNICATION_SERVER = 2;
 }
 
 enum Format {
-  UNKNOWN_FORMAT = 0;
-  PLAIN = 1;
-  GZIP = 2;
+  F_UNKNOWN_FORMAT = 0;
+  F_PLAIN = 1;
+  F_GZIP = 2;
 }
 
 // NOTE: coordination messsages
