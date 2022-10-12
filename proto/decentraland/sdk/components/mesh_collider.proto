@@ -1,36 +1,35 @@
 syntax = "proto3";
+
 package decentraland.sdk.components;
 
 import "decentraland/sdk/components/common/id.proto";
+
 option (common.ecs_component_id) = 1019;
 
 enum ColliderLayer {
-    COLLIDER_LAYER_NONE = 0;
-    COLLIDER_LAYER_POINTER = 1;
-    COLLIDER_LAYER_PHYSICS = 2;
+  NONE = 0;
+  POINTER = 1;
+  PHYSICS = 2;
 }
 
-message PBMeshCollider {    
-    message BoxMesh {
-    }
+message PBMeshCollider {
+  message BoxMesh {}
 
-    message CylinderMesh {
-        optional float radius_top = 1; // default=1.0
-        optional float radius_bottom = 2; // default=1.0
-    }
+  message CylinderMesh {
+    optional float radius_top = 1; // default=1.0
+    optional float radius_bottom = 2; // default=1.0
+  }
 
-    message PlaneMesh {
-    }
+  message PlaneMesh {}
 
-    message SphereMesh {
-    }
+  message SphereMesh {}
 
-    optional int32 collision_mask = 1; // default = ColliderLayer.Physics | ColliderLayer.Pointer
-    
-    oneof mesh {
-        BoxMesh box = 2;
-        SphereMesh sphere = 3;
-        CylinderMesh cylinder = 4;
-        PlaneMesh plane = 5;
-    }
+  optional int32 collision_mask = 1; // default = ColliderLayer.Physics | ColliderLayer.Pointer
+
+  oneof mesh {
+    BoxMesh box = 2;
+    SphereMesh sphere = 3;
+    CylinderMesh cylinder = 4;
+    PlaneMesh plane = 5;
+  }
 }

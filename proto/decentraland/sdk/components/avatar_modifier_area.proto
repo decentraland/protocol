@@ -1,13 +1,15 @@
 syntax = "proto3";
+
 package decentraland.sdk.components;
 
-import "decentraland/sdk/components/common/id.proto";
-option (common.ecs_component_id) = 1070;
 import "decentraland/common/vectors.proto";
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1070;
 
 enum AvatarModifier {
-  AVATAR_MODIFIER_HIDE_AVATARS = 0;
-  AVATAR_MODIFIER_DISABLE_PASSPORTS = 1;
+  HIDE_AVATARS = 0;
+  DISABLE_PASSPORTS = 1;
 }
 
 message PBAvatarModifierArea {

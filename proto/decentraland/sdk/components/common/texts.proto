@@ -1,13 +1,14 @@
 syntax = "proto3";
+
 package decentraland.sdk.components.common;
 
 enum TextAlign {
-  TEXT_ALIGN_CENTER = 0;
-  TEXT_ALIGN_LEFT = 1;
-  TEXT_ALIGN_RIGHT = 2;
+  CENTER = 0;
+  LEFT = 1;
+  RIGHT = 2;
 }
 
 enum Font {
-  FONT_LIBERATION_SANS = 0;
-  FONT_SANS_SERIF = 1;
+  LIBERATION_SANS = 0;
+  SANS_SERIF = 1;
 }

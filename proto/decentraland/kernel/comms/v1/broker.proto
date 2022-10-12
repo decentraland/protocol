@@ -3,112 +3,112 @@ syntax = "proto3";
 package decentraland.kernel.comms.v1;
 
 enum MessageType {
-  MESSAGE_TYPE_UNKNOWN_MESSAGE_TYPE = 0;
-  MESSAGE_TYPE_WELCOME = 1;
-  MESSAGE_TYPE_CONNECT = 2;
-  MESSAGE_TYPE_WEBRTC_OFFER = 3;
-  MESSAGE_TYPE_WEBRTC_ANSWER = 4;
-  MESSAGE_TYPE_WEBRTC_ICE_CANDIDATE = 5;
-  MESSAGE_TYPE_PING = 6;
-  MESSAGE_TYPE_SUBSCRIPTION = 7;
-  MESSAGE_TYPE_AUTH = 8;
+  UNKNOWN_MESSAGE_TYPE = 0;
+  WELCOME = 1;
+  CONNECT = 2;
+  WEBRTC_OFFER = 3;
+  WEBRTC_ANSWER = 4;
+  WEBRTC_ICE_CANDIDATE = 5;
+  PING = 6;
+  SUBSCRIPTION = 7;
+  AUTH = 8;
 
-  MESSAGE_TYPE_TOPIC = 9;
-  MESSAGE_TYPE_TOPIC_FW = 10;
+  TOPIC = 9;
+  TOPIC_FW = 10;
 
-  MESSAGE_TYPE_TOPIC_IDENTITY = 11;
-  MESSAGE_TYPE_TOPIC_IDENTITY_FW = 12;
+  TOPIC_IDENTITY = 11;
+  TOPIC_IDENTITY_FW = 12;
 }
 
 enum Role {
-  ROLE_UNKNOWN_ROLE = 0;
-  ROLE_CLIENT = 1;
-  ROLE_COMMUNICATION_SERVER = 2;
+  UNKNOWN_ROLE = 0;
+  CLIENT = 1;
+  COMMUNICATION_SERVER = 2;
 }
 
 enum Format {
-  FORMAT_UNKNOWN_FORMAT = 0;
-  FORMAT_PLAIN = 1;
-  FORMAT_GZIP = 2;
+  UNKNOWN_FORMAT = 0;
+  PLAIN = 1;
+  GZIP = 2;
 }
 
 // NOTE: coordination messsages
 
 message CoordinatorMessage {
-    MessageType type = 1;
+  MessageType type = 1;
 }
 
 message WelcomeMessage {
-    MessageType type = 1;
-    uint64 alias = 2;
-    repeated uint64 available_servers = 3;
+  MessageType type = 1;
+  uint64 alias = 2;
+  repeated uint64 available_servers = 3;
 }
 
 message ConnectMessage {
-    MessageType type = 1;
-    uint64 from_alias = 2;
-    uint64 to_alias = 3;
+  MessageType type = 1;
+  uint64 from_alias = 2;
+  uint64 to_alias = 3;
 }
 
 message WebRtcMessage {
-    MessageType type = 1;
-    uint64 from_alias = 2;
-    uint64 to_alias = 3;
-    bytes data = 4;
+  MessageType type = 1;
+  uint64 from_alias = 2;
+  uint64 to_alias = 3;
+  bytes data = 4;
 }
 
 // NOTE: comm server messsages
 
 message MessageHeader {
-    MessageType type = 1;
+  MessageType type = 1;
 }
 
 message PingMessage {
-    MessageType type = 1;
-    double time = 2;
+  MessageType type = 1;
+  double time = 2;
 }
 
 // NOTE: topics is a space separated string in the format specified by Format
 message SubscriptionMessage {
-    MessageType type = 1;
-    Format format = 2;
-    bytes topics = 3;
+  MessageType type = 1;
+  Format format = 2;
+  bytes topics = 3;
 }
 
 // NOTE: comm server messsages
 
 message AuthMessage {
-    MessageType type = 1;
-    Role role = 2;
-    bytes body = 3;
+  MessageType type = 1;
+  Role role = 2;
+  bytes body = 3;
 }
 
 message TopicMessage {
-    MessageType type = 1;
-    uint64 from_alias = 2;
-    string topic = 3;
-    bytes body = 4;
+  MessageType type = 1;
+  uint64 from_alias = 2;
+  string topic = 3;
+  bytes body = 4;
 }
 
 message TopicFWMessage {
-    MessageType type = 1;
-    uint64 from_alias = 2;
-    bytes body = 3;
+  MessageType type = 1;
+  uint64 from_alias = 2;
+  bytes body = 3;
 }
 
 message TopicIdentityMessage {
-    MessageType type = 1;
-    uint64 from_alias = 2;
-    string topic = 3;
-    bytes identity = 4;
-    Role role = 5;
-    bytes body = 6;
+  MessageType type = 1;
+  uint64 from_alias = 2;
+  string topic = 3;
+  bytes identity = 4;
+  Role role = 5;
+  bytes body = 6;
 }
 
 message TopicIdentityFWMessage {
-    MessageType type = 1;
-    uint64 from_alias = 2;
-    bytes identity = 3;
-    Role role = 4;
-    bytes body = 5;
+  MessageType type = 1;
+  uint64 from_alias = 2;
+  bytes identity = 3;
+  Role role = 4;
+  bytes body = 5;
 }

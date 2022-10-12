@@ -5,78 +5,78 @@ import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1050;
 
 enum YGPositionType {
-  YG_POSITION_TYPE_STATIC = 0;
-  YG_POSITION_TYPE_RELATIVE = 1;
-  YG_POSITION_TYPE_ABSOLUTE = 2;
+  STATIC = 0;
+  RELATIVE = 1;
+  ABSOLUTE = 2;
 }
 
 enum YGAlign {
-  YG_ALIGN_AUTO = 0;
-  YG_ALIGN_FLEX_START = 1;
-  YG_ALIGN_CENTER = 2;
-  YG_ALIGN_FLEX_END = 3;
-  YG_ALIGN_STRETCH = 4;
-  YG_ALIGN_BASELINE = 5;
-  YG_ALIGN_SPACE_BETWEEN = 6;
-  YG_ALIGN_SPACE_AROUND = 7;
+  AUTO = 0;
+  FLEX_START = 1;
+  CENTER = 2;
+  FLEX_END = 3;
+  STRETCH = 4;
+  BASELINE = 5;
+  SPACE_BETWEEN = 6;
+  SPACE_AROUND = 7;
 }
 
 enum YGUnit {
-  YG_UNIT_UNDEFINED = 0;
-  YG_UNIT_POINT = 1;
-  YG_UNIT_PERCENT = 2;
-  YG_UNIT_AUTO = 3;
+  UNDEFINED = 0;
+  POINT = 1;
+  PERCENT = 2;
+  AUTO = 3;
 }
 
 enum YGDirection {
-  YG_DIRECTION_INHERIT = 0;
-  YG_DIRECTION_LTR = 1;
-  YG_DIRECTION_RTL = 2;
+  INHERIT = 0;
+  LTR = 1;
+  RTL = 2;
 }
 
 enum YGFlexDirection {
-  YG_FLEX_DIRECTION_COLUMN = 0;
-  YG_FLEX_DIRECTION_COLUMN_REVERSE = 1;
-  YG_FLEX_DIRECTION_ROW = 2;
-  YG_FLEX_DIRECTION_ROW_REVERSE = 3;
+  COLUMN = 0;
+  COLUMN_REVERSE = 1;
+  ROW = 2;
+  ROW_REVERSE = 3;
 }
 
 enum YGWrap {
-  YG_WRAP_NO_WRAP = 0;
-  YG_WRAP_WRAP = 1;
-  YG_WRAP_WRAP_REVERSE = 2;
+  NO_WRAP = 0;
+  WRAP = 1;
+  WRAP_REVERSE = 2;
 }
 
 enum YGJustify {
-  YG_JUSTIFY_FLEX_START = 0;
-  YG_JUSTIFY_CENTER = 1;
-  YG_JUSTIFY_FLEX_END = 2;
-  YG_JUSTIFY_SPACE_BETWEEN = 3;
-  YG_JUSTIFY_SPACE_AROUND = 4;
-  YG_JUSTIFY_SPACE_EVENLY = 5;
+  FLEX_START = 0;
+  CENTER = 1;
+  FLEX_END = 2;
+  SPACE_BETWEEN = 3;
+  SPACE_AROUND = 4;
+  SPACE_EVENLY = 5;
 }
 
 enum YGOverflow {
-  YG_OVERFLOW_VISIBLE = 0;
-  YG_OVERFLOW_HIDDEN = 1;
-  YG_OVERFLOW_SCROLL = 2;
+  VISIBLE = 0;
+  HIDDEN = 1;
+  SCROLL = 2;
 }
 
 enum YGDisplay {
-  YG_DISPLAY_FLEX = 0;
-  YG_DISPLAY_NONE = 1;
+  FLEX = 0;
+  NONE = 1;
 }
 
 enum YGEdge {
-  YG_EDGE_LEFT = 0;
-  YG_EDGE_TOP = 1;
-  YG_EDGE_RIGHT = 2;
-  YG_EDGE_BOTTOM = 3;
-  YG_EDGE_START = 4;
-  YG_EDGE_END = 5;
-  YG_EDGE_HORIZONTAL = 6;
-  YG_EDGE_VERTICAL = 7;
-  YG_EDGE_ALL = 8;
+  LEFT = 0;
+  TOP = 1;
+  RIGHT = 2;
+  BOTTOM = 3;
+  START = 4;
+  END = 5;
+  HORIZONTAL = 6;
+  VERTICAL = 7;
+  ALL = 8;
 }
 
 message PBUiTransform {
