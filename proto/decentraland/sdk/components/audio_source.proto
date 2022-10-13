@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1020;
+
+message PBAudioSource {  
+  optional bool playing = 1;
+  optional float volume = 2; // default=1.0f
+  optional bool loop = 3;
+  optional float pitch = 4; // default=1.0f
+  string audio_clip_url = 5;
+}

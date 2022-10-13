@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/common/vectors.proto";
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1070;
+
+enum AvatarModifierType {
+  AMT_HIDE_AVATARS = 0;
+  AMT_DISABLE_PASSPORTS = 1;
+}
+
+message PBAvatarModifierArea {
+  decentraland.common.Vector3 area = 1;
+  repeated string exclude_ids = 2;
+  repeated AvatarModifierType modifiers = 3;
+}

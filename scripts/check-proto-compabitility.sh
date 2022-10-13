@@ -15,7 +15,7 @@ ln -s "$(pwd)/node_modules" "$TMP_ZIP_DIR/protocol-main/node_modules"
 
 # Run the `proto-compatibility-tool` and exclude the downloaded folder.
 echo "Checking the compatibility against $base_url"
-./node_modules/.bin/proto-compatibility-tool --recursive "$TMP_ZIP_DIR/protocol-main" "."
+./node_modules/.bin/proto-compatibility-tool --recursive "$TMP_ZIP_DIR/protocol-main/proto" "proto"
 # ../proto-compatibility-tool/dist/bin.js --recursive "$TMP_ZIP_DIR/protocol-main" "."
 
 # rm -rf "$TMP_ZIP_DIR" || true

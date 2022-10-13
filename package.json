@@ -20,5 +20,9 @@
   "dependencies": {
     "ts-proto": "^1.126.1"
   },
-  "files": ["bff", "common", "ecs", "kernel", "renderer-protocol", "*.proto", "out-ts"]
+  "files": [
+    "proto",
+    "out-ts",
+    "public"
+  ]
 }

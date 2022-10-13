@@ -11,8 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: install
-        run: npm i
-      - name: compile
-        run: ./scripts/test.sh
+        run: make install
+      - name: buf build and lint
+        run: make buf-lint
+      - name: build and compile test
+        run: make test
       - name: run the check script
         run: ./scripts/check-proto-compabitility.sh
