@@ -13,7 +13,7 @@ for file in "$(pwd)"/public/*.proto; do
   node_modules/.bin/protoc \
     --plugin=./node_modules/.bin/protoc-gen-ts_proto \
     --csharp_out="$(pwd)/out-cs" \
-    --ts_proto_opt=esModuleInterop=true,returnObservable=false,outputServices=generic-definitions,fileSuffix=.gen \
+    --ts_proto_opt=esModuleInterop=true,returnObservable=false,outputServices=generic-definitions,fileSuffix=.gen,oneof=unions \
     --ts_proto_out="$(pwd)/out-ts" \
     -I="$(pwd)/proto" \
     -I="$(pwd)/public" \
