@@ -4,6 +4,7 @@ package decentraland.sdk.components;
 
 import "decentraland/common/colors.proto";
 import "decentraland/sdk/components/common/id.proto";
+import "decentraland/sdk/components/common/texts.proto";
 
 option (common.ecs_component_id) = 1030;
 
@@ -11,12 +12,11 @@ message PBTextShape {
   string text = 1;
   // @deprecated use HiddenComponent instead https://github.com/decentraland/sdk/issues/353
   optional bool visible = 2; // default=true
-  optional string font = 3;
-  optional float opacity = 4; // default=1.0f
+  optional common.Font font = 3;
   optional float font_size = 5; // default=10
   optional bool font_auto_size = 6;
-  optional string h_text_align = 7; // default='center'
-  optional string v_text_align = 8; // default='center'
+  optional common.TextAlignMode h_text_align = 7; // default=TAM_CENTER
+  optional common.TextAlignMode v_text_align = 8; // default=TAM_CENTER
   optional float width = 9; // default=1
   optional float height = 10; // default=1
   optional float padding_top = 11;
@@ -32,5 +32,5 @@ message PBTextShape {
   optional float outline_width = 21;
   optional decentraland.common.Color3 shadow_color = 22; // default=(1.0,1.0,1.0)
   optional decentraland.common.Color3 outline_color = 23; // default=(1.0,1.0,1.0)
-  optional decentraland.common.Color3 text_color = 24; // default=(1.0,1.0,1.0)
+  optional decentraland.common.Color4 text_color = 24; // default=(1.0,1.0,1.0)
 }
