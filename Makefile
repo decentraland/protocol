@@ -11,7 +11,7 @@ buf-lint: node_modules/.bin/buf
 	./node_modules/.bin/buf lint proto/
 	./node_modules/.bin/buf build proto/
 
-test:
+test: buf-lint
 	bash scripts/test.sh
 
 install:
