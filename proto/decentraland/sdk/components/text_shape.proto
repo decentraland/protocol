@@ -11,7 +11,6 @@ option (common.ecs_component_id) = 1030;
 message PBTextShape {
   string text = 1;
   // @deprecated use HiddenComponent instead https://github.com/decentraland/sdk/issues/353
-  optional bool visible = 2; // default=true
   optional common.Font font = 3;
   optional float font_size = 5; // default=10
   optional bool font_auto_size = 6;
