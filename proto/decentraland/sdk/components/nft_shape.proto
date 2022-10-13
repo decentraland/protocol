@@ -7,34 +7,34 @@ import "decentraland/sdk/components/common/id.proto";
 
 option (common.ecs_component_id) = 1040;
 
-enum NftFrame {
-  NF_CLASSIC = 0;
-  NF_BAROQUE_ORNAMENT = 1;
-  NF_DIAMOND_ORNAMENT = 2;
-  NF_MINIMAL_WIDE = 3;
-  NF_MINIMAL_GREY = 4;
-  NF_BLOCKY = 5;
-  NF_GOLD_EDGES = 6;
-  NF_GOLD_CARVED = 7;
-  NF_GOLD_WIDE = 8;
-  NF_GOLD_ROUNDED = 9;
-  NF_METAL_MEDIUM = 10;
-  NF_METAL_WIDE = 11;
-  NF_METAL_SLIM = 12;
-  NF_METAL_ROUNDED = 13;
-  NF_PINS = 14;
-  NF_MINIMAL_BLACK = 15;
-  NF_MINIMAL_WHITE = 16;
-  NF_TAPE = 17;
-  NF_WOOD_SLIM = 18;
-  NF_WOOD_WIDE = 19;
-  NF_WOOD_TWIGS = 20;
-  NF_CANVAS = 21;
-  NF_NONE = 22;
+enum NftFrameType {
+  NFT_CLASSIC = 0;
+  NFT_BAROQUE_ORNAMENT = 1;
+  NFT_DIAMOND_ORNAMENT = 2;
+  NFT_MINIMAL_WIDE = 3;
+  NFT_MINIMAL_GREY = 4;
+  NFT_BLOCKY = 5;
+  NFT_GOLD_EDGES = 6;
+  NFT_GOLD_CARVED = 7;
+  NFT_GOLD_WIDE = 8;
+  NFT_GOLD_ROUNDED = 9;
+  NFT_METAL_MEDIUM = 10;
+  NFT_METAL_WIDE = 11;
+  NFT_METAL_SLIM = 12;
+  NFT_METAL_ROUNDED = 13;
+  NFT_PINS = 14;
+  NFT_MINIMAL_BLACK = 15;
+  NFT_MINIMAL_WHITE = 16;
+  NFT_TAPE = 17;
+  NFT_WOOD_SLIM = 18;
+  NFT_WOOD_WIDE = 19;
+  NFT_WOOD_TWIGS = 20;
+  NFT_CANVAS = 21;
+  NFT_NONE = 22;
 }
 
 message PBNftShape {
   string src = 1;
-  optional NftFrame style = 2; // default = PictureFrameStyle.Classic
+  optional NftFrameType style = 2; // default = PictureFrameStyle.Classic
   optional decentraland.common.Color3 color = 3; // default = decentraland.common.Color3(0.6404918, 0.611472, 0.8584906)
 }
