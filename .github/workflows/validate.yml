@@ -11,14 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: install
-        run: npm i
-      - name: install buff
-        run: bash scripts/install-buf.sh
-      - name: buf lintc
-        run: ./node_modules/.bin/buf lint proto/
-      - name: buf build
-        run: ./node_modules/.bin/buf build proto/
+        run: make install
+      - name: buf build and lint
+        run: make buf-lint
       - name: build and compile test
-        run: ./scripts/test.sh
+        run: make test
       - name: run the check script
         run: ./scripts/check-proto-compabitility.sh
