@@ -3,8 +3,8 @@ package decentraland.sdk.components;
 
 import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1072;
-import "decentraland/sdk/components/common/camera_mode_value.proto";
+import "decentraland/sdk/components/common/camera_type.proto";
 
 message PBCameraMode {
-  common.CameraModeValue mode = 1;
+  common.CameraType mode = 1;
 }
