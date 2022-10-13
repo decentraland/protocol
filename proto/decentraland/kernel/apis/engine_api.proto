@@ -172,7 +172,7 @@ message EventData {
   optional RotationChangedPayload rotation_changed = 4;
 }
 
-service EngineAPIService {
+service EngineApiService {
   rpc SendBatch(ManyEntityAction) returns (SendBatchResponse) {}
   rpc Subscribe(SubscribeRequest) returns (SubscribeResponse) {}
   rpc Unsubscribe(UnsubscribeRequest) returns (UnsubscribeResponse) {}
