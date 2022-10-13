@@ -15,8 +15,7 @@ message PBTextShape {
   optional common.Font font = 3;
   optional float font_size = 5; // default=10
   optional bool font_auto_size = 6;
-  optional common.TextAlignMode h_text_align = 7; // default=TAM_CENTER
-  optional common.TextAlignMode v_text_align = 8; // default=TAM_CENTER
+  optional common.TextAlignMode text_align = 7; // default=TAM_CENTER_CENTER
   optional float width = 9; // default=1
   optional float height = 10; // default=1
   optional float padding_top = 11;
