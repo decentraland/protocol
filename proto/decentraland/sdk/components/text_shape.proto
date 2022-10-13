@@ -3,8 +3,8 @@ syntax = "proto3";
 package decentraland.sdk.components;
 
 import "decentraland/common/colors.proto";
-import "decentraland/sdk/components/common/colors.proto";
 import "decentraland/sdk/components/common/id.proto";
+import "decentraland/sdk/components/common/texts.proto";
 
 option (common.ecs_component_id) = 1030;
 
