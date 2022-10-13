@@ -18,3 +18,9 @@ protoc \
   -I="$(pwd)/node_modules/@dcl/protocol/proto" \
   "$(pwd)/node_modules/@dcl/protocol/public/bff-services.proto"
 ```
+
+# Style Guidelines
+1. All .proto files are snake_case.proto.
+2. For pascal or camel case usage, please make a deterministic one from the snake case. Example: nft_shape will transform to NftShape.
+3. See https://docs.buf.build/best-practices/style-guide. The most of other styles are taken from there, the Buf configuration is in proto/buf.yml.
+4. Use public/ folder only for .proto with protocol exposing, that is only for files with `import public`. This folder is not processed by the linter.

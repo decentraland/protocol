@@ -11,7 +11,7 @@ message MessageFromRendererResponse {
     repeated bytes data = 1;
 }
 
-service ExperimentalAPIService {
+service ExperimentalApiService {
   rpc SendToRenderer(SendToRendererRequest) returns (SendToResponse) {}
   rpc MessageFromRenderer(MessageFromRendererRequest) returns (MessageFromRendererResponse) {}
 }

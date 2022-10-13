@@ -1,10 +1,11 @@
 syntax = "proto3";
+
 package decentraland.sdk.components;
 
-import "decentraland/sdk/components/common/id.proto";
-option (common.ecs_component_id) = 1030;
-
 import "decentraland/common/colors.proto";
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1030;
 
 message PBTextShape {
   string text = 1;

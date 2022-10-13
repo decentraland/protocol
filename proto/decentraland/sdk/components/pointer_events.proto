@@ -1,9 +1,11 @@
 ﻿syntax = "proto3";
+
 package decentraland.sdk.components;
 
+import "decentraland/sdk/components/common/input_action.proto";
 import "decentraland/sdk/components/common/id.proto";
+
 option (common.ecs_component_id) = 1062;
-import "decentraland/sdk/components/common/action_button.proto";
 
 enum PointerEventType {
   PET_UP = 0;
@@ -14,7 +16,7 @@ enum PointerEventType {
 
 message PBPointerEvents {
   message Info {
-    optional common.ActionButton button = 1; // default=ActionButton.ANY
+    optional common.InputAction button = 1; // default=InputAction.ANY
     optional string hover_text = 2; // default='Interact'
     optional float max_distance = 3; // default=10
     optional bool show_feedback = 4; // default=true
