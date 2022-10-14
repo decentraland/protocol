@@ -10,10 +10,10 @@ option (common.ecs_component_id) = 1030;
 
 message PBTextShape {
   string text = 1;
-  common.Font font = 3; // default=F_SANS_SERIF
+  optional common.Font font = 3; // default=F_SANS_SERIF
   optional float font_size = 5; // default=10
   optional bool font_auto_size = 6;
-  common.TextAlignMode text_align = 7; // default=TAM_CENTER_CENTER
+  optional common.TextAlignMode text_align = 7; // default=TAM_CENTER_CENTER
   optional float width = 9; // default=1
   optional float height = 10; // default=1
   optional float padding_top = 11;
