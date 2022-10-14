@@ -10,24 +10,24 @@ option (common.ecs_component_id) = 1030;
 
 message PBTextShape {
   string text = 1;
-  optional common.Font font = 3; // default=F_SANS_SERIF
-  optional float font_size = 5; // default=10
-  optional bool font_auto_size = 6;
-  optional common.TextAlignMode text_align = 7; // default=TAM_CENTER_CENTER
-  optional float width = 9; // default=1
-  optional float height = 10; // default=1
-  optional float padding_top = 11;
-  optional float padding_right = 12;
-  optional float padding_bottom = 13;
-  optional float padding_left = 14;
-  optional float line_spacing = 15;
-  optional int32 line_count = 16;
-  optional bool text_wrapping = 17;
-  optional float shadow_blur = 18;
-  optional float shadow_offset_x = 19;
-  optional float shadow_offset_y = 20;
-  optional float outline_width = 21;
-  optional decentraland.common.Color3 shadow_color = 22; // default=(1.0,1.0,1.0)
-  optional decentraland.common.Color3 outline_color = 23; // default=(1.0,1.0,1.0)
-  optional decentraland.common.Color4 text_color = 24; // default=(1.0,1.0,1.0)
+  optional common.Font font = 2; // default=F_SANS_SERIF
+  optional float font_size = 3; // default=10
+  optional bool font_auto_size = 4;
+  optional common.TextAlignMode text_align = 5; // default=TAM_CENTER_CENTER
+  optional float width = 6; // default=1
+  optional float height = 7; // default=1
+  optional float padding_top = 8;
+  optional float padding_right = 9;
+  optional float padding_bottom = 10;
+  optional float padding_left = 11;
+  optional float line_spacing = 12;
+  optional int32 line_count = 13;
+  optional bool text_wrapping = 14;
+  optional float shadow_blur = 15;
+  optional float shadow_offset_x = 16;
+  optional float shadow_offset_y = 17;
+  optional float outline_width = 18;
+  optional decentraland.common.Color3 shadow_color = 19; // default=(1.0,1.0,1.0)
+  optional decentraland.common.Color3 outline_color = 20; // default=(1.0,1.0,1.0)
+  optional decentraland.common.Color4 text_color = 21; // default=(1.0,1.0,1.0)
 }
