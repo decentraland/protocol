@@ -33,6 +33,7 @@ message AboutResponse {
 
     // A content server to be used to load the parcels around the user. Uses the POST /entities/active endpoint
     // to continously fetch the parcels around the users. if null, then the default content server will be used
+    // if == "" then the city_loader will be disabled and the scenes_urn will be used to load the world
     optional string city_loader_content_server = 7;
   }
 
