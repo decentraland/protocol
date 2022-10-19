@@ -17,14 +17,14 @@ enum MaterialTransparencyMode {
 }
 
 message PBMaterial {
-  optional Texture texture = 1; // default = null
+  optional decentraland.common.Texture texture = 1; // default = null
   
   optional float alpha_test = 2; // default = 0.5. range value: from 0 to 1
   optional bool cast_shadows = 3; // default =  true
 
-  optional SRCTexture alpha_texture = 4; // default = null
-  optional SRCTexture emissive_texture = 5; // default = null
-  optional SRCTexture bump_texture = 6; // default = null
+  optional decentraland.common.SRCTexture alpha_texture = 4; // default = null
+  optional decentraland.common.SRCTexture emissive_texture = 5; // default = null
+  optional decentraland.common.SRCTexture bump_texture = 6; // default = null
 
   optional decentraland.common.Color3 albedo_color = 7; // default = white;
   optional decentraland.common.Color3 emissive_color = 8; // default = black;
