@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "decentraland/bff/routing_service.proto";
 
-package decentraland.kernel;
+package decentraland.kernel.comms.v3;
 
 message Packet {
   string source = 1; // address
