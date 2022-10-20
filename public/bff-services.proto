@@ -11,6 +11,7 @@ import public "decentraland/bff/authentication_service.proto";
 import public "decentraland/bff/http_endpoints.proto";
 import public "decentraland/bff/topics_service.proto";
 import public "decentraland/bff/comms_director_service.proto";
+import public "decentraland/bff/routing_service.proto";
 
 // TO BE DELETED
 import public "decentraland/bff/comms_service.proto";
