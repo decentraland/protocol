@@ -1,0 +1,23 @@
+syntax = "proto3";
+package decentraland.bff;
+
+import "google/protobuf/empty.proto";
+
+message PeerStatus {
+  double timestamp = 1;
+  string room = 2;
+  repeated string connected_to = 3;
+}
+
+message PeerRoute {
+  repeated string peers = 1;
+}
+
+message PeerRoutingTable {
+  map<string, PeerRoute> table = 1;
+}
+
+service RoutingService {
+  rpc UpdatePeerStatus(PeerStatus) returns (google.protobuf.Empty) {}
+  rpc GetRoutingTable(google.protobuf.Empty) returns (stream PeerRoutingTable) {}
+}
