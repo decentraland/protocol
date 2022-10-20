@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+import "decentraland/bff/routing_service.proto";
+
+message Packet {
+  string source = 1; // address
+  map<string, PeerRoute> to = 2;
+  bytes payload = 3;
+}
