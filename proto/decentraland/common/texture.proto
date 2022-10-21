@@ -14,7 +14,7 @@ enum TextureFilterMode {
   TFM_TRILINEAR = 2;
 }
 
-message SRCTexture {
+message Texture {
     string src = 1;
     optional TextureWrapMode wrap_mode = 2; // default = TextureWrapMode.Clamp
     optional TextureFilterMode filter_mode = 3; // default = FilterMode.Bilinear
@@ -26,9 +26,9 @@ message AvatarTexture {
   optional TextureFilterMode filter_mode = 3; // default = FilterMode.Bilinear
 }
 
-message Texture {
-    oneof texture {
-      SRCTexture src_texture = 1; // default = null
+message TextureUnion {
+    oneof tex {
+      Texture texture = 1; // default = null
       AvatarTexture avatar_texture = 2; // default = null
     }
 }
