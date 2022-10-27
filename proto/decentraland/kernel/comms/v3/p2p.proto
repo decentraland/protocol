@@ -6,6 +6,6 @@ package decentraland.kernel.comms.v3;
 
 message Packet {
   string source = 1; // address
-  map<string, decentraland.bff.PeerRoute> to = 2;
+  repeated decentraland.bff.Path target = 2;
   bytes payload = 3;
 }
