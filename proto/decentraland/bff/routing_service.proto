@@ -9,12 +9,12 @@ message PeerStatus {
   repeated string connected_to = 3;
 }
 
-message PeerRoute {
+message Path {
   repeated string peers = 1;
 }
 
 message PeerRoutingTable {
-  map<string, PeerRoute> table = 1;
+  repeated Path paths = 1;
 }
 
 service RoutingService {
