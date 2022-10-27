@@ -8,10 +8,12 @@ message Packet {
   bytes payload = 3;
 }
 
-message Peers {
+message Request {
   repeated string peers = 1;
+  Packet packet = 2;
 }
 
+
 service MessagingService {
-  rpc Publish(Packet, Peers) returns (google.protobuf.Empty) {}
+  rpc Publish(Request) returns (google.protobuf.Empty) {}
 }
