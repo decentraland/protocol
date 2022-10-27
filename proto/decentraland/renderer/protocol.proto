@@ -15,14 +15,7 @@ message PullCRDTRequest {
   int32  scene_number = 3;
 }
 
-// CRDTStreamRequest is deprecated
-message CRDTStreamRequest {
-  option deprecated = true;
-}
-
 service CRDTService {
   rpc SendCrdt(CRDTManyMessages) returns (CRDTResponse){}
   rpc PullCrdt(PullCRDTRequest) returns (CRDTManyMessages) {}
-  // CrdtNotificationStream is deprecated
-  rpc CrdtNotificationStream(CRDTStreamRequest) returns (stream CRDTManyMessages) {}
 }
