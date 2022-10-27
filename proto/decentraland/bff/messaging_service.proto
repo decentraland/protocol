@@ -13,7 +13,7 @@ message Request {
   Packet packet = 2;
 }
 
-
 service MessagingService {
   rpc Publish(Request) returns (google.protobuf.Empty) {}
+  rpc Read(google.protobuf.Empty) returns (stream Packet) {}
 }
