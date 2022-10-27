@@ -1,0 +1,17 @@
+syntax = "proto3";
+package decentraland.bff;
+
+import "google/protobuf/empty.proto";
+
+message Packet {
+  string source = 1; // address
+  bytes payload = 3;
+}
+
+message Peers {
+  repeated string peers = 1;
+}
+
+service MessagingService {
+  rpc Publish(Packet, Peers) returns (google.protobuf.Empty) {}
+}
