@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package decentraland.renderer.inverse;
+
+message PingRequest {}
+
+message PongResponse {}
+
+service PingPongService {
+  rpc Ping(PingRequest) returns (PongResponse) {}
+}

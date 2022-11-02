@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package decentraland.renderer;
+
+message Payload {
+  bytes payload = 1;
+}
+
+service TransportService {
+  // response and request are inverse on purpose
+  rpc OpenTransportStream(stream Payload) returns (stream Payload) {}
+}

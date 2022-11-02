@@ -1,4 +1,6 @@
 syntax = "proto3";
 
 import public "decentraland/renderer/engine_interface.proto";
-import public "decentraland/renderer/protocol.proto";
+import public "decentraland/renderer/crdt.proto";
+import public "decentraland/renderer/transport.proto";
+import public "decentraland/renderer/inverse/ping_pong.proto";
