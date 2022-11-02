@@ -172,8 +172,21 @@ message EventData {
   optional RotationChangedPayload rotation_changed = 4;
 }
 
+message CrdtSendToRendererRequest {
+  bytes data = 1;
+}
+message CrdtSendToResponse {}
+
+message CrdtMessageFromRendererRequest {}
+message CrdtMessageFromRendererResponse {
+  repeated bytes data = 1;
+}
+
 service EngineApiService {
   rpc SendBatch(ManyEntityAction) returns (SendBatchResponse) {}
   rpc Subscribe(SubscribeRequest) returns (SubscribeResponse) {}
   rpc Unsubscribe(UnsubscribeRequest) returns (UnsubscribeResponse) {}
+
+  rpc CrdtSendToRenderer(CrdtSendToRendererRequest) returns (CrdtSendToResponse) {}
+  rpc CrdtGetMessageFromRenderer(CrdtMessageFromRendererRequest) returns (CrdtMessageFromRendererResponse) {}
 }
