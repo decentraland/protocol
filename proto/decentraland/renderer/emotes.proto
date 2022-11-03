@@ -11,12 +11,12 @@ message TriggerExpressionRequest {
   float timestamp = 2;
 }
 
-message Response {}
+message EmotesResponse {}
 
 service EmotesRendererService {
-  rpc TriggerSelfUserExpression(TriggerSelfUserExpressionRequest) returns (Response) {}
+  rpc TriggerSelfUserExpression(TriggerSelfUserExpressionRequest) returns (EmotesResponse) {}
 }
 
 service EmotesKernelService {
-  rpc TriggerExpression(TriggerExpressionRequest) returns (Response) {}
+  rpc TriggerExpression(TriggerExpressionRequest) returns (EmotesResponse) {}
 }
