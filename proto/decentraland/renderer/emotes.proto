@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package decentraland.renderer;
+
+message TriggerSelfUserExpressionRequest {
+    string id = 1;
+}
+
+message TriggerExpressionRequest {
+    string id = 1;
+    float timestamp = 2;
+}
+
+message Response {}
+
+service EmotesRendererService {
+  rpc TriggerSelfUserExpression(TriggerSelfUserExpressionRequest) returns (Response) {}
+}
+
+service EmotesKernelService {
+    rpc TriggerExpression(TriggerExpressionRequest) returns (Response) {}
+}
