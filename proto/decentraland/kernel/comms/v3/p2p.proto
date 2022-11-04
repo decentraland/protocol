@@ -2,12 +2,13 @@ syntax = "proto3";
 
 package decentraland.kernel.comms.v3;
 
-message Target {
-  repeated string edges = 1;
+message Edge {
+  string u = 1;
+  string v = 2;
 }
 
 message Packet {
   string source = 1; // address
-  repeated Target targets = 2;
+  repeated Edge edges = 2;
   bytes payload = 3;
 }
