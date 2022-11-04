@@ -82,82 +82,73 @@ enum YGEdge {
 }
 
 message PBUiTransform {
-  int32 parent = 79;
-  int32 right_of = 80;
+  optional int32 parent = 69;
+  optional int32 right_of = 70;
 
-  YGPositionType position_type = 1;
+  optional YGPositionType position_type = 1;
 
-  YGAlign align_content = 2;
-  YGAlign align_items = 3;
-  YGAlign align_self = 4;
-  YGFlexDirection flex_direction = 5;
-  YGWrap flex_wrap = 6;
-  YGJustify justify_content = 7;
+  optional YGAlign align_content = 2;
+  optional YGAlign align_items = 3;
+  optional YGAlign align_self = 4;
+  optional YGFlexDirection flex_direction = 5;
+  optional YGWrap flex_wrap = 6;
+  optional YGJustify justify_content = 7;
 
-  YGOverflow overflow = 8;
-  YGDisplay display = 9;
-  YGDirection direction = 10;
+  optional YGOverflow overflow = 8;
+  optional YGDisplay display = 9;
+  optional YGDirection direction = 10;
 
-  float flex = 11;
+  optional float flex = 11;
 
-  YGUnit flex_basis_unit = 13;
-  float flex_basis = 14;
+  optional YGUnit flex_basis_unit = 13;
+  optional float flex_basis = 14;
 
-  float flex_grow = 15;
-  float flex_shrink = 16;
+  optional float flex_grow = 15;
+  optional float flex_shrink = 16;
 
-  YGUnit width_unit = 17;
-  float width = 18;
-  YGUnit height_unit = 19;
-  float height = 20;
+  optional YGUnit width_unit = 17;
+  optional float width = 18;
+  optional YGUnit height_unit = 19;
+  optional float height = 20;
 
-  YGUnit min_width_unit = 21;
-  float min_width = 22;
-  YGUnit min_height_unit = 23;
-  float min_height = 24;
+  optional YGUnit min_width_unit = 21;
+  optional float min_width = 22;
+  optional YGUnit min_height_unit = 23;
+  optional float min_height = 24;
 
-  YGUnit max_width_unit = 31;
-  float max_width = 32;
-  YGUnit max_height_unit = 33;
-  float max_height = 34;
+  optional YGUnit max_width_unit = 31;
+  optional float max_width = 32;
+  optional YGUnit max_height_unit = 33;
+  optional float max_height = 34;
 
   // non-standard
   reserved 40; // float aspect_ratio = 40;
 
-  YGUnit position_left_unit = 41;
-  float position_left = 42;
-  YGUnit position_top_unit = 43;
-  float position_top = 44;
-  YGUnit position_right_unit = 45;
-  float position_right = 46;
-  YGUnit position_bottom_unit = 47;
-  float position_bottom = 48;
+  optional YGUnit position_left_unit = 41;
+  optional float position_left = 42;
+  optional YGUnit position_top_unit = 43;
+  optional float position_top = 44;
+  optional YGUnit position_right_unit = 45;
+  optional float position_right = 46;
+  optional YGUnit position_bottom_unit = 47;
+  optional float position_bottom = 48;
 
   // margin
-  YGUnit margin_left_unit = 51;
-  float margin_left = 52;
-  YGUnit margin_top_unit = 53;
-  float margin_top = 54;
-  YGUnit margin_right_unit = 55;
-  float margin_right = 56;
-  YGUnit margin_bottom_unit = 57;
-  float margin_bottom = 58;
+  optional YGUnit margin_left_unit = 51;
+  optional float margin_left = 52;
+  optional YGUnit margin_top_unit = 53;
+  optional float margin_top = 54;
+  optional YGUnit margin_right_unit = 55;
+  optional float margin_right = 56;
+  optional YGUnit margin_bottom_unit = 57;
+  optional float margin_bottom = 58;
 
-  YGUnit padding_left_unit = 61;
-  float padding_left = 62;
-  YGUnit padding_top_unit = 63;
-  float padding_top = 64;
-  YGUnit padding_right_unit = 65;
-  float padding_right = 66;
-  YGUnit padding_bottom_unit = 67;
-  float padding_bottom = 68;
-
-  reserved 71; // YGUnit border_left_unit = 71;
-  float border_left = 72;
-  reserved 73; // YGUnit border_top_unit = 73;
-  float border_top = 74;
-  reserved 75; // YGUnit border_right_unit = 75;
-  float border_right = 76;
-  reserved 77; // YGUnit border_bottom_unit = 77;
-  float border_bottom = 78;
+  optional YGUnit padding_left_unit = 61;
+  optional float padding_left = 62;
+  optional YGUnit padding_top_unit = 63;
+  optional float padding_top = 64;
+  optional YGUnit padding_right_unit = 65;
+  optional float padding_right = 66;
+  optional YGUnit padding_bottom_unit = 67;
+  optional float padding_bottom = 68;
 }
