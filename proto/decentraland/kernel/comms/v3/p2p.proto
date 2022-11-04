@@ -1,11 +1,13 @@
 syntax = "proto3";
 
-import "decentraland/bff/routing_service.proto";
-
 package decentraland.kernel.comms.v3;
+
+message Target {
+  repeated string edges = 1;
+}
 
 message Packet {
   string source = 1; // address
-  repeated decentraland.bff.Path target = 2;
+  repeated Target targets = 2;
   bytes payload = 3;
 }
