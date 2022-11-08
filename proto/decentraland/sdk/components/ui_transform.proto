@@ -84,23 +84,24 @@ message PBUiTransform {
   int32 parent = 1;
   int32 right_of = 2;
 
-  optional YGPositionType position_type = 3; // YGPositionType.YGPT_RELATIVE
+  optional YGAlign align_content = 3; // default: YGAlign.YGA_FLEX_START
+  optional YGAlign align_items = 4; // default: YGAlign.YGA_STRETCH
+  optional YGWrap flex_wrap = 5; // default: YGWrap.YGW_WRAP
+  optional float flex_shrink = 6; // default: 1
 
-  YGAlign align_content = 4; // YGAlign.YGA_FLEX_START
-  YGAlign align_items = 5; // YGAlign.YGA_STRETCH
-  optional YGAlign align_self = 6; // YGAlign.YGA_AUTO
-  optional YGFlexDirection flex_direction = 7; // YGFlexDirection.YGFD_ROW
-  YGWrap flex_wrap = 8; // YGWrap.YGW_WRAP
-  optional YGJustify justify_content = 9; // YGJustify.YGJ_FLEX_START
+  optional YGPositionType position_type = 7; // YGPositionType.YGPT_RELATIVE
 
-  optional YGOverflow overflow = 10; // YGOverflow.YGO_VISIBLE
-  optional YGDisplay display = 11; // YGDisplay.YGD_FLEX
+  optional YGAlign align_self = 8; // YGAlign.YGA_AUTO
+  optional YGFlexDirection flex_direction = 9; // YGFlexDirection.YGFD_ROW
+  optional YGJustify justify_content = 10; // YGJustify.YGJ_FLEX_START
 
-  optional YGUnit flex_basis_unit = 12; // YGUnit.YGU_UNDEFINED
-  optional float flex_basis = 13;
+  optional YGOverflow overflow = 11; // YGOverflow.YGO_VISIBLE
+  optional YGDisplay display = 12; // YGDisplay.YGD_FLEX
 
-  optional float flex_grow = 14; // 0
-  float flex_shrink = 15; // default: 1
+  optional YGUnit flex_basis_unit = 13; // YGUnit.YGU_UNDEFINED
+  optional float flex_basis = 14;
+
+  optional float flex_grow = 15;
 
   optional YGUnit width_unit = 16; // YGUnit.YGU_UNDEFINED
   optional float width = 17;
