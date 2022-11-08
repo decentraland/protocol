@@ -84,63 +84,63 @@ message PBUiTransform {
   int32 parent = 1;
   int32 right_of = 2;
 
-  YGPositionType position_type = 3; // YGPositionType.YGPT_RELATIVE
+  optional YGPositionType position_type = 3; // YGPositionType.YGPT_RELATIVE
 
-  optional YGAlign align_content = 4; // default: YGAlign.YGA_FLEX_START
-  optional YGAlign align_items = 5; // default: YGAlign.YGA_STRETCH
-  optional YGAlign align_self = 6; // default: YGAlign.YGA_AUTO
-  YGFlexDirection flex_direction = 7; // YGFlexDirection.YGFD_ROW
-  optional YGWrap flex_wrap = 8; // default: YGWrap.YGW_WRAP
+  YGAlign align_content = 4; // YGAlign.YGA_FLEX_START
+  YGAlign align_items = 5; // YGAlign.YGA_STRETCH
+  optional YGAlign align_self = 6; // YGAlign.YGA_AUTO
+  optional YGFlexDirection flex_direction = 7; // YGFlexDirection.YGFD_ROW
+  YGWrap flex_wrap = 8; // YGWrap.YGW_WRAP
   optional YGJustify justify_content = 9; // YGJustify.YGJ_FLEX_START
 
-  YGOverflow overflow = 10; // YGOverflow.YGO_VISIBLE
-  YGDisplay display = 11; // YGDisplay.YGD_FLEX
+  optional YGOverflow overflow = 10; // YGOverflow.YGO_VISIBLE
+  optional YGDisplay display = 11; // YGDisplay.YGD_FLEX
 
-  YGUnit flex_basis_unit = 12; // YGUnit.YGU_UNDEFINED
-  float flex_basis = 13;
+  optional YGUnit flex_basis_unit = 12; // YGUnit.YGU_UNDEFINED
+  optional float flex_basis = 13;
 
-  float flex_grow = 14; // 0
-  optional float flex_shrink = 15; // default: 1
+  optional float flex_grow = 14; // 0
+  float flex_shrink = 15; // default: 1
 
-  YGUnit width_unit = 16; // YGUnit.YGU_UNDEFINED
-  float width = 17;
-  YGUnit height_unit = 18; // YGUnit.YGU_UNDEFINED
-  float height = 19;
+  optional YGUnit width_unit = 16; // YGUnit.YGU_UNDEFINED
+  optional float width = 17;
+  optional YGUnit height_unit = 18; // YGUnit.YGU_UNDEFINED
+  optional float height = 19;
 
-  YGUnit min_width_unit = 20; // YGUnit.YGU_UNDEFINED
-  float min_width = 21;
-  YGUnit min_height_unit = 22; // YGUnit.YGU_UNDEFINED
-  float min_height = 23;
+  optional YGUnit min_width_unit = 20; // YGUnit.YGU_UNDEFINED
+  optional float min_width = 21;
+  optional YGUnit min_height_unit = 22; // YGUnit.YGU_UNDEFINED
+  optional float min_height = 23;
 
-  YGUnit max_width_unit = 24; // YGUnit.YGU_UNDEFINED
-  float max_width = 25;
-  YGUnit max_height_unit = 26; // YGUnit.YGU_UNDEFINED
-  float max_height = 27;
+  optional YGUnit max_width_unit = 24; // YGUnit.YGU_UNDEFINED
+  optional float max_width = 25;
+  optional YGUnit max_height_unit = 26; // YGUnit.YGU_UNDEFINED
+  optional float max_height = 27;
 
-  YGUnit position_left_unit = 28; // YGUnit.YGU_UNDEFINED
-  float position_left = 29;
-  YGUnit position_top_unit = 30; // YGUnit.YGU_UNDEFINED
-  float position_top = 31;
-  YGUnit position_right_unit = 32; // YGUnit.YGU_UNDEFINED
-  float position_right = 33;
-  YGUnit position_bottom_unit = 34; // YGUnit.YGU_UNDEFINED
-  float position_bottom = 35;
+  optional YGUnit position_left_unit = 28; // YGUnit.YGU_UNDEFINED
+  optional float position_left = 29;
+  optional YGUnit position_top_unit = 30; // YGUnit.YGU_UNDEFINED
+  optional float position_top = 31;
+  optional YGUnit position_right_unit = 32; // YGUnit.YGU_UNDEFINED
+  optional float position_right = 33;
+  optional YGUnit position_bottom_unit = 34; // YGUnit.YGU_UNDEFINED
+  optional float position_bottom = 35;
 
-  YGUnit margin_left_unit = 36; // YGUnit.YGU_UNDEFINED
-  float margin_left = 37;
-  YGUnit margin_top_unit = 38; // YGUnit.YGU_UNDEFINED
-  float margin_top = 39;
-  YGUnit margin_right_unit = 40; // YGUnit.YGU_UNDEFINED
-  float margin_right = 41;
-  YGUnit margin_bottom_unit = 42; // YGUnit.YGU_UNDEFINED
-  float margin_bottom = 43;
+  optional YGUnit margin_left_unit = 36; // YGUnit.YGU_UNDEFINED
+  optional float margin_left = 37;
+  optional YGUnit margin_top_unit = 38; // YGUnit.YGU_UNDEFINED
+  optional float margin_top = 39;
+  optional YGUnit margin_right_unit = 40; // YGUnit.YGU_UNDEFINED
+  optional float margin_right = 41;
+  optional YGUnit margin_bottom_unit = 42; // YGUnit.YGU_UNDEFINED
+  optional float margin_bottom = 43;
 
-  YGUnit padding_left_unit = 44; // YGUnit.YGU_UNDEFINED
-  float padding_left = 45;
-  YGUnit padding_top_unit = 46; // YGUnit.YGU_UNDEFINED
-  float padding_top = 47;
-  YGUnit padding_right_unit = 48; // YGUnit.YGU_UNDEFINED
-  float padding_right = 49;
-  YGUnit padding_bottom_unit = 50; // YGUnit.YGU_UNDEFINED
-  float padding_bottom = 51;
+  optional YGUnit padding_left_unit = 44; // YGUnit.YGU_UNDEFINED
+  optional float padding_left = 45;
+  optional YGUnit padding_top_unit = 46; // YGUnit.YGU_UNDEFINED
+  optional float padding_top = 47;
+  optional YGUnit padding_right_unit = 48; // YGUnit.YGU_UNDEFINED
+  optional float padding_right = 49;
+  optional YGUnit padding_bottom_unit = 50; // YGUnit.YGU_UNDEFINED
+  optional float padding_bottom = 51;
 }
