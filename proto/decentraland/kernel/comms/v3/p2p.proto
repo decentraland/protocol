@@ -14,14 +14,14 @@ message Packet {
 }
 
 message MeshStatusMessage {
-  repeated string connectedTo = 1;
+  repeated string connected_to = 1;
 }
 
 message MeshUpdateMessage {
   string source = 1;
   oneof data {
-    string connectedTo = 2;
-    string disconnectedFrom = 3;
+    string connected_to = 2;
+    string disconnected_from = 3;
     MeshStatusMessage status = 4;
   }
 }
