@@ -12,3 +12,16 @@ message Packet {
   repeated Edge edges = 2;
   bytes payload = 3;
 }
+
+message MeshStatusMessage {
+  repeated string connectedTo = 1;
+}
+
+message MeshUpdateMessage {
+  string source = 1;
+  oneof data {
+    string connectedTo = 2;
+    string disconnectedFrom = 3;
+    MeshStatusMessage status = 4;
+  }
+}
