@@ -20,6 +20,11 @@ message SubscribeRequest {
   string topic = 1;
 }
 
+message PublishRequest {
+  string topic = 1;
+  bytes payload = 2;
+}
+
 message UnsubscribeRequest {
   string topic = 1;
 }
