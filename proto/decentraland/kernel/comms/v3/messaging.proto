@@ -37,7 +37,7 @@ message ServerMessage {
 
 message ClientMessage {
   oneof message {
-    SignedChallenge signed_challege = 1;
+    SignedChallenge signed_challenge = 1;
     MessageRequest message_request = 2;
     SubscribeRequest subscribe_request = 3;
     UnsubscribeRequest unsubscribe_request = 4;
