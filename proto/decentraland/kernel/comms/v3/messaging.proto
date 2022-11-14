@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package decentraland.kernel.comms.v3;
+
+message ChallengeRequired {
+  string challenge_to_sign = 1;
+  bool already_connected = 2;
+}
+
+message SignedChallenge {
+  string auth_chain_json = 1;
+}
+
+message MessageRequest {
+  repeated string targets = 1;
+  bytes payload = 2;
+}
+
+message SubscribeRequest {
+  string topic = 1;
+}
+
+message UnsubscribeRequest {
+  string topic = 1;
+}
+
+message ServerMessage {
+  oneof message {
+    ChallengeRequired challengeRequired = 1;
+    bytes relayedMessage = 2;
+  }
+}
+
+message ClientMessage {
+  oneof message {
+    SignedChallenge signedChallege = 1;
+    MessageRequest messageRequest = 2;
+    SubscribeRequest subscribeRequest = 3;
+    UnsubscribeRequest unsubscribeRequest = 4;
+  }
+}
