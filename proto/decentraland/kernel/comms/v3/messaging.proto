@@ -31,16 +31,16 @@ message UnsubscribeRequest {
 
 message ServerMessage {
   oneof message {
-    ChallengeRequired challengeRequired = 1;
-    bytes relayedMessage = 2;
+    ChallengeRequired challenge_required = 1;
+    bytes relayed_message = 2;
   }
 }
 
 message ClientMessage {
   oneof message {
-    SignedChallenge signedChallege = 1;
-    MessageRequest messageRequest = 2;
-    SubscribeRequest subscribeRequest = 3;
-    UnsubscribeRequest unsubscribeRequest = 4;
+    SignedChallenge signed_challege = 1;
+    MessageRequest message_request = 2;
+    SubscribeRequest subscribe_request = 3;
+    UnsubscribeRequest unsubscribe_request = 4;
   }
 }
