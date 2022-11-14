@@ -25,7 +25,8 @@ message UnsubscribeRequest {
 
 message SubscriptionMessage {
   string topic = 1;
-  bytes payload = 2;
+  string sender = 2;
+  bytes body = 3;
 }
 
 message ServerMessage {
