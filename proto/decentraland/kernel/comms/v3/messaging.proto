@@ -10,11 +10,6 @@ message SignedChallenge {
   string auth_chain_json = 1;
 }
 
-message MessageRequest {
-  repeated string targets = 1;
-  bytes payload = 2;
-}
-
 message SubscribeRequest {
   string topic = 1;
 }
@@ -28,17 +23,21 @@ message UnsubscribeRequest {
   string topic = 1;
 }
 
+message SubscriptionMessage {
+  string topic = 1;
+  bytes payload = 2;
+}
+
 message ServerMessage {
   oneof message {
     ChallengeRequired challenge_required = 1;
-    bytes relayed_message = 2;
+    SubscriptionMessage subscription_message = 2;
   }
 }
 
 message ClientMessage {
   oneof message {
     SignedChallenge signed_challenge = 1;
-    MessageRequest message_request = 2;
     SubscribeRequest subscribe_request = 3;
     UnsubscribeRequest unsubscribe_request = 4;
     PublishRequest publish_request = 5;
