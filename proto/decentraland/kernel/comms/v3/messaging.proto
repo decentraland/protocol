@@ -4,7 +4,6 @@ package decentraland.kernel.comms.v3;
 
 message ChallengeRequired {
   string challenge_to_sign = 1;
-  bool already_connected = 2;
 }
 
 message SignedChallenge {
@@ -42,5 +41,6 @@ message ClientMessage {
     MessageRequest message_request = 2;
     SubscribeRequest subscribe_request = 3;
     UnsubscribeRequest unsubscribe_request = 4;
+    PublishRequest publish_request = 5;
   }
 }
