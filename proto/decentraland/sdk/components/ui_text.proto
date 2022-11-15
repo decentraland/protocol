@@ -10,7 +10,7 @@ option (common.ecs_component_id) = 1052;
 
 message PBUiText {
   string value = 1;
-  optional decentraland.common.Color3 color = 2; // default=(1.0,1.0,1.0)
+  optional decentraland.common.Color4 color = 2; // default=(1.0,1.0,1.0,1.0)
   optional common.TextAlignMode text_align = 3; // default='center'
   optional common.Font font = 4; // default=0
   optional int32 font_size = 5; // default=10
