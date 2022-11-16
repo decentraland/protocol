@@ -13,9 +13,8 @@ enum RaycastQueryType {
 }
 
 message PBRaycast {
-  int32 timestamp = 1;
-  decentraland.common.Vector3 origin = 2;
-  decentraland.common.Vector3 direction = 3;
-  float max_distance = 4;
-  RaycastQueryType query_type = 5;
+  decentraland.common.Vector3 origin = 1;
+  decentraland.common.Vector3 direction = 2;
+  float max_distance = 3;
+  RaycastQueryType query_type = 4;
 }
