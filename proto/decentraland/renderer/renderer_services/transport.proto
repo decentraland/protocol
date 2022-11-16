@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package decentraland.renderer;
+package decentraland.renderer.renderer_services;
 
 message Payload {
   bytes payload = 1;
