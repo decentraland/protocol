@@ -175,9 +175,15 @@ message EventData {
 message CrdtSendToRendererRequest {
   bytes data = 1;
 }
-message CrdtSendToResponse {}
 
+message CrdtSendToResponse {
+  // list of CRDT messages coming back from the renderer
+  repeated bytes data = 1;
+}
+
+// deprecated
 message CrdtMessageFromRendererRequest {}
+// deprecated
 message CrdtMessageFromRendererResponse {
   repeated bytes data = 1;
 }
@@ -188,5 +194,7 @@ service EngineApiService {
   rpc Unsubscribe(UnsubscribeRequest) returns (UnsubscribeResponse) {}
 
   rpc CrdtSendToRenderer(CrdtSendToRendererRequest) returns (CrdtSendToResponse) {}
+  
+  // deprecated, this response was merged into CrdtSendToResponse
   rpc CrdtGetMessageFromRenderer(CrdtMessageFromRendererRequest) returns (CrdtMessageFromRendererResponse) {}
 }
