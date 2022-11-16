@@ -15,7 +15,7 @@ message SubscribeRequest {
 }
 
 message PublishRequest {
-  string topic = 1;
+  repeated string topics = 1;
   bytes payload = 2;
 }
 
