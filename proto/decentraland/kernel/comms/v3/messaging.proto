@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package decentraland.kernel.comms.v3;
 
+import "decentraland/common/vectors.proto";
+
 message ChallengeRequired {
   string challenge_to_sign = 1;
 }
