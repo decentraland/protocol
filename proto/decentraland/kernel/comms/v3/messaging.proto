@@ -2,12 +2,6 @@ syntax = "proto3";
 
 package decentraland.kernel.comms.v3;
 
-message Position3DMessage {
-  double x = 1;
-  double y = 2;
-  double z = 3;
-}
-
 message IslandChangedMessage {
   string island_id = 1;
   string conn_str = 2;

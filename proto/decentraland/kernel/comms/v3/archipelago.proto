@@ -13,7 +13,7 @@ message Position3DMessage {
   double z = 3;
 }
 
-message IslandChangedMessage {
+message ArchipelagoIslandChangedMessage {
   string island_id = 1;
   string conn_str = 2;
   optional string from_island_id = 3;
