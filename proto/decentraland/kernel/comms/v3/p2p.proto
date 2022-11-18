@@ -3,25 +3,25 @@ syntax = "proto3";
 package decentraland.kernel.comms.v3;
 
 message Edge {
-  string u = 1;
-  string v = 2;
+  uint32 u = 1;
+  uint32 v = 2;
 }
 
 message Packet {
-  string source = 1; // address
+  uint32 source = 1; 
   repeated Edge edges = 2;
   bytes payload = 3;
 }
 
 message MeshStatusMessage {
-  repeated string connected_to = 1;
+  repeated uint32 connected_to = 1;
 }
 
 message MeshUpdateMessage {
-  string source = 1;
+  uint32 source = 1;
   oneof data {
-    string connected_to = 2;
-    string disconnected_from = 3;
+    uint32 connected_to = 2;
+    uint32 disconnected_from = 3;
     MeshStatusMessage status = 4;
   }
 }

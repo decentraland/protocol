@@ -2,6 +2,23 @@ syntax = "proto3";
 
 package decentraland.kernel.comms.v3;
 
+message Position3DMessage {
+  double x = 1;
+  double y = 2;
+  double z = 3;
+}
+
+message IslandChangedMessage {
+  string island_id = 1;
+  string conn_str = 2;
+  optional string from_island_id = 3;
+  map<uint32, Position3DMessage> peers = 4;
+}
+
+message WelcomeMessage {
+  uint32 alias = 1;
+}
+
 message ChallengeRequired {
   string challenge_to_sign = 1;
 }
@@ -25,7 +42,7 @@ message UnsubscribeRequest {
 
 message SubscriptionMessage {
   string topic = 1;
-  string sender = 2;
+  uint32 sender = 2;
   bytes body = 3;
 }
 
