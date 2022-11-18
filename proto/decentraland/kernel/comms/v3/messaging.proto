@@ -46,6 +46,7 @@ message ServerMessage {
   oneof message {
     ChallengeRequired challenge_required = 1;
     SubscriptionMessage subscription_message = 2;
+    WelcomeMessage welcome = 3;
   }
 }
 
