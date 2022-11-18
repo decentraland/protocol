@@ -2,11 +2,13 @@ syntax = "proto3";
 
 package decentraland.kernel.comms.v3;
 
+import "decentraland/common/vectors.proto";
+
 message IslandChangedMessage {
   string island_id = 1;
   string conn_str = 2;
   optional string from_island_id = 3;
-  map<uint32, Position3DMessage> peers = 4;
+  map<uint32,   decentraland.common.PositionD> peers = 4;
 }
 
 message WelcomeMessage {
