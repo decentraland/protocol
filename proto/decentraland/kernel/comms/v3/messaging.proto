@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package decentraland.kernel.comms.v3;
 
-import "decentraland/common/vectors.proto";
-
 message ChallengeRequired {
   string challenge_to_sign = 1;
 }
@@ -31,11 +29,6 @@ message SubscriptionMessage {
   bytes body = 3;
 }
 
-message HeartbeatMessage {
-  decentraland.common.Position position = 1;
-  optional string desired_room = 2;
-}
-
 message ServerMessage {
   oneof message {
     ChallengeRequired challenge_required = 1;
@@ -49,6 +42,6 @@ message ClientMessage {
     SubscribeRequest subscribe_request = 3;
     UnsubscribeRequest unsubscribe_request = 4;
     PublishRequest publish_request = 5;
-    HeartbeatMessage heartbeat = 6;
+    bytes heartbeat = 6;
   }
 }
