@@ -20,12 +20,12 @@ message ArchipelagoIslandChangedMessage {
   map<string, Position3DMessage> peers = 4;
 }
 
-message LeftIslandMessage {
+message ArchipelagoLeftIslandMessage {
   string island_id = 1;
   string peer_id = 2;
 }
 
-message JoinIslandMessage {
+message ArchipelagoJoinIslandMessage {
   string island_id = 1;
   string peer_id = 2;
 }

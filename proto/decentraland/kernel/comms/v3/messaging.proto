@@ -11,6 +11,16 @@ message IslandChangedMessage {
   map<uint32, decentraland.common.Position> peers = 4;
 }
 
+message LeftIslandMessage {
+  string island_id = 1;
+  uint32 peer_id = 2;
+}
+
+message JoinIslandMessage {
+  string island_id = 1;
+  uint32 peer_id = 2;
+}
+
 message WelcomeMessage {
   uint32 alias = 1;
 }
