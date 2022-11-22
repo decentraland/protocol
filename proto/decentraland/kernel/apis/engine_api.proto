@@ -175,18 +175,42 @@ message EventData {
 message CrdtSendToRendererRequest {
   bytes data = 1;
 }
-message CrdtSendToResponse {}
 
+message CrdtSendToResponse {
+  // list of CRDT messages coming back from the renderer
+  repeated bytes data = 1;
+}
+
+message CrdtGetStateRequest {}
+message CrdtGetStateResponse {
+  // returns true if the returned state has scene-created entities
+  bool has_entities = 1;
+  // static entities data (root entity, camera, etc) and scene-created entities
+  repeated bytes data = 2;
+}
+
+// deprecated
 message CrdtMessageFromRendererRequest {}
+// deprecated
 message CrdtMessageFromRendererResponse {
   repeated bytes data = 1;
 }
 
 service EngineApiService {
+  // support for legacy SDK events.
+
   rpc SendBatch(ManyEntityAction) returns (SendBatchResponse) {}
   rpc Subscribe(SubscribeRequest) returns (SubscribeResponse) {}
   rpc Unsubscribe(UnsubscribeRequest) returns (UnsubscribeResponse) {}
 
+  // send information of the CRDT messages to the renderer. It returns the CRDT changes back from the renderer
+  // like raycast responses or the player's position
   rpc CrdtSendToRenderer(CrdtSendToRendererRequest) returns (CrdtSendToResponse) {}
+
+  // retrieves the current _full_ state of the entities from the renderer. This function is used to hidrate
+  // the state of the scenes when the code of the worker is stopped/resumed
+  rpc CrdtGetState(CrdtSendToRendererRequest) returns (CrdtSendToResponse) {}
+
+  // @deprecated, this response was merged into CrdtSendToResponse
   rpc CrdtGetMessageFromRenderer(CrdtMessageFromRendererRequest) returns (CrdtMessageFromRendererResponse) {}
 }
