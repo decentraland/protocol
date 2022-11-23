@@ -19,9 +19,10 @@ message MeshStatusMessage {
 
 message MeshUpdateMessage {
   uint32 source = 1;
+  uint32 id = 2;
   oneof data {
-    uint32 connected_to = 2;
-    uint32 disconnected_from = 3;
-    MeshStatusMessage status = 4;
+    uint32 connected_to = 3;
+    uint32 disconnected_from = 4;
+    MeshStatusMessage status = 5;
   }
 }
