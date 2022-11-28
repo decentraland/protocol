@@ -5,29 +5,29 @@ package decentraland.renderer.kernel_services;
 message PerformanceReportRequest {
     string samples = 1;
     bool fps_is_capped = 2;
-    fixed32 hiccups_in_thousand_frames = 3;
+    sfixed32 hiccups_in_thousand_frames = 3;
     float hiccups_time = 4;
     float total_time = 5;
-    fixed32 gltf_in_progress = 6;
-    fixed32 gltf_failed = 7;
-    fixed32 gltf_cancelled = 8;
-    fixed32 gltf_loaded = 9;
-    fixed32 ab_in_progress = 10;
-    fixed32 ab_failed = 11;
-    fixed32 ab_cancelled = 12;
-    fixed32 ab_loaded = 13;
-    fixed32 gltf_textures_loaded = 14;
-    fixed32 ab_textures_loaded = 15;
-    fixed32 promise_textures_loaded = 16;
-    fixed32 enqueued_messages = 17;
-    fixed32 processed_messages = 18;
-    fixed32 player_count = 19;
-    fixed32 load_radius = 20;
-    fixed32 draw_calls = 21; //int32 *
-    fixed64 memory_reserved = 22; //long, in total bytes *
-    fixed64 memory_usage = 23; //long, in total bytes *
-    fixed64 total_gc_alloc = 24; //long, in total bytes, its the sum of all GCAllocs per frame over 1000 frames *
-    map<fixed64, fixed64> scene_scores = 25;
+    sfixed32 gltf_in_progress = 6;
+    sfixed32 gltf_failed = 7;
+    sfixed32 gltf_cancelled = 8;
+    sfixed32 gltf_loaded = 9;
+    sfixed32 ab_in_progress = 10;
+    sfixed32 ab_failed = 11;
+    sfixed32 ab_cancelled = 12;
+    sfixed32 ab_loaded = 13;
+    sfixed32 gltf_textures_loaded = 14;
+    sfixed32 ab_textures_loaded = 15;
+    sfixed32 promise_textures_loaded = 16;
+    sfixed32 enqueued_messages = 17;
+    sfixed32 processed_messages = 18;
+    sfixed32 player_count = 19;
+    sfixed32 load_radius = 20;
+    sfixed32 draw_calls = 21; //int32 *
+    sfixed64 memory_reserved = 22; //long, in total bytes *
+    sfixed64 memory_usage = 23; //long, in total bytes *
+    sfixed64 total_gc_alloc = 24; //long, in total bytes, its the sum of all GCAllocs per frame over 1000 frames *
+    map<sfixed64, sfixed64> scene_scores = 25;
 }
 
 message PerformanceReportResponse {}
