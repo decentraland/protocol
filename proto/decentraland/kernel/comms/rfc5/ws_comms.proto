@@ -68,9 +68,12 @@ message WsIdentification {
 /**
  * This message is received by the peers when the same address logs in in a
  * different session. It should signal that the client should be shut down and not
- * retry any new comms connection.
+ * retry any new comms connection. It can also be used to reject new users joining when
+ * the room capacity has been reached.
  */
-message WsKicked {}
+message WsKicked {
+  string reason = 1;
+}
 
 message WsPacket {
   oneof message {
