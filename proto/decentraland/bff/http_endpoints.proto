@@ -11,6 +11,7 @@ message AboutResponse {
   CommsInfo comms = 4;
   LambdasInfo lambdas = 5;
   optional BffInfo bff = 6;
+  bool accepting_users = 7;
 
   message MinimapConfiguration {
     bool enabled = 1;
