@@ -2,28 +2,28 @@ syntax = "proto3";
 
 package decentraland.renderer.kernel_services;
 
-import "decentraland/renderer/common/friends.proto";
+// import "decentraland/renderer/common/friends.proto";
 
 message FriendRequest {
-  string friendRequestId = 1;
+  string friend_request_id = 1;
   uint64 timestamp = 2;
   string from = 3; 
   string to = 4;
-  string messageBody = 5;
+  string message_body = 5;
 }
 
 message GetFriendRequestsPayload {
-  int32 sentLimit = 1; // max amount of entries to receive
-  int32 sentSkip = 2; // the amount of sent requests to skip
-  int32 receivedLimit = 3; // max amount of entries to receive
-  int32 receivedSkip = 4; // the amount of received requests to skip
+  int32 sent_limit = 1; // max amount of entries to receive
+  int32 sent_skip = 2; // the amount of sent requests to skip
+  int32 received_limit = 3; // max amount of entries to receive
+  int32 received_skip = 4; // the amount of received requests to skip
 }
 
 message GetFriendRequestsReply {
-  repeated FriendRequest requestedTo = 1;
-  repeated FriendRequest requestedFrom = 2;
-  int32 totalReceivedFriendRequests = 3; // total amount of friend requests received
-  int32 totalSentFriendRequests = 4; // total amount of friend requests sent
+  repeated FriendRequest requested_to = 1;
+  repeated FriendRequest requested_from = 2;
+  int32 total_received_friend_requests = 3; // total amount of friend requests received
+  int32 total_sent_friend_requests = 4; // total amount of friend requests sent
 }
 
 service FriendRequestKernelService {
