@@ -15,14 +15,10 @@ jobs:
       dcl_protocol_s3_bucket_key: ${{ steps.publish_dcl_protocol.outputs.s3-bucket-key }}
     steps:
       - uses: actions/checkout@v2
-# TODO: After we release, check .proto compatibility
-# Release track: https://github.com/decentraland/sdk/issues?q=is%3Aopen+is%3Aissue+milestone%3A%22ECS+7.0.0+-+Internal+beta%22
-#      - name: install proto-compatibilty tool
-#        run: npm i -g proto-compatibility-tool protobufjs 
       - name: install
         run: make install
-      - name: buf build and lint
-        run: make buf-lint
+      - name: buf build
+        run: make buf-build
       - name: build and compile test
         run: make test
       - name: publish packages

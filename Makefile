@@ -9,7 +9,12 @@ node_modules/.bin/buf:
 
 buf-lint: node_modules/.bin/buf
 	./node_modules/.bin/buf lint proto/
+
+buf-build: node_modules/.bin/buf
 	./node_modules/.bin/buf build proto/
+
+buf-breaking: node_modules/.bin/buf
+	./node_modules/.bin/buf breaking proto/ --against 'https://github.com/decentraland/protocol.git#subdir=proto'
 
 test: buf-lint
 	bash scripts/test.sh
