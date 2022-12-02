@@ -1,7 +1,9 @@
 version: v1
 breaking:
   use:
-    - FILE
+    - WIRE_JSON
+  ignore:
+    - proto/google/api/annotations.proto
 lint:
   use:
     - DIRECTORY_SAME_PACKAGE
@@ -42,4 +44,3 @@ lint:
     # - SERVICE_SUFFIX
   ignore:
     - google
-    - decentraland/renderer/engine_interface.proto
