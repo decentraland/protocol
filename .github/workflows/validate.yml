@@ -11,6 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          ref: main
+      - uses: actions/checkout@v2
+        with:
           fetch-depth: 0
       - name: install
         run: make install
