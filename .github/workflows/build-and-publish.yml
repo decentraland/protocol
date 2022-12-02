@@ -15,8 +15,6 @@ jobs:
       dcl_protocol_s3_bucket_key: ${{ steps.publish_dcl_protocol.outputs.s3-bucket-key }}
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: install
         run: make install
       - name: buf build and lint
