@@ -15,6 +15,5 @@ enum TextAlignMode {
 }
 
 enum Font {
-  F_LIBERATION_SANS = 0;
-  F_SANS_SERIF = 1;
+  F_SANS_SERIF = 0;
 }
