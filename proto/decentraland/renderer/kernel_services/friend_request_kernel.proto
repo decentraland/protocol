@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package decentraland.renderer.kernel_services;
-
 import "decentraland/renderer/common/friends.proto";
+
+package decentraland.renderer.kernel_services;
 
 message FriendRequest {
   string friend_request_id = 1;
@@ -29,7 +29,7 @@ message GetFriendRequestsReplyOk {
 message GetFriendRequestsReply {
   oneof message {
     GetFriendRequestsReplyOk reply = 1;
-    FriendshipErrorCode error = 2;
+    decentraland.renderer.common.FriendshipErrorCode error = 2;
   }
 }
 
