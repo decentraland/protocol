@@ -10,7 +10,7 @@ node_modules/.bin/buf:
 buf-lint: node_modules/.bin/buf
 	./node_modules/.bin/buf lint proto/
 	./node_modules/.bin/buf build proto/
-	./node_modules/.bin/buf breaking proto/ --against '.git#branch=main'
+	./node_modules/.bin/buf breaking proto/ --against '.git#branch=main,subdir=proto'
 
 test: buf-lint
 	bash scripts/test.sh

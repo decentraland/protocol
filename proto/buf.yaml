@@ -3,7 +3,7 @@ breaking:
   use:
     - WIRE_JSON
   ignore:
-    - proto/google/api/annotations.proto
+    - google
 lint:
   use:
     - DIRECTORY_SAME_PACKAGE
