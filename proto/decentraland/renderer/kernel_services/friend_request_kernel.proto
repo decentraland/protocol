@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package decentraland.renderer.kernel_services;
 
-// import "decentraland/renderer/common/friends.proto";
+import "decentraland/renderer/common/friends.proto";
 
 message FriendRequest {
   string friend_request_id = 1;
@@ -19,11 +19,18 @@ message GetFriendRequestsPayload {
   int32 received_skip = 4; // the amount of received requests to skip
 }
 
-message GetFriendRequestsReply {
+message GetFriendRequestsReplyOk {
   repeated FriendRequest requested_to = 1;
   repeated FriendRequest requested_from = 2;
   int32 total_received_friend_requests = 3; // total amount of friend requests received
   int32 total_sent_friend_requests = 4; // total amount of friend requests sent
+}
+
+message GetFriendRequestsReply {
+  oneof message {
+    GetFriendRequestsReplyOk reply = 1;
+    FriendshipErrorCode error = 2;
+  }
 }
 
 service FriendRequestKernelService {
