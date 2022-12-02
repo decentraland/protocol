@@ -44,4 +44,4 @@ lint:
     # - SERVICE_SUFFIX
   ignore:
     - google
-    - proto/decentraland/renderer/engine_interface.proto
+    - decentraland/renderer/engine_interface.proto
