@@ -50,5 +50,5 @@ service RpcSceneControllerService {
   // back and forth of CRDT messages
   rpc SendCrdt(CRDTSceneMessage) returns (CRDTSceneMessage) {}
   // back and forth of CRDT messages
-  rpc GetCurrentState(GetCurrentStateMessage) returns (CRDTSceneMessage) {}
+  rpc GetCurrentState(GetCurrentStateMessage) returns (CRDTSceneCurrentState) {}
 }
