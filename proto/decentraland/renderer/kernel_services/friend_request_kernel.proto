@@ -2,7 +2,14 @@ syntax = "proto3";
 
 package decentraland.renderer.kernel_services;
 
-import "decentraland/renderer/kernel_services/common/friendship_error_code.proto";
+enum FriendshipErrorCode {
+  FEC_TOO_MANY_REQUESTS_SENT = 0; // Any uncategorized friend request related error
+  FEC_NOT_ENOUGH_TIME_PASSED = 1;
+  FEC_BLOCKED_USER = 2;
+  FEC_NON_EXISTING_USER = 3;
+  FEC_INVALID_REQUEST = 4;
+  FEC_UNKNOWN = 5;
+}
 
 message FriendRequest {
   string friend_request_id = 1;
@@ -29,7 +36,7 @@ message GetFriendRequestsReplyOk {
 message GetFriendRequestsReply {
   oneof message {
     GetFriendRequestsReplyOk reply = 1;
-    common.FriendshipErrorCode error = 2;
+    FriendshipErrorCode error = 2;
   }
 }
 
