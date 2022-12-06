@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package decentraland.renderer.kernel_services;
 
-import "decentraland/renderer/kernel_services/common/friends.proto";
+import "decentraland/renderer/kernel_services/common/friendship_error_code.proto";
 
 message FriendRequest {
   string friend_request_id = 1;
