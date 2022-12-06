@@ -19,18 +19,19 @@ message FriendRequest {
   string message_body = 5;
 }
 
+// Get friend requests
 message GetFriendRequestsPayload {
-  int32 sent_limit = 1; // max amount of entries to receive
-  int32 sent_skip = 2; // the amount of sent requests to skip
-  int32 received_limit = 3; // max amount of entries to receive
-  int32 received_skip = 4; // the amount of received requests to skip
+  int32 sent_limit = 1; // Max amount of entries of sent friend requests to request
+  int32 sent_skip = 2; // The amount of entries of sent friend requests to skip
+  int32 received_limit = 3; // Max amount of entries of received friend requests to request
+  int32 received_skip = 4; // The amount of entries of received friend requests to skip
 }
 
 message GetFriendRequestsReplyOk {
-  repeated FriendRequest requested_to = 1;
-  repeated FriendRequest requested_from = 2;
-  int32 total_received_friend_requests = 3; // total amount of friend requests received
-  int32 total_sent_friend_requests = 4; // total amount of friend requests sent
+  repeated FriendRequest requested_to = 1; // Friend request info on the requests you've sent to users
+  repeated FriendRequest requested_from = 2; // Friend request info on the requests you've received from users
+  int32 total_received_friend_requests = 3; // Total amount of friend requests received
+  int32 total_sent_friend_requests = 4; // Total amount of friend requests sent
 }
 
 message GetFriendRequestsReply {
@@ -40,6 +41,75 @@ message GetFriendRequestsReply {
   }
 }
 
+// Send friend request
+message SendFriendRequestPayload {
+  string user_id = 1;
+  string message_body = 2;
+}
+
+message SendFriendRequestReplyOk {
+  FriendRequest friend_request = 1; // Friend request info on the request you've sent to a user
+}
+
+message SendFriendRequestReply {
+  oneof message {
+    SendFriendRequestReplyOk reply = 1;
+    FriendshipErrorCode error = 2;
+  }
+}
+
+// Cancel friend request
+message CancelFriendRequestPayload {
+  string friend_request_id = 1;
+}
+
+message CancelFriendRequestReplyOk {
+  FriendRequest friend_request = 1; // Friend request info on the request you've canceled
+}
+
+message CancelFriendRequestReply {
+  oneof message {
+    CancelFriendRequestReplyOk reply = 1;
+    FriendshipErrorCode error = 2;
+  }
+}
+
+// Accept friend request
+message AcceptFriendRequestPayload {
+  string friend_request_id = 1;
+}
+
+message AcceptFriendRequestReplyOk {
+  string friend_request_id = 1;
+}
+
+message AcceptFriendRequestReply {
+  oneof message {
+    AcceptFriendRequestReplyOk reply = 1;
+    FriendshipErrorCode error = 2;
+  }
+}
+
+// Reject friend request
+message RejectFriendRequestPayload {
+  string friend_request_id = 1;
+}
+
+message RejectFriendRequestReplyOk {
+  string friend_request_id = 1;
+}
+
+message RejectFriendRequestReply {
+  oneof message {
+    RejectFriendRequestReplyOk reply = 1;
+    FriendshipErrorCode error = 2;
+  }
+}
+
 service FriendRequestKernelService {
   rpc GetFriendRequests(GetFriendRequestsPayload) returns (GetFriendRequestsReply) {}
+  rpc SendFriendRequest(SendFriendRequestPayload) returns (SendFriendRequestReply) {}
+  rpc CancelFriendRequest(CancelFriendRequestPayload) returns (CancelFriendRequestReply) {}
+  rpc AcceptFriendRequest(AcceptFriendRequestPayload) returns (AcceptFriendRequestReply) {}
+  rpc RejectFriendRequest(RejectFriendRequestPayload) returns (RejectFriendRequestReply) {}
 }
