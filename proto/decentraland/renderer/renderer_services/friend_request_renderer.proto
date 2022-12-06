@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package decentraland.renderer.renderer_services;
+
+message AddFriendRequestPayload {
+    string friend_request_id = 1;
+    uint64 timestamp = 2;
+    string from = 3;
+    string to = 4;
+    string message_body = 5;
+}
+
+message AddFriendRequestReply {}
+
+service FriendRequestRendererService {
+    rpc AddFriendRequest(AddFriendRequestPayload) returns (AddFriendRequestReply) {}
+}
