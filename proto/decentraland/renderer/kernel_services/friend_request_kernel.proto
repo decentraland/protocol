@@ -11,12 +11,12 @@ enum FriendshipErrorCode {
   FEC_UNKNOWN = 5;
 }
 
-message FriendRequest {
+message FriendRequestInfo {
   string friend_request_id = 1;
   uint64 timestamp = 2;
-  string from = 3; 
+  string from = 3;
   string to = 4;
-  string message_body = 5;
+  optional string message_body = 5;
 }
 
 // Get friend requests
@@ -28,8 +28,8 @@ message GetFriendRequestsPayload {
 }
 
 message GetFriendRequestsReplyOk {
-  repeated FriendRequest requested_to = 1; // Friend request info on the requests you've sent to users
-  repeated FriendRequest requested_from = 2; // Friend request info on the requests you've received from users
+  repeated FriendRequestInfo requested_to = 1; // Friend request info on the requests you've sent to users
+  repeated FriendRequestInfo requested_from = 2; // Friend request info on the requests you've received from users
   int32 total_received_friend_requests = 3; // Total amount of friend requests received
   int32 total_sent_friend_requests = 4; // Total amount of friend requests sent
 }
@@ -48,7 +48,7 @@ message SendFriendRequestPayload {
 }
 
 message SendFriendRequestReplyOk {
-  FriendRequest friend_request = 1; // Friend request info on the request you've sent to a user
+  FriendRequestInfo friend_request = 1; // Friend request info on the request you've sent to a user
 }
 
 message SendFriendRequestReply {
@@ -64,7 +64,7 @@ message CancelFriendRequestPayload {
 }
 
 message CancelFriendRequestReplyOk {
-  FriendRequest friend_request = 1; // Friend request info on the request you've canceled
+  FriendRequestInfo friend_request = 1; // Friend request info on the request you've canceled
 }
 
 message CancelFriendRequestReply {
