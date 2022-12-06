@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package decentraland.renderer.common;
+package decentraland.renderer.kernel_services.common;
 
 enum FriendshipErrorCode {
   FEC_TOO_MANY_REQUESTS_SENT = 0; // Any uncategorized friend request related error
