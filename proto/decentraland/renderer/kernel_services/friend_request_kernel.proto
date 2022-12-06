@@ -29,7 +29,7 @@ message GetFriendRequestsReplyOk {
 message GetFriendRequestsReply {
   oneof message {
     GetFriendRequestsReplyOk reply = 1;
-    FriendshipErrorCode error = 2;
+    common.FriendshipErrorCode error = 2;
   }
 }
 
