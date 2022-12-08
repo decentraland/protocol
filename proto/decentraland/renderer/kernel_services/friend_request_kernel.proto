@@ -80,7 +80,7 @@ message AcceptFriendRequestPayload {
 }
 
 message AcceptFriendRequestReplyOk {
-  string friend_request_id = 1;
+  FriendRequestInfo friend_request = 1;
 }
 
 message AcceptFriendRequestReply {
@@ -96,7 +96,7 @@ message RejectFriendRequestPayload {
 }
 
 message RejectFriendRequestReplyOk {
-  string friend_request_id = 1;
+  FriendRequestInfo friend_request = 1;
 }
 
 message RejectFriendRequestReply {
