@@ -10,35 +10,35 @@ message RendererFriendRequestInfo {
     optional string message_body = 5;
 }
 
-message AddFriendRequestReply {}
+message RendererAddFriendRequestReply {}
 
-message ApproveFriendRequestPayload {
+message RendererApproveFriendRequestPayload {
     string user_id = 1;
 }
 
-message ApproveFriendRequestReply {}
+message RendererApproveFriendRequestReply {}
 
-message RejectFriendRequestPayload {
+message RendererRejectFriendRequestPayload {
     string user_id = 1;
 }
 
-message RejectFriendRequestReply {}
+message RendererRejectFriendRequestReply {}
 
-message CancelFriendRequestPayload {
+message RendererCancelFriendRequestPayload {
     string user_id = 1;
 }
 
-message CancelFriendRequestReply {}
+message RendererCancelFriendRequestReply {}
 
-message ReceiveFriendRequestPayload {
+message RendererReceiveFriendRequestPayload {
     RendererFriendRequestInfo friend_request = 1;
 }
 
-message ReceiveFriendRequestReply {}
+message RendererReceiveFriendRequestReply {}
 
 service FriendRequestRendererService {
-    rpc ApproveFriendRequest(ApproveFriendRequestPayload) returns (ApproveFriendRequestReply) {}
-    rpc RejectFriendRequest(RejectFriendRequestPayload) returns (RejectFriendRequestReply) {}
-    rpc CancelFriendRequest(CancelFriendRequestPayload) returns (CancelFriendRequestReply) {}
-    rpc ReceiveFriendRequest(ReceiveFriendRequestPayload) returns (ReceiveFriendRequestReply) {}
+    rpc ApproveFriendRequest(RendererApproveFriendRequestPayload) returns (RendererApproveFriendRequestReply) {}
+    rpc RejectFriendRequest(RendererRejectFriendRequestPayload) returns (RendererRejectFriendRequestReply) {}
+    rpc CancelFriendRequest(RendererCancelFriendRequestPayload) returns (RendererCancelFriendRequestReply) {}
+    rpc ReceiveFriendRequest(RendererReceiveFriendRequestPayload) returns (RendererReceiveFriendRequestReply) {}
 }
