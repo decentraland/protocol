@@ -39,9 +39,6 @@ message SystemInfoReportRequest {
     string processor_type = 4;
     fixed32 processor_count = 5;
     fixed32 system_memory_size = 6;
-
-    // TODO: remove useBinaryTransform after ECS7 is fully in prod
-    bool use_binary_transform = 7;
 }
 
 message SystemInfoReportResponse {}
