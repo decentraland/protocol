@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package decentraland.renderer.renderer_services;
 
-message FriendRequestInfo {
+message RendererFriendRequestInfo {
     string friend_request_id = 1;
     uint64 timestamp = 2;
     string from = 3;
@@ -31,7 +31,7 @@ message CancelFriendRequestPayload {
 message CancelFriendRequestReply {}
 
 message ReceiveFriendRequestPayload {
-    FriendRequestInfo friend_request = 1;
+    RendererFriendRequestInfo friend_request = 1;
 }
 
 message ReceiveFriendRequestReply {}
