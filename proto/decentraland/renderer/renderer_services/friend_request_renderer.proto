@@ -2,16 +2,43 @@ syntax = "proto3";
 
 package decentraland.renderer.renderer_services;
 
-message AddFriendRequestPayload {
+message FriendRequestInfo {
     string friend_request_id = 1;
     uint64 timestamp = 2;
     string from = 3;
     string to = 4;
-    string message_body = 5;
+    optional string message_body = 5;
 }
 
 message AddFriendRequestReply {}
 
+message ApproveFriendRequestPayload {
+    string user_id = 1;
+}
+
+message ApproveFriendRequestReply {}
+
+message RejectFriendRequestPayload {
+    string user_id = 1;
+}
+
+message RejectFriendRequestReply {}
+
+message CancelFriendRequestPayload {
+    string user_id = 1;
+}
+
+message CancelFriendRequestReply {}
+
+message ReceiveFriendRequestPayload {
+    FriendRequestInfo friend_request = 1;
+}
+
+message ReceiveFriendRequestReply {}
+
 service FriendRequestRendererService {
-    rpc AddFriendRequest(AddFriendRequestPayload) returns (AddFriendRequestReply) {}
+    rpc ApproveFriendRequest(ApproveFriendRequestPayload) returns (ApproveFriendRequestReply) {}
+    rpc RejectFriendRequest(RejectFriendRequestPayload) returns (RejectFriendRequestReply) {}
+    rpc CancelFriendRequest(CancelFriendRequestPayload) returns (CancelFriendRequestReply) {}
+    rpc ReceiveFriendRequest(ReceiveFriendRequestPayload) returns (ReceiveFriendRequestReply) {}
 }
