@@ -13,8 +13,8 @@ message GetFriendRequestsPayload {
 }
 
 message GetFriendRequestsReplyOk {
-  repeated FriendRequestInfo requested_to = 1; // Friend request info on the requests you've sent to users
-  repeated FriendRequestInfo requested_from = 2; // Friend request info on the requests you've received from users
+  repeated decentraland.renderer.common.FriendRequestInfo requested_to = 1; // Friend request info on the requests you've sent to users
+  repeated decentraland.renderer.common.FriendRequestInfo requested_from = 2; // Friend request info on the requests you've received from users
   int32 total_received_friend_requests = 3; // Total amount of friend requests received
   int32 total_sent_friend_requests = 4; // Total amount of friend requests sent
 }
@@ -22,7 +22,7 @@ message GetFriendRequestsReplyOk {
 message GetFriendRequestsReply {
   oneof message {
     GetFriendRequestsReplyOk reply = 1;
-    FriendshipErrorCode error = 2;
+    decentraland.renderer.common.FriendshipErrorCode error = 2;
   }
 }
 
@@ -33,13 +33,13 @@ message SendFriendRequestPayload {
 }
 
 message SendFriendRequestReplyOk {
-  FriendRequestInfo friend_request = 1; // Friend request info on the request you've sent to a user
+  decentraland.renderer.common.FriendRequestInfo friend_request = 1; // Friend request info on the request you've sent to a user
 }
 
 message SendFriendRequestReply {
   oneof message {
     SendFriendRequestReplyOk reply = 1;
-    FriendshipErrorCode error = 2;
+    decentraland.renderer.common.FriendshipErrorCode error = 2;
   }
 }
 
@@ -49,13 +49,13 @@ message CancelFriendRequestPayload {
 }
 
 message CancelFriendRequestReplyOk {
-  FriendRequestInfo friend_request = 1; // Friend request info on the request you've canceled
+  decentraland.renderer.common.FriendRequestInfo friend_request = 1; // Friend request info on the request you've canceled
 }
 
 message CancelFriendRequestReply {
   oneof message {
     CancelFriendRequestReplyOk reply = 1;
-    FriendshipErrorCode error = 2;
+    decentraland.renderer.common.FriendshipErrorCode error = 2;
   }
 }
 
@@ -65,13 +65,13 @@ message AcceptFriendRequestPayload {
 }
 
 message AcceptFriendRequestReplyOk {
-  FriendRequestInfo friend_request = 1;
+  decentraland.renderer.common.FriendRequestInfo friend_request = 1;
 }
 
 message AcceptFriendRequestReply {
   oneof message {
     AcceptFriendRequestReplyOk reply = 1;
-    FriendshipErrorCode error = 2;
+    decentraland.renderer.common.FriendshipErrorCode error = 2;
   }
 }
 
@@ -81,13 +81,13 @@ message RejectFriendRequestPayload {
 }
 
 message RejectFriendRequestReplyOk {
-  FriendRequestInfo friend_request = 1;
+  decentraland.renderer.common.FriendRequestInfo friend_request = 1;
 }
 
 message RejectFriendRequestReply {
   oneof message {
     RejectFriendRequestReplyOk reply = 1;
-    FriendshipErrorCode error = 2;
+    decentraland.renderer.common.FriendshipErrorCode error = 2;
   }
 }
 

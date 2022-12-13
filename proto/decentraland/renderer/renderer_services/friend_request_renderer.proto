@@ -23,7 +23,7 @@ message CancelFriendRequestPayload {
 message CancelFriendRequestReply {}
 
 message ReceiveFriendRequestPayload {
-    FriendRequestInfo friend_request = 1;
+    decentraland.renderer.common.FriendRequestInfo friend_request = 1;
 }
 
 message ReceiveFriendRequestReply {}
