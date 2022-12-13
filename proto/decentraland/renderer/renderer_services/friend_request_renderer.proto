@@ -10,8 +10,6 @@ message RendererFriendRequestInfo {
     optional string message_body = 5;
 }
 
-message RendererAddFriendRequestReply {}
-
 message RendererApproveFriendRequestPayload {
     string user_id = 1;
 }
