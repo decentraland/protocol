@@ -2,41 +2,35 @@ syntax = "proto3";
 
 package decentraland.renderer.renderer_services;
 
-message RendererFriendRequestInfo {
-    string friend_request_id = 1;
-    uint64 timestamp = 2;
-    string from = 3;
-    string to = 4;
-    optional string message_body = 5;
-}
+import "decentraland/renderer/common/friend_request_common.proto";
 
-message RendererApproveFriendRequestPayload {
+message ApproveFriendRequestPayload {
     string user_id = 1;
 }
 
-message RendererApproveFriendRequestReply {}
+message ApproveFriendRequestReply {}
 
-message RendererRejectFriendRequestPayload {
+message RejectFriendRequestPayload {
     string user_id = 1;
 }
 
-message RendererRejectFriendRequestReply {}
+message RejectFriendRequestReply {}
 
-message RendererCancelFriendRequestPayload {
+message CancelFriendRequestPayload {
     string user_id = 1;
 }
 
-message RendererCancelFriendRequestReply {}
+message CancelFriendRequestReply {}
 
-message RendererReceiveFriendRequestPayload {
-    RendererFriendRequestInfo friend_request = 1;
+message ReceiveFriendRequestPayload {
+    FriendRequestInfo friend_request = 1;
 }
 
-message RendererReceiveFriendRequestReply {}
+message ReceiveFriendRequestReply {}
 
 service FriendRequestRendererService {
-    rpc ApproveFriendRequest(RendererApproveFriendRequestPayload) returns (RendererApproveFriendRequestReply) {}
-    rpc RejectFriendRequest(RendererRejectFriendRequestPayload) returns (RendererRejectFriendRequestReply) {}
-    rpc CancelFriendRequest(RendererCancelFriendRequestPayload) returns (RendererCancelFriendRequestReply) {}
-    rpc ReceiveFriendRequest(RendererReceiveFriendRequestPayload) returns (RendererReceiveFriendRequestReply) {}
+    rpc ApproveFriendRequest(ApproveFriendRequestPayload) returns (ApproveFriendRequestReply) {}
+    rpc RejectFriendRequest(RejectFriendRequestPayload) returns (RejectFriendRequestReply) {}
+    rpc CancelFriendRequest(CancelFriendRequestPayload) returns (CancelFriendRequestReply) {}
+    rpc ReceiveFriendRequest(ReceiveFriendRequestPayload) returns (ReceiveFriendRequestReply) {}
 }
