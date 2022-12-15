@@ -12,7 +12,7 @@ message PBUiDropdown {
   bool accept_empty = 1;
   optional string empty_label = 2;
   repeated string options = 3;
-  int32 selected_index = 4; // default=-1 when accept_empty==true; default=0 when accept_empty==false
+  optional int32 selected_index = 4; // default=-1 when accept_empty==true; default=0 when accept_empty==false
   bool disabled = 5;
   optional decentraland.common.Color4 color = 6; // default=(0.0,0.0,0.0,1.0)
   
