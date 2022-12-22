@@ -53,7 +53,7 @@ service RestrictedActionsService {
   rpc MovePlayerTo(MovePlayerToRequest) returns (MovePlayerToResponse) {}
 
   // TeleportTo will move the user into an absolute world position
-  rpc TeleportTo(MovePlayerToRequest) returns (MovePlayerToResponse) {}
+  rpc TeleportTo(TeleportToRequest) returns (MovePlayerToResponse) {}
 
   // TriggerEmote will trigger an emote in this current user
   rpc TriggerEmote(TriggerEmoteRequest) returns (TriggerEmoteResponse) {}
