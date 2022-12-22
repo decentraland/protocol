@@ -70,8 +70,4 @@ service RestrictedActionsService {
   // Asks the explorer to connect to other communications adapter, this feature
   // can be used to join private game servers
   rpc SetCommunicationsAdapter(CommsAdapterRequest) returns (SuccessResponse) {}
-
-  // Useful when an UI shows up, this method will request the engine to release
-  // the pointer.
-  rpc UnblockPointer(UnblockPointerRequest) returns (SuccessResponse) {}
 }
