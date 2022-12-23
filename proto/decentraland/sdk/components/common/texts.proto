@@ -16,4 +16,6 @@ enum TextAlignMode {
 
 enum Font {
   F_SANS_SERIF = 0;
+  F_SERIF = 1;
+  F_MONOSPACE = 2;
 }
