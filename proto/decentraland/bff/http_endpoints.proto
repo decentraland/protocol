@@ -50,6 +50,7 @@ message AboutResponse {
     optional string version = 2;
     optional string commit_hash = 3;
     string public_url = 4;
+    string public_url_2 = 5;
   }
   message CommsInfo {
     // common properties
