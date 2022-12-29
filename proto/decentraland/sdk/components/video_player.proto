@@ -7,6 +7,9 @@ option (common.ecs_component_id) = 1043;
 message PBVideoPlayer {
    // which file to load
   string src = 1;
+
   bool playing = 2;
   float position = 3;
+  float volume = 4;
+  float playback_rate = 5;
 }
