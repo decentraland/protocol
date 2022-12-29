@@ -10,7 +10,7 @@ import "decentraland/common/border_rect.proto";
 
 message PBUiBackground {
   optional decentraland.common.Color4 color = 1; // default=(1.0, 1.0, 1.0, 1.0), pixel = color * sample2D(texture, uv)
-  optional decentraland.common.Texture texture = 2;
+  optional decentraland.common.TextureUnion texture = 2;
   BackgroundTextureMode texture_mode = 3;
   optional decentraland.common.BorderRect texture_slices = 4; // default=(1/3, 1/3, 1/3, 1/3)
   repeated float uvs = 5; // default=[0,0,0,1,1,0,1,0]: starting from bottom-left vertex clock-wise
