@@ -6,8 +6,15 @@ import "decentraland/sdk/components/common/id.proto";
 
 option (common.ecs_component_id) = 1090;
 
+enum BillboardMode {
+  BM_NONE = 0;
+  BM_X = 1;
+  BM_Y = 2;
+  BM_Z = 3;
+  BM_ALL = 7;
+}
+
 message PBBillboard {
-  optional bool x = 1; // default=true
-  optional bool y = 2; // default=true
-  optional bool z = 3; // default=true
+  // default=BM_ALL
+  optional BillboardMode billboard_mode = 1; 
 }
