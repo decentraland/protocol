@@ -1,0 +1,29 @@
+syntax = "proto3";
+package decentraland.kernel.apis;
+
+// This API will contain all the information related to the world runtime.
+// Things related to the user, players or the scene itself has they own api, and
+// won't live here. (UserIdentity, Players, ParcelIdentity)
+
+message RealmInfo {
+  string domain = 1;
+  string room = 2;
+  string name = 3;
+  string protocol = 4;
+}
+
+message GetRealmResponse {
+  optional RealmInfo current_realm = 1;
+}
+
+message GetTimeResponse {
+  int32 seconds = 1;
+}
+
+message GetRealmRequest {}
+message GetTimeRequest {}
+
+service RuntimeService {
+  rpc GetRealm(GetRealmRequest) returns (GetRealmResponse) {}
+  rpc GetTime(GetTimeRequest) returns (GetTimeResponse) {}
+}
