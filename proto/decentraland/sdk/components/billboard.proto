@@ -10,7 +10,7 @@ enum BillboardMode {
   BM_NONE = 0;
   BM_X = 1;
   BM_Y = 2;
-  BM_Z = 3;
+  BM_Z = 4;
   BM_ALL = 7;
 }
 
