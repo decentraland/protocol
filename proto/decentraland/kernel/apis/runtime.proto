@@ -6,24 +6,24 @@ package decentraland.kernel.apis;
 // won't live here. (UserIdentity, Players, ParcelIdentity)
 
 message RealmInfo {
-  string domain = 1;
-  string room = 2;
-  string name = 3;
-  string protocol = 4;
+  string base_url = 1;
+  string realm_name = 2;
+  int32 network_id = 3;
+  string comms_adapter = 4;
 }
 
 message GetRealmResponse {
-  optional RealmInfo current_realm = 1;
+  optional RealmInfo realm_info = 1;
 }
 
-message GetTimeResponse {
+message GetWorldTimeResponse {
   int32 seconds = 1;
 }
 
 message GetRealmRequest {}
-message GetTimeRequest {}
+message GetWorldTimeRequest {}
 
 service RuntimeService {
   rpc GetRealm(GetRealmRequest) returns (GetRealmResponse) {}
-  rpc GetTime(GetTimeRequest) returns (GetTimeResponse) {}
+  rpc GetWorldTime(GetWorldTimeRequest) returns (GetWorldTimeResponse) {}
 }
