@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package decentraland.renderer.kernel_services;
+
+enum FriendshipStatus {
+    NONE = 1;
+    APPROVED = 2;
+    REJECTED = 3;
+    CANCELLED = 4;
+    REQUESTED_FROM = 5;
+    REQUESTED_TO = 6;
+    DELETED = 7;
+}
+
+message GetFriendshipStatusResponse {
+    FriendshipStatus status = 1;
+}
+
+message GetFriendshipStatusRequest {
+    string user_id = 1;
+}
+
+service FriendsKernelService {
+    rpc GetFriendshipStatus(GetFriendshipStatusRequest) returns (GetFriendshipStatusResponse) {}
+}
