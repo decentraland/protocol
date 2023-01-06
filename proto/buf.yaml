@@ -1,7 +1,9 @@
 version: v1
 breaking:
   use:
-    - FILE
+    - WIRE_JSON
+  ignore:
+    - google
 lint:
   use:
     - DIRECTORY_SAME_PACKAGE

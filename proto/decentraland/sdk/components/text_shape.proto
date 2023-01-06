@@ -20,8 +20,11 @@ message PBTextShape {
   optional float padding_right = 9;
   optional float padding_bottom = 10;
   optional float padding_left = 11;
+  // The amount of additional spacing to add between each lines of text.
   optional float line_spacing = 12;
+  // Allows control over how many lines of text are displayed.
   optional int32 line_count = 13;
+  // Enables text wrapping
   optional bool text_wrapping = 14;
   optional float shadow_blur = 15;
   optional float shadow_offset_x = 16;

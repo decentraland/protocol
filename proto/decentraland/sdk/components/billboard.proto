@@ -7,11 +7,14 @@ import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1090;
 
 enum BillboardMode {
-  BM_ALL_AXES = 0;
-  BM_Y_AXE = 1;
+  BM_NONE = 0;
+  BM_X = 1;
+  BM_Y = 2;
+  BM_Z = 4;
+  BM_ALL = 7;
 }
 
 message PBBillboard {
-  optional BillboardMode billboard_mode = 1; // default=BM_ALL_AXES
-  optional bool opposite_direction = 2; // default=false
+  // default=BM_ALL
+  optional BillboardMode billboard_mode = 1; 
 }
