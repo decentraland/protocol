@@ -14,6 +14,7 @@ enum AvatarAnchorPointType {
 }
 
 message PBAvatarAttach {
-  string avatar_id = 1;
+  // default's to current player avatar id if not provided
+  optional string avatar_id = 1;
   AvatarAnchorPointType anchor_point_id = 2;
 }
