@@ -14,7 +14,7 @@ enum PointerEventType {
   PET_HOVER_LEAVE = 3;
 }
 
-message PBPointerHoverFeedback {
+message PBPointerEvents {
   message Info {
     optional common.InputAction button = 1; // default=InputAction.ANY
     optional string hover_text = 2; // default='Interact'
