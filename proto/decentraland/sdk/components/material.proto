@@ -33,7 +33,7 @@ message PBMaterial {
     optional decentraland.common.TextureUnion emissive_texture = 5; // default = null
     optional decentraland.common.TextureUnion bump_texture = 6; // default = null
   
-    optional decentraland.common.Color3 albedo_color = 7; // default = white;
+    optional decentraland.common.Color4 albedo_color = 7; // default = white;
     optional decentraland.common.Color3 emissive_color = 8; // default = black;
     optional decentraland.common.Color3 reflectivity_color = 9; // default = white;
   
