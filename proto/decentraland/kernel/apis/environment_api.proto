@@ -63,7 +63,9 @@ service EnvironmentApiService {
   rpc IsPreviewMode(IsPreviewModeRequest) returns (PreviewModeResponse) {}
   rpc GetPlatform(GetPlatformRequest) returns (GetPlatformResponse) {}
   rpc AreUnsafeRequestAllowed(AreUnsafeRequestAllowedRequest) returns (AreUnsafeRequestAllowedResponse) {}
+  // @deprecated, use GetCurrentRealm from runtime_api instead
   rpc GetCurrentRealm(GetCurrentRealmRequest) returns (GetCurrentRealmResponse) {}
   rpc GetExplorerConfiguration(GetExplorerConfigurationRequest) returns (GetExplorerConfigurationResponse) {}
+  // @deprecated, use GetTime from runtime_api instead
   rpc GetDecentralandTime(GetDecentralandTimeRequest) returns (GetDecentralandTimeResponse) {}
 }
