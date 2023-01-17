@@ -15,6 +15,7 @@ import public "decentraland/kernel/apis/permissions.proto";
 import public "decentraland/kernel/apis/players.proto";
 import public "decentraland/kernel/apis/portable_experiences.proto";
 import public "decentraland/kernel/apis/restricted_actions.proto";
+import public "decentraland/kernel/apis/runtime.proto";
 import public "decentraland/kernel/apis/signed_fetch.proto";
 import public "decentraland/kernel/apis/social_controller.proto";
 import public "decentraland/kernel/apis/user_action_module.proto";
