@@ -12,4 +12,5 @@ message PBVideoPlayer {
   optional float position = 3; // default 0.0
   optional float volume = 4; // default 1.0
   optional float playback_rate = 5; // default 1.0
+  optional bool loop = 6; // default false
 }
