@@ -23,6 +23,7 @@
   "files": [
     "proto",
     "out-ts",
+    "out-js",
     "public"
   ]
 }
