@@ -12,7 +12,7 @@
   "devDependencies": {
     "@protobuf-ts/protoc": "^2.8.1",
     "proto-compatibility-tool": "^1.1.2-20220925163655.commit-25bd040",
-    "typescript": "^4.8.3"
+    "typescript": "^4.9.4"
   },
   "config": {
     "protocVersion": "21.6"
@@ -23,6 +23,7 @@
   "files": [
     "proto",
     "out-ts",
+    "out-js",
     "public"
   ]
 }

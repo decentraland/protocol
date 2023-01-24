@@ -3,9 +3,11 @@
 set -e # stop execution on first non-zero result
 
 rm -rf "$(pwd)/out-ts" || true
+rm -rf "$(pwd)/out-js" || true
 rm -rf "$(pwd)/out-cs" || true
 
 mkdir -p "$(pwd)/out-ts"
+mkdir -p "$(pwd)/out-js"
 mkdir -p "$(pwd)/out-cs"
 
 for file in "$(pwd)"/public/*.proto; do 
@@ -24,5 +26,4 @@ echo "> Compiling TS project"
 
 node_modules/.bin/tsc -p tsconfig.json
 
-rm -rf out-js || true
 rm -rf out-cs || true
