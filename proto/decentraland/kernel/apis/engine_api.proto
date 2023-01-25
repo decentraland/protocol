@@ -209,7 +209,7 @@ service EngineApiService {
 
   // retrieves the current _full_ state of the entities from the renderer. This function is used to hidrate
   // the state of the scenes when the code of the worker is stopped/resumed
-  rpc CrdtGetState(CrdtSendToRendererRequest) returns (CrdtSendToResponse) {}
+  rpc CrdtGetState(CrdtSendToRendererRequest) returns (CrdtGetStateResponse) {}
 
   // @deprecated, this response was merged into CrdtSendToResponse
   rpc CrdtGetMessageFromRenderer(CrdtMessageFromRendererRequest) returns (CrdtMessageFromRendererResponse) {}
