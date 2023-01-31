@@ -23,7 +23,10 @@ message GetPlayersInSceneRequest {}
 message GetConnectedPlayersRequest {}
 
 service PlayersService {
+    // @deprecated, only available for SDK6 compatibility
     rpc GetPlayerData(GetPlayerDataRequest) returns (PlayersGetUserDataResponse) {}
+    // @deprecated, only available for SDK6 compatibility
     rpc GetPlayersInScene(GetPlayersInSceneRequest) returns (PlayerListResponse) {}
+    // @deprecated, only available for SDK6 compatibility
     rpc GetConnectedPlayers(GetConnectedPlayersRequest)  returns (PlayerListResponse) {}
 }

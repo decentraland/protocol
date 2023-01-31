@@ -199,8 +199,11 @@ message CrdtMessageFromRendererResponse {
 service EngineApiService {
   // support for legacy SDK events.
 
+  // @deprecated
   rpc SendBatch(ManyEntityAction) returns (SendBatchResponse) {}
+  // @deprecated
   rpc Subscribe(SubscribeRequest) returns (SubscribeResponse) {}
+  // @deprecated
   rpc Unsubscribe(UnsubscribeRequest) returns (UnsubscribeResponse) {}
 
   // send information of the CRDT messages to the renderer. It returns the CRDT changes back from the renderer

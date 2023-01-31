@@ -34,7 +34,10 @@ message GetIsEmptyResponse {
 }
 
 service ParcelIdentityService {
+    // @deprecated, only available for SDK6 compatibility
     rpc GetParcel(GetParcelRequest) returns (GetParcelResponse) {}
+    // @deprecated, only available for SDK6 compatibility
     rpc GetSceneId(GetSceneIdRequest) returns (GetSceneIdResponse) {}
+    // @deprecated, only available for SDK6 compatibility
     rpc GetIsEmpty(GetIsEmptyRequest) returns (GetIsEmptyResponse) {}
 }

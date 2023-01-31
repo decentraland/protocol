@@ -46,9 +46,19 @@ message GetUserAccountResponse {
 }
 
 service EthereumControllerService {
+    // @deprecated, only available for SDK6 compatibility. This was a low level API that can
+    // be replaced by any ethereum library on top of the provider
     rpc RequirePayment(RequirePaymentRequest) returns (RequirePaymentResponse) {}
+    // @deprecated, only available for SDK6 compatibility. This was a low level API that can
+    // be replaced by any ethereum library on top of the provider
     rpc SignMessage(SignMessageRequest) returns (SignMessageResponse) {}
+    // @deprecated, only available for SDK6 compatibility. This was a low level API that can
+    // be replaced by any ethereum library on top of the provider
     rpc ConvertMessageToObject(ConvertMessageToObjectRequest) returns (ConvertMessageToObjectResponse) {}
+
     rpc SendAsync(SendAsyncRequest) returns (SendAsyncResponse) {}
+
+    // @deprecated, only available for SDK6 compatibility. This was a low level API that can
+    // be replaced by any ethereum library on top of the provider
     rpc GetUserAccount(GetUserAccountRequest) returns (GetUserAccountResponse) {}
 }

@@ -21,5 +21,7 @@ message SignedFetchRequest {
 }
 
 service SignedFetchService {
+    // SignedFetch is used to authenticate JSON requests in name of the users,
+    // a special scoped signature is generated following the https://adr.decentraland.org/adr/ADR-44
     rpc SignedFetch(SignedFetchRequest) returns (FlatFetchResponse) {}
 }

@@ -24,6 +24,9 @@ message GetRealmRequest {}
 message GetWorldTimeRequest {}
 
 service RuntimeService {
+  // Provides information about the current realm
   rpc GetRealm(GetRealmRequest) returns (GetRealmResponse) {}
+  // Provides information about the Decentraland Time, which is coordinated
+  // across players.
   rpc GetWorldTime(GetWorldTimeRequest) returns (GetWorldTimeResponse) {}
 }
