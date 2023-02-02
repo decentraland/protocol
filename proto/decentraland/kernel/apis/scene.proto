@@ -1,0 +1,13 @@
+syntax = "proto3";
+package decentraland.kernel.apis;
+
+message GetSceneRequest {}
+message GetSceneResponse {
+    string cid = 1;
+    string scene_id = 2;
+    string scene_json = 3;
+}
+
+service SceneService {
+    rpc GetSceneInfo(GetSceneRequest) returns (GetSceneResponse) {}
+}
