@@ -23,10 +23,13 @@ message GetPlayersInSceneRequest {}
 message GetConnectedPlayersRequest {}
 
 service PlayersService {
-    // @deprecated, only available for SDK6 compatibility
+    // Returns data about a specific player, by id
+    // NOTE: To be deprecated after implementing foreign-entities and once the avatar scene uses SDK7
     rpc GetPlayerData(GetPlayerDataRequest) returns (PlayersGetUserDataResponse) {}
-    // @deprecated, only available for SDK6 compatibility
+    // Returns a list of all the ids of players who are currently standing within the parcels of the scene
+    // NOTE: To be deprecated after implementing foreign-entities and once the avatar scene uses SDK7
     rpc GetPlayersInScene(GetPlayersInSceneRequest) returns (PlayerListResponse) {}
-    // @deprecated, only available for SDK6 compatibility
+    // Returns a list of all the ids of players who are currently connected to the same server and grouped together
+    // NOTE: To be deprecated after implementing foreign-entities and once the avatar scene uses SDK7
     rpc GetConnectedPlayers(GetConnectedPlayersRequest)  returns (PlayerListResponse) {}
 }
