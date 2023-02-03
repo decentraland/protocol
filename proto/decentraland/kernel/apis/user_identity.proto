@@ -16,6 +16,7 @@ message GetUserPublicKeyResponse {
 }
 
 service UserIdentityService {
+    // @deprecated, only available for SDK6 compatibility. UseGetUserData
     rpc GetUserPublicKey(GetUserPublicKeyRequest) returns (GetUserPublicKeyResponse) {}
     rpc GetUserData(GetUserDataRequest) returns (GetUserDataResponse) {}
 }

@@ -27,6 +27,8 @@ message HasManyPermissionResponse {
 }
 
 service PermissionsService {
+  // @deprecated, only available for SDK6 compatibility
   rpc HasPermission(HasPermissionRequest) returns (PermissionResponse) {}
+  // @deprecated, only available for SDK6 compatibility
   rpc HasManyPermissions(HasManyPermissionRequest) returns (HasManyPermissionResponse) {}
 }

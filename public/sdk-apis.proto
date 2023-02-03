@@ -20,3 +20,4 @@ import public "decentraland/kernel/apis/signed_fetch.proto";
 import public "decentraland/kernel/apis/social_controller.proto";
 import public "decentraland/kernel/apis/user_action_module.proto";
 import public "decentraland/kernel/apis/user_identity.proto";
+import public "decentraland/kernel/apis/scene.proto";

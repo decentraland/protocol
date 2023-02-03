@@ -8,5 +8,7 @@ message RealSendRequest {
 message RealSendResponse {}
 
 service CommunicationsControllerService {
+    // @deprecated - This API should use a bidirectional binary stream in sdk7
+    // https://github.com/decentraland/sdk/issues/582
     rpc Send(RealSendRequest) returns (RealSendResponse) {}
 }

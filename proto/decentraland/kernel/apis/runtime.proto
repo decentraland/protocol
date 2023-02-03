@@ -10,6 +10,7 @@ message RealmInfo {
   string realm_name = 2;
   int32 network_id = 3;
   string comms_adapter = 4;
+  bool is_preview = 5;
 }
 
 message GetRealmResponse {
@@ -24,6 +25,9 @@ message GetRealmRequest {}
 message GetWorldTimeRequest {}
 
 service RuntimeService {
+  // Provides information about the current realm
   rpc GetRealm(GetRealmRequest) returns (GetRealmResponse) {}
+  // Provides information about the Decentraland Time, which is coordinated
+  // across players.
   rpc GetWorldTime(GetWorldTimeRequest) returns (GetWorldTimeResponse) {}
 }

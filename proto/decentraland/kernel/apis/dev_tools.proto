@@ -8,6 +8,8 @@ message DevToolsBody {
 
 message EventResponse {}
 
+// @deprecated
 service DevToolsService {
+    // @deprecated
     rpc Event(DevToolsBody) returns (EventResponse) {}
 }
