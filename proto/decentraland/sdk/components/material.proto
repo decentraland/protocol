@@ -21,6 +21,7 @@ message PBMaterial {
     optional decentraland.common.TextureUnion texture = 1; // default = null
     optional float alpha_test = 2; // default = 0.5. range value: from 0 to 1
     optional bool cast_shadows = 3; // default =  true
+    optional decentraland.common.Color4 albedo_color = 4; // default = white;
   }
 
   message PbrMaterial {
