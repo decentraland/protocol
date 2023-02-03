@@ -1,11 +1,16 @@
 syntax = "proto3";
 package decentraland.kernel.apis;
 
+import "decentraland/common/content_mapping.proto";
+
 message GetSceneRequest {}
 message GetSceneResponse {
     string cid = 1;
     string scene_id = 2;
     string scene_json = 3;
+    string base_url = 4;
+    string base_url_bundles = 5;
+    decentraland.common.MappingsResponse mappings_response = 6;
 }
 
 service SceneService {

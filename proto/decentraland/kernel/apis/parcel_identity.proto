@@ -3,18 +3,12 @@ package decentraland.kernel.apis;
 
 import "decentraland/common/content_mapping.proto";
 
-message MappingsResponse  {
-    string parcel_id = 1;
-    string root_cid = 2;
-    repeated decentraland.common.ContentMapping contents = 3;
-}
-
 message Land {
     string scene_id = 1;
     string scene_json_data = 2;
     string base_url = 3;
     string base_url_bundles = 4;
-    MappingsResponse mappings_response = 5;
+    decentraland.common.MappingsResponse mappings_response = 5;
 }
 
 message GetParcelRequest {}
