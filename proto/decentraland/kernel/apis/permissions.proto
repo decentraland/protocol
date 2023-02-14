@@ -8,6 +8,7 @@ enum PermissionItem {
   PI_USE_WEB3_API = 2;
   PI_USE_WEBSOCKET = 3;
   PI_USE_FETCH = 4;
+  PI_ALLOW_MEDIA_HOSTNAMES = 5;
 }
 
 message PermissionResponse {
