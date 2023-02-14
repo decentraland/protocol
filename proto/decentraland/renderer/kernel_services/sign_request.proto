@@ -5,11 +5,15 @@ package decentraland.renderer.kernel_services;
 message SignBodyResponse {
     string auth_header_1 = 1;
     string auth_header_2 = 2;
+    string auth_header_3 = 3;
 }
 
 message SignBodyRequest {
     string method = 1;
-    string path = 2;
+    string base_url = 2;
+    string path = 3;
+    int32 timestamp = 4;
+    string metadata = 5;
 }
 
 service SignRequestKernelService {
