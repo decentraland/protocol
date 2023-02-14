@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package decentraland.renderer.kernel_services;
+
+message SignBodyResponse {
+    string auth_header_1 = 1;
+    string auth_header_2 = 2;
+}
+
+message SignBodyRequest {
+    string method = 1;
+    string path = 2;
+}
+
+service SignRequestKernelService {
+    rpc GetRequestSignature(SignBodyRequest) returns (SignBodyResponse) {}
+}
