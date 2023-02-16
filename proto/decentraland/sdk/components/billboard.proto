@@ -6,6 +6,11 @@ import "decentraland/sdk/components/common/id.proto";
 
 option (common.ecs_component_id) = 1090;
 
+// The Billboard component makes an Entity automatically reorient its Transform to face the camera. 
+// As the name indicates, it’s used to display in-game billboards and frequently combined with 
+// the TextShape component.
+
+// BillboardMode indicates the rotation axis (every axis by default)
 enum BillboardMode {
   BM_NONE = 0;
   BM_X = 1;
@@ -15,6 +20,6 @@ enum BillboardMode {
 }
 
 message PBBillboard {
-  // default=BM_ALL
+  // The BillboardMode (default BM_ALL)
   optional BillboardMode billboard_mode = 1; 
 }

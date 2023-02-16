@@ -6,6 +6,12 @@ import "decentraland/sdk/components/common/id.proto";
 
 option (common.ecs_component_id) = 1073;
 
+
+// The AvatarAttach component automatically udpates the Transform of an Entity to maintain the same
+// position relative to some part of an avatar, called the "anchor point". The Entity will follow
+// this anchor as it moves.
+
+// AvatarAnchorPointType indicates which part of the avatar the Entity must follow.
 enum AvatarAnchorPointType {
   AAPT_POSITION = 0;
   AAPT_NAME_TAG = 1;
@@ -14,7 +20,6 @@ enum AvatarAnchorPointType {
 }
 
 message PBAvatarAttach {
-  // default's to current player avatar id if not provided
-  optional string avatar_id = 1;
-  AvatarAnchorPointType anchor_point_id = 2;
+  optional string avatar_id = 1;             // the user ID of the avatar (local user by default)
+  AvatarAnchorPointType anchor_point_id = 2; // the anchor point.
 }
