@@ -1,0 +1,36 @@
+syntax = "proto3";
+package decentraland.sdk.editor;
+
+
+message ComponentData {
+    bytes binary = 1;
+    string json = 2;
+}
+
+message Component {
+    string name = 1;
+    string json_schema = 2;
+    map<int32, ComponentData> data = 3;
+}
+
+message Composite {
+    repeated Component components = 1;
+}
+
+message Resource {
+    string path = 1;
+}
+ 
+message Asset {
+    // case insensitive identifier
+    string name = 1;
+    
+    oneof asset_data {
+        Resource resource = 2;
+        Composite composite = 3;
+    }
+}
+message Package {
+    string id = 1;
+    repeated Asset assets = 2;
+}

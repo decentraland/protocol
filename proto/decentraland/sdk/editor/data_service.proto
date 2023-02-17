@@ -1,0 +1,15 @@
+syntax = "proto3";
+package decentraland.sdk.editor;
+
+import "decentraland/sdk/editor/project.proto";
+
+message InitResponse {
+  string project_name = 1;
+  repeated Package packages = 2;
+}
+
+message InitRequest {}
+
+service DataService {
+  rpc Init(InitRequest) returns (InitResponse) {}
+}
