@@ -2,6 +2,14 @@ syntax = "proto3";
 
 package decentraland.renderer.kernel_services;
 
+enum RequestMethod {
+    GET = 0;
+    POST = 1;
+    PUT = 2;
+    PATCH = 3;
+    DELETE = 4;
+}
+
 message SignBodyResponse {
     string auth_header_1 = 1;
     string auth_header_2 = 2;
@@ -9,11 +17,9 @@ message SignBodyResponse {
 }
 
 message SignBodyRequest {
-    string method = 1;
-    string base_url = 2;
-    string path = 3;
-    int32 timestamp = 4;
-    string metadata = 5;
+    RequestMethod method = 1;
+    string url = 2;
+    string metadata = 3;
 }
 
 service SignRequestKernelService {
