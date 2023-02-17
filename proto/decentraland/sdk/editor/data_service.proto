@@ -2,14 +2,24 @@ syntax = "proto3";
 package decentraland.sdk.editor;
 
 import "decentraland/sdk/editor/project.proto";
+import "decentraland/sdk/editor/commands.proto";
 
 message InitResponse {
   string project_name = 1;
   repeated Package packages = 2;
 }
 
-message InitRequest {}
+message InitRequest { }
+
+message ExecuteCommandsResponse {
+  Composite current_composite = 1;
+}
+
+message ExecuteCommandsRequest {
+  repeated Command commands = 1;
+}
 
 service DataService {
   rpc Init(InitRequest) returns (InitResponse) {}
+  rpc ExecuteCommands(stream ExecuteCommandsRequest) returns (stream ExecuteCommandsResponse) {}
 }

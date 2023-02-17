@@ -1,10 +1,14 @@
 syntax = "proto3";
 package decentraland.sdk.editor;
 
-
 message ComponentData {
-    bytes binary = 1;
-    string json = 2;
+    // This would reduce the bandwith usage. 
+    // oneof data {
+    //     string json = 1;
+    //     bytes binary = 1;
+    // }
+
+    string json = 1;
 }
 
 message Component {
@@ -15,19 +19,19 @@ message Component {
 
 message Composite {
     repeated Component components = 1;
+    bool readonly = 2;
 }
 
-message Resource {
-    string path = 1;
-}
+message Resource { }
  
 message Asset {
     // case insensitive identifier
-    string name = 1;
+    string path = 1;
+    string display_name = 2;
     
     oneof asset_data {
-        Resource resource = 2;
-        Composite composite = 3;
+        Resource resource = 3;
+        Composite composite = 4;
     }
 }
 message Package {
