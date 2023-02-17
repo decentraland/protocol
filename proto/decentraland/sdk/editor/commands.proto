@@ -1,0 +1,42 @@
+syntax = "proto3";
+package decentraland.sdk.editor;
+
+message CreateEntity {
+    string parent_id = 1;
+}
+
+message DeleteEntity {
+    string entity_id = 1;
+}
+
+message ReparentEntity {
+    string entity_id = 1;
+    string parent_id = 2;
+}
+
+message UpsertComponent {
+    string entity_id = 1;
+    string component_id = 2;
+    string component_value = 3;
+}
+
+message DeleteComponent {
+    string entity_id = 1;
+    string component_id = 2;
+}
+
+message Undo { }
+
+message Redo { }
+
+message Command {
+    oneof command {
+        CreateEntity create_entity = 1;
+        DeleteEntity delete_entity = 2;
+        ReparentEntity reparent_entity = 3;
+        UpsertComponent upsert_component = 4;
+        DeleteComponent delete_component = 5;
+        Undo undo = 6;
+        Redo redo = 7;
+    }
+}
