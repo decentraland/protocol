@@ -11,11 +11,18 @@ mkdir -p "$(pwd)/out-js"
 mkdir -p "$(pwd)/out-cs"
 
 for file in "$(pwd)"/public/*.proto; do 
-  echo "> Generating $file"
+  
+  ts_proto_opt="esModuleInterop=true,returnObservable=false,outputServices=generic-definitions,fileSuffix=.gen,oneof=unions"
+  if [[ $file == *editor.proto ]]
+  then
+    ts_proto_opt="$ts_proto_opt,useMapType=true"
+  fi
+  echo "> Generating $file with options: $ts_proto_opt"
+
   node_modules/.bin/protoc \
     --plugin=./node_modules/.bin/protoc-gen-ts_proto \
     --csharp_out="$(pwd)/out-cs" \
-    --ts_proto_opt=esModuleInterop=true,returnObservable=false,outputServices=generic-definitions,fileSuffix=.gen,oneof=unions \
+    --ts_proto_opt="${ts_proto_opt}" \
     --ts_proto_out="$(pwd)/out-ts" \
     -I="$(pwd)/proto" \
     -I="$(pwd)/public" \
