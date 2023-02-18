@@ -1,19 +1,21 @@
 syntax = "proto3";
 package decentraland.sdk.editor;
 
+import "google/protobuf/struct.proto";
+
 message ComponentData {
     // This would reduce the bandwith usage. 
     // oneof data {
-    //     string json = 1;
+    //     google.protobuf.Value json = 1;
     //     bytes binary = 1;
     // }
 
-    string json = 1;
+    google.protobuf.Value json = 1;
 }
 
 message Component {
     string name = 1;
-    string json_schema = 2;
+    google.protobuf.Value json_schema = 2;
     map<int32, ComponentData> data = 3;
 }
 
