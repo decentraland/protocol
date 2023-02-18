@@ -13,6 +13,7 @@ message InitRequest { }
 
 message ExecuteCommandsResponse {
   Composite current_composite = 1;
+  string error = 2;
 }
 
 message ExecuteCommandsRequest {
