@@ -13,18 +13,18 @@ message DeleteEntity {
 
 message ReparentEntity {
     int32 entity_id = 1;
-    string parent_id = 2;
+    int32 parent_id = 2;
 }
 
 message UpsertComponent {
-    int32 entity_id = 1;
-    string component_name = 2;
+    string component_name = 1;
+    int32 entity_id = 2;
     ComponentData component_value = 3;
 }
 
 message DeleteComponent {
-    int32 entity_id = 1;
-    string component_name = 2;
+    string component_name = 1;
+    int32 entity_id = 2;
 }
 
 message Undo { }
