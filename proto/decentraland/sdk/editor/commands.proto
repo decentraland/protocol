@@ -38,7 +38,9 @@ message Command {
         ReparentEntity reparent_entity = 3;
         UpsertComponent upsert_component = 4;
         DeleteComponent delete_component = 5;
-        Undo undo = 6;
-        Redo redo = 7;
     }
+}
+
+message BatchCommands {
+    repeated Command batch_commands = 1;
 }

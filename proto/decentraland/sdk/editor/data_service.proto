@@ -17,7 +17,11 @@ message ExecuteCommandsResponse {
 }
 
 message ExecuteCommandsRequest {
-  repeated Command commands = 1;
+  oneof single_batch {
+    BatchCommands entity_components = 1;
+    Undo undo = 2;
+    Redo redo = 3;
+  }
 }
 
 service DataService {
