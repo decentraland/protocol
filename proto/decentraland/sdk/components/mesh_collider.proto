@@ -6,6 +6,10 @@ import "decentraland/sdk/components/common/id.proto";
 
 option (common.ecs_component_id) = 1019;
 
+// The MeshCollider component provides basic collision detection for Entities. It can behave like
+// a cube, a plane, a sphere or a cylinder. More complex shapes require the use of a `GltfContainer`
+// component.
+
 enum ColliderLayer {
   CL_NONE = 0;
   CL_POINTER = 1;
