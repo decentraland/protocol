@@ -1,0 +1,3 @@
+syntax = "proto3";
+
+import public "decentraland/sdk/editor/data_service.proto";
