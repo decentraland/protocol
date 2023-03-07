@@ -11,9 +11,9 @@ enum RequestMethod {
 }
 
 message SignBodyResponse {
-    string auth_header_1 = 1;
-    string auth_header_2 = 2;
-    string auth_header_3 = 3;
+    repeated string auth_chain = 1;
+    uint64 timestamp = 2;
+    string metadata = 3;
 }
 
 message SignBodyRequest {
