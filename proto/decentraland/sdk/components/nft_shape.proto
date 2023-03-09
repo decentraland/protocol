@@ -7,6 +7,15 @@ import "decentraland/sdk/components/common/id.proto";
 
 option (common.ecs_component_id) = 1040;
 
+// The NftShape component renders a framed picture from an NFT. It supports PNG, JPEG and GIF files.
+
+// The `src` field is the URI of the NFT, which includes its parent contract and index, using
+// the `https:` or `ethereum:` schemes.
+
+// The picture frame can have several different styles, plus a background color for images that have
+// transparent pixels.
+
+// NftFrameType is a predefined framing style for the image.
 enum NftFrameType {
   NFT_CLASSIC = 0;
   NFT_BAROQUE_ORNAMENT = 1;
@@ -34,7 +43,7 @@ enum NftFrameType {
 }
 
 message PBNftShape {
-  string src = 1;
-  optional NftFrameType style = 2; // default = PictureFrameStyle.Classic
-  optional decentraland.common.Color3 color = 3; // default = decentraland.common.Color3(0.6404918, 0.611472, 0.8584906)
+  string src = 1;                                // the URI of the NFT
+  optional NftFrameType style = 2;               // the frame style (default NFT_CLASSIC)
+  optional decentraland.common.Color3 color = 3; // RGB background (default [0.6404918, 0.611472, 0.8584906])
 }
