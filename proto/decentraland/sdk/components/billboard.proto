@@ -10,15 +10,16 @@ option (common.ecs_component_id) = 1090;
 // As the name indicates, it’s used to display in-game billboards and frequently combined with 
 // the TextShape component.
 
-// If a Billboard competes with a Transform component in an Entity, Billboard wins.
+// Billboard only affects the Entity's rotation. Its scale and position are still determined by its
+// Transform.
 
-// BillboardMode indicates the rotation axis.
+// BillboardMode indicates one or more axis for automatic rotation, in OR-able bit flag form.
 enum BillboardMode {
   BM_NONE = 0;
   BM_X = 1;
   BM_Y = 2;
   BM_Z = 4;
-  BM_ALL = 7;
+  BM_ALL = 7; // bitwise combination BM_X | BM_Y | BM_Z
 }
 
 message PBBillboard {
