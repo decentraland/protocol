@@ -6,7 +6,6 @@ import "decentraland/sdk/components/common/id.proto";
 
 option (common.ecs_component_id) = 1073;
 
-
 // The AvatarAttach component automatically repositions an Entity to maintain the same position and 
 // rotation relative to some part of an avatar, called the "anchor point". The Entity 
 // will follow this anchor as it moves.
