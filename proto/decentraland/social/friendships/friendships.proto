@@ -63,7 +63,7 @@ message Cancel { User user = 1; }
 
 message UpdateFriendshipPayload {
   User user = 1;
-  Event event = 2;
+  EventType event = 2;
 
   oneof payload { Request request = 3; }
 }
