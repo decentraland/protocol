@@ -1,5 +1,5 @@
 syntax = "proto3";
-package social_friendships.echo;
+package decentraland.social.friendships;
 
 // Validation and anti-spam errors
 enum FriendshipErrorCode {
