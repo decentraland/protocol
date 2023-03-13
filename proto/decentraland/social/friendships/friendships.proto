@@ -61,16 +61,16 @@ message Delete { User user = 1; }
 message Cancel { User user = 1; }
 
 message GetFriendsPayload {
-  number limit = 1; // Max amount of entries to retrieve
-  number skip = 2;  // Amount of entries to skip
+  int32 limit = 1; // Max amount of entries to retrieve
+  int32 skip = 2;  // Amount of entries to skip
   optional string search_term = 3;
 }
 
 message GetRequestEventsPayload {
-  int64 outgoing_limit = 1; // Max amount of entries of sent request events to retrieve
-  int64 outgoing_skip = 2; // Amount of entries of sent request events to skip
-  int64 incoming_limit = 3; // Max amount of entries of received request events to retrieve
-  int64 incoming_skip = 4; // Amount of entries of received request events to skip
+  int32 outgoing_limit = 1; // Max amount of entries of sent request events to retrieve
+  int32 outgoing_skip = 2; // Amount of entries of sent request events to skip
+  int32 incoming_limit = 3; // Max amount of entries of received request events to retrieve
+  int32 incoming_skip = 4; // Amount of entries of received request events to skip
 }
 
 // We expect new payloads in the future here, since each event type shall have
