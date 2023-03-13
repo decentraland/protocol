@@ -60,7 +60,21 @@ message Delete { User user = 1; }
 
 message Cancel { User user = 1; }
 
-// We expect new payloads in the future here, since each event type shall have its own payload
+message GetFriendsPayload {
+  number limit = 1; // Max amount of entries to retrieve
+  number skip = 2;  // Amount of entries to skip
+  optional string search_term = 3;
+}
+
+message GetRequestEventsPayload {
+  int64 outgoing_limit = 1; // Max amount of entries of sent request events to retrieve
+  int64 outgoing_skip = 2; // Amount of entries of sent request events to skip
+  int64 incoming_limit = 3; // Max amount of entries of received request events to retrieve
+  int64 incoming_skip = 4; // Amount of entries of received request events to skip
+}
+
+// We expect new payloads in the future here, since each event type shall have
+// its own
 message UpdateFriendshipPayload {
   User user = 1;
   EventType event = 2;
@@ -81,7 +95,7 @@ message SubscribeFriendshipEventsUpdatesResponse {
 
 service FriendshipsService {
   // Get the list of friends for the authenticated user
-  rpc GetFriends(google.protobuf.Empty) returns (Users) {}
+  rpc GetFriends(GetFriendsPayload) returns (Users) {}
 
   // Get the list of request events for the authenticated user
   rpc GetRequestEvents(google.protobuf.Empty) returns (RequestEvents) {}
