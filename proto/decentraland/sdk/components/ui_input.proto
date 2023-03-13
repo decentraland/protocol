@@ -16,5 +16,5 @@ message PBUiInput {
   optional common.TextAlignMode text_align = 10; // default='center'
   optional common.Font font = 11; // default=0
   optional int32 font_size = 12; // default=10
-  optional string text_value = 13;
+  optional string value = 13;
 }
