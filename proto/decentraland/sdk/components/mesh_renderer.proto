@@ -6,14 +6,14 @@ option (common.ecs_component_id) = 1018;
 
 // The MeshRenderer component renders a basic geometric shape for an Entity. It can be a cube, a 
 // plane, a sphere or a cylinder.
-
+//
 // The cube and plane variants can include a UV texture mapping, so specific areas of a material 
 // texture are rendered on different faces of the shape. They are serialized as a sequence of 2D
 // `float` coordinates, one for each corner of each side of each face.
-
+//
 // More complex shapes require the use of a `GltfContainer` component.
-
 message PBMeshRenderer {
+    
     // BoxMesh renders a prism shape.
     message BoxMesh {
         repeated float uvs = 1; // 96-value texture map (2D * 6 faces * 2 sides * 4 vertices)

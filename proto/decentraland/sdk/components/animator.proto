@@ -7,10 +7,9 @@ option (common.ecs_component_id) = 1042;
 // The Animator component is a container for multiple potential animations an Entity can display,
 // separately or at the same time. It can be used to start, stop or blend animations; as well as
 // to inspect their playback state.
-
+//
 // Animations have a `weight` property, which determines how pronounced the animation will be. This
 // can be adjusted to blend animations together, or gracefully transition from one to the next.
-
 message PBAnimator {
   repeated PBAnimationState states = 1; // a collection of animations and their current state
 }

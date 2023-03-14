@@ -9,12 +9,11 @@ import "decentraland/sdk/components/common/texts.proto";
 option (common.ecs_component_id) = 1030;
 
 // The TextShape component renders customizable floating text.
-
+//
 // The position and rotation of the text are defined by the Entity's Transform, while its size
 // can either scale with the Transform or be fixed by a font size.
-
+//
 // Several options can be configured, including color, padding, line spacing and drop shadows.
-
 message PBTextShape {
   string text = 1; // the content
 

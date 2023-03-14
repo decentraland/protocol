@@ -7,13 +7,12 @@ import "decentraland/common/colors.proto";
 
 // The AvatarShape component contains the information required to draw and animate avatar, acting as
 // a simplified GLTF container for this specific case. 
-
+//
 // All fields (except ID) are optional have reasonable default values. In the case of `wearables`,
 // each slot on the Avatar's body that is not explicitly included in the list has its own default.
-
+//
 // Note that, while AvatarShape can be attached to any Entity, it's only actually used in the global 
 // Avatar Scene. Other requirements are usually better served by GLTFs.
-
 message PBAvatarShape {
   string id = 1;                  // the user ID
   optional string name = 2;       // visible name (default: "NPC")
@@ -27,16 +26,17 @@ message PBAvatarShape {
   optional int64 expression_trigger_timestamp = 8; // start of emote animations (in the same order)
 
   optional bool talking = 9; // whether to display the floating voice chat icon
-  
-  repeated string wearables = 10; // wearable URNs, one for each body slot (see defaults below)
+
+  // Wearable URNs, one for each body slot.
+  //   Default values for each unspecified slot:
+  //     Eyes    : "urn:decentraland:off-chain:base-avatars:f_eyes_00", 
+  //     Eyebrows: "urn:decentraland:off-chain:base-avatars:f_eyebrows_00",
+  //     Mouth   : "urn:decentraland:off-chain:base-avatars:f_mouth_00" 
+  //     Hair    : "urn:decentraland:off-chain:base-avatars:standard_hair", 
+  //     Shirt   : "urn:decentraland:off-chain:base-avatars:f_simple_yellow_tshirt", 
+  //     Trousers: "urn:decentraland:off-chain:base-avatars:f_brown_trousers", 
+  //     Shoes   : "urn:decentraland:off-chain:base-avatars:bun_shoes"]
+  repeated string wearables = 10; 
   repeated string emotes = 11; // available emotes (default empty)
 }
 
-// Default values for each slot not specified in `wearables`:
-//   Eyes    : "urn:decentraland:off-chain:base-avatars:f_eyes_00", 
-//   Eyebrows: "urn:decentraland:off-chain:base-avatars:f_eyebrows_00",
-//   Mouth   : "urn:decentraland:off-chain:base-avatars:f_mouth_00" 
-//   Hair    : "urn:decentraland:off-chain:base-avatars:standard_hair", 
-//   Shirt   : "urn:decentraland:off-chain:base-avatars:f_simple_yellow_tshirt", 
-//   Trousers: "urn:decentraland:off-chain:base-avatars:f_brown_trousers", 
-//   Shoes   : "urn:decentraland:off-chain:base-avatars:bun_shoes"]
