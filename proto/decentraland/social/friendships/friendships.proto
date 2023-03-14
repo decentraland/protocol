@@ -80,12 +80,12 @@ message UpdateFriendshipPayload { FriendshipEventPayload event = 1; }
 message UpdateFriendshipResponse {
   oneof response {
     FriendshipErrorCode error = 1;
-    FriendshipEvent event = 2;
+    FriendshipEventResponse event = 2;
   }
 }
 
 message SubscribeFriendshipEventsUpdatesResponse {
-  repeated FriendshipEvent events = 1;
+  repeated FriendshipEventResponse events = 1;
 }
 
 service FriendshipsService {
