@@ -13,22 +13,24 @@ enum FriendshipErrorCode {
   UNKNOWN = 5;
 }
 
-enum EventType {
-  REQUEST = 0;
-  ACCEPT = 1;
-  REJECT = 2;
-  CANCEL = 3;
-  DELETE = 4;
+// This message is a response that is sent from the server to the client
+message FriendshipEventResponse {
+  oneof body {
+    RequestResponse request = 1;
+    AcceptResponse accept = 2;
+    RejectResponse reject = 4;
+    DeleteResponse delete = 5;
+    CancelResponse cancel = 6;
+  }
 }
 
-// This message is a response that is sent from the server to the client
-message FriendshipEvent {
+message FriendshipEventPayload {
   oneof body {
-    Request request = 1;
-    Accept accept = 2;
-    Reject reject = 4;
-    Delete delete = 5;
-    Cancel cancel = 6;
+    RequestPayload request = 1;
+    AcceptPayload accept = 2;
+    RejectPayload reject = 4;
+    DeletePayload delete = 5;
+    CancelPayload cancel = 6;
   }
 }
 
@@ -36,9 +38,14 @@ message User { string address = 1; }
 
 message Users { repeated User users = 1; }
 
-message Request {
+message RequestResponse {
   User user = 1;
   int64 created_at = 2;
+  optional string message = 3;
+}
+
+message RequestPayload {
+  User user = 1;
   optional string message = 3;
 }
 
@@ -52,22 +59,23 @@ message RequestEvents {
   Requests incoming = 2; // Requests the authed user have received from users
 }
 
-message Accept { User user = 1; }
+message AcceptResponse { User user = 1; }
 
-message Reject { User user = 1; }
+message AcceptPayload { User user = 1; }
 
-message Delete { User user = 1; }
+message RejectResponse { User user = 1; }
 
-message Cancel { User user = 1; }
+message RejectPayload { User user = 1; }
 
-// We expect new payloads in the future here, since each event type shall have
-// its own
-message UpdateFriendshipPayload {
-  User user = 1;
-  EventType event = 2;
+message DeleteResponse { User user = 1; }
 
-  oneof payload { Request request = 3; }
-}
+message DeletePayload { User user = 1; }
+
+message CancelResponse { User user = 1; }
+
+message CancelPayload { User user = 1; }
+
+message UpdateFriendshipPayload { FriendshipEventPayload event = 1; }
 
 message UpdateFriendshipResponse {
   oneof response {
