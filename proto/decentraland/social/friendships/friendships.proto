@@ -51,7 +51,7 @@ message RequestPayload {
 
 message Requests {
   int64 total = 1; // Total amount of friendship requests
-  repeated Request items = 2;
+  repeated RequestResponse items = 2;
 }
 
 message RequestEvents {
