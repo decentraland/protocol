@@ -1,0 +1,4 @@
+syntax = "proto3";
+package decentraland.social;
+
+import public "decentraland/social/friendships/friendships.proto";
