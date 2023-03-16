@@ -1,8 +1,6 @@
 syntax = "proto3";
 
 package decentraland.sdk.components;
-// This file only imports all the modules exposed to the scenes to help the compiler
-// resolve all files without conflicts
 
 import public "decentraland/sdk/components/animator.proto";
 import public "decentraland/sdk/components/material.proto";
