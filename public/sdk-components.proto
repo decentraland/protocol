@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+// This file only imports all the modules exposed to the scenes to help the compiler
+// resolve all files without conflicts
+
+import public "proto/decentraland/sdk/components/animator.proto";
+import public "proto/decentraland/sdk/components/material.proto";
+import public "proto/decentraland/sdk/components/ui_background.proto";
+import public "proto/decentraland/sdk/components/audio_source.proto";
+import public "proto/decentraland/sdk/components/mesh_collider.proto";
+import public "proto/decentraland/sdk/components/ui_dropdown.proto";
+import public "proto/decentraland/sdk/components/audio_stream.proto";
+import public "proto/decentraland/sdk/components/mesh_renderer.proto";
+import public "proto/decentraland/sdk/components/ui_dropdown_result.proto";
+import public "proto/decentraland/sdk/components/avatar_attach.proto";
+import public "proto/decentraland/sdk/components/nft_shape.proto";
+import public "proto/decentraland/sdk/components/ui_input.proto";
+import public "proto/decentraland/sdk/components/avatar_modifier_area.proto";
+import public "proto/decentraland/sdk/components/pointer_events.proto";
+import public "proto/decentraland/sdk/components/ui_input_result.proto";
+import public "proto/decentraland/sdk/components/avatar_shape.proto";
+import public "proto/decentraland/sdk/components/pointer_events_result.proto";
+import public "proto/decentraland/sdk/components/ui_text.proto";
+import public "proto/decentraland/sdk/components/billboard.proto";
+import public "proto/decentraland/sdk/components/pointer_lock.proto";
+import public "proto/decentraland/sdk/components/ui_transform.proto";
+import public "proto/decentraland/sdk/components/camera_mode.proto";
+import public "proto/decentraland/sdk/components/raycast.proto";
+import public "proto/decentraland/sdk/components/video_player.proto";
+import public "proto/decentraland/sdk/components/camera_mode_area.proto";
+import public "proto/decentraland/sdk/components/raycast_result.proto";
+import public "proto/decentraland/sdk/components/visibility_component.proto";
+import public "proto/decentraland/sdk/components/gltf_container.proto";
+import public "proto/decentraland/sdk/components/text_shape.proto";
