@@ -44,5 +44,16 @@ message PBMeshCollider {
 enum ColliderLayer {
   CL_NONE = 0;    // no collisions
   CL_POINTER = 1; // collisions with the player's pointer ray (e.g. mouse cursor hovering)
-  CL_PHYSICS = 2; // colission with Avatars
+  CL_AVATARS = 2; // colission with Avatars
+  CL_RESERVED_1 = 4;
+  CL_RESERVED_2 = 8;
+  CL_RESERVED_3 = 16;
+  CL_RESERVED_4 = 32;
+  CL_RESERVED_5 = 64;
+  CL_RESERVED_6 = 128;
+  CL_CUSTOM_1 = 256;
+  CL_CUSTOM_2 = 512;
+  CL_CUSTOM_3 = 1024;
+  CL_CUSTOM_4 = 2048;
+  CL_CUSTOM_5 = 4096;
 }
