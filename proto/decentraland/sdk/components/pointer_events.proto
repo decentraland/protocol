@@ -29,7 +29,7 @@ message PBPointerEvents {
   }
 
   message Entry {
-    PointerEventType event_type = 1; // the kind of interaction to detect
+    common.PointerEventType event_type = 1; // the kind of interaction to detect
     Info event_info = 2;             // additional configuration for this detection
   }
 

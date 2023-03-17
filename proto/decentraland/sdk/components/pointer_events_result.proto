@@ -12,8 +12,8 @@ option (common.ecs_component_id) = 1063;
 // renderer append a new object of this in each command, there can be many commands per frames
 message PBPointerEventsResult {
   common.InputAction button = 1; // identifier of the input
-  RaycastHit hit = 2;
-  PointerEventType state = 4;
+  common.RaycastHit hit = 2;
+  common.PointerEventType state = 4;
   int32 timestamp = 5; // could be a Lamport timestamp
   optional float analog = 6; // if the input is analog then we store it here
 }
