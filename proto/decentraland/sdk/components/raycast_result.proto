@@ -13,7 +13,7 @@ option (common.ecs_component_id) = 1068;
 // Raycast component are available. It contains information about the ray and any objects it
 // collided with.
 message PBRaycastResult {
-  uint32 timestamp = 1;                          // timestamp is a correlation id, copied from the PBRaycast
+  optional uint32 timestamp = 1;                 // timestamp is a correlation id, copied from the PBRaycast
   decentraland.common.Vector3 global_origin = 2; // the starting point of the ray in global coordinates
   decentraland.common.Vector3 direction = 3;     // the direction vector of the ray in global coordinates
   repeated decentraland.sdk.components.common.RaycastHit hits = 4; // zero or more hits

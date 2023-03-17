@@ -13,9 +13,10 @@ option (common.ecs_component_id) = 1067;
 // be available in a RaycastResult component set later on the same Entity.
 message PBRaycast {
   // Correlation ID, defined by the scene and used internally by the scene
-  uint32 timestamp = 1;
+  optional uint32 timestamp = 1;
 
   // How much to offset the starting point of the ray, relative to the entity's transform.
+  // Defaults to vec3(0,0,0)
   optional decentraland.common.Vector3 origin_offset = 2;
 
   oneof direction {
@@ -27,6 +28,9 @@ message PBRaycast {
 
     // Target coordinates of the raycast, in global coordinates
     decentraland.common.Vector3 global_target = 7;
+
+    // Will point to the final world position of another entity
+    uint32 target_entity = 10;
   }
 
   // Maximum length of the ray in virtual meters (global space)
@@ -36,8 +40,8 @@ message PBRaycast {
   RaycastQueryType query_type = 5;
 
   // Indicates the renderer to perform the raycast on every scene tick (ADR-148),
-  // otherwise it will be performed only once
-  bool continuous = 8;
+  // otherwise it will be performed only once, defaults to false
+  optional bool continuous = 8;
 
   // Collision mask, by default all bits are 1 (0xFFFF_FFFF)
   optional uint32 collision_mask = 9;
@@ -45,6 +49,10 @@ message PBRaycast {
 
 // RaycastQueryType indicates whether the ray should stop on the first collition, or continue.
 enum RaycastQueryType {
+  // Pick the first (not necessarily the closest) hit within the range
   RQT_HIT_FIRST = 0;
+  // Pick all hits within the range
   RQT_QUERY_ALL = 1;
+  // Do not perform the raycast, only set the raycast result with empty hits
+  RQT_NONE = 2;
 }
