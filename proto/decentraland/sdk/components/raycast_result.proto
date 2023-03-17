@@ -1,6 +1,7 @@
 ﻿syntax = "proto3";
 package decentraland.sdk.components;
 
+import "decentraland/common/vectors.proto";
 import "decentraland/sdk/components/common/id.proto";
 import "decentraland/sdk/components/common/raycast_hit.proto";
 
