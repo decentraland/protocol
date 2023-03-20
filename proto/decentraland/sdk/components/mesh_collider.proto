@@ -6,25 +6,31 @@ import "decentraland/sdk/components/common/id.proto";
 
 option (common.ecs_component_id) = 1019;
 
-enum ColliderLayer {
-  CL_NONE = 0;
-  CL_POINTER = 1;
-  CL_PHYSICS = 2;
-}
-
+// The MeshCollider component provides basic collision detection between Entities and Avatars. It 
+// can behave like a cube, a plane, a sphere or a cylinder. 
+//
+// The Entity's Transform affects the MeshCollider, scaling it and rotating it appropriately. If
+// the Transform for the collision mesh must be different than the Transform for rendering the Entity,
+// two different Entities must be used.
+//
+// More complex shapes require the use of a `GltfContainer` component.
 message PBMeshCollider {
+  // BoxMesh is a prism shape that contains the Entity.
   message BoxMesh {}
 
+  // CylinderMesh is a truncated cone shape that contains the Entity.
   message CylinderMesh {
-    optional float radius_top = 1; // default=1.0
-    optional float radius_bottom = 2; // default=1.0
+    optional float radius_top = 1;    // (default 1.0)
+    optional float radius_bottom = 2; // (default 1.0)
   }
 
+  // PlaneMesh is a 2D rectangle described by the Entity's Transform.
   message PlaneMesh {}
 
+  // SphereMesh is a sphere shape that contains the Entity.
   message SphereMesh {}
 
-  optional int32 collision_mask = 1; // default = ColliderLayer.Physics | ColliderLayer.Pointer
+  optional int32 collision_mask = 1; // enabled ColliderLayers (default CL_POINTER | CL_PHYSICS)
 
   oneof mesh {
     BoxMesh box = 2;
@@ -32,4 +38,11 @@ message PBMeshCollider {
     CylinderMesh cylinder = 4;
     PlaneMesh plane = 5;
   }
+}
+
+// ColliderLayer determines the kind of collision to detect, in OR-able bit flag form.
+enum ColliderLayer {
+  CL_NONE = 0;    // no collisions
+  CL_POINTER = 1; // collisions with the player's pointer ray (e.g. mouse cursor hovering)
+  CL_PHYSICS = 2; // colission with Avatars
 }

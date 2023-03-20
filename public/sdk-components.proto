@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import public "decentraland/sdk/components/animator.proto";
+import public "decentraland/sdk/components/material.proto";
+import public "decentraland/sdk/components/ui_background.proto";
+import public "decentraland/sdk/components/audio_source.proto";
+import public "decentraland/sdk/components/mesh_collider.proto";
+import public "decentraland/sdk/components/ui_dropdown.proto";
+import public "decentraland/sdk/components/audio_stream.proto";
+import public "decentraland/sdk/components/mesh_renderer.proto";
+import public "decentraland/sdk/components/ui_dropdown_result.proto";
+import public "decentraland/sdk/components/avatar_attach.proto";
+import public "decentraland/sdk/components/nft_shape.proto";
+import public "decentraland/sdk/components/ui_input.proto";
+import public "decentraland/sdk/components/avatar_modifier_area.proto";
+import public "decentraland/sdk/components/pointer_events.proto";
+import public "decentraland/sdk/components/ui_input_result.proto";
+import public "decentraland/sdk/components/avatar_shape.proto";
+import public "decentraland/sdk/components/pointer_events_result.proto";
+import public "decentraland/sdk/components/ui_text.proto";
+import public "decentraland/sdk/components/billboard.proto";
+import public "decentraland/sdk/components/pointer_lock.proto";
+import public "decentraland/sdk/components/ui_transform.proto";
+import public "decentraland/sdk/components/camera_mode.proto";
+import public "decentraland/sdk/components/raycast.proto";
+import public "decentraland/sdk/components/video_player.proto";
+import public "decentraland/sdk/components/camera_mode_area.proto";
+import public "decentraland/sdk/components/raycast_result.proto";
+import public "decentraland/sdk/components/visibility_component.proto";
+import public "decentraland/sdk/components/gltf_container.proto";
+import public "decentraland/sdk/components/text_shape.proto";
