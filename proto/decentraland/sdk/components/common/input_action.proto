@@ -18,3 +18,11 @@ enum InputAction {
   IA_ACTION_5 = 12;
   IA_ACTION_6 = 13;
 }
+
+// PointerEventType is a kind of interaction that can be detected.
+enum PointerEventType {
+  PET_UP = 0;
+  PET_DOWN = 1;
+  PET_HOVER_ENTER = 2;
+  PET_HOVER_LEAVE = 3;
+}

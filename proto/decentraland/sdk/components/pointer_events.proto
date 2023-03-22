@@ -29,17 +29,9 @@ message PBPointerEvents {
   }
 
   message Entry {
-    PointerEventType event_type = 1; // the kind of interaction to detect
+    common.PointerEventType event_type = 1; // the kind of interaction to detect
     Info event_info = 2;             // additional configuration for this detection
   }
 
   repeated Entry pointer_events = 1; // the list of relevant events to detect
-}
-
-// PointerEventType is a kind of interaction that can be detected.
-enum PointerEventType {
-  PET_UP = 0;
-  PET_DOWN = 1;
-  PET_HOVER_ENTER = 2;
-  PET_HOVER_LEAVE = 3;
 }
