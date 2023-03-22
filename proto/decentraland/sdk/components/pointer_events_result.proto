@@ -13,6 +13,6 @@ message PBPointerEventsResult {
   common.InputAction button = 1; // identifier of the input
   common.RaycastHit hit = 2;
   common.PointerEventType state = 4;
-  int32 timestamp = 5; // could be a Lamport timestamp
-  optional float analog = 6; // if the input is analog then we store it here
+  uint32 timestamp = 5;          // could be a Lamport timestamp
+  optional float analog = 6;     // if the input is analog then we store it here
 }
