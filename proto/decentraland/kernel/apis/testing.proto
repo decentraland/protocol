@@ -1,0 +1,44 @@
+syntax = "proto3";
+package decentraland.kernel.apis;
+
+service PlayersService {
+  // sends a test result to the test runner
+  rpc LogTestResult(TestResult) returns (TestResultResponse) {}
+  // send a list of all planned tests to the test runner
+  rpc Plan(TestPlan) returns (TestPlanResponse) {}
+  // sets the camera position in the engine
+  rpc SetCameraPosition(SetCameraPositionTestCommand) returns (SetCameraPositionTestCommandResponse) {}
+}
+
+message Vector3 {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+message Quaternion {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+  float w = 4;
+}
+
+message TestResult {
+    string name = 1;
+    boolean ok = 2;
+    optional string error = 3;
+    optional string stack = 4;
+}
+message TestResultResponse {}
+
+message TestPlan {
+  repeated string test_name = 1;
+}
+message TestPlanResponse {}
+
+message SetCameraPositionTestCommand {
+  Vector3 position = 1;
+  Quaternion rotation = 2;
+}
+message SetCameraPositionTestCommandResponse {}
+
