@@ -10,22 +10,10 @@ service PlayersService {
   rpc SetCameraPosition(SetCameraPositionTestCommand) returns (SetCameraPositionTestCommandResponse) {}
 }
 
-message Vector3 {
-  float x = 1;
-  float y = 2;
-  float z = 3;
-}
-
-message Quaternion {
-  float x = 1;
-  float y = 2;
-  float z = 3;
-  float w = 4;
-}
 
 message TestResult {
     string name = 1;
-    boolean ok = 2;
+    bool ok = 2;
     optional string error = 3;
     optional string stack = 4;
 }
@@ -39,6 +27,19 @@ message TestPlanResponse {}
 message SetCameraPositionTestCommand {
   Vector3 position = 1;
   Quaternion rotation = 2;
+
+  message Vector3 {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+  }
+
+  message Quaternion {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+    float w = 4;
+  }
 }
 message SetCameraPositionTestCommandResponse {}
 
