@@ -1,7 +1,7 @@
 syntax = "proto3";
 package decentraland.kernel.apis;
 
-service PlayersService {
+service TestingService {
   // sends a test result to the test runner
   rpc LogTestResult(TestResult) returns (TestResultResponse) {}
   // send a list of all planned tests to the test runner
