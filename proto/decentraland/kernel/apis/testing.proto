@@ -6,8 +6,8 @@ service TestingService {
   rpc LogTestResult(TestResult) returns (TestResultResponse) {}
   // send a list of all planned tests to the test runner
   rpc Plan(TestPlan) returns (TestPlanResponse) {}
-  // sets the camera position in the engine
-  rpc SetCameraPosition(SetCameraPositionTestCommand) returns (SetCameraPositionTestCommandResponse) {}
+  // sets the camera position and rotation in the engine
+  rpc SetCameraTransform (SetCameraTransformTestCommandResponse) {}
 }
 
 
@@ -16,11 +16,21 @@ message TestResult {
     bool ok = 2;
     optional string error = 3;
     optional string stack = 4;
+
+    // how many ADR-148 ticks were spent running this test
+    uint32 total_frames = 5;
+
+    // total time in seconds spent running this test
+    float total_time = 6;
 }
 message TestResultResponse {}
 
 message TestPlan {
-  repeated string test_name = 1;
+  message TestPlanEntry {
+    string name = 1;
+  }
+
+  repeated TestPlanEntry tests = 1;
 }
 message TestPlanResponse {}
 
@@ -41,5 +51,5 @@ message SetCameraPositionTestCommand {
     float w = 4;
   }
 }
-message SetCameraPositionTestCommandResponse {}
+message SetCameraTransformTestCommandResponse {}
 
