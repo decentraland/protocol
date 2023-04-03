@@ -7,7 +7,7 @@ service TestingService {
   // send a list of all planned tests to the test runner
   rpc Plan(TestPlan) returns (TestPlanResponse) {}
   // sets the camera position and rotation in the engine
-  rpc SetCameraTransform (SetCameraTransformTestCommandResponse) {}
+  rpc SetCameraTransform (SetCameraTransformTestCommandResponse) returns (SetCameraTransformTestCommandResponse) {}
 }
 
 
