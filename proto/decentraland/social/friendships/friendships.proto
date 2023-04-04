@@ -75,7 +75,7 @@ message CancelPayload { User user = 1; }
 
 message UpdateFriendshipPayload {
   FriendshipEventPayload event = 1;
-  AuthToken auth_token = 2;
+  optional RequestPayload auth_token = 2;
 }
 
 message UpdateFriendshipResponse {
@@ -89,14 +89,14 @@ message SubscribeFriendshipEventsUpdatesResponse {
   repeated FriendshipEventResponse events = 1;
 }
 
-message AuthToken { string synapse_token = 1; }
+message RequestPayload { optional string synapse_token = 1; }
 
 service FriendshipsService {
   // Get the list of friends for the authenticated user
-  rpc GetFriends(AuthToken) returns (stream Users) {}
+  rpc GetFriends(RequestPayload) returns (stream Users) {}
 
   // Get the list of request events for the authenticated user
-  rpc GetRequestEvents(AuthToken) returns (RequestEvents) {}
+  rpc GetRequestEvents(RequestPayload) returns (RequestEvents) {}
 
   // Update friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
   rpc UpdateFriendshipEvent(UpdateFriendshipPayload)
@@ -104,6 +104,6 @@ service FriendshipsService {
 
   // Subscribe to updates of friendship status: REQUEST, ACCEPT, REJECT, CANCEL,
   // DELETE
-  rpc SubscribeFriendshipEventsUpdates(AuthToken)
+  rpc SubscribeFriendshipEventsUpdates(RequestPayload)
       returns (stream SubscribeFriendshipEventsUpdatesResponse) {}
 }
