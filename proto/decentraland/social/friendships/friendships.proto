@@ -1,3 +1,7 @@
+// ***
+// For internal use only, in beta version of the protocol.
+// ***
+
 syntax = "proto3";
 package decentraland.social.friendships;
 
