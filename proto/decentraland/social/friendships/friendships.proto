@@ -1,6 +1,6 @@
 // ***
-// For internal use only, in beta version of the protocol.
-// Subject to change.
+// FOR INTERNAL USE ONLY, IN BETA VERSION OF THE PROTOCOL.
+// SUBJECT TO CHANGE.
 // ***
 
 syntax = "proto3";
@@ -94,7 +94,10 @@ message SubscribeFriendshipEventsUpdatesResponse {
   repeated FriendshipEventResponse events = 1;
 }
 
-message RequestPayload { optional string synapse_token = 1; }
+message RequestPayload {
+  // For internal use only, subject to change.
+  optional string synapse_token = 1;
+}
 
 service FriendshipsService {
   // Get the list of friends for the authenticated user
