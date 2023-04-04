@@ -1,5 +1,6 @@
 // ***
 // For internal use only, in beta version of the protocol.
+// Subject to change.
 // ***
 
 syntax = "proto3";
