@@ -75,7 +75,10 @@ message CancelResponse { User user = 1; }
 
 message CancelPayload { User user = 1; }
 
-message UpdateFriendshipPayload { FriendshipEventPayload event = 1; }
+message UpdateFriendshipPayload {
+  FriendshipEventPayload event = 1;
+  AuthToken auth_token = 2;
+}
 
 message UpdateFriendshipResponse {
   oneof response {
@@ -88,12 +91,14 @@ message SubscribeFriendshipEventsUpdatesResponse {
   repeated FriendshipEventResponse events = 1;
 }
 
+message AuthToken { string synapse_token = 1; }
+
 service FriendshipsService {
   // Get the list of friends for the authenticated user
-  rpc GetFriends(google.protobuf.Empty) returns (stream Users) {}
+  rpc GetFriends(AuthToken) returns (stream User) {}
 
   // Get the list of request events for the authenticated user
-  rpc GetRequestEvents(google.protobuf.Empty) returns (RequestEvents) {}
+  rpc GetRequestEvents(AuthToken) returns (RequestEvents) {}
 
   // Update friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
   rpc UpdateFriendshipEvent(UpdateFriendshipPayload)
@@ -101,6 +106,6 @@ service FriendshipsService {
 
   // Subscribe to updates of friendship status: REQUEST, ACCEPT, REJECT, CANCEL,
   // DELETE
-  rpc SubscribeFriendshipEventsUpdates(google.protobuf.Empty)
+  rpc SubscribeFriendshipEventsUpdates(AuthToken)
       returns (stream SubscribeFriendshipEventsUpdatesResponse) {}
 }
