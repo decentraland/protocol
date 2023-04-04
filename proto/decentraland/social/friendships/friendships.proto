@@ -1,8 +1,6 @@
 syntax = "proto3";
 package decentraland.social.friendships;
 
-import "google/protobuf/empty.proto";
-
 // Validation and anti-spam errors
 enum FriendshipErrorCode {
   TOO_MANY_REQUESTS_SENT = 0;
