@@ -28,12 +28,12 @@ message WelcomePeerInformation {
   repeated string available_modules = 2;
 }
 
-message OnDisconnected {
+message DisconnectionMessage {
   DisconnectionReason reason = 1;
 }
 
 service BffAuthenticationService {
   rpc GetChallenge(GetChallengeRequest) returns (GetChallengeResponse) {}
   rpc Authenticate(SignedChallenge) returns (WelcomePeerInformation) {}
-  rpc SubscribeOnDisconnect(google.protobuf.Empty) returns (stream OnDisconnected) {}
+  rpc GetDisconnectionMessage(google.protobuf.Empty) returns (DisconnectionMessage) {}
 }
