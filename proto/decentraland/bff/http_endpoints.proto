@@ -51,6 +51,12 @@ message AboutResponse {
     optional string commit_hash = 3;
     string public_url = 4;
   }
+  message Lamb2Info {
+    // common properties
+    bool healthy = 1;
+    optional string version = 2;
+    optional string commit_hash = 3;
+  }
   message CommsInfo {
     // common properties
     bool healthy = 1;
