@@ -38,7 +38,7 @@ message Heartbeat {
   optional string desired_room = 2;
 }
 
-message ServerMessage {
+message ServerPacket {
   oneof message {
     IslandChangedMessage island_changed = 1;
     LeftIslandMessage  left_island = 2;
@@ -46,7 +46,7 @@ message ServerMessage {
   }
 }
 
-message ClientMessage {
+message ClientPacket {
   oneof message {
     Heartbeat heartbeat = 1;
   }
