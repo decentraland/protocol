@@ -6,6 +6,11 @@
 syntax = "proto3";
 package decentraland.social.friendships;
 
+enum ServiceErrorCode {
+  INTERNAL_SERVER_ERROR = 0;
+  UNAUTHORIZED = 1;
+}
+
 // Validation and anti-spam errors
 enum FriendshipErrorCode {
   TOO_MANY_REQUESTS_SENT = 0;
@@ -18,7 +23,7 @@ enum FriendshipErrorCode {
 
 // This message is a response that is sent from the server to the client
 message FriendshipEventResponse {
-  oneof body {
+  oneof response {
     RequestResponse request = 1;
     AcceptResponse accept = 2;
     RejectResponse reject = 4;
@@ -99,19 +104,29 @@ message Payload {
   optional string synapse_token = 1;
 }
 
+message ServiceResponse {
+  oneof response {
+    ServiceErrorCode error = 1;
+    Users friends = 2;
+    RequestEvents request_events = 3;
+    UpdateFriendshipResponse update_friendship = 4;
+    SubscribeFriendshipEventsUpdatesResponse events_updates = 5;
+  }
+}
+
 service FriendshipsService {
   // Get the list of friends for the authenticated user
-  rpc GetFriends(Payload) returns (stream Users) {}
+  rpc GetFriends(Payload) returns (stream ServiceResponse) {}
 
   // Get the list of request events for the authenticated user
-  rpc GetRequestEvents(Payload) returns (RequestEvents) {}
+  rpc GetRequestEvents(Payload) returns (ServiceResponse) {}
 
   // Update friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
-  rpc UpdateFriendshipEvent(UpdateFriendshipPayload)
-      returns (UpdateFriendshipResponse) {}
+  rpc UpdateFriendshipEvent(UpdateFriendshipPayload) returns (ServiceResponse) {
+  }
 
   // Subscribe to updates of friendship status: REQUEST, ACCEPT, REJECT, CANCEL,
   // DELETE
   rpc SubscribeFriendshipEventsUpdates(Payload)
-      returns (stream SubscribeFriendshipEventsUpdatesResponse) {}
+      returns (stream ServiceResponse) {}
 }
