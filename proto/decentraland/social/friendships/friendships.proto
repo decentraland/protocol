@@ -80,6 +80,7 @@ message CancelPayload { User user = 1; }
 
 message UpdateFriendshipPayload {
   FriendshipEventPayload event = 1;
+  // For internal use only, subject to change.
   optional Payload auth_token = 2;
 }
 
