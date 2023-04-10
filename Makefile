@@ -19,6 +19,8 @@ buf-breaking: node_modules/.bin/buf
 test: buf-lint
 	bash scripts/test.sh
 
+all: buf-lint buf-build test
+
 install:
 	npm i
 	rm -rf proto/google || true
