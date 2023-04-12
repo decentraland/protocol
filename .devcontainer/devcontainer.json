@@ -11,5 +11,12 @@
   "containerEnv": {
     "DCL_DISABLE_ANALYTICS": "true",
     "SHELL": "/usr/bin/zsh"
-  }
+},
+"customizations": {
+	"vscode": {
+		"extensions": [
+			"zxh404.vscode-proto3"
+		]
+	}
+}
 }
