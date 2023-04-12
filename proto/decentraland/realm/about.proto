@@ -1,7 +1,5 @@
 syntax = "proto3";
-package decentraland.bff;
-
-import "google/protobuf/empty.proto";
+package decentraland.realm;
 
 message AboutResponse {
   bool healthy = 1;
@@ -72,9 +70,4 @@ message AboutResponse {
     optional int32 user_count = 51;
     optional string protocol_version = 52;
   }
-}
-
-service HttpEndpoints {
-  // Returns the status and configuration of the bff microservice
-  rpc About(google.protobuf.Empty) returns (AboutResponse) {}
 }
