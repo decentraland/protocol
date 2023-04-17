@@ -30,7 +30,7 @@ message PBMeshCollider {
   // SphereMesh is a sphere shape that contains the Entity.
   message SphereMesh {}
 
-  optional int32 collision_mask = 1; // enabled ColliderLayers (default CL_POINTER | CL_PHYSICS)
+  optional uint32 collision_mask = 1; // enabled ColliderLayers (default CL_POINTER | CL_PHYSICS)
 
   oneof mesh {
     BoxMesh box = 2;
