@@ -84,12 +84,7 @@ message UpdateFriendshipPayload {
   optional Payload auth_token = 2;
 }
 
-message UpdateFriendshipResponse {
-  oneof response {
-    FriendshipErrorCode error = 1;
-    FriendshipEventResponse event = 2;
-  }
-}
+message UpdateFriendshipResponse { FriendshipEventResponse event = 1; }
 
 message SubscribeFriendshipEventsUpdatesResponse {
   repeated FriendshipEventResponse events = 1;
