@@ -4,6 +4,7 @@ package decentraland.sdk.components;
 
 import "decentraland/common/border_rect.proto";
 
+import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1054;
 
 // This component is created by the renderer and used by the scenes to know the resolution of the UI canvas
