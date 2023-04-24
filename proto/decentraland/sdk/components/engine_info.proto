@@ -1,0 +1,11 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1048;
+
+// EngineInfo provides information about the graphics engine running the scene
+message PBEngineInfo {
+  uint32 frame_number = 1; // frame number, used to correlate events with their timestamp
+  float total_runtime = 2; // total runtime of this scene in seconds
+}
