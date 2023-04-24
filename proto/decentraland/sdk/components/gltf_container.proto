@@ -10,4 +10,10 @@ option (common.ecs_component_id) = 1041;
 // achieved using MeshRenderer, MeshCollider and other standard components.
 message PBGltfContainer {
   string src = 1; // the GLTF file path as listed in the scene's manifest.
+
+  // disable automatic physics collider creation (default: false)
+  optional bool disable_physics_colliders = 2;
+
+  // copies the visible meshes into a virtual MeshCollider with CL_POINTER collider_mask (default: false)
+  optional bool create_pointer_colliders = 3;
 }
