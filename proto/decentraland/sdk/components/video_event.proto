@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1044;
+
+message PBVideoEvent {
+  float current_offset = 1;
+  float video_length = 2;
+  VideoState state = 3;  
+}
+
+enum VideoState {
+  VS_NONE = 0;
+  VS_ERROR = 1;
+  VS_LOADING = 2;
+  VS_READY = 3;
+  VS_PLAYING = 4;
+  VS_BUFFERING = 5;
+}
