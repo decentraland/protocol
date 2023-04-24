@@ -111,3 +111,10 @@ service FriendshipsService {
   rpc SubscribeFriendshipEventsUpdates(Payload)
       returns (stream SubscribeFriendshipEventsUpdatesResponse) {}
 }
+
+message Event {
+  // For internal use only (event notifications)
+  FriendshipEventResponse friendship_event = 1;
+  string from = 2;
+  string to = 3;
+}
