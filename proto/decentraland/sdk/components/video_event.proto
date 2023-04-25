@@ -18,4 +18,6 @@ enum VideoState {
   VS_READY = 3;
   VS_PLAYING = 4;
   VS_BUFFERING = 5;
+  VS_SEEKING = 6;
+  VS_PAUSED = 7;
 }
