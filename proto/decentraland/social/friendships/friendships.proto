@@ -6,7 +6,7 @@
 syntax = "proto3";
 package decentraland.social.friendships;
 
-enum FriendshipsErrorCode {
+enum FriendshipErrors {
   UNKNOWN = 0;
   BAD_REQUEST = 400;
   UNAUTHORIZED = 401;
