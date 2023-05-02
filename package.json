@@ -2,13 +2,16 @@
   "name": "@dcl/protocol",
   "version": "1.0.0",
   "description": "",
+  "repository": "decentraland/protocol.git",
+  "homepage": "https://github.com/decentraland/protocol#readme",
+  "bugs": "https://github.com/decentraland/protocol/issues",
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
   "main": "index.js",
   "scripts": {
     "test": "./scripts/check-proto-compabitility.sh"
   },
-  "keywords": [],
-  "author": "",
-  "license": "Apache-2.0",
   "devDependencies": {
     "@protobuf-ts/protoc": "^2.8.1",
     "proto-compatibility-tool": "^1.1.2-20220925163655.commit-25bd040",
