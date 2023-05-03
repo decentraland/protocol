@@ -11,6 +11,9 @@ name: build-deploy
 jobs:
   check_and_build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     outputs:
       dcl_protocol_s3_bucket_key: ${{ steps.publish_dcl_protocol.outputs.s3-bucket-key }}
     steps:
@@ -29,6 +32,9 @@ jobs:
           access: public
           ## use action runId instead of current date to generate snapshot numbers
           deterministic-snapshot: true
+
+          ## sign the deployment
+          provenance: true
 
           ## publish every package to s3
           s3-bucket: ${{ secrets.SDK_TEAM_S3_BUCKET }}
