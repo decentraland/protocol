@@ -6,6 +6,11 @@
 syntax = "proto3";
 package decentraland.social.friendships;
 
+message FriendshipServiceError {
+  FriendshipErrorCode code = 1;
+  string message = 2;
+}
+
 // Validation and anti-spam errors
 enum FriendshipErrorCode {
   // proto3 requires that first value in enum have numeric value of 0
@@ -97,28 +102,28 @@ message Payload {
 
 message UsersResponse {
   oneof response {
-    FriendshipErrorCode error = 1;
+    FriendshipServiceError error = 1;
     Users users = 2;
   }
 }
 
 message RequestEventsResponse {
   oneof response {
-    FriendshipErrorCode error = 1;
+    FriendshipServiceError error = 1;
     RequestEvents events = 2;
   }
 }
 
 message UpdateFriendshipResponse {
   oneof response {
-    FriendshipErrorCode error = 1;
+    FriendshipServiceError error = 1;
     FriendshipEventResponse event = 2;
   }
 }
 
 message SubscribeFriendshipEventsUpdatesResponse {
   oneof response {
-    FriendshipErrorCode error = 1;
+    FriendshipServiceError error = 1;
     FriendshipEventResponses events = 2;
   }
 }
