@@ -6,10 +6,11 @@ import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1044;
 
 message PBVideoEvent {
-  uint32 timestamp = 1; // monotonic counter
-  float current_offset = 2;
-  float video_length = 3;
-  VideoState state = 4;
+  uint32 timestamp = 1;     // monotonic counter
+  uint32 tick_number = 2;   // number of tick in which the event was produced, equals to EngineInfo.tick_number
+  float current_offset = 3;
+  float video_length = 4;
+  VideoState state = 5;
 }
 
 enum VideoState {
