@@ -6,7 +6,8 @@
 syntax = "proto3";
 package decentraland.social.friendships;
 
-enum ServiceErrors {
+// Validation and anti-spam errors
+enum FriendshipErrorCode {
   // proto3 requires that first value in enum have numeric value of 0
   UNKNOWN = 0;
   BAD_REQUEST = 400;
@@ -26,6 +27,10 @@ message FriendshipEventResponse {
     DeleteResponse delete = 5;
     CancelResponse cancel = 6;
   }
+}
+
+message FriendshipEventResponses {
+  repeated FriendshipEventResponse responses = 1;
 }
 
 message FriendshipEventPayload {
@@ -85,30 +90,51 @@ message UpdateFriendshipPayload {
   optional Payload auth_token = 2;
 }
 
-message UpdateFriendshipResponse { FriendshipEventResponse event = 1; }
-
-message SubscribeFriendshipEventsUpdatesResponse {
-  repeated FriendshipEventResponse events = 1;
-}
-
 message Payload {
   // For internal use only, subject to change.
   optional string synapse_token = 1;
 }
 
+message UsersResponse {
+  oneof response {
+    FriendshipErrorCode error = 1;
+    Users users = 2;
+  }
+}
+
+message RequestEventsResponse {
+  oneof response {
+    FriendshipErrorCode error = 1;
+    RequestEvents events = 2;
+  }
+}
+
+message UpdateFriendshipResponse {
+  oneof response {
+    FriendshipErrorCode error = 1;
+    FriendshipEventResponse event = 2;
+  }
+}
+
+message SubscribeFriendshipEventsUpdatesResponse {
+  oneof response {
+    FriendshipErrorCode error = 1;
+    FriendshipEventResponses events = 2;
+  }
+}
+
 service FriendshipsService {
   // Get the list of friends for the authenticated user
-  rpc GetFriends(Payload) returns (stream Users) {}
+  rpc GetFriends(Payload) returns (stream UsersResponse) {}
 
   // Get the list of request events for the authenticated user
-  rpc GetRequestEvents(Payload) returns (RequestEvents) {}
+  rpc GetRequestEvents(Payload) returns (RequestEventsResponse) {}
 
   // Update friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
   rpc UpdateFriendshipEvent(UpdateFriendshipPayload)
       returns (UpdateFriendshipResponse) {}
 
-  // Subscribe to updates of friendship status: REQUEST, ACCEPT, REJECT, CANCEL,
-  // DELETE
+  // Subscribe to updates of friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
   rpc SubscribeFriendshipEventsUpdates(Payload)
       returns (stream SubscribeFriendshipEventsUpdatesResponse) {}
 }
