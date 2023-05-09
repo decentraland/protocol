@@ -6,23 +6,6 @@
 syntax = "proto3";
 package decentraland.social.friendships;
 
-message FriendshipServiceError {
-  FriendshipErrorCode code = 1;
-  string message = 2;
-}
-
-// Validation and anti-spam errors
-enum FriendshipErrorCode {
-  // proto3 requires that first value in enum have numeric value of 0
-  UNKNOWN = 0;
-  BAD_REQUEST = 400;
-  UNAUTHORIZED = 401;
-  FORBIDDEN = 403;
-  NOT_FOUND = 404;
-  TOO_MANY_REQUESTS = 429;
-  INTERNAL_SERVER_ERROR = 500;
-}
-
 // This message is a response that is sent from the server to the client
 message FriendshipEventResponse {
   oneof body {
@@ -100,31 +83,54 @@ message Payload {
   optional string synapse_token = 1;
 }
 
+message BadRequestError {
+  string message = 1;
+}
+message UnauthorizedError {
+  string message = 1;
+}
+message ForbiddenError {
+  string message = 1;
+}
+message TooManyRequestsError {
+  string message = 1;
+}
+message InternalServerError {
+  string message = 1;
+}
+
 message UsersResponse {
   oneof response {
-    FriendshipServiceError error = 1;
-    Users users = 2;
+    Users users = 1;
+    InternalServerError internal_server_error = 2;
+    UnauthorizedError unauthorized_error = 3;
   }
 }
 
 message RequestEventsResponse {
   oneof response {
-    FriendshipServiceError error = 1;
-    RequestEvents events = 2;
+    RequestEvents events = 1;
+    InternalServerError internal_server_error = 2;
+    UnauthorizedError unauthorized_error = 3;
   }
 }
 
 message UpdateFriendshipResponse {
   oneof response {
-    FriendshipServiceError error = 1;
-    FriendshipEventResponse event = 2;
+    FriendshipEventResponse event = 1; // TODO: why do we need this?
+    InternalServerError internal_server_error = 2;
+    UnauthorizedError unauthorized_error = 3;
+    ForbiddenError forbidden_error = 4;
+    TooManyRequestsError too_many_requests_error = 5;
+    BadRequestError bad_request_error = 6;
   }
 }
 
 message SubscribeFriendshipEventsUpdatesResponse {
   oneof response {
-    FriendshipServiceError error = 1;
-    FriendshipEventResponses events = 2;
+    FriendshipEventResponses events = 1;
+    InternalServerError internal_server_error = 2;
+    UnauthorizedError unauthorized_error = 3;
   }
 }
 
