@@ -104,6 +104,8 @@ message UsersResponse {
     Users users = 1;
     InternalServerError internal_server_error = 2;
     UnauthorizedError unauthorized_error = 3;
+    ForbiddenError forbidden_error = 4;
+    TooManyRequestsError too_many_requests_error = 5;
   }
 }
 
@@ -112,6 +114,8 @@ message RequestEventsResponse {
     RequestEvents events = 1;
     InternalServerError internal_server_error = 2;
     UnauthorizedError unauthorized_error = 3;
+    ForbiddenError forbidden_error = 4;
+    TooManyRequestsError too_many_requests_error = 5;
   }
 }
 
@@ -131,6 +135,8 @@ message SubscribeFriendshipEventsUpdatesResponse {
     FriendshipEventResponses events = 1;
     InternalServerError internal_server_error = 2;
     UnauthorizedError unauthorized_error = 3;
+    ForbiddenError forbidden_error = 4;
+    TooManyRequestsError too_many_requests_error = 5;
   }
 }
 
