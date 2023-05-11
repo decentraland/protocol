@@ -85,4 +85,9 @@ jobs:
                ```bash
                npm install "${{ steps.url-generator.outputs.body }}"
                ```
+            - Update this package to test in the SDK by running
+               ```bash
+               make update-protocol UPDATE_PROTOCOL_VERSION=${{ steps.url-generator.outputs.body }}
+               make build update-snapshots
+               ```
           edit-mode: replace
