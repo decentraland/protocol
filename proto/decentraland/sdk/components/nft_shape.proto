@@ -15,7 +15,7 @@ option (common.ecs_component_id) = 1040;
 // The picture frame can have several different styles, plus a background color for images that have
 // transparent pixels.
 message PBNftShape {
-  string urn = 4;                                // the URI of the NFT
+  string urn = 1;                                // the URI of the NFT
   optional NftFrameType style = 2;               // the frame style (default NFT_CLASSIC)
   optional decentraland.common.Color3 color = 3; // RGB background (default [0.6404918, 0.611472, 0.8584906])
 }
