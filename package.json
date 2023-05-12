@@ -21,7 +21,7 @@
     "protocVersion": "22.2"
   },
   "dependencies": {
-    "ts-proto": "^1.146.0"
+    "@dcl/ts-proto": "^1.146.2"
   },
   "files": [
     "proto",
