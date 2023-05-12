@@ -13,10 +13,10 @@ mkdir -p "$(pwd)/out-cs"
 for file in "$(pwd)"/public/*.proto; do 
   echo "> Generating $file"
   node_modules/.bin/protoc \
-    --plugin=./node_modules/.bin/protoc-gen-ts_proto \
+    --plugin=./node_modules/.bin/protoc-gen-dcl_ts_proto \
     --csharp_out="$(pwd)/out-cs" \
-    --ts_proto_opt=esModuleInterop=true,returnObservable=false,outputServices=generic-definitions,fileSuffix=.gen,oneof=unions \
-    --ts_proto_out="$(pwd)/out-ts" \
+    --dcl_ts_proto_opt=esModuleInterop=true,returnObservable=false,outputServices=generic-definitions,fileSuffix=.gen,oneof=unions \
+    --dcl_ts_proto_out="$(pwd)/out-ts" \
     -I="$(pwd)/proto" \
     -I="$(pwd)/public" \
     "$file";
