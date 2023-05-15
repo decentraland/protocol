@@ -28,6 +28,9 @@ protoc \
 # Dev with Decentraland Repositories
 Many repositories depend on this protocol definition and that sometimes implies some merge order. We don't have to worry much about compatibility because the checks are running with each PR, if you break something, the CI will warn you. But, in some cases, it's desirable to merge the implementation in a specific order to avoid unexpected behavior in the corner cases (multiple repositories are waiting for the build at the same time).
 
+> **Important Note: Avoid Merging Protocol PR Without Completed Unity Implementation**
+> Please don't merge a protocol PR into the main branch unless the corresponding implementation in Unity has been completed. This is important to avoid any potential issues or build failures in Unity.
+
 Some dev-cases are described here:
 ## SDK: New component or component modification 
 Repositories: [unity-renderer](https://github.com/decentraland/unity-renderer/) and [js-sdk-toolchain](https://github.com/decentraland/js-sdk-toolchain/)
