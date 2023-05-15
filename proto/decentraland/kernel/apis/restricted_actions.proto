@@ -3,15 +3,10 @@ package decentraland.kernel.apis;
 
 import "decentraland/common/vectors.proto";
 
-message MovePlayerToResponse { }
-
-message MovePlayerToRequest {
-  decentraland.common.Vector3 new_relative_position = 1;
-  optional decentraland.common.Vector3 camera_target = 2;
-}
+message TeleportToResponse { }
 
 message TeleportToRequest {
-  decentraland.common.Vector3 world_position = 1;
+  decentraland.common.Vector2 world_coordinates = 1;
   optional decentraland.common.Vector3 camera_target = 2;
 }
 
@@ -45,11 +40,8 @@ message SuccessResponse {
 }
 
 service RestrictedActionsService {
-  // MovePlayerTo will move the player in a position relative to the current scene
-  rpc MovePlayerTo(MovePlayerToRequest) returns (MovePlayerToResponse) {}
-
-  // TeleportTo will move the user into an absolute world position
-  rpc TeleportTo(TeleportToRequest) returns (MovePlayerToResponse) {}
+  // TeleportTo will move the user to the specified world LAND parcel coordinates
+  rpc TeleportTo(TeleportToRequest) returns (TeleportToResponse) {}
 
   // TriggerEmote will trigger an emote in this current user
   rpc TriggerEmote(TriggerEmoteRequest) returns (TriggerEmoteResponse) {}
