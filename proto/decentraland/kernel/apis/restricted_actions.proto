@@ -3,14 +3,9 @@ package decentraland.kernel.apis;
 
 import "decentraland/common/vectors.proto";
 
-message TeleportToResponse { }
-
 message TeleportToRequest {
   decentraland.common.Vector2 world_coordinates = 1;
-  optional decentraland.common.Vector3 camera_target = 2;
 }
-
-message TriggerEmoteResponse { }
 
 message TriggerEmoteRequest {
   string predefined_emote = 1;
@@ -39,9 +34,11 @@ message SuccessResponse {
   bool success = 1;
 }
 
+message TriggerEmoteResponse { }
+
 service RestrictedActionsService {
   // TeleportTo will move the user to the specified world LAND parcel coordinates
-  rpc TeleportTo(TeleportToRequest) returns (TeleportToResponse) {}
+  rpc TeleportTo(TeleportToRequest) returns (SuccessResponse) {}
 
   // TriggerEmote will trigger an emote in this current user
   rpc TriggerEmote(TriggerEmoteRequest) returns (TriggerEmoteResponse) {}
