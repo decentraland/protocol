@@ -28,6 +28,7 @@ import public "decentraland/sdk/components/pointer_lock.proto";
 import public "decentraland/sdk/components/raycast_result.proto";
 import public "decentraland/sdk/components/raycast.proto";
 import public "decentraland/sdk/components/text_shape.proto";
+import public "decentraland/sdk/components/tween.proto";
 import public "decentraland/sdk/components/ui_background.proto";
 import public "decentraland/sdk/components/ui_dropdown_result.proto";
 import public "decentraland/sdk/components/ui_dropdown.proto";
