@@ -19,6 +19,10 @@ option (common.ecs_component_id) = 1101;
 // Tweens will be calculated AFTER the final position of the entity is calculated,
 // and BEFORE the position of the child entities is computed. Effectively applying
 // the animation to all its children.
+//
+// It is important to mention that tweens only apply to the local entity, if a parent entity P
+// has a linear tween, and it has a child entity C with another tween, by moving P, only P's tween will apply,
+// moving C's frame of reference but NOT animating it.
 message PBTween {
   float duration = 1; // in milliseconds
   TweenFunction tween_function = 2;
