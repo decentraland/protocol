@@ -26,40 +26,40 @@ option (common.ecs_component_id) = 1101;
 message PBTween {
   float duration = 1; // in milliseconds
   TweenFunction tween_function = 2;
+}
 
-  // https://easings.net/
-  enum TweenFunction {
-    // https://github.com/ai/easings.net/blob/master/src/easings/easingsFunctions.ts
-    TF_LINEAR = 0; // default
-    TF_EASE_IN_QUAD = 2;
-    TF_EASE_OUT_QUAD = 3;
-    TF_EASE_IN_OUT_QUAD = 4;
-    TF_EASE_IN_CUBIC = 5;
-    TF_EASE_OUT_CUBIC = 6;
-    TF_EASE_IN_OUT_CUBIC = 7;
-    TF_EASE_IN_QUART = 8;
-    TF_EASE_OUT_QUART = 9;
-    TF_EASE_IN_OUT_QUART = 10;
-    TF_EASE_IN_QUINT = 11;
-    TF_EASE_OUT_QUINT = 12;
-    TF_EASE_IN_OUT_QUINT = 13;
-    TF_EASE_IN_SINE = 14;
-    TF_EASE_OUT_SINE = 15;
-    TF_EASE_IN_OUT_SINE = 16;
-    TF_EASE_IN_EXPO = 17;
-    TF_EASE_OUT_EXPO = 18;
-    TF_EASE_IN_OUT_EXPO = 19;
-    TF_EASE_IN_CIRC = 20;
-    TF_EASE_OUT_CIRC = 21;
-    TF_EASE_IN_OUT_CIRC = 22;
-    TF_EASE_IN_BACK = 23;
-    TF_EASE_OUT_BACK = 24;
-    TF_EASE_IN_OUT_BACK = 25;
-    TF_EASE_IN_ELASTIC = 26;
-    TF_EASE_OUT_ELASTIC = 27;
-    TF_EASE_IN_OUT_ELASTIC = 28;
-    TF_EASE_IN_BOUNCE = 29;
-    TF_EASE_IN_OUT_BOUNCE = 30;
-    TF_EASE_OUT_BOUNCE = 31;
-  }
+// https://easings.net/
+enum TweenFunction {
+  // https://github.com/ai/easings.net/blob/master/src/easings/easingsFunctions.ts
+  TF_LINEAR = 0; // default
+  TF_EASE_IN_QUAD = 2;
+  TF_EASE_OUT_QUAD = 3;
+  TF_EASE_IN_OUT_QUAD = 4;
+  TF_EASE_IN_CUBIC = 5;
+  TF_EASE_OUT_CUBIC = 6;
+  TF_EASE_IN_OUT_CUBIC = 7;
+  TF_EASE_IN_QUART = 8;
+  TF_EASE_OUT_QUART = 9;
+  TF_EASE_IN_OUT_QUART = 10;
+  TF_EASE_IN_QUINT = 11;
+  TF_EASE_OUT_QUINT = 12;
+  TF_EASE_IN_OUT_QUINT = 13;
+  TF_EASE_IN_SINE = 14;
+  TF_EASE_OUT_SINE = 15;
+  TF_EASE_IN_OUT_SINE = 16;
+  TF_EASE_IN_EXPO = 17;
+  TF_EASE_OUT_EXPO = 18;
+  TF_EASE_IN_OUT_EXPO = 19;
+  TF_EASE_IN_CIRC = 20;
+  TF_EASE_OUT_CIRC = 21;
+  TF_EASE_IN_OUT_CIRC = 22;
+  TF_EASE_IN_BACK = 23;
+  TF_EASE_OUT_BACK = 24;
+  TF_EASE_IN_OUT_BACK = 25;
+  TF_EASE_IN_ELASTIC = 26;
+  TF_EASE_OUT_ELASTIC = 27;
+  TF_EASE_IN_OUT_ELASTIC = 28;
+  TF_EASE_IN_BOUNCE = 29;
+  TF_EASE_IN_OUT_BOUNCE = 30;
+  TF_EASE_OUT_BOUNCE = 31;
 }
