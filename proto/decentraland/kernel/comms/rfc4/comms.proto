@@ -14,7 +14,43 @@ message Packet {
     Chat chat = 5;
     Scene scene = 6;
     Voice voice = 7;
+    SdkComponent sdk_component = 8;
+    CustomSignal signal = 9;
   }
+}
+
+// custom signal is used to encode any kind of custom signal that is not part of
+// the standard protocol. The name field is used to identify the signal type, and
+// the data field contains the serialized signal data.
+// A concrete example of this is the ping signal, which is used to measure the
+// latency of the connection. The name field would be "ping", and the data field
+// would contain the serialized Ping message.
+// This message is not part of the standard protocol, and is only used to encode
+// custom implementation-dependant signals.
+//
+// It is recommended that signal names are namespaced to avoid collisions. For
+// example, a signal to request a profile could be named "decentraland.profile-request.v1"
+//
+// The usage of signals is discouraged, and should only be used to prototype functionality
+// that is not part of the standard protocol. If a signal is used to prototype a feature,
+// it should be proposed as a standard protocol message, and the signal should be removed
+// once the feature is implemented.
+message CustomSignal {
+  string name = 1;
+  bytes data = 2;
+}
+
+// the SdkComponent message enables sending a custom SDK component over the comms
+// channel. The component_id is used to identify the component type, and the data
+// field contains the serialized component data. as defined by ADR-117. this message
+// only encodes component data for the current player. For example, HandPositionComponent
+// could be used to track the position and rotation of both hands of the player. The player
+// tracking its hands would send this component over the wire, and other players would
+// receive it and render the hands of the player.
+message SdkComponent {
+  uint32 component_id = 1;
+  bytes data = 2;
+  uint32 timestamp = 3;
 }
 
 message Position {
@@ -29,6 +65,8 @@ message Position {
   float rotation_y = 7;
   float rotation_z = 8;
   float rotation_w = 9;
+  // timestamp
+  float timestamp = 10; // in relative milliseconds
 }
 
 message AnnounceProfileVersion {
