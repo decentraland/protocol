@@ -10,4 +10,5 @@ message PBAvatarCustomization {
   decentraland.common.Color3 eyes_color = 2;
   decentraland.common.Color3 hair_color = 3;
   string body_shape_urn = 4;
+  // TODO: should name be here or in PlayerIdentityData?
 }
