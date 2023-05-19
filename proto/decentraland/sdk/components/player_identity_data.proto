@@ -9,4 +9,6 @@ option (common.ecs_component_id) = 1089;
 // data.
 message PBPlayerIdentityData {
   string address = 1; // ethereum address of this player
+  string name = 2;
+  bool is_guest = 3;
 }
