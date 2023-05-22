@@ -14,7 +14,7 @@ message Packet {
     Chat chat = 5;
     Scene scene = 6;
     Voice voice = 7;
-    SdkComponent sdk_component = 8;
+    Component sdk_component = 8;
     Custom custom = 9;
   }
 }
