@@ -14,6 +14,7 @@ import public "decentraland/sdk/components/avatar_shape.proto";
 import public "decentraland/sdk/components/billboard.proto";
 import public "decentraland/sdk/components/camera_mode_area.proto";
 import public "decentraland/sdk/components/camera_mode.proto";
+import public "decentraland/sdk/components/delayed_interpolation.proto";
 import public "decentraland/sdk/components/engine_info.proto";
 import public "decentraland/sdk/components/gltf_container_loading_state.proto";
 import public "decentraland/sdk/components/gltf_container.proto";

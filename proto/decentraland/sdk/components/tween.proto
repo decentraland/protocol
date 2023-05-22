@@ -4,17 +4,18 @@ package decentraland.sdk.components;
 
 import "decentraland/sdk/components/common/id.proto";
 
-option (common.ecs_component_id) = 1101;
+option (common.ecs_component_id) = 1102;
 
 // The Tween component allows you to animate the final transform of an entity.
-// The animation is performed time-traveling back in time .duration amount of milliseconds
-// and interpolating the values of the transform from the past.
+// The animation is performed interpolating the previous value of the transform
+// and the current value for a .duration amount of milliseconds.
 //
-// The parameters used for this time-travel are set by the transform component and its
-// modifiers like billboard, avatar attachment point, etc.
+// The intended usage for Tween is to animate objects with predictable behaviors
+// without having to write a custom system and over-send trivial messages over the CRDT protocol.
+// A great example for this is the movement of a character, or the rotation of a door.
 //
-// When an entity changes its parent entity, the tween's time-travel registry will
-// automatically reset. Meaning NO tweening will be performed upon reparenting.
+// When an entity changes its parent entity, the interpolation resets to the current
+// value. Performing no animation at all.
 //
 // Tweens will be calculated AFTER the final position of the entity is calculated,
 // and BEFORE the position of the child entities is computed. Effectively applying
@@ -25,11 +26,11 @@ option (common.ecs_component_id) = 1101;
 // moving C's frame of reference but NOT animating it.
 message PBTween {
   float duration = 1; // in milliseconds
-  TweenFunction tween_function = 2;
+  EasingFunction tween_function = 2;
 }
 
 // https://easings.net/
-enum TweenFunction {
+enum EasingFunction {
   // https://github.com/ai/easings.net/blob/master/src/easings/easingsFunctions.ts
   TF_LINEAR = 0; // default
   TF_EASE_IN_QUAD = 2;
