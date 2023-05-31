@@ -368,12 +368,12 @@ message ECS6ComponentAvatarShape {
   }
 
   repeated Emote emotes = 7;
-  optional ECS6Color4 skin_color = 8;
-  optional ECS6Color4 hair_color = 9;
-  optional ECS6Color4 eye_color = 10;
-  optional bool use_dummy_model = 11;
-  optional bool talking = 12;
-  repeated string force_render = 13;
+  repeated string force_render = 8;
+  optional ECS6Color4 skin_color = 9;
+  optional ECS6Color4 hair_color = 10;
+  optional ECS6Color4 eye_color = 11;
+  optional bool use_dummy_model = 12;
+  optional bool talking = 13;
 }
 
 // CLASS_ID.GIZMOS
