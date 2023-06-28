@@ -3,6 +3,7 @@ syntax = "proto3";
 package decentraland.kernel.apis;
 
 import "decentraland/sdk/ecs6/engine_interface_ecs6.proto";
+import "decentraland/kernel/apis/engine_api_strict_7.proto";
 
 message ManyEntityAction {
   repeated decentraland.sdk.ecs6.EntityAction actions = 1;
@@ -62,30 +63,6 @@ message EventData {
   optional GenericPayload generic = 2;
   optional PositionChangedPayload position_changed = 3;
   optional RotationChangedPayload rotation_changed = 4;
-}
-
-message CrdtSendToRendererRequest {
-  bytes data = 1;
-}
-
-message CrdtSendToResponse {
-  // list of CRDT messages coming back from the renderer
-  repeated bytes data = 1;
-}
-
-message CrdtGetStateRequest {}
-message CrdtGetStateResponse {
-  // returns true if the returned state has scene-created entities
-  bool has_entities = 1;
-  // static entities data (root entity, camera, etc) and scene-created entities
-  repeated bytes data = 2;
-}
-
-// deprecated
-message CrdtMessageFromRendererRequest {}
-// deprecated
-message CrdtMessageFromRendererResponse {
-  repeated bytes data = 1;
 }
 
 service EngineApiService {
