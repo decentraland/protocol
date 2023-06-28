@@ -564,6 +564,7 @@ message ECS6ComponentUiInputText {
     optional string on_focus = 37;
     optional string on_blur = 38;
     optional string on_text_submit = 40;
+    optional string on_changed = 41;
 }
 
 // CLASS_ID.UI_IMAGE_SHAPE
