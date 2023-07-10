@@ -112,6 +112,7 @@ message UsersResponse {
     UnauthorizedError unauthorized_error = 3;
     ForbiddenError forbidden_error = 4;
     TooManyRequestsError too_many_requests_error = 5;
+    BadRequestError bad_request_error = 6;
   }
 }
 
