@@ -79,7 +79,7 @@ message UpdateFriendshipPayload {
 }
 
 message MutualFriendsPayload {
-  User user = 1;
+  User other_user = 1;
   // For internal use only, subject to change.
   optional Payload auth_token = 2;
 }
