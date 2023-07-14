@@ -78,6 +78,12 @@ message UpdateFriendshipPayload {
   optional Payload auth_token = 2;
 }
 
+message MutualFriendsPayload {
+  User user = 1;
+  // For internal use only, subject to change.
+  optional Payload auth_token = 2;
+}
+
 message Payload {
   // For internal use only, subject to change.
   optional string synapse_token = 1;
@@ -106,6 +112,7 @@ message UsersResponse {
     UnauthorizedError unauthorized_error = 3;
     ForbiddenError forbidden_error = 4;
     TooManyRequestsError too_many_requests_error = 5;
+    BadRequestError bad_request_error = 6;
   }
 }
 
@@ -143,6 +150,9 @@ message SubscribeFriendshipEventsUpdatesResponse {
 service FriendshipsService {
   // Get the list of friends for the authenticated user
   rpc GetFriends(Payload) returns (stream UsersResponse) {}
+
+  // Get the list of mutual friends between the authenticated user and the one in the parameter
+  rpc GetMutualFriends(MutualFriendsPayload) returns (stream UsersResponse) {}
 
   // Get the list of request events for the authenticated user
   rpc GetRequestEvents(Payload) returns (RequestEventsResponse) {}
