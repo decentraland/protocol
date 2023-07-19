@@ -35,6 +35,11 @@ message CommsAdapterRequest {
   string connection_string = 1;
 }
 
+message TriggerSceneEmoteRequest {
+  string scr = 1;
+  optional bool loop = 2;
+}
+
 message SuccessResponse {
   bool success = 1;
 }
@@ -67,4 +72,7 @@ service RestrictedActionsService {
   // Asks the explorer to connect to other communications adapter, this feature
   // can be used to join private game servers
   rpc SetCommunicationsAdapter(CommsAdapterRequest) returns (SuccessResponse) {}
+
+  // TriggerSceneEmote will trigger an scene emote file in this current user
+  rpc TriggerSceneEmote(TriggerSceneEmoteRequest) returns (SuccessResponse) {}
 }
