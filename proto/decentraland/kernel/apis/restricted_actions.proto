@@ -36,7 +36,7 @@ message CommsAdapterRequest {
 }
 
 message TriggerSceneEmoteRequest {
-  string scr = 1;
+  string src = 1;
   optional bool loop = 2;
 }
 
