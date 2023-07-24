@@ -35,10 +35,6 @@ message User { string address = 1; }
 
 message Users { repeated User users = 1; }
 
-message UsersPresence {
-  repeated User online = 1;
-}
-
 message RequestResponse {
   User user = 1;
   int64 created_at = 2;
@@ -136,16 +132,6 @@ message InternalServerError {
   string message = 1;
 }
 
-message UsersPresenceResponse {
-  oneof response {
-    UsersPresence presence = 1;
-    InternalServerError internal_server_error = 2;
-    UnauthorizedError unauthorized_error = 3;
-    ForbiddenError forbidden_error = 4;
-    TooManyRequestsError too_many_requests_error = 5;
-  }
-}
-
 message UsersResponse {
   oneof response {
     Users users = 1;
@@ -196,8 +182,8 @@ service FriendshipsService {
   // Get the list of friends for the authenticated user
   rpc GetFriends(Payload) returns (stream UsersResponse) {}
 
-  // Get the list of presence status of the friends for the authenticated user
-  rpc GetFriendsPresenceStatus(Payload) returns (stream UsersPresenceResponse) {}
+  // Get the list of online presence friends for the authenticated user
+  rpc GetOnlineFriends(Payload) returns (stream UsersResponse) {}
 
   // Get the list of mutual friends between the authenticated user and the one in the parameter
   rpc GetMutualFriends(MutualFriendsPayload) returns (stream UsersResponse) {}
