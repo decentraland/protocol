@@ -176,7 +176,7 @@ message SubscribeFriendshipEventsUpdatesResponse {
 
 service FriendshipsService {
 
-  // Message to set yourself as online
+  // Message to set yourself as online/offline
   rpc SetPresenceStatus(StatusPayload) returns (StatusResponse) {}
 
   // Get the list of friends for the authenticated user
