@@ -1,0 +1,18 @@
+syntax = "proto3";
+package decentraland.kernel.apis;
+
+message VideoTracksActiveStreamsRequest {
+}
+
+message VideoTracksActiveStreamsResponse {
+    repeated VideoTracksActiveStreamsData streams = 1;
+}
+
+message VideoTracksActiveStreamsData {
+    string identity = 1;
+    string track_sid = 2;
+}
+
+service CommsApiService {
+  rpc GetActiveVideoStreams(VideoTracksActiveStreamsRequest) returns (VideoTracksActiveStreamsResponse) {}
+}
