@@ -21,6 +21,11 @@ message FriendshipEventResponses {
   repeated FriendshipEventResponse responses = 1;
 }
 
+message FriendshipPresenceUpdates {
+  repeated UserPresence users = 1;
+
+}
+
 message FriendshipEventPayload {
   oneof body {
     RequestPayload request = 1;
@@ -97,6 +102,11 @@ message Status {
   StatusType type = 1;
 }
 
+message UserPresence {
+  User user = 1;
+  Status status = 2;
+}
+
 // For internal use only, subject to change.
 message StatusPayload {
   // For internal use only, subject to change.
@@ -164,6 +174,16 @@ message UpdateFriendshipResponse {
   }
 }
 
+message SubscribeFriendshipPresenceUpdatesResponse {
+  oneof response {
+    FriendshipPresenceUpdates updates = 1;
+    InternalServerError internal_server_error = 2;
+    UnauthorizedError unauthorized_error = 3;
+    ForbiddenError forbidden_error = 4;
+    TooManyRequestsError too_many_requests_error = 5;
+  }
+}
+
 message SubscribeFriendshipEventsUpdatesResponse {
   oneof response {
     FriendshipEventResponses events = 1;
@@ -198,4 +218,8 @@ service FriendshipsService {
   // Subscribe to updates of friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
   rpc SubscribeFriendshipEventsUpdates(Payload)
       returns (stream SubscribeFriendshipEventsUpdatesResponse) {}
+
+  // Subscribe to presence status updates of friends
+  rpc SubscribeFriendshipPresenceUpdates(Payload)
+      returns (stream SubscribeFriendshipPresenceUpdatesResponse) {}
 }
