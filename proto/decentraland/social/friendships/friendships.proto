@@ -21,11 +21,6 @@ message FriendshipEventResponses {
   repeated FriendshipEventResponse responses = 1;
 }
 
-message FriendshipPresenceUpdates {
-  repeated UserPresence users = 1;
-
-}
-
 message FriendshipEventPayload {
   oneof body {
     RequestPayload request = 1;
@@ -94,30 +89,27 @@ message Payload {
   optional string synapse_token = 1;
 }
 
-message Status {
-  enum StatusType {
-    ONLINE = 0;
-    OFFLINE = 1;
-  }
-  StatusType type = 1;
+message Positions {
+  repeated Position positions = 1;
 }
 
-message UserPresence {
-  User user = 1;
-  Status status = 2;
+message Position {
+  optional string realm = 1;
+  optional string x = 2;
+  optional string y = 3;
 }
 
 // For internal use only, subject to change.
-message StatusPayload {
+message PositionPayload {
   // For internal use only, subject to change.
   optional string synapse_token = 1;
   // For internal use only, subject to change.
-  optional Status status = 2;
+  optional Position position = 2;
 }
 
-message StatusResponse {
+message PositionResponse {
   oneof response {
-    Status status = 1;
+    Position position = 1;
     InternalServerError internal_server_error = 2;
     UnauthorizedError unauthorized_error = 3;
     ForbiddenError forbidden_error = 4;
@@ -176,7 +168,7 @@ message UpdateFriendshipResponse {
 
 message SubscribeFriendshipPresenceUpdatesResponse {
   oneof response {
-    FriendshipPresenceUpdates updates = 1;
+    Positions updates = 1;
     InternalServerError internal_server_error = 2;
     UnauthorizedError unauthorized_error = 3;
     ForbiddenError forbidden_error = 4;
@@ -196,8 +188,8 @@ message SubscribeFriendshipEventsUpdatesResponse {
 
 service FriendshipsService {
 
-  // Message to set yourself as online/offline
-  rpc SetPresenceStatus(StatusPayload) returns (StatusResponse) {}
+  // Message to set your position 
+  rpc PositionHeartbeat(PositionPayload) returns (PositionResponse) {}
 
   // Get the list of friends for the authenticated user
   rpc GetFriends(Payload) returns (stream UsersResponse) {}
