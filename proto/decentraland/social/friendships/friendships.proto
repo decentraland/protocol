@@ -102,9 +102,9 @@ message Position {
 // For internal use only, subject to change.
 message PositionPayload {
   // For internal use only, subject to change.
-  optional string synapse_token = 1;
+  optional Position position = 1;
   // For internal use only, subject to change.
-  optional Position position = 2;
+  optional Payload auth_token = 2;
 }
 
 message PositionResponse {
