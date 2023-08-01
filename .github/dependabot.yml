@@ -1,0 +1,12 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+    day: monday
+    time: "09:00"
+    timezone: "America/Buenos_Aires"
+  versioning-strategy: auto
+  commit-message:
+    prefix: "chore: "
