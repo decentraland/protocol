@@ -5,7 +5,7 @@ import public "decentraland/sdk/components/animator.proto";
 import public "decentraland/sdk/components/audio_source.proto";
 import public "decentraland/sdk/components/audio_stream.proto";
 import public "decentraland/sdk/components/avatar_attach.proto";
-import public "decentraland/sdk/components/avatar_customization.proto";
+import public "decentraland/sdk/components/avatar_base.proto";
 import public "decentraland/sdk/components/avatar_emote_command.proto";
 import public "decentraland/sdk/components/avatar_equipped_data.proto";
 import public "decentraland/sdk/components/avatar_modifier_area.proto";
