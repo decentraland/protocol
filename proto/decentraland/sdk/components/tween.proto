@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1102;
+
+// The Tween component allows you to animate the final transform of an entity.
+// The animation is performed interpolating the previous value of the transform
+// and the current value for a .duration amount of milliseconds.
+//
+// The intended usage for Tween is to animate objects with predictable behaviors
+// without having to write a custom system and over-send trivial messages over the CRDT protocol.
+// A great example for this is the movement of a character, or the rotation of a door.
+//
+// When an entity changes its parent entity, the interpolation resets to the current
+// value. Performing no animation at all.
+//
+// Tweens will be calculated AFTER the final position of the entity is calculated,
+// and BEFORE the position of the child entities is computed. Effectively applying
+// the animation to all its children.
+//
+// It is important to mention that tweens only apply to the local entity, if a parent entity P
+// has a linear tween, and it has a child entity C with another tween, by moving P, only P's tween will apply,
+// moving C's frame of reference but NOT animating it.
+message PBTween {
+  float duration = 1; // in milliseconds
+  EasingFunction tween_function = 2;
+}
+
+// https://easings.net/
+enum EasingFunction {
+  // https://github.com/ai/easings.net/blob/master/src/easings/easingsFunctions.ts
+  TF_LINEAR = 0; // default
+  TF_EASE_IN_QUAD = 2;
+  TF_EASE_OUT_QUAD = 3;
+  TF_EASE_IN_OUT_QUAD = 4;
+  TF_EASE_IN_CUBIC = 5;
+  TF_EASE_OUT_CUBIC = 6;
+  TF_EASE_IN_OUT_CUBIC = 7;
+  TF_EASE_IN_QUART = 8;
+  TF_EASE_OUT_QUART = 9;
+  TF_EASE_IN_OUT_QUART = 10;
+  TF_EASE_IN_QUINT = 11;
+  TF_EASE_OUT_QUINT = 12;
+  TF_EASE_IN_OUT_QUINT = 13;
+  TF_EASE_IN_SINE = 14;
+  TF_EASE_OUT_SINE = 15;
+  TF_EASE_IN_OUT_SINE = 16;
+  TF_EASE_IN_EXPO = 17;
+  TF_EASE_OUT_EXPO = 18;
+  TF_EASE_IN_OUT_EXPO = 19;
+  TF_EASE_IN_CIRC = 20;
+  TF_EASE_OUT_CIRC = 21;
+  TF_EASE_IN_OUT_CIRC = 22;
+  TF_EASE_IN_BACK = 23;
+  TF_EASE_OUT_BACK = 24;
+  TF_EASE_IN_OUT_BACK = 25;
+  TF_EASE_IN_ELASTIC = 26;
+  TF_EASE_OUT_ELASTIC = 27;
+  TF_EASE_IN_OUT_ELASTIC = 28;
+  TF_EASE_IN_BOUNCE = 29;
+  TF_EASE_IN_OUT_BOUNCE = 30;
+  TF_EASE_OUT_BOUNCE = 31;
+}

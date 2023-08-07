@@ -1,4 +1,4 @@
-// This file maps to the definition in https://rfc.decentraland.org/rfc/RFC-4
+// This file maps to the definition in https://adr.decentraland.org/adr/ADR-104
 // It is mandatory to also update that RFC when modifying this file
 
 syntax = "proto3";
@@ -14,7 +14,50 @@ message Packet {
     Chat chat = 5;
     Scene scene = 6;
     Voice voice = 7;
+    Component sdk_component = 8;
+    Custom custom = 9;
   }
+}
+
+// Custom is used to encode any kind of custom signaling that is not part of
+// the standard protocol. The name field is used to identify the signal type, and
+// the data field contains the serialized signal data.
+//
+// A concrete example of this is the ping signal, which is used to measure the
+// latency of the connection. The name field would be "ping", and the data field
+// would contain the serialized Ping message.
+// This message is not part of the standard protocol, and is only used to encode
+// custom implementation-dependant signals.
+//
+// The namespace field is used to identify the origin of the signal. For example,
+// the SDK could use the "sdk" namespace to send signals that are only relevant
+// to the SDK. The namespace field is required to prevent collisions between
+// different signals.
+//
+// The kind field is used to identify the type of signal. For example, the SDK
+// could use the "sdk" namespace, and the SdkEnum.Ping kind to identify the ping signal.
+//
+// The usage of custom messages is discouraged, and should only be used to prototype functionality
+// that is not part of the standard protocol. If a signal is used to prototype a feature,
+// it should be proposed as a standard protocol message, and the signal should be removed
+// once the feature is implemented.
+message Custom {
+  string namespace = 1;
+  uint32 kind = 2;
+  bytes  data = 3;
+}
+
+// the Component message enables sending a custom SDK component over the comms
+// channel. The component_id is used to identify the component type, and the data
+// field contains the serialized component data. as defined by ADR-117. this message
+// only encodes component data for the current player. For example, HandPositionComponent
+// could be used to track the position and rotation of both hands of the player. The player
+// tracking its hands would send this component over the wire, and other players would
+// receive it and render the hands of the player.
+message Component {
+  uint32 component_id = 1;
+  bytes data = 2;
+  uint32 timestamp = 3;
 }
 
 message Position {
@@ -29,6 +72,8 @@ message Position {
   float rotation_y = 7;
   float rotation_z = 8;
   float rotation_w = 9;
+  // timestamp
+  float timestamp = 10; // in relative milliseconds
 }
 
 message AnnounceProfileVersion {
