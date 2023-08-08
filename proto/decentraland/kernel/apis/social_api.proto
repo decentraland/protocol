@@ -1,0 +1,19 @@
+syntax = "proto3";
+package decentraland.kernel.apis;
+
+message FriendsRequest {
+  bool online = 1;
+}
+
+message FriendsResponse {
+    repeated Friend friends = 1;
+}
+
+message VideoTracksActiveStreamsData {
+    string address = 1;
+    string name = 2;
+}
+
+service SocialApiService {
+  rpc GetFriends(FriendsRequest) returns (FriendsResponse) {}
+}
