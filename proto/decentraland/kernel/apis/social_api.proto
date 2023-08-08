@@ -9,7 +9,7 @@ message FriendsResponse {
     repeated Friend friends = 1;
 }
 
-message VideoTracksActiveStreamsData {
+message Friend {
     string address = 1;
     string name = 2;
 }
