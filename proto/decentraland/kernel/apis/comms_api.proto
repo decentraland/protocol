@@ -1,6 +1,12 @@
 syntax = "proto3";
 package decentraland.kernel.apis;
 
+enum VideoTrackSourceType {
+  VTST_UNKNOWN = 0;
+  VTST_CAMERA = 1;
+  VTST_SCREEN_SHARE = 2;
+}
+
 message VideoTracksActiveStreamsRequest {
 }
 
@@ -11,6 +17,7 @@ message VideoTracksActiveStreamsResponse {
 message VideoTracksActiveStreamsData {
     string identity = 1;
     string track_sid = 2;
+    VideoTrackSourceType source_type = 3;
 }
 
 service CommsApiService {
