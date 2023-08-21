@@ -102,6 +102,9 @@ service EngineApiService {
   // like raycast responses or the player's position
   rpc CrdtSendToRenderer(CrdtSendToRendererRequest) returns (CrdtSendToResponse) {}
 
+  // TBD: name
+  rpc CrdtSendNetwork(CrdtSendToRendererRequest) returns (CrdtSendToResponse) {}
+
   // retrieves the current _full_ state of the entities from the renderer. This function is used to hidrate
   // the state of the scenes when the code of the worker is stopped/resumed
   rpc CrdtGetState(CrdtSendToRendererRequest) returns (CrdtGetStateResponse) {}
