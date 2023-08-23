@@ -5,7 +5,7 @@ message AboutResponse {
   bool healthy = 1;
   AboutConfiguration configurations = 2;
   ContentInfo content = 3;
-  CommsInfo comms = 4;
+  optional CommsInfo comms = 4;
   LambdasInfo lambdas = 5;
   optional BffInfo bff = 6;
   bool accepting_users = 7;
