@@ -49,14 +49,6 @@ message AboutResponse {
     optional string commit_hash = 3;
     string public_url = 4;
   }
-  message CommsInfoAdapter {
-    enum AdapterType{
-      FIXED = 0;
-      ARCHIPELAGO = 1;
-    }
-    AdapterType type = 1;
-    string connection_string = 2;
-  }
   message CommsInfo {
     // common properties
     bool healthy = 1;
@@ -66,7 +58,7 @@ message AboutResponse {
     // specific properties
     string protocol = 50;
     optional int32 users_count = 51;
-    CommsInfoAdapter adapter = 52;
+    string adapter = 52;
   }
   message BffInfo {
     // common properties
