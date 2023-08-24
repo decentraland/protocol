@@ -54,11 +54,11 @@ message AboutResponse {
   }
   message CommsInfoAdapter {
     enum AdapterType{
-      fixed = 0;
-      archipelago = 1;
-   }
-    AdapterType type;
-    string connectionString;
+      FIXED = 0;
+      ARCHIPELAGO = 1;
+    }
+    AdapterType type = 1;
+    string connection_string = 2;
   }
   message CommsInfo {
     // common properties
