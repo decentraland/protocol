@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package decentraland.kernel.apis;
 
-import "google/protobuf/empty.proto";
 import "decentraland/sdk/ecs6/engine_interface_ecs6.proto";
 
 message ManyEntityAction {
@@ -88,7 +87,7 @@ message CrdtMessageFromRendererRequest {}
 message CrdtMessageFromRendererResponse {
   repeated bytes data = 1;
 }
-
+message IsServerRequest {}
 message IsServerResponse {
   bool is_server = 1;
 }
@@ -109,7 +108,7 @@ service EngineApiService {
 
   // TBD: name
   rpc CrdtSendNetwork(CrdtSendToRendererRequest) returns (CrdtSendToResponse) {}
-  rpc IsServer(google.protobuf.Empty) returns (IsServerResponse) {}
+  rpc IsServer(IsServerRequest) returns (IsServerResponse) {}
   // retrieves the current _full_ state of the entities from the renderer. This function is used to hidrate
   // the state of the scenes when the code of the worker is stopped/resumed
   rpc CrdtGetState(CrdtSendToRendererRequest) returns (CrdtGetStateResponse) {}
