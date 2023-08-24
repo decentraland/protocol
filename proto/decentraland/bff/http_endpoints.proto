@@ -7,7 +7,7 @@ message AboutResponse {
   bool healthy = 1;
   AboutConfiguration configurations = 2;
   ContentInfo content = 3;
-  CommsInfo comms = 4;
+  optional CommsInfo comms = 4;
   LambdasInfo lambdas = 5;
   optional BffInfo bff = 6;
   bool accepting_users = 7;
@@ -52,6 +52,14 @@ message AboutResponse {
     optional string commit_hash = 3;
     string public_url = 4;
   }
+  message CommsInfoAdapter {
+    enum ADAPTER_TYPE{
+      fixed = 0;
+      archipelago = 1;
+   }
+    ADAPTER_TYPE type;
+    string connectionString;
+  }
   message CommsInfo {
     // common properties
     bool healthy = 1;
@@ -61,7 +69,7 @@ message AboutResponse {
     // specific properties
     string protocol = 50;
     optional int32 users_count = 51;
-    optional string fixed_adapter = 52;
+    CommsInfoAdapter adapter = 52;
   }
   message BffInfo {
     // common properties
