@@ -73,6 +73,15 @@ message CrdtSendToResponse {
   repeated bytes data = 1;
 }
 
+message CrdtSendToNetworkRequest {
+  bytes data = 1;
+  string client_id = 2;
+}
+message CrdtSendToNetworkResponse {
+  // list of CRDT messages coming back from the renderer
+  repeated bytes data = 1;
+}
+
 message CrdtGetStateRequest {}
 message CrdtGetStateResponse {
   // returns true if the returned state has scene-created entities
@@ -90,6 +99,7 @@ message CrdtMessageFromRendererResponse {
 message IsServerRequest {}
 message IsServerResponse {
   bool is_server = 1;
+  repeated string clients = 2;
 }
 
 service EngineApiService {
@@ -106,9 +116,10 @@ service EngineApiService {
   // like raycast responses or the player's position
   rpc CrdtSendToRenderer(CrdtSendToRendererRequest) returns (CrdtSendToResponse) {}
 
-  // TBD: name
-  rpc CrdtSendNetwork(CrdtSendToRendererRequest) returns (CrdtSendToResponse) {}
+  // TBD: wip
+  rpc CrdtSendNetwork(CrdtSendToNetworkRequest) returns (CrdtSendToNetworkResponse) {}
   rpc IsServer(IsServerRequest) returns (IsServerResponse) {}
+
   // retrieves the current _full_ state of the entities from the renderer. This function is used to hidrate
   // the state of the scenes when the code of the worker is stopped/resumed
   rpc CrdtGetState(CrdtSendToRendererRequest) returns (CrdtGetStateResponse) {}
