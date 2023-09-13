@@ -58,7 +58,8 @@ message AboutResponse {
     // specific properties
     string protocol = 50;
     optional int32 users_count = 51;
-    string adapter = 52;
+    optional string fixed_adapter = 52;
+    string adapter = 53;
   }
   message BffInfo {
     // common properties
