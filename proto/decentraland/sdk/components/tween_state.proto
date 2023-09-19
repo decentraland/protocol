@@ -9,7 +9,7 @@ option (common.ecs_component_id) = 1103;
 // This shouldn't be synced
 message PBTweenState {
   TweenState state = 1;
-  int32 current_time = 2; // between 0 and 1
+  float current_time = 2; // between 0 and 1
   // TBD: more params.
 }
 
