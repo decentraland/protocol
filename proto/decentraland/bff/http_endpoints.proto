@@ -62,7 +62,7 @@ message AboutResponse {
     string protocol = 50;
     optional int32 users_count = 51;
     // Deprecated: Use adapter instead. This field may be removed in the future.
-    optional string fixed_adapter = 52 [(deprecated) = true];
+    optional string fixed_adapter = 52 [deprecated = true];
     string adapter = 53;
   }
   message BffInfo {
