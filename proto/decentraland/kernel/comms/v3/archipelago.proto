@@ -86,7 +86,7 @@ message IslandStatusMessage {
 }
 
 message ServiceStatus {
-  uint32 current_time = 1;
+  uint64 current_time = 1;
   optional string commit_hash = 2;
   uint32 user_count = 3;
 }
