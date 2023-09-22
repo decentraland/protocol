@@ -11,6 +11,7 @@ option (common.ecs_component_id) = 1102;
 // 1- Sync Network. (Test more than do something)
 // 2- Parenting with diff tween mods
 // 3- initial current_time ?? diff than 0
+// 4- TweenState READONLY
 
 message PBTween {
   float duration = 1; // in milliseconds
@@ -19,6 +20,7 @@ message PBTween {
   // TBD: oneof scale / rotation / position
   Move move = 3;
   optional bool playing = 4; // default true (pause or running)
+  optional float current_time = 5; // between 0 and 1
 }
 
 message Move {
