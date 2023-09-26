@@ -17,13 +17,27 @@ message PBTween {
   float duration = 1; // in milliseconds
   EasingFunction tween_function = 2;
 
-  // TBD: oneof scale / rotation / position
-  Move move = 3;
-  optional bool playing = 4; // default true (pause or running)
-  optional float current_time = 5; // between 0 and 1
+  oneof mode {
+    Move move = 3;
+    Rotate rotate = 4;
+    Scale scale = 5;
+  }
+  
+  optional bool playing = 6; // default true (pause or running)
+  optional float current_time = 7; // between 0 and 1
 }
 
 message Move {
+  decentraland.common.Vector3 start = 1;
+  decentraland.common.Vector3 end = 2;
+}
+
+message Rotate {
+  decentraland.common.Quaternion start = 1;
+  decentraland.common.Quaternion end = 2;
+}
+
+message Scale {
   decentraland.common.Vector3 start = 1;
   decentraland.common.Vector3 end = 2;
 }
