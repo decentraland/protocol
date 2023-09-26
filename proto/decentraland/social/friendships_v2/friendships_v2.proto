@@ -170,28 +170,9 @@ message SubscribeFriendshipEventsUpdatesResponse {
   }
 }
 
-message LoginPayload {
-  string auth_chain = 1;
-  string address = 2;
-  string timestamp = 3;
-}
-
-message WelcomeMessage {
-}
-
-message LoginResponse {
-  oneof response {
-    UnauthorizedError unauthorized_error = 1;
-    WelcomeMessage welcome_message = 2;
-  }
-}
-
 message Empty {}
 
 service FriendshipsServiceV2 {
-
-  // Login the connection, this message needs to be the first one to send so the conection can be authenticated
-  rpc Login(LoginPayload) returns (LoginResponse) {}
 
   // Message to set your position 
   rpc PositionHeartbeat(PositionPayload) returns (PositionResponse) {}
