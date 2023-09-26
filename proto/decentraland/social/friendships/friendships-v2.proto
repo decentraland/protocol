@@ -1,5 +1,5 @@
 syntax = "proto3";
-package decentraland.social.friendships;
+package decentraland.social.friendships_v2;
 
 // ***
 // Domain messages
