@@ -188,7 +188,7 @@ message LoginResponse {
 
 message Empty {}
 
-service FriendshipsService {
+service FriendshipsServiceV2 {
 
   // Login the connection, this message needs to be the first one to send so the conection can be authenticated
   rpc Login(LoginPayload) returns (LoginResponse) {}
