@@ -16,7 +16,7 @@ protoc \
   --dcl_ts_proto_out="$(pwd)/out-ts" \
   -I="$(pwd)/node_modules/@dcl/protocol/public" \
   -I="$(pwd)/node_modules/@dcl/protocol/proto" \
-  "$(pwd)/node_modules/@dcl/protocol/public/bff-services.proto"
+  "$(pwd)/node_modules/@dcl/protocol/public/sdk-components.proto"
 ```
 
 # Style Guidelines
@@ -63,16 +63,6 @@ Some guidelines and testing before merge:
 
 Repositories: [kernel](https://github.com/decentraland/kernel/), [js-sdk-toolchain](https://github.com/decentraland/js-sdk-toolchain/) and [scene-runtime](https://github.com/decentraland/scene-runtime/)
 In this case, there is no problem with when each PR is merged. It's recommendable to merge first the rpc server-side (in this case, Kernel), second the `scene-runtime` (and this would require a second update from `kernel`) and last the `js-sdk-toolchain`.
-
-## Renderer protocol (RPC)
-
-Repositories: [kernel](https://github.com/decentraland/kernel/) and [unity-renderer](https://github.com/decentraland/unity-renderer/)
-
-TODO
-
-## BFF
-
-TODO
 
 ## Comms
 
