@@ -25,6 +25,7 @@ message PBTween {
   
   optional bool playing = 6; // default true (pause or running)
   optional float current_time = 7; // between 0 and 1
+  optional bool face_direction = 8
 }
 
 message Move {
