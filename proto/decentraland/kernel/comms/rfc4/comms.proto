@@ -48,6 +48,7 @@ message ProfileResponse {
   string base_url = 2;
   string profile_hash = 3;
   string profile_signed_hash = 4;
+  string catalyst_domain = 5;
 
   // Extension: when Lambdas serializes profiles for the RPC, we could extend
   // this format to prevent transmitting the serialized JSON and leverage protobuf
