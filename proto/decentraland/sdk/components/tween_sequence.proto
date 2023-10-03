@@ -7,8 +7,12 @@ import "decentraland/sdk/components/tween.proto";
 
 option (common.ecs_component_id) = 1104;
 
-// TODO: Testing using protobuf instead of Schemas (wip)
 message PBTweenSequence {
   repeated PBTween sequence = 1;
-  bool loop = 2;
+  optional TweenLoop loop = 2;
+}
+
+enum TweenLoop {
+  TL_RESTART = 0;
+  TL_YOYO = 1;
 }
