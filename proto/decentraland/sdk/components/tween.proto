@@ -7,12 +7,6 @@ import "decentraland/sdk/components/common/id.proto";
 
 option (common.ecs_component_id) = 1102;
 
-// OPEN_QUESTIONS:
-// 1- Sync Network. (Test more than do something)
-// 2- Parenting with diff tween mods
-// 3- initial current_time ?? diff than 0
-// 4- TweenState READONLY
-
 message PBTween {
   float duration = 1; // in milliseconds
   EasingFunction easing_function = 2;
