@@ -15,14 +15,14 @@ option (common.ecs_component_id) = 1102;
 
 message PBTween {
   float duration = 1; // in milliseconds
-  EasingFunction tween_function = 2;
+  EasingFunction easing_function = 2;
 
   oneof mode {
     Move move = 3;
     Rotate rotate = 4;
     Scale scale = 5;
   }
-  
+
   optional bool playing = 6; // default true (pause or running)
   optional float current_time = 7; // between 0 and 1
 }
@@ -43,38 +43,38 @@ message Scale {
   decentraland.common.Vector3 end = 2;
 }
 
-// Implementation guidelines for these easing functions can be found 
+// Implementation guidelines for these easing functions can be found
 // at https://github.com/ai/easings.net/blob/6fcd5f852a470bf1a7890e8178afa0f471d5f2ec/src/easings/easingsFunctions.ts
 enum EasingFunction {
-  TF_LINEAR = 0; // default
-  TF_EASEINQUAD = 1;
-  TF_EASEOUTQUAD = 2;
-  TF_EASEQUAD = 3;
-  TF_EASEINSINE = 4;
-  TF_EASEOUTSINE = 5;
-  TF_EASESINE = 6;
-  TF_EASEINEXPO = 7;
-  TF_EASEOUTEXPO = 8;
-  TF_EASEEXPO = 9;
-  TF_EASEINELASTIC = 10;
-  TF_EASEOUTELASTIC = 11;
-  TF_EASEELASTIC = 12;
-  TF_EASEINBOUNCE = 13;
-  TF_EASEOUTBOUNCE = 14;
-  TF_EASEBOUNCE = 15;
-  TF_EASEINCUBIC = 16;
-  TF_EASEOUTCUBIC = 17;
-  TF_EASECUBIC = 18;
-  TF_EASEINQUART = 19;
-  TF_EASEOUTQUART = 20;
-  TF_EASEQUART = 21;
-  TF_EASEINQUINT = 22;
-  TF_EASEOUTQUINT = 23;
-  TF_EASEQUINT = 24;
-  TF_EASEINCIRC = 25;
-  TF_EASEOUTCIRC = 26;
-  TF_EASECIRC = 27;
-  TF_EASEINBACK = 28;
-  TF_EASEOUTBACK = 29;
-  TF_EASEBACK = 30;
+  EF_LINEAR = 0; // default
+  EF_EASEINQUAD = 1;
+  EF_EASEOUTQUAD = 2;
+  EF_EASEQUAD = 3;
+  EF_EASEINSINE = 4;
+  EF_EASEOUTSINE = 5;
+  EF_EASESINE = 6;
+  EF_EASEINEXPO = 7;
+  EF_EASEOUTEXPO = 8;
+  EF_EASEEXPO = 9;
+  EF_EASEINELASTIC = 10;
+  EF_EASEOUTELASTIC = 11;
+  EF_EASEELASTIC = 12;
+  EF_EASEINBOUNCE = 13;
+  EF_EASEOUTBOUNCE = 14;
+  EF_EASEBOUNCE = 15;
+  EF_EASEINCUBIC = 16;
+  EF_EASEOUTCUBIC = 17;
+  EF_EASECUBIC = 18;
+  EF_EASEINQUART = 19;
+  EF_EASEOUTQUART = 20;
+  EF_EASEQUART = 21;
+  EF_EASEINQUINT = 22;
+  EF_EASEOUTQUINT = 23;
+  EF_EASEQUINT = 24;
+  EF_EASEINCIRC = 25;
+  EF_EASEOUTCIRC = 26;
+  EF_EASECIRC = 27;
+  EF_EASEINBACK = 28;
+  EF_EASEOUTBACK = 29;
+  EF_EASEBACK = 30;
 }
