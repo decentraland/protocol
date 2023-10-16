@@ -138,4 +138,6 @@ message PBUiTransform {
   float padding_right = 49;
   YGUnit padding_bottom_unit = 50; // YGUnit.YGU_UNDEFINED
   float padding_bottom = 51;
+  
+  optional bool pointer_blocker = 52 // default=false
 }
