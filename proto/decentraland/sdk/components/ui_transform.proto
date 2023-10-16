@@ -139,5 +139,5 @@ message PBUiTransform {
   YGUnit padding_bottom_unit = 50; // YGUnit.YGU_UNDEFINED
   float padding_bottom = 51;
   
-  optional bool pointer_blocker = 52 // default=false
+  optional bool pointer_blocker = 52; // default=false
 }
