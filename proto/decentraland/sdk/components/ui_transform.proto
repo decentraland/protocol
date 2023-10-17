@@ -144,5 +144,5 @@ message PBUiTransform {
   YGUnit padding_bottom_unit = 50; // YGUnit.YGU_UNDEFINED
   float padding_bottom = 51;
   
-  optional PointerFilterMode pointer_filter = 52 // default: PointerFilterMode.PFM_NONE
+  optional PointerFilterMode pointer_filter = 52; // default: PointerFilterMode.PFM_NONE
 }
