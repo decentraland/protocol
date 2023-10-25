@@ -40,7 +40,6 @@ jobs:
           s3-bucket: ${{ secrets.SDK_TEAM_S3_BUCKET }}
           s3-bucket-key-prefix: '@dcl/protocol/branch/${{ steps.myref.outputs.branch }}'
           s3-bucket-region: ${{ secrets.SDK_TEAM_AWS_REGION }}
-          
           ## inform gitlab after publishing to proceed with CDN propagation
           gitlab-token: ${{ secrets.GITLAB_TOKEN }}
           gitlab-pipeline-url: ${{ secrets.GITLAB_URL }}
