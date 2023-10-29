@@ -373,6 +373,7 @@ message ECS6ComponentAvatarShape {
   optional ECS6Color4 eye_color = 10;
   optional bool use_dummy_model = 11;
   optional bool talking = 12;
+  repeated string force_render = 13;
 }
 
 // CLASS_ID.GIZMOS
