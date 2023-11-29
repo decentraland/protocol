@@ -34,7 +34,7 @@ message TakeAndCompareScreenshotRequest {
 }
 
 
-message TakeAndCompareScreenshotRequest {
+message TakeAndCompareScreenshotResponse {
   bool stored_snapshot_found = 1;
   oneof comparison_method_result {
     ComparisonMethodGreyPixelDiffResult grey_pixel_diff = 2;
