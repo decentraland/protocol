@@ -69,8 +69,21 @@ message TestPlan {
 message TestPlanResponse {}
 
 message SetCameraTransformTestCommand {
-  decentraland.common.Vector3 position = 1;
-  decentraland.common.Quaternion rotation = 2;
+  Vector3 position = 1;
+  Quaternion rotation = 2;
+
+  message Vector3 {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+  }
+
+  message Quaternion {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+    float w = 4;
+  }
 }
 message SetCameraTransformTestCommandResponse {}
 
