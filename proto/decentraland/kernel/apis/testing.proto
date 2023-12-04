@@ -31,6 +31,16 @@ message TakeAndCompareScreenshotRequest {
   }
 
   message ComparisonMethodGreyPixelDiff {}
+  
+  enum SnapshotMode {
+    // only visible 3d scene and ui scene
+    3D_AND_UI = 0;
+    // only visible 3d scene
+    3D_ONLY = 1;
+    // only visible ui scene
+    UI_ONLY = 2;
+  };
+  SnapshotMode snapshot_mode = 6;
 }
 
 
