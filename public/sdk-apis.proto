@@ -23,3 +23,4 @@ import public "decentraland/kernel/apis/user_action_module.proto";
 import public "decentraland/kernel/apis/user_identity.proto";
 import public "decentraland/kernel/apis/scene.proto";
 import public "decentraland/kernel/apis/comms_api.proto";
+import public "decentraland/kernel/apis/social_api.proto";
