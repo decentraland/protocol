@@ -13,11 +13,19 @@ option (common.ecs_component_id) = 1020;
 // Note that the `audio_clip_url` is not actually a URL, but rather the path of a file bundled with
 // the scene and declared in its manifest. The name was chosen because the URL use-case will
 // eventually be supported.
+//
+// `playing=true` when it's previously `playing=true`
+//  a) if clip is playing and `playback_position` is NOT SET, the clip remains in the current `playback_position`
+//  b) if clip is stopped or `playback_position` is set, the clip is played from the `playback_position` (if set) or from the beginning
+//
+// If other property (volume, loop, pitch) is changed while playing, the clip is keep playing with the new properties
+// Changing `audio_clip_url` while playing stops the current clip and plays the new one (as a new instance)
 message PBAudioSource { 
   optional bool playing = 1; // whether the clip is currently playing.
   optional float volume = 2; // the audio volume (default: 1.0).
   optional bool loop = 3;    // whether the clip should restart when finished.
   optional float pitch = 4;  // the audio pitch (default: 1.0).
   string audio_clip_url = 5; // the clip path as given in the `files` array of the scene's manifest.
+  optional float playback_position = 6;
 }
 
