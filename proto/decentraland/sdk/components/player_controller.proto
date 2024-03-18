@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1098;
+
+// PlayerIdentityData is used to read the information about the avatar's
+// identity. this component is written by the engine using the communications
+// transports' data.
+message PBPlayerController {
+  uint32 gravity = 1;
+  uint32 jump_force = 2;
+  uint32 movement_speed = 3;
+  uint32 running_speed_multiplier = 4;
+}
