@@ -19,6 +19,8 @@ message PBTween {
 
   optional bool playing = 6; // default true (pause or running)
   optional float current_time = 7; // between 0 and 1
+  optional bool auto_start = 8; // default true (active auto start or not)
+  optional bool loop = 9; // default true (active loop or not)
 }
 
 message Move {
