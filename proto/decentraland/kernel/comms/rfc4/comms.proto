@@ -15,6 +15,7 @@ message Packet {
     Scene scene = 6;
     Voice voice = 7;
     Movement movement = 8;
+    Emote emote = 9;
   }
 }
 
@@ -53,6 +54,11 @@ message Movement {
   bool is_falling = 14;
 
   bool is_stunned = 15;
+}
+
+message Emote {
+  float timestamp = 1;
+  uint32 emote_id = 2;
 }
 
 message AnnounceProfileVersion {
