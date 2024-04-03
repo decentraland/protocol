@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1105;
+
+message PBAudioEvent {
+  AudioState state = 1;
+  uint32 timestamp = 2;     // monotonic counter
+}
+
+enum AudioState {
+  AS_NONE = 0;
+  AS_ERROR = 1;
+  AS_LOADING = 2;
+  AS_READY = 3;
+  AS_PLAYING = 4;
+  AS_BUFFERING = 5;
+  AS_SEEKING = 6;
+  AS_PAUSED = 7;
+}
