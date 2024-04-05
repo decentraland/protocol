@@ -15,7 +15,8 @@ message Packet {
     Scene scene = 6;
     Voice voice = 7;
     Movement movement = 8;
-    Emote emote = 9;
+    PlayerEmote player_emote = 9;
+    SceneEmote scene_emote = 10;
   }
 }
 
@@ -56,9 +57,14 @@ message Movement {
   bool is_stunned = 15;
 }
 
-message Emote {
-  float timestamp = 1;
-  uint32 emote_id = 2;
+message PlayerEmote {
+  uint32 incremental_id = 1;
+  string urn = 2;
+}
+
+message SceneEmote {
+  string scene_entity_id = 1;
+  string source = 2;
 }
 
 message AnnounceProfileVersion {
