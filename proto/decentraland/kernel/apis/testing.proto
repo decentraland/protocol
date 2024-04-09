@@ -10,11 +10,13 @@ service TestingService {
   rpc Plan(TestPlan) returns (TestPlanResponse) {}
   // sets the camera position and rotation in the engine
   rpc SetCameraTransform (SetCameraTransformTestCommand) returns (SetCameraTransformTestCommandResponse) {}
+  // @internal
   // take a screenshot and compare it with a stored one
   //  it hides the explorer hud and ui, primary player and players of avatar scenes
   rpc TakeAndCompareScreenshot (TakeAndCompareScreenshotRequest) returns (TakeAndCompareScreenshotResponse) {}
 }
 
+// @internal
 message TakeAndCompareScreenshotRequest {
   // the source path in the scene where the screenshot is stored, 
   //  the snapshot taken is compared with the stored one
@@ -44,6 +46,7 @@ message TakeAndCompareScreenshotRequest {
 }
 
 
+// @internal
 message TakeAndCompareScreenshotResponse {
   bool stored_snapshot_found = 1;
   oneof comparison_method_result {
