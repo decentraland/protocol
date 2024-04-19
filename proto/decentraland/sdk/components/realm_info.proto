@@ -9,5 +9,6 @@ message PBRealmInfo {
   string realm_name = 2;
   int32 network_id = 3;
   string comms_adapter = 4;
-  string room = 5;
+  bool is_preview = 5;
+  optional string room = 6;
 }
