@@ -1,5 +1,5 @@
 syntax = "proto3";
-package decentraland.social_service_ea;
+package decentraland.social_service_v2;
 
 import "google/protobuf/empty.proto";
 
