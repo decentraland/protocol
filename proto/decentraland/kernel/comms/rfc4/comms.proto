@@ -18,6 +18,7 @@ message Packet {
     PlayerEmote player_emote = 9;
     SceneEmote scene_emote = 10;
   }
+  uint32 protocol_version = 11;
 }
 
 message Position {
