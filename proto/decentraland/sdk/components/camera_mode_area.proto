@@ -26,7 +26,7 @@ option (common.ecs_component_id) = 1071;
 message PBCameraModeArea {
   decentraland.common.Vector3 area = 1;                       // the 3D size of the region
   common.CameraType mode = 2;                                 // the camera mode to enforce
-  optional uint32 cimematic_entity = 3;                       // entity that defines the cinematic camera transform. required when mode = CtCinematic
+  optional uint32 cinematic_entity = 3;                       // entity that defines the cinematic camera transform. required when mode = CtCinematic
   optional CinematicControlType cinematic_avatar_control = 4; // allow avatars to move in cinematic mode. defaults to CCT_NONE
   optional bool cinematic_camera_control = 5;                 // allow the camera to be rotated in cinematic mode. defaults to false
 }
