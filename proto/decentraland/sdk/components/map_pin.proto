@@ -1,0 +1,13 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+import "decentraland/common/vectors.proto";
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1097;
+
+message PBMapPin {
+  decentraland.common.Vector2 position = 1;
+  string icon_sprite = 2;
+  float icon_size = 3;
+  string title = 4;
+  string description = 5;
+}
