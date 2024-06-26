@@ -1,6 +1,8 @@
 syntax = "proto3";
 package decentraland.realm;
 
+import "decentraland/common/border_rect.proto";
+
 message AboutResponse {
   bool healthy = 1;
   AboutConfiguration configurations = 2;
