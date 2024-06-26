@@ -18,7 +18,9 @@ message AboutResponse {
 
     // deprecated parameters
     reserved 2;
+    reserved "data_image";
     reserved 3;
+    reserved "estate_image";
   
     // the union of all rects here represents the places where can have scenes
     //  - all the other parcels are considered as empty, up to the explorer to decide if they're walkable or not
