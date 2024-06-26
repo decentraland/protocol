@@ -11,9 +11,55 @@ message AboutResponse {
   bool accepting_users = 7;
 
   message MinimapConfiguration {
+    // wheter the minimap could be rendered or not
     bool enabled = 1;
-    optional string data_image = 2;
-    optional string estate_image = 3;
+
+    // deprecated parameters
+    reserved 2;
+    reserved 3;
+  
+    // the union of all rects here represents the places where can have scenes
+    //  - all the other parcels are considered as empty, up to the explorer to decide if they're walkable or not
+    //  - the contained square is determined by points: 
+    //    - top-left      with  minX, maxY 
+    //    - bottom-left   with  minX, minX 
+    //    - top-right     with  maxX, maxY 
+    //    - bottom-right  with  maxX, maxY 
+    repeated decentraland.common.BorderRect sizes = 4; 
+  
+    // ImageViewWithZoomLevel uses a description to render the minimap
+    //  using different images with different zoom levels.
+    // When `version='v1'`:
+    // - The description allows the explorer to form the URL:
+    //  url(x,y,zoom_level) = `{base_url}/{zoom_level}/{x},{y}{suffix_url}`
+    // - The given URL is for an image where the pixel `0,0` for the image `0,0` always
+    //    points to the top-left contained square.
+    // - The `zoom_level=1` is to a ratio of 3.2 pixel per parcel, this means in a 32x32 pixel square
+    //    you get 10x10 parcels. 
+    // - Each increase of zoom level, double the ratio pixel per parcels. 
+    message ImageViewWithZoomLevel {
+      // options: ['v1']
+      string version = 1; 
+      optional string base_url = 2;
+      optional string suffix_url = 3;
+    }
+  
+    // ParcelView uses a description to render the minimap
+    //  using a image where each pixel is a parcel and each pixel
+    //  has the metadata to make a representation (using a shader or image-generation client-side)
+    // When `version='v1'`:
+    //  - The pixel `0,0` is the top-left contained square
+    //  - The image has to be at least of contained square pixels size
+    //  - The metadata inside each pixel follows the generated with the atlas server https://github.com/decentraland/atlas-server/blob/af371f2a59745a1f50b0b0b2382984288c4ae891/src/adapters/mini-map-renderer.ts#L27
+    message ParcelView {
+      // options: `v1`
+      string version = 1; 
+      optional string image_url = 2;
+    }
+  
+    optional ImageViewWithZoomLevel satellite_view = 5;
+    optional ParcelView parcel_view = 6;
+    optional ImageViewWithZoomLevel thumbnail_view = 7;
   }
 
   message SkyboxConfiguration {
