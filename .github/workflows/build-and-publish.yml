@@ -6,6 +6,9 @@ on:
   release:
     types:
       - created
+env: 
+  IS_A_PR: ${{ github.event.pull_request.number != 'null' && github.head_ref != 'protocol-squad' }}
+
 
 name: build-deploy
 jobs:
@@ -17,6 +20,13 @@ jobs:
     outputs:
       dcl_protocol_s3_bucket_key: ${{ steps.publish_dcl_protocol.outputs.s3-bucket-key }}
     steps:
+      - name: (PR) Check if it's a PR
+        if: ${{ env.IS_A_PR == 'true' }}
+        run: |
+          echo "run from a PR"
+          echo "from env '${{env.IS_A_PR}}'"
+          echo "- '${{github.event.pull_request.number}}'"
+          echo "- env '${{github.head_ref}}'"
       - uses: actions/checkout@v2
       - name: install
         run: make install
@@ -28,6 +38,8 @@ jobs:
         uses: menduz/oddish-action@master
         id: publish_dcl_protocol
         with:
+          custom-tag: protocol-squad
+          branch-to-custom-tag: protocol-squad
           registry-url: 'https://registry.npmjs.org'
           access: public
           ## use action runId instead of current date to generate snapshot numbers
@@ -44,14 +56,15 @@ jobs:
           gitlab-token: ${{ secrets.GITLAB_TOKEN }}
           gitlab-pipeline-url: ${{ secrets.GITLAB_URL }}
         env:
+          BRANCH_NAME: ${{ github.head_ref }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           AWS_DEFAULT_REGION: us-east-1
           AWS_ACCESS_KEY_ID: ${{ secrets.SDK_TEAM_AWS_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SDK_TEAM_AWS_SECRET }}
 
   notify_deployment:
-    needs: [check_and_build]
-    if: ${{ github.event.pull_request.number }}
+    needs: [check_and_build]   
+    if: github.event.pull_request.number != 'null' && github.head_ref != 'protocol-squad'
     runs-on: ubuntu-latest
     name: Deployment Notification
     steps:
