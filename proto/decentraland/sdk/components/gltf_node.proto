@@ -27,7 +27,7 @@ option (common.ecs_component_id) = 1045;
 //   change the state to `GNS_FAILED`.
 // - deleting the scene entity will not delete the gltf node.
 message PBGltfNode {
-  string name = 1; // the GLTF file path as listed in the scene's manifest.
+  string name = 1; // the name of the target node in the Gltf.
 }
 
 // The state of a linked gltf node.
