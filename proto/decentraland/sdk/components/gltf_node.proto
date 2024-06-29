@@ -29,16 +29,3 @@ option (common.ecs_component_id) = 1045;
 message PBGltfNode {
   string name = 1; // the name of the target node in the Gltf.
 }
-
-// The state of a linked gltf node.
-// If the state is GNS_FAILED, the renderer may describe the failure in the error string.
-message PBGltfNodeState {
-    GltfNodeState state = 1;
-    optional string error = 2;
-}
-
-enum GltfNodeState {
-    GNS_PENDING = 0;
-    GNS_FAILED = 1;
-    GNS_READY = 2;
-}
