@@ -34,10 +34,17 @@ message PBMeshRenderer {
     message SphereMesh {
     }
 
+    // A collider constructed from an external source such as a GltfNode. 
+    // It cannot be inspected directly but can be copied to another entity.
+    message OpaqueMesh {
+        uint32 renderer_id = 1; // transient renderer handle for the collider.
+    }
+
     oneof mesh {
         BoxMesh box = 1;
         SphereMesh sphere = 2;
         CylinderMesh cylinder = 3;
         PlaneMesh plane = 4;
+        OpaqueMesh opaque = 5;
     }
 }
