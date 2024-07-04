@@ -30,10 +30,13 @@ message PBMeshCollider {
   // SphereMesh is a sphere shape that contains the Entity.
   message SphereMesh {}
 
-    // A mesh constructed from an external source such as a GltfNode. 
-    // It cannot be inspected directly but can be copied to another entity.
-    message OpaqueMesh {
-      uint32 renderer_id = 1; // transient renderer handle for the mesh.
+  // A collider constructed from a Gltf Mesh.
+  message GltfMesh {
+    string gltf_src = 1; // the GLTF file path as listed in the scene's manifest.
+    oneof id {
+      string name = 2; // the name of the mesh asset
+      uint32 index = 3; // the index of the mesh asset
+    } 
   }
 
   optional uint32 collision_mask = 1; // enabled ColliderLayers (default CL_POINTER | CL_PHYSICS)
@@ -43,7 +46,7 @@ message PBMeshCollider {
     SphereMesh sphere = 3;
     CylinderMesh cylinder = 4;
     PlaneMesh plane = 5;
-    OpaqueMesh opaque = 6;
+    GltfMesh gltf = 6;
   }
 }
 
