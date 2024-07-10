@@ -13,6 +13,16 @@ message AboutResponse {
   optional BffInfo bff = 6;
   bool accepting_users = 7;
 
+  // @deprecated This message was never used but it's still here for compatibility reasons
+  message MinimapConfiguration {
+    reserved 1;
+    reserved "enabled";
+    reserved 2;
+    reserved "data_image";
+    reserved 3;
+    reserved "estate_image";
+  }
+
   message MapConfiguration {
     // wheter the minimap could be rendered or not
     bool minimap_enabled = 1;
@@ -21,7 +31,7 @@ message AboutResponse {
     //  - all the other parcels are considered as empty, up to the explorer to decide if they're walkable or not
     //  - the contained square is determined by points: 
     //    - top-left      with  minX, maxY 
-    //    - bottom-left   with  minX, minX 
+    //    - bottom-left   with  minX, minY
     //    - top-right     with  maxX, maxY 
     //    - bottom-right  with  maxX, maxY 
     //  Note: the coordinate system used is the Cartesian coordinate system, where the y-axis increases upwards, 
