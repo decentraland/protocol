@@ -17,7 +17,7 @@ message AboutResponse {
     // wheter the minimap could be rendered or not
     bool minimap_enabled = 1;
   
-    // the union of all rects here represents the places where can have scenes
+    // the union of all rects here represents the places where that MAY have scenes
     //  - all the other parcels are considered as empty, up to the explorer to decide if they're walkable or not
     //  - the contained square is determined by points: 
     //    - top-left      with  minX, maxY 
