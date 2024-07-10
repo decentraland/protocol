@@ -2,6 +2,7 @@ syntax = "proto3";
 package decentraland.realm;
 
 import "decentraland/common/border_rect.proto";
+import "decentraland/common/vectors.proto";
 
 message AboutResponse {
   bool healthy = 1;
@@ -12,15 +13,9 @@ message AboutResponse {
   optional BffInfo bff = 6;
   bool accepting_users = 7;
 
-  message MinimapConfiguration {
+  message MapConfiguration {
     // wheter the minimap could be rendered or not
-    bool enabled = 1;
-
-    // deprecated parameters
-    reserved 2;
-    reserved "data_image";
-    reserved 3;
-    reserved "estate_image";
+    bool minimap_enabled = 1;
   
     // the union of all rects here represents the places where can have scenes
     //  - all the other parcels are considered as empty, up to the explorer to decide if they're walkable or not
@@ -29,7 +24,9 @@ message AboutResponse {
     //    - bottom-left   with  minX, minX 
     //    - top-right     with  maxX, maxY 
     //    - bottom-right  with  maxX, maxY 
-    repeated decentraland.common.BorderRect sizes = 4; 
+    //  Note: the coordinate system used is the Cartesian coordinate system, where the y-axis increases upwards, 
+    //    not the screen coordinate system, where the origin is at the top-left corner and the y-axis increases downwards.
+    repeated decentraland.common.BorderRect sizes = 2; 
   
     // ImageViewWithZoomLevel uses a description to render the minimap
     //  using different images with different zoom levels.
@@ -46,6 +43,7 @@ message AboutResponse {
       string version = 1; 
       optional string base_url = 2;
       optional string suffix_url = 3;
+      optional decentraland.common.Vector2 top_left_offset = 4;
     }
   
     // ParcelView uses a description to render the minimap
@@ -76,13 +74,15 @@ message AboutResponse {
     uint32 network_id = 2;
     repeated string global_scenes_urn = 3;
     repeated string scenes_urn = 4;
-    optional MinimapConfiguration minimap = 5;
+    reserved 5;
+    reserved "minimap";
     optional SkyboxConfiguration skybox = 6;
 
     // A content server to be used to load the parcels around the user. Uses the POST /entities/active endpoint
     // to continously fetch the parcels around the users. if null, then the default content server will be used
     // if == "" then the city_loader will be disabled and the scenes_urn will be used to load the world
     optional string city_loader_content_server = 7;
+    optional MapConfiguration map = 8;
   }
 
   message ContentInfo {
