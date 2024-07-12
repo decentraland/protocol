@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package decentraland.sdk.development;
+
+message UpdateScene {
+  string alias = 1;
+  string project_type = 2;
+}
+
+message WsSceneMessage {
+  oneof message {
+    // direction: scene->explorer
+    UpdateScene update_scene = 1;
+  }
+}
