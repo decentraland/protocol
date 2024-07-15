@@ -3,13 +3,19 @@ syntax = "proto3";
 package decentraland.sdk.development;
 
 message UpdateScene {
-  string id = 1;
-  string type = 2;
+  string scene_id = 1;
+}
+
+enum UpdateModelType {
+  UMT_CHANGE = 0;
+  UMT_REMOVE = 1;
 }
 
 message UpdateModel {
-  string id = 1;
+  string scene_id = 1;
   string src = 2; // or hash ?
+  string hash = 3;
+  UpdateModelType type = 4;
 }
 
 message WsSceneMessage {

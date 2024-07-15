@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+package decentraland.sdk.development;
+
+import public "decentraland/sdk/development/local_development.proto";
