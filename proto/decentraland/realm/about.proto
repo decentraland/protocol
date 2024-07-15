@@ -24,7 +24,7 @@ message AboutResponse {
   }
 
   message MapConfiguration {
-    // wheter the minimap could be rendered or not
+    // whether the minimap should be rendered
     bool minimap_enabled = 1;
   
     // the union of all rects here represents the places where that MAY have scenes
