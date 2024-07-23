@@ -36,7 +36,6 @@ message PBMeshRenderer {
     message GltfMesh {
         string gltf_src = 1; // the GLTF file path as listed in the scene's manifest.
         string name = 2;  // the name of the mesh asset
-        optional string skin_name = 3; // the name of the skin for the mesh
     }
 
     oneof mesh {
