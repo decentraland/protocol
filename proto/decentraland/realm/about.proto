@@ -14,13 +14,14 @@ message AboutResponse {
   bool accepting_users = 7;
 
   // @deprecated This message was never used but it's still here for compatibility reasons
+  // The reserved keyword is not working for all the toolset we have, so in the meanwhile it keeps commented
   message MinimapConfiguration {
     reserved 1;
-    reserved "enabled";
+    // reserved "enabled";
     reserved 2;
-    reserved "data_image";
+    // reserved "data_image";
     reserved 3;
-    reserved "estate_image";
+    // reserved "estate_image";
   }
 
   message MapConfiguration {
