@@ -18,6 +18,7 @@ message UpdateModel {
   string src = 2;
   string hash = 3;
   UpdateModelType type = 4;
+  string test = 5;
 }
 
 message WsSceneMessage {
