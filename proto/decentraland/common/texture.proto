@@ -31,7 +31,7 @@ message VideoTexture {
   optional TextureFilterMode filter_mode = 3; // default = FilterMode.Bilinear
 }
 
-message UiTexture {
+message UiCanvasTexture {
   uint32 ui_canvas_entity = 1;
   optional TextureWrapMode wrap_mode = 2; // default = TextureWrapMode.Clamp
   optional TextureFilterMode filter_mode = 3; // default = FilterMode.Bilinear
@@ -42,6 +42,6 @@ message TextureUnion {
     Texture texture = 1; // default = null
     AvatarTexture avatar_texture = 2; // default = null
     VideoTexture video_texture = 3; // default = null
-    UiTexture ui_texture = 4;
+    UiCanvasTexture ui_texture = 4;
   }
 }
