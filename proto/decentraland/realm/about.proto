@@ -84,8 +84,12 @@ message AboutResponse {
     uint32 network_id = 2;
     repeated string global_scenes_urn = 3;
     repeated string scenes_urn = 4;
+
+    // The name "minimap" can't be used in this message
+    // The reserved keyword is not working for all the toolset we have, so in the meanwhile it keeps commented
     reserved 5;
-    reserved "minimap";
+    // reserved "minimap";
+
     optional SkyboxConfiguration skybox = 6;
 
     // A content server to be used to load the parcels around the user. Uses the POST /entities/active endpoint
