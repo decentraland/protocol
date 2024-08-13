@@ -5,7 +5,7 @@ option (common.ecs_component_id) = 1076;
 
 message PBVirtualCamera {
   oneof transition {
-    float transitionTime = 1; // TODO: milliseconds or seconds?
-    float transitionSpeed = 2;
+    float transition_time = 1; // seconds
+    float transition_speed = 2;
   }
 }
