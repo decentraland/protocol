@@ -15,5 +15,6 @@ enum AvatarFreezeMovementType {
     AFMT_WALK = 2;
     AFMT_RUN = 4;
     AFMT_JUMP = 8;
-    AFMT_CAMERA = 16;
+    AFMT_EMOTE = 16;
+    AFMT_CAMERA = 32;
 }
