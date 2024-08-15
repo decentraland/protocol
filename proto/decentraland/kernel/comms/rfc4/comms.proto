@@ -59,8 +59,8 @@ message Movement {
 }
 
 message MovementCompressed {
-  int32 temporalData = 1; // bit-compressed: timestamp + animations 
-  int64 movementData = 2; // bit-compressed: position + velocity 
+  int32 temporal_data = 1; // bit-compressed: timestamp + animations 
+  int64 movement_data = 2; // bit-compressed: position + velocity 
 }
 
 message PlayerEmote {
