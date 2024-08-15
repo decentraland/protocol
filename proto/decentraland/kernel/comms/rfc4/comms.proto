@@ -15,10 +15,11 @@ message Packet {
     Scene scene = 6;
     Voice voice = 7;
     Movement movement = 8;
-    PlayerEmote player_emote = 9;
-    SceneEmote scene_emote = 10;
+    MovementCompressed movement_compressed = 9;
+    PlayerEmote player_emote = 10;
+    SceneEmote scene_emote = 11;
   }
-  uint32 protocol_version = 11;
+  uint32 protocol_version = 12;
 }
 
 message Position {
