@@ -36,26 +36,8 @@ message Position {
 }
 
 message Movement {
-  // command number
-  float timestamp = 1;
-  // world position
-  float position_x = 2;
-  float position_y = 3;
-  float position_z = 4;
-  // velocity
-  float velocity_x = 5;
-  float velocity_y = 6;
-  float velocity_z = 7;
-  // animations
-  float movement_blend_value = 8;
-  float slide_blend_value = 9;
-  bool is_grounded = 10;
-  bool is_jumping = 11;
-  bool is_long_jump = 12;
-  bool is_long_fall = 13;
-  bool is_falling = 14;
-
-  bool is_stunned = 15;
+  int32 temporalData = 1; // bit-compressed timestamp and animations 
+  int64 movementData = 2; // bit-compressed timestamp and animations 
 }
 
 message PlayerEmote {
