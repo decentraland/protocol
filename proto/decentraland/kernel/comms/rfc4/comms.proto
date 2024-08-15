@@ -17,9 +17,9 @@ message Packet {
     Movement movement = 8;
     PlayerEmote player_emote = 9;
     SceneEmote scene_emote = 10;
-    MovementCompressed movement_compressed = 11;
+    MovementCompressed movement_compressed = 12;
   }
-  uint32 protocol_version = 12;
+  uint32 protocol_version = 11;
 }
 
 message Position {
