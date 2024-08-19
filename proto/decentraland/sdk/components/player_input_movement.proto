@@ -6,7 +6,7 @@ option (common.ecs_component_id) = 1078;
 message PBPlayerInputMovement {
     // when a boolean = false (default) the message is ignored and doesn't consume bandwidth
     message StandardMovement {
-        bool disable_all = 1
+        bool disable_all = 1;
         bool disable_walk = 2;
         bool disable_run = 3;
         bool disable_jump = 4;
