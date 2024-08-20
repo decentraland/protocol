@@ -4,9 +4,8 @@ package decentraland.sdk.components;
 import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1076;
 
+import "decentraland/sdk/components/main_camera.proto";
+
 message PBVirtualCamera {
-  oneof transition {
-    float transition_time = 1; // seconds
-    float transition_speed = 2;
-  }
+  CameraTransition default_transition = 1;
 }

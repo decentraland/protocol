@@ -1,0 +1,26 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1075;
+
+message CameraTransition {
+  uint32 from_entity = 1;
+  uint32 to_entity = 2;
+  oneof transition {
+    CameraTransitionTime time = 3;
+    CameraTransitionSpeed speed = 4;
+  }
+//   EasingFunction easing_function = 5; // enable in the future
+}
+message CameraTransitionTime {
+  float value = 1;
+}
+message CameraTransitionSpeed {
+  float value = 1;
+}
+
+message PBMainCamera {
+  uint32 virtual_camera_entity = 1;
+//  repeated Transition transitionOverrides = 2; // enable in the future
+}
