@@ -1,11 +1,10 @@
 syntax = "proto3";
 package decentraland.sdk.components;
 
+import "decentraland/sdk/components/common/camera_transition.proto";
 import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1076;
 
-import "decentraland/sdk/components/main_camera.proto";
-
 message PBVirtualCamera {
-  CameraTransition default_transition = 1;
+  common.CameraTransition default_transition = 1;
 }
