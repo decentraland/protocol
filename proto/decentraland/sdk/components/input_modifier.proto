@@ -12,7 +12,6 @@ message PBInputModifier {
         optional bool disable_run = 4;
         optional bool disable_jump = 5;
         optional bool disable_emote = 6;
-        optional bool disable_camera = 7;
     }
 
     oneof mode {
