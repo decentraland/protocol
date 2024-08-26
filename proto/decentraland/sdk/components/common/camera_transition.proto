@@ -2,17 +2,11 @@ syntax = "proto3";
 package decentraland.sdk.components.common;
 
 message CameraTransition {
-  uint32 from_entity = 1;
-  uint32 to_entity = 2;
-  oneof transition {
-    CameraTransitionTime time = 3;
-    CameraTransitionSpeed speed = 4;
+  optional uint32 from_entity = 1;
+  optional uint32 to_entity = 2;
+  oneof transitionMode {
+    float time = 3;
+    float speed = 4;
   }
   //   EasingFunction easing_function = 5; // enable in the future
-}
-message CameraTransitionTime {
-  float value = 1;
-}
-message CameraTransitionSpeed {
-  float value = 1;
 }
