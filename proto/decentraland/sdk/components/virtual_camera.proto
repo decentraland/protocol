@@ -7,5 +7,5 @@ option (common.ecs_component_id) = 1076;
 
 message PBVirtualCamera {
   common.CameraTransition default_transition = 1;
-  optional uint32 lookAtEntity = 2;
+  optional uint32 look_at_entity = 2;
 }
