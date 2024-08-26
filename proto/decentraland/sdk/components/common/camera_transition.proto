@@ -4,7 +4,7 @@ package decentraland.sdk.components.common;
 message CameraTransition {
   optional uint32 from_entity = 1;
   optional uint32 to_entity = 2;
-  oneof transitionMode {
+  oneof transition_mode {
     float time = 3;
     float speed = 4;
   }
