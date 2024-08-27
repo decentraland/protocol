@@ -6,7 +6,7 @@ message CameraTransition {
   optional uint32 to_entity = 2;
   oneof transition_mode {
     float time = 3;
-    float speed = 4;
+    float speed = 4; // meters per second; for example speed 1 -> 1 meter per second
   }
   //   EasingFunction easing_function = 5; // enable in the future
 }
