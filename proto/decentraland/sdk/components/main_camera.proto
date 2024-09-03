@@ -5,6 +5,6 @@ import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1075;
 
 message PBMainCamera {
-  uint32 virtual_camera_entity = 1;
+  uint32 virtual_camera_entity = 1; // currently active virtual camera
 //  repeated common.CameraTransition transitionOverrides = 2; // enable in the future
 }
