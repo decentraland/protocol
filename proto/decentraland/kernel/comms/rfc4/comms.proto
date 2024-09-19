@@ -57,6 +57,8 @@ message Movement {
   bool is_falling = 14;
 
   bool is_stunned = 15;
+  
+  float rotation_y = 16;
 }
 
 message MovementCompressed {
