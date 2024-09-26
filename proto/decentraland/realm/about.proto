@@ -98,6 +98,10 @@ message AboutResponse {
     // if == "" then the city_loader will be disabled and the scenes_urn will be used to load the world
     optional string city_loader_content_server = 7;
     optional MapConfiguration map = 8;
+    
+    // Populated for local workspaces so that the Explorer can know which parcels are occupied before 
+    // loading the local scenes 
+    repeated string occupied_parcels = 9;
   }
 
   message ContentInfo {
