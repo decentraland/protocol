@@ -9,6 +9,12 @@ message RealSendResponse {}
 
 message SendBinaryRequest {
   repeated bytes data = 1;
+  repeated SendBinaryToAddress messages_to_address = 2;
+}
+
+message SendBinaryToAddress {
+  repeated bytes data = 1;
+  optional string address = 2;
 }
 
 message SendBinaryResponse {
