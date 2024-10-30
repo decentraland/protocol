@@ -1,5 +1,6 @@
 syntax = "proto3";
 package decentraland.common;
+import "decentraland/common/vectors.proto";
 
 enum TextureWrapMode {
   TWM_REPEAT = 0;
