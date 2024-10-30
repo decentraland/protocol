@@ -25,7 +25,7 @@ message PBPointerEvents {
     optional common.InputAction button = 1; // key/button in use (default IA_ANY)
     optional string hover_text = 2;         // feedback on hover (default 'Interact')
     optional float max_distance = 3;        // range of interaction (default 10)
-    optional bool show_feedback = 4;        // enable or disable hover text (default true)
+    optional bool show_feedback = 4;        // enable or disable hover text and highlight (default true)
     optional bool show_highlight = 5;       // enable or disable hover highlight (default true)
   }
 
