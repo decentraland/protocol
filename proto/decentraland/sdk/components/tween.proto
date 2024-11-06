@@ -15,7 +15,7 @@ message PBTween {
     Move move = 3;
     Rotate rotate = 4;
     Scale scale = 5;
-    TextureMove textureMove = 8;
+    TextureMove texture_move = 8;
   }
 
   optional bool playing = 6; // default true (pause or running)
