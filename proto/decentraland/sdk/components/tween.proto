@@ -41,8 +41,8 @@ message Scale {
 message TextureMove {
   decentraland.common.Vector3 start = 1;
   decentraland.common.Vector3 end = 2;
-  optional TextureToMove textureToMove = 3; // default TextureToMove.TTM_ALBEDO
-  optional TextureToMove textureMovement = 5; // default TextureMovement.TM_OFFSET
+  optional TextureToMove texture_to_move = 3; // default TextureToMove.TTM_ALBEDO
+  optional TextureToMove texture_movement = 5; // default TextureMovement.TM_OFFSET
 }
 
 enum TextureToMove {
