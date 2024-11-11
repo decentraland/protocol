@@ -41,21 +41,6 @@ message Scale {
 message TextureMove {
   decentraland.common.Vector2 start = 1;
   decentraland.common.Vector2 end = 2;
-  optional TextureToMove texture_to_move = 3; // default TextureToMove.TTM_ALBEDO
-  optional TextureMovement texture_movement = 5; // default TextureMovement.TM_OFFSET
-}
-
-enum TextureToMove {
-  TTM_ALBEDO = 0; // default
-  TTM_ALPHA = 1;
-  TTM_EMISSIVE = 2;
-  TTM_BUMP = 3;
-}
-
-enum TextureMovement {
-  TM_OFFSET = 0; // default
-  TM_TILING = 1;
-  TM_OFFSET_AND_TILING = 3;
 }
 
 // Implementation guidelines for these easing functions can be found
