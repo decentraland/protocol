@@ -18,8 +18,12 @@ message Texture {
   string src = 1;
   optional TextureWrapMode wrap_mode = 2; // default = TextureWrapMode.Clamp
   optional TextureFilterMode filter_mode = 3; // default = FilterMode.Bilinear
+
+  // Final uv = offset + (input_uv * tiling)
+  // Offset for texture positioning. 
   optional Vector2 offset = 4; // default = Vector2.Zero
-  optional Vector2 tiling = 5; // default = Vector2.Zero
+  // Tiling multiplier for texture repetition.
+  optional Vector2 tiling = 5; // default = Vector2.One
 }
 
 message AvatarTexture {
