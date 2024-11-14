@@ -38,9 +38,7 @@ message Scale {
   decentraland.common.Vector3 end = 2;
 }
 
-// This tween mode allows to modify the offset of the Albedo texture of a PBR Material.
-// In the next iteration, the tween will let you specify between other textures, 
-// modify the tiling and will work with the Basic Material as well
+// This tween mode allows to move the texture of a PbrMaterial or UnlitMaterial.
 message TextureMove {
   decentraland.common.Vector2 start = 1;
   decentraland.common.Vector2 end = 2;
