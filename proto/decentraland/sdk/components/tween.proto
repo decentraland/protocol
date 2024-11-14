@@ -38,28 +38,17 @@ message Scale {
   decentraland.common.Vector3 end = 2;
 }
 
-// This tween mode allows to move the textures of a PBR or Basic Material.
-// You can specify what texture to move (texture, alpha, emissive or bump for PBR and texture or alpha for Basic) 
-// and the movement type (offset, tiling or both)
+// This tween mode allows to move the texture of a PbrMaterial or UnlitMaterial.
+// You can also specify the movement type (offset or tiling)
 message TextureMove {
   decentraland.common.Vector2 start = 1;
   decentraland.common.Vector2 end = 2;
-  optional TextureToMove texture_to_move = 3; // default TextureToMove.TTM_TEXTURE
-  optional TextureMovementType movement_type = 4; // default TextureMovementType.TMT_OFFSET
-}
-
-enum TextureToMove {
-  // In PBR material this is called Albedo. In Unlit material is simply called texture
-  TTM_TEXTURE = 0; // default TextureToMove.TTM_TEXTURE
-  TTM_ALPHA = 1;
-  TTM_EMISSIVE = 2;
-  TTM_BUMP = 3;
+  optional TextureMovementType movement_type = 3; // default = TextureMovementType.TMT_OFFSET
 }
 
 enum TextureMovementType {
-  TMT_OFFSET = 0; // default TextureMovementType.TMT_OFFSET
+  TMT_OFFSET = 0; // default = TextureMovementType.TMT_OFFSET
   TMT_TILING = 1;
-  TMT_OFFSET_AND_TILING = 3;
 }
 
 // Implementation guidelines for these easing functions can be found
