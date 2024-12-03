@@ -25,3 +25,9 @@ install:
 	npm i
 	rm -rf proto/google || true
 	cp -r node_modules/protobufjs/google proto/google
+
+list-components-ids:
+	@bash scripts/list-components-ids.sh
+
+check-component-id:
+	@bash scripts/check-component-id.sh $(ID)
