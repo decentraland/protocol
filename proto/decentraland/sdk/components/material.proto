@@ -22,7 +22,7 @@ message PBMaterial {
     optional float alpha_test = 2; // default = 0.5. range value: from 0 to 1
     optional bool cast_shadows = 3; // default =  true
     optional decentraland.common.Color4 diffuse_color = 4; // default = white;
-    optional decentraland.common.TextureUnion alpha_texture = 5; // default = null
+    optional decentraland.common.TextureUnion alpha_texture = 5; // default = null. Note that tilling and offset properties are ignored for this texture.
   }
 
   message PbrMaterial {
@@ -30,10 +30,10 @@ message PBMaterial {
   
     optional float alpha_test = 2; // default = 0.5. range value: from 0 to 1
     optional bool cast_shadows = 3; // default =  true
-    // @deprecated Alpha textures are no longer supported on PBRMaterial and UnlitMaterial.alphaTexture should be used instead.
-    optional decentraland.common.TextureUnion alpha_texture = 4; // default = null
-    optional decentraland.common.TextureUnion emissive_texture = 5; // default = null
-    optional decentraland.common.TextureUnion bump_texture = 6; // default = null
+  
+    optional decentraland.common.TextureUnion alpha_texture = 4; // @deprecated Alpha textures are no longer supported on PBRMaterial and UnlitMaterial.alphaTexture should be used instead.
+    optional decentraland.common.TextureUnion emissive_texture = 5; // default = null. Note that tilling and offset properties are ignored for this texture.
+    optional decentraland.common.TextureUnion bump_texture = 6; // default = null. Note that tilling and offset properties are ignored for this texture.
   
     optional decentraland.common.Color4 albedo_color = 7; // default = white;
     optional decentraland.common.Color3 emissive_color = 8; // default = black;

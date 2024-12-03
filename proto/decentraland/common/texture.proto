@@ -20,10 +20,8 @@ message Texture {
   optional TextureFilterMode filter_mode = 3; // default = FilterMode.Bilinear
 
   // Final uv = offset + (input_uv * tiling)
-  // Offset for texture positioning. 
-  optional Vector2 offset = 4; // default = Vector2.Zero
-  // Tiling multiplier for texture repetition.
-  optional Vector2 tiling = 5; // default = Vector2.One
+  optional Vector2 offset = 4; // default = Vector2.Zero; Offset for texture positioning, only works for the texture property in PbrMaterial or UnlitMaterial.
+  optional Vector2 tiling = 5; // default = Vector2.One; Tiling multiplier for texture repetition, only works for the texture property in PbrMaterial or UnlitMaterial.
 }
 
 message AvatarTexture {
