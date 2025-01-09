@@ -8,13 +8,13 @@ message RealSendRequest {
 message RealSendResponse {}
 
 message SendBinaryRequest {
-  repeated bytes data = 1;
-  repeated SendBinaryToAddress messages_to_address = 2;
+  repeated bytes data = 1; // broadcasted messages
+  repeated PeerMessageData peer_data = 2; // peer-to-peer messages
 }
 
-message SendBinaryToAddress {
+message PeerMessageData {
   repeated bytes data = 1;
-  optional string address = 2;
+  string address = 2;
 }
 
 message SendBinaryResponse {
