@@ -16,8 +16,8 @@ message PBLightSource {
     }
 
     message Spot{
-        float inner_angle = 1;
-        float outer_angle = 2;
+        float inner_angle = 7;
+        float outer_angle = 8;
     }
 
     oneof Type {
