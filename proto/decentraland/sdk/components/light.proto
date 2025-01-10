@@ -5,16 +5,15 @@ import "decentraland/common/colors.proto";
 option (common.ecs_component_id) = 1079;
 
 message PBLightSource {
-  optional Type type = 1;
-  bool active = 5;        // default = true
-  Color color = 2;        // default = Color.white
-  float brightness = 3;   // range from 0 to 1
-  float range = 4;        // default = 10. range value: from 0 to 1
-  ShadowType shadow = 6;  // default = ShadowType.ST_NONE
+  bool active = 4;        // default = true
+  Color color = 1;        // default = Color.white
+  float brightness = 2;   // range from 0 to 1
+  float range = 3;        // default = 10. range value: from 0 to 1
+  ShadowType shadow = 5;  // default = ShadowType.ST_NONE
 
   oneof Type {
-    Point point = 7;
-    Spot spot = 8;
+    Point point = 6;
+    Spot spot = 7;
   }
 }
 
