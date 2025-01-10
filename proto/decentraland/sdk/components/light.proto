@@ -13,16 +13,18 @@ message PBLightSource {
   ShadowType shadow = 6;  // default = ShadowType.ST_NONE
 
   oneof Type {
-    Point point = 1;
-    Spot spot = 2;
+    Point point = 7;
+    Spot spot = 8;
   }
 }
+
 message Point {}
 
 message Spot {
   float inner_angle = 1;
   float outer_angle = 2;
 }
+
 enum ShadowType {
   ST_NONE = 0;
   ST_SOFT = 1;
