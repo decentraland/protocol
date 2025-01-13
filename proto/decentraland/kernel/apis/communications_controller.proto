@@ -14,7 +14,7 @@ message SendBinaryRequest {
 
 message PeerMessageData {
   repeated bytes data = 1;
-  string address = 2;
+  repeated string address = 2;
 }
 
 message SendBinaryResponse {
