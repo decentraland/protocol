@@ -15,17 +15,17 @@ message PBLightSource {
     Point point = 6;
     Spot spot = 7;
   }
-}
 
-message Point {}
+  message Point {}
 
-message Spot {
-  float inner_angle = 1;
-  float outer_angle = 2;
-}
+  message Spot {
+    float inner_angle = 1;
+    float outer_angle = 2;
+  }
 
-enum ShadowType {
-  ST_NONE = 0;
-  ST_SOFT = 1;
-  ST_HARD = 2;
+  enum ShadowType {
+    ST_NONE = 0;
+    ST_SOFT = 1;
+    ST_HARD = 2;
+  }
 }
