@@ -116,6 +116,22 @@ message FriendshipUpdate {
   }
 }
 
+message GetFriendshipStatusPayload {
+  User user = 1;
+}
+
+enum FriendshipStatus {
+  REQUESTED = 0;
+  ACCEPTED = 1;
+  REJECTED = 2;
+  BLOCKED = 3;
+}
+
+message GetFriendshipStatusResponse {
+  FriendshipStatus status = 1;
+  optional string message = 2;
+}
+
 service SocialService {  
   // Get the list of friends for the authenticated user
   rpc GetFriends(GetFriendsPayload) returns (stream UsersResponse) {}
@@ -136,4 +152,6 @@ service SocialService {
   // Subscribe to updates of friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
   rpc SubscribeToFriendshipUpdates(google.protobuf.Empty)
       returns (stream FriendshipUpdate) {}
+
+  rpc GetFriendshipStatus(GetFriendshipStatusPayload) returns (GetFriendshipStatusResponse) {}
 }
