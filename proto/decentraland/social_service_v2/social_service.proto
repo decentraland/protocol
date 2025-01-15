@@ -60,6 +60,10 @@ message GetFriendsPayload {
   optional ConnectivityStatus status = 2;
 }
 
+message GetFriendshipRequestsPayload {
+  optional Pagination pagination = 1;
+}
+
 message UpsertFriendshipPayload {
   oneof action {
     RequestPayload request = 1;
@@ -112,10 +116,10 @@ service SocialService {
   rpc GetMutualFriends(MutualFriendsPayload) returns (stream UsersResponse) {}
 
   // Get the pending friendship requests for the authenticated user
-  rpc GetPendingFriendshipRequests(google.protobuf.Empty) returns (FriendshipRequestsResponse) {}
+  rpc GetPendingFriendshipRequests(GetFriendshipRequestsPayload) returns (FriendshipRequestsResponse) {}
 
   // Get the sent friendship requests for the authenticated user
-  rpc GetSentFriendshipRequests(google.protobuf.Empty) returns (FriendshipRequestsResponse) {}
+  rpc GetSentFriendshipRequests(GetFriendshipRequestsPayload) returns (FriendshipRequestsResponse) {}
 
   // Create or update friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
   rpc UpsertFriendship(UpsertFriendshipPayload)
