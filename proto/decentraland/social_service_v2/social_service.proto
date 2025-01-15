@@ -94,7 +94,6 @@ message UpsertFriendshipResponse {
   message Accepted {
     string id = 1;
     int64 created_at = 2;
-    int64 updated_at = 3;
   }
   oneof response {
     Accepted accepted = 1;
@@ -125,8 +124,14 @@ enum FriendshipStatus {
 }
 
 message GetFriendshipStatusResponse {
+  message Ok {
   FriendshipStatus status = 1;
   optional string message = 2;
+  }
+  oneof response {
+    Ok accepted = 1;
+    InternalServerError internal_server_error = 2;
+  }
 }
 
 service SocialService {  
