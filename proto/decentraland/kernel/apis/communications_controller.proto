@@ -8,13 +8,13 @@ message RealSendRequest {
 message RealSendResponse {}
 
 message SendBinaryRequest {
-  repeated bytes data = 1; // broadcasted messages
+  repeated bytes data = 1;  // @deprecated old broadcasted messages. Use peerData with an empty array for broadcasting.
   repeated PeerMessageData peer_data = 2; // peer-to-peer messages
 }
 
 message PeerMessageData {
   repeated bytes data = 1;
-  repeated string address = 2;
+  repeated string address = 2; // if address is empty, its a broadcast message
 }
 
 message SendBinaryResponse {
