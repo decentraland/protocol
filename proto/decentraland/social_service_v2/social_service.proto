@@ -91,7 +91,14 @@ message FriendshipRequestsResponse {
 }
 
 message UpsertFriendshipResponse {
-  message Accepted {}
+  message Accepted {
+    string id = 1;
+    User requester = 2;
+    User requested = 3;
+    bool is_active = 4;
+    int64 created_at = 5;
+    int64 updated_at = 6;
+  }
   oneof response {
     Accepted accepted = 1;
     InvalidFriendshipAction invalid_friendship_action = 2;
