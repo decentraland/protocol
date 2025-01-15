@@ -74,7 +74,7 @@ message UpsertFriendshipPayload {
   }
 }
 
-message GetMutualFriendsPayload {
+message MutualFriendsPayload {
   User user = 1;
   optional Pagination pagination = 2;
 }
@@ -131,10 +131,32 @@ message GetFriendshipStatusResponse {
 
 service SocialService {  
   // Get the list of friends for the authenticated user
+  rpc GetFriends(google.protobuf.Empty) returns (stream UsersResponse) {}
+
+  // Get the list of mutual friends between the authenticated user and the one in the parameter
+  rpc GetMutualFriends(MutualFriendsPayload) returns (stream UsersResponse) {}
+
+  // Get the pending friendship requests for the authenticated user
+  rpc GetPendingFriendshipRequests(google.protobuf.Empty) returns (FriendshipRequestsResponse) {}
+
+  // Get the sent friendship requests for the authenticated user
+  rpc GetSentFriendshipRequests(google.protobuf.Empty) returns (FriendshipRequestsResponse) {}
+
+  // Create or update friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
+  rpc UpsertFriendship(UpsertFriendshipPayload)
+      returns (UpsertFriendshipResponse) {}
+
+  // Subscribe to updates of friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
+  rpc SubscribeToFriendshipUpdates(google.protobuf.Empty)
+      returns (stream FriendshipUpdate) {}
+}
+
+service SocialServiceV2 {  
+  // Get the list of friends for the authenticated user
   rpc GetFriends(GetFriendsPayload) returns (stream UsersResponse) {}
 
   // Get the list of mutual friends between the authenticated user and the one in the parameter
-  rpc GetMutualFriends(GetMutualFriendsPayload) returns (stream UsersResponse) {}
+  rpc GetMutualFriends(MutualFriendsPayload) returns (stream UsersResponse) {}
 
   // Get the pending friendship requests for the authenticated user
   rpc GetPendingFriendshipRequests(GetFriendshipRequestsPayload) returns (FriendshipRequestsResponse) {}
