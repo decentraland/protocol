@@ -79,8 +79,18 @@ message MutualFriendsPayload {
   optional Pagination pagination = 2;
 }
 
+message PaginatedResponse {
+  int32 total = 1;
+  int32 page = 2;
+}
+
 message UsersResponse {
   repeated User users = 1;
+}
+
+message PaginatedUserResponse {
+  repeated User users = 1;
+  PaginatedResponse pagination_data = 2;
 }
 
 message FriendshipRequestsResponse {
@@ -88,6 +98,14 @@ message FriendshipRequestsResponse {
     Requests requests = 1;
     InternalServerError internal_server_error = 2;
   }
+}
+
+message PaginatedFriendshipRequestsResponse {
+  oneof response {
+    Requests requests = 1;
+    InternalServerError internal_server_error = 2;
+  }
+  optional PaginatedResponse pagination_data = 3;
 }
 
 message UpsertFriendshipResponse {
@@ -161,10 +179,10 @@ service SocialService {
 
 service SocialServiceV2 {  
   // Get the list of friends for the authenticated user
-  rpc GetFriends(GetFriendsPayload) returns (stream UsersResponse) {}
+  rpc GetFriends(GetFriendsPayload) returns (stream PaginatedUserResponse) {}
 
   // Get the list of mutual friends between the authenticated user and the one in the parameter
-  rpc GetMutualFriends(MutualFriendsPayload) returns (stream UsersResponse) {}
+  rpc GetMutualFriends(MutualFriendsPayload) returns (stream PaginatedUserResponse) {}
 
   // Get the pending friendship requests for the authenticated user
   rpc GetPendingFriendshipRequests(GetFriendshipRequestsPayload) returns (FriendshipRequestsResponse) {}
