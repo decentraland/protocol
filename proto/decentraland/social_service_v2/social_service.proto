@@ -117,10 +117,13 @@ message GetFriendshipStatusPayload {
 }
 
 enum FriendshipStatus {
-  REQUESTED = 0;
-  ACCEPTED = 1;
-  REJECTED = 2;
-  BLOCKED = 3;
+  REQUEST_SENT = 0;
+  REQUEST_RECEIVED = 1;
+  CANCELED = 2;
+  ACCEPTED = 3;
+  REJECTED = 4;
+  DELETED = 5;
+  BLOCKED = 6;
 }
 
 message GetFriendshipStatusResponse {
