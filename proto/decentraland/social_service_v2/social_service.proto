@@ -74,8 +74,9 @@ message UpsertFriendshipPayload {
   }
 }
 
-message MutualFriendsPayload {
+message GetMutualFriendsPayload {
   User user = 1;
+  optional Pagination pagination = 2;
 }
 
 message UsersResponse {
@@ -113,7 +114,7 @@ service SocialService {
   rpc GetFriends(GetFriendsPayload) returns (stream UsersResponse) {}
 
   // Get the list of mutual friends between the authenticated user and the one in the parameter
-  rpc GetMutualFriends(MutualFriendsPayload) returns (stream UsersResponse) {}
+  rpc GetMutualFriends(GetMutualFriendsPayload) returns (stream UsersResponse) {}
 
   // Get the pending friendship requests for the authenticated user
   rpc GetPendingFriendshipRequests(GetFriendshipRequestsPayload) returns (FriendshipRequestsResponse) {}
