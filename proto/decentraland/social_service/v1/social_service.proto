@@ -1,17 +1,34 @@
 syntax = "proto3";
 package decentraland.social_service.v1;
 
-import "google/protobuf/empty.proto";
+// This message is a response that is sent from the server to the client
+message FriendshipEventResponse {
+  oneof body {
+    RequestResponse request = 1;
+    AcceptResponse accept = 2;
+    RejectResponse reject = 4;
+    DeleteResponse delete = 5;
+    CancelResponse cancel = 6;
+  }
+}
 
-// Errors
+message FriendshipEventResponses {
+  repeated FriendshipEventResponse responses = 1;
+}
 
-message InvalidFriendshipAction {}
-
-message InternalServerError {}
-
-// Types
+message FriendshipEventPayload {
+  oneof body {
+    RequestPayload request = 1;
+    AcceptPayload accept = 2;
+    RejectPayload reject = 4;
+    DeletePayload delete = 5;
+    CancelPayload cancel = 6;
+  }
+}
 
 message User { string address = 1; }
+
+message Users { repeated User users = 1; }
 
 message RequestResponse {
   User user = 1;
@@ -25,7 +42,13 @@ message RequestPayload {
 }
 
 message Requests {
-  repeated RequestResponse requests = 1;
+  int64 total = 1; // Total amount of friendship requests
+  repeated RequestResponse items = 2;
+}
+
+message RequestEvents {
+  Requests outgoing = 1; // Requests the authed user have sent to users
+  Requests incoming = 2; // Requests the authed user have received from users
 }
 
 message AcceptResponse { User user = 1; }
@@ -44,69 +67,96 @@ message CancelResponse { User user = 1; }
 
 message CancelPayload { User user = 1; }
 
-message UpsertFriendshipPayload {
-  oneof action {
-    RequestPayload request = 1;
-    AcceptPayload accept = 2;
-    RejectPayload reject = 4;
-    DeletePayload delete = 5;
-    CancelPayload cancel = 6;
-  }
+message UpdateFriendshipPayload {
+  FriendshipEventPayload event = 1;
+  // For internal use only, subject to change.
+  optional Payload auth_token = 2;
 }
 
 message MutualFriendsPayload {
   User user = 1;
+  // For internal use only, subject to change.
+  optional Payload auth_token = 2;
+}
+
+message Payload {
+  // For internal use only, subject to change.
+  optional string synapse_token = 1;
+}
+
+message BadRequestError {
+  string message = 1;
+}
+message UnauthorizedError {
+  string message = 1;
+}
+message ForbiddenError {
+  string message = 1;
+}
+message TooManyRequestsError {
+  string message = 1;
+}
+message InternalServerError {
+  string message = 1;
 }
 
 message UsersResponse {
-  repeated User users = 1;
-}
-
-message FriendshipRequestsResponse {
   oneof response {
-    Requests requests = 1;
+    Users users = 1;
     InternalServerError internal_server_error = 2;
+    UnauthorizedError unauthorized_error = 3;
+    ForbiddenError forbidden_error = 4;
+    TooManyRequestsError too_many_requests_error = 5;
+    BadRequestError bad_request_error = 6;
   }
 }
 
-message UpsertFriendshipResponse {
-  message Accepted {}
+message RequestEventsResponse {
   oneof response {
-    Accepted accepted = 1;
-    InvalidFriendshipAction invalid_friendship_action = 2;
-    InternalServerError internal_server_error = 3;
+    RequestEvents events = 1;
+    InternalServerError internal_server_error = 2;
+    UnauthorizedError unauthorized_error = 3;
+    ForbiddenError forbidden_error = 4;
+    TooManyRequestsError too_many_requests_error = 5;
   }
 }
 
-message FriendshipUpdate {
-  oneof update {
-    RequestResponse request = 1;
-    AcceptResponse accept = 2;
-    RejectResponse reject = 4;
-    DeleteResponse delete = 5;
-    CancelResponse cancel = 6;
+message UpdateFriendshipResponse {
+  oneof response {
+    FriendshipEventResponse event = 1;
+    InternalServerError internal_server_error = 2;
+    UnauthorizedError unauthorized_error = 3;
+    ForbiddenError forbidden_error = 4;
+    TooManyRequestsError too_many_requests_error = 5;
+    BadRequestError bad_request_error = 6;
   }
 }
 
-// @deprecated
-service SocialService {  
+message SubscribeFriendshipEventsUpdatesResponse {
+  oneof response {
+    FriendshipEventResponses events = 1;
+    InternalServerError internal_server_error = 2;
+    UnauthorizedError unauthorized_error = 3;
+    ForbiddenError forbidden_error = 4;
+    TooManyRequestsError too_many_requests_error = 5;
+  }
+}
+
+service FriendshipsService {
   // Get the list of friends for the authenticated user
-  rpc GetFriends(google.protobuf.Empty) returns (stream UsersResponse) {}
+  rpc GetFriends(Payload) returns (stream UsersResponse) {}
 
   // Get the list of mutual friends between the authenticated user and the one in the parameter
   rpc GetMutualFriends(MutualFriendsPayload) returns (stream UsersResponse) {}
 
-  // Get the pending friendship requests for the authenticated user
-  rpc GetPendingFriendshipRequests(google.protobuf.Empty) returns (FriendshipRequestsResponse) {}
+  // Get the list of request events for the authenticated user
+  rpc GetRequestEvents(Payload) returns (RequestEventsResponse) {}
 
-  // Get the sent friendship requests for the authenticated user
-  rpc GetSentFriendshipRequests(google.protobuf.Empty) returns (FriendshipRequestsResponse) {}
-
-  // Create or update friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
-  rpc UpsertFriendship(UpsertFriendshipPayload)
-      returns (UpsertFriendshipResponse) {}
+  // Update friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
+  rpc UpdateFriendshipEvent(UpdateFriendshipPayload)
+      returns (UpdateFriendshipResponse) {}
 
   // Subscribe to updates of friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
-  rpc SubscribeToFriendshipUpdates(google.protobuf.Empty)
-      returns (stream FriendshipUpdate) {}
+  rpc SubscribeFriendshipEventsUpdates(Payload)
+      returns (stream SubscribeFriendshipEventsUpdatesResponse) {}
 }
