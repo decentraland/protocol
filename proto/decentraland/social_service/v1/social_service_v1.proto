@@ -143,7 +143,7 @@ message SubscribeFriendshipEventsUpdatesResponse {
 }
 
 // @deprecated, only available for old explorer compatibility
-service SocialServiceV1 {
+service SocialService {
   // Get the list of friends for the authenticated user
   rpc GetFriends(Payload) returns (stream UsersResponse) {}
 

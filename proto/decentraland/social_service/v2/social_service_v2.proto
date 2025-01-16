@@ -89,7 +89,7 @@ message FriendshipUpdate {
 }
 
 // @deprecated, used for initial migration without Matrix
-service SocialServiceV2 {  
+service SocialService {  
   // Get the list of friends for the authenticated user
   rpc GetFriends(google.protobuf.Empty) returns (stream UsersResponse) {}
 
