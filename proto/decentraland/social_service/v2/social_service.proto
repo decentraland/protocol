@@ -1,0 +1,169 @@
+syntax = "proto3";
+package decentraland.social_service.v2;
+
+import "google/protobuf/empty.proto";
+
+// Errors
+
+message InvalidFriendshipAction {}
+
+message InternalServerError {}
+
+// Types
+
+message User { string address = 1; }
+
+message Pagination {
+  int32 limit = 1;
+  int32 offset = 2;
+}
+
+message RequestResponse {
+  User user = 1;
+  int64 created_at = 2;
+  optional string message = 3;
+}
+
+message RequestPayload {
+  User user = 1;
+  optional string message = 3;
+}
+
+message Requests {
+  repeated RequestResponse requests = 1;
+}
+
+message AcceptResponse { User user = 1; }
+
+message AcceptPayload { User user = 1; }
+
+message RejectResponse { User user = 1; }
+
+message RejectPayload { User user = 1; }
+
+message DeleteResponse { User user = 1; }
+
+message DeletePayload { User user = 1; }
+
+message CancelResponse { User user = 1; }
+
+message CancelPayload { User user = 1; }
+
+enum ConnectivityStatus {
+  ONLINE = 0;
+  OFFLINE = 1;
+  AWAY = 2;
+}
+
+message GetFriendsPayload {
+  optional Pagination pagination = 1;
+  optional ConnectivityStatus status = 2;
+}
+
+message GetFriendshipRequestsPayload {
+  optional Pagination pagination = 1;
+}
+
+message UpsertFriendshipPayload {
+  oneof action {
+    RequestPayload request = 1;
+    AcceptPayload accept = 2;
+    RejectPayload reject = 4;
+    DeletePayload delete = 5;
+    CancelPayload cancel = 6;
+  }
+}
+
+message GetMutualFriendsPayload {
+  User user = 1;
+  optional Pagination pagination = 2;
+}
+
+message PaginatedResponse {
+  int32 total = 1;
+  int32 page = 2;
+}
+
+message PaginatedUsersResponse {
+  repeated User users = 1;
+  PaginatedResponse pagination_data = 2;
+}
+
+message PaginatedFriendshipRequestsResponse {
+  oneof response {
+    Requests requests = 1;
+    InternalServerError internal_server_error = 2;
+  }
+  optional PaginatedResponse pagination_data = 3;
+}
+
+message UpsertFriendshipResponse {
+  message Accepted {
+    string id = 1;
+    int64 created_at = 2;
+  }
+  oneof response {
+    Accepted accepted = 1;
+    InvalidFriendshipAction invalid_friendship_action = 2;
+    InternalServerError internal_server_error = 3;
+  }
+}
+
+message FriendshipUpdate {
+  oneof update {
+    RequestResponse request = 1;
+    AcceptResponse accept = 2;
+    RejectResponse reject = 4;
+    DeleteResponse delete = 5;
+    CancelResponse cancel = 6;
+  }
+}
+
+message GetFriendshipStatusPayload {
+  User user = 1;
+}
+
+enum FriendshipStatus {
+  REQUEST_SENT = 0;
+  REQUEST_RECEIVED = 1;
+  CANCELED = 2;
+  ACCEPTED = 3;
+  REJECTED = 4;
+  DELETED = 5;
+  BLOCKED = 6;
+}
+
+message GetFriendshipStatusResponse {
+  message Ok {
+  FriendshipStatus status = 1;
+  optional string message = 2;
+  }
+  oneof response {
+    Ok accepted = 1;
+    InternalServerError internal_server_error = 2;
+  }
+}
+
+service SocialService {  
+  // Get the list of friends for the authenticated user
+  rpc GetFriends(GetFriendsPayload) returns (stream PaginatedUsersResponse) {}
+
+  // Get the list of mutual friends between the authenticated user and the one in the parameter
+  rpc GetMutualFriends(GetMutualFriendsPayload) returns (stream PaginatedUsersResponse) {}
+
+  // Get the pending friendship requests for the authenticated user
+  rpc GetPendingFriendshipRequests(GetFriendshipRequestsPayload) returns (PaginatedFriendshipRequestsResponse) {}
+
+  // Get the sent friendship requests for the authenticated user
+  rpc GetSentFriendshipRequests(GetFriendshipRequestsPayload) returns (PaginatedFriendshipRequestsResponse) {}
+
+  // Create or update friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
+  rpc UpsertFriendship(UpsertFriendshipPayload)
+      returns (UpsertFriendshipResponse) {}
+
+  // Subscribe to updates of friendship status: REQUEST, ACCEPT, REJECT, CANCEL, DELETE
+  rpc SubscribeToFriendshipUpdates(google.protobuf.Empty)
+      returns (stream FriendshipUpdate) {}
+
+  rpc GetFriendshipStatus(GetFriendshipStatusPayload) returns (GetFriendshipStatusResponse) {}
+}
