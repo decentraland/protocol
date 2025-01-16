@@ -134,7 +134,7 @@ message GetFriendshipStatusResponse {
   }
 }
 
-service SocialService {  
+service SocialServiceV3 {  
   // Get the list of friends for the authenticated user
   rpc GetFriends(GetFriendsPayload) returns (PaginatedUsersResponse) {}
 
