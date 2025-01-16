@@ -136,10 +136,10 @@ message GetFriendshipStatusResponse {
 
 service SocialService {  
   // Get the list of friends for the authenticated user
-  rpc GetFriends(GetFriendsPayload) returns (stream PaginatedUsersResponse) {}
+  rpc GetFriends(GetFriendsPayload) returns (PaginatedUsersResponse) {}
 
   // Get the list of mutual friends between the authenticated user and the one in the parameter
-  rpc GetMutualFriends(GetMutualFriendsPayload) returns (stream PaginatedUsersResponse) {}
+  rpc GetMutualFriends(GetMutualFriendsPayload) returns (PaginatedUsersResponse) {}
 
   // Get the pending friendship requests for the authenticated user
   rpc GetPendingFriendshipRequests(GetFriendshipRequestsPayload) returns (PaginatedFriendshipRequestsResponse) {}
