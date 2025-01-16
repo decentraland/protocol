@@ -1,0 +1,31 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+import "decentraland/sdk/components/common/id.proto";
+import "decentraland/common/colors.proto";
+option (common.ecs_component_id) = 1079;
+
+message PBLightSource {
+  bool active = 4;                          // default = true
+  decentraland.common.Color3 color = 1;     // default = Color.white
+  float brightness = 2;                     // range from 0 to 1
+  float range = 3;                          // default = 10. range value: from 0 to 1
+  ShadowType shadow = 5;                    // default = ShadowType.ST_NONE
+
+  oneof type {
+    Point point = 6;
+    Spot spot = 7;
+  }
+
+  message Point {}
+
+  message Spot {
+    float inner_angle = 1;
+    float outer_angle = 2;
+  }
+
+  enum ShadowType {
+    ST_NONE = 0;
+    ST_SOFT = 1;
+    ST_HARD = 2;
+  }
+}
