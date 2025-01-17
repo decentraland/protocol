@@ -19,6 +19,7 @@ message FriendshipRequestResponse {
   User user = 1;
   int64 created_at = 2;
   optional string message = 3;
+  string id = 4;
 }
 
 message FriendshipRequests {
