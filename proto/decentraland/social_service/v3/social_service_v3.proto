@@ -16,10 +16,10 @@ message Pagination {
 }
 
 message FriendshipRequestResponse {
-  string id = 1;
-  User user = 2;
-  int64 created_at = 3;
-  optional string message = 4;
+  User user = 1;
+  int64 created_at = 2;
+  optional string message = 3;
+  string id = 4;
 }
 
 message FriendshipRequests {
