@@ -16,9 +16,10 @@ message Pagination {
 }
 
 message FriendshipRequestResponse {
-  User user = 1;
-  int64 created_at = 2;
-  optional string message = 3;
+  string id = 1;
+  User user = 2;
+  int64 created_at = 3;
+  optional string message = 4;
 }
 
 message FriendshipRequests {
@@ -69,8 +70,15 @@ message PaginatedResponse {
   int32 page = 2;
 }
 
-message PaginatedUsersResponse {
-  repeated User users = 1;
+
+message Friendship {
+  string id = 1;
+  User user = 2;
+  optional ConnectivityStatus status = 3;
+}
+
+message PaginatedFriendshipsResponse {
+  repeated Friendship users = 1;
   PaginatedResponse pagination_data = 2;
 }
 
@@ -136,10 +144,10 @@ message GetFriendshipStatusResponse {
 
 service SocialService {  
   // Get the list of friends for the authenticated user
-  rpc GetFriends(GetFriendsPayload) returns (PaginatedUsersResponse) {}
+  rpc GetFriends(GetFriendsPayload) returns (PaginatedFriendshipsResponse) {}
 
   // Get the list of mutual friends between the authenticated user and the one in the parameter
-  rpc GetMutualFriends(GetMutualFriendsPayload) returns (PaginatedUsersResponse) {}
+  rpc GetMutualFriends(GetMutualFriendsPayload) returns (PaginatedFriendshipsResponse) {}
 
   // Get the pending friendship requests for the authenticated user
   rpc GetPendingFriendshipRequests(GetFriendshipRequestsPayload) returns (PaginatedFriendshipRequestsResponse) {}
