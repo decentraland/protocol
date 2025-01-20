@@ -34,7 +34,6 @@ enum ConnectivityStatus {
 
 message GetFriendsPayload {
   optional Pagination pagination = 1;
-  optional ConnectivityStatus status = 2;
 }
 
 message GetFriendshipRequestsPayload {
@@ -110,6 +109,11 @@ message FriendshipUpdate {
   }
 }
 
+message FriendUpdate {
+  User user = 1;
+  ConnectivityStatus status = 2;
+}
+
 message GetFriendshipStatusPayload {
   User user = 1;
 }
@@ -156,5 +160,10 @@ service SocialService {
   rpc SubscribeToFriendshipUpdates(google.protobuf.Empty)
       returns (stream FriendshipUpdate) {}
 
+  // Get the friendship status between the authenticated user and the one in the parameter
   rpc GetFriendshipStatus(GetFriendshipStatusPayload) returns (GetFriendshipStatusResponse) {}
+
+  // Subscribe to updates of friends status: ONLINE, OFFLINE, AWAY
+  rpc SubscribeToFriendUpdates(google.protobuf.Empty)
+      returns (stream FriendUpdate) {}
 }
