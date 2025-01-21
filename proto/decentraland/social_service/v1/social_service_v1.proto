@@ -1,5 +1,5 @@
 syntax = "proto3";
-package decentraland.social.friendships;
+package decentraland.social_service.v1;
 
 // This message is a response that is sent from the server to the client
 message FriendshipEventResponse {
@@ -142,6 +142,7 @@ message SubscribeFriendshipEventsUpdatesResponse {
   }
 }
 
+// @deprecated, only available for old explorer compatibility
 service FriendshipsService {
   // Get the list of friends for the authenticated user
   rpc GetFriends(Payload) returns (stream UsersResponse) {}
