@@ -7,8 +7,8 @@ option (common.ecs_component_id) = 1079;
 message PBLightSource {
   bool active = 4;                          // default = true
   decentraland.common.Color3 color = 1;     // default = Color.white
-  float brightness = 2;                     // range from 0 to 1
-  float range = 3;                          // default = 10. range value: from 0 to 1
+  float brightness = 2;                     // range from 1 (dim) to 100,000 (very bright), expressed in Lumens for Point and Spot
+  float range = 3;                          // default = 10, expressed in meters
   ShadowType shadow = 5;                    // default = ShadowType.ST_NONE
 
   oneof type {
@@ -19,8 +19,8 @@ message PBLightSource {
   message Point {}
 
   message Spot {
-    float inner_angle = 1;
-    float outer_angle = 2;
+    float inner_angle = 1; // default = 21.8. Inner angle can't be higher than outer angle, otherwise will default to same value. Min value is 0
+    float outer_angle = 2; // default = 30. Outer angle can't be lower than inner angle, otherwise will inner angle will be set to same value. Max value is 179
   }
 
   enum ShadowType {
