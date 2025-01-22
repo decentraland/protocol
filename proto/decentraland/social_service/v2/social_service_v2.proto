@@ -13,7 +13,7 @@ message User { string address = 1; }
 message FriendProfile {
   string address = 1;
   string name = 2;
-  string has_claimed_name = 3;
+  bool has_claimed_name = 3;
   string profile_picture_url = 4;
 }
 
