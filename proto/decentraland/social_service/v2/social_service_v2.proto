@@ -10,6 +10,13 @@ message InternalServerError {}
 // Types
 message User { string address = 1; }
 
+message FriendProfile {
+  string address = 1;
+  string name = 2;
+  string has_claimed_name = 3;
+  string profile_picture_url = 4;
+}
+
 message Pagination {
   int32 limit = 1;
   int32 offset = 2;
@@ -69,8 +76,8 @@ message PaginatedResponse {
   int32 page = 2;
 }
 
-message PaginatedUsersResponse {
-  repeated User users = 1;
+message PaginatedFriendsProfilesResponse {
+  repeated FriendProfile friends = 1;
   PaginatedResponse pagination_data = 2;
 }
 
@@ -141,10 +148,10 @@ message GetFriendshipStatusResponse {
 
 service SocialService {  
   // Get the list of friends for the authenticated user
-  rpc GetFriends(GetFriendsPayload) returns (PaginatedUsersResponse) {}
+  rpc GetFriends(GetFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
 
   // Get the list of mutual friends between the authenticated user and the one in the parameter
-  rpc GetMutualFriends(GetMutualFriendsPayload) returns (PaginatedUsersResponse) {}
+  rpc GetMutualFriends(GetMutualFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
 
   // Get the pending friendship requests for the authenticated user
   rpc GetPendingFriendshipRequests(GetFriendshipRequestsPayload) returns (PaginatedFriendshipRequestsResponse) {}
