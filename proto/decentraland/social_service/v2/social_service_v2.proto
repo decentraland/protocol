@@ -23,7 +23,7 @@ message Pagination {
 }
 
 message FriendshipRequestResponse {
-  User user = 1;
+  FriendProfile friend = 1;
   int64 created_at = 2;
   optional string message = 3;
   string id = 4;
@@ -102,13 +102,19 @@ message UpsertFriendshipResponse {
 }
 
 message FriendshipUpdate {
+  message RequestResponse {
+    User user = 1;
+    int64 created_at = 2;
+    optional string message = 3;
+    string id = 4;
+  }
   message AcceptResponse { User user = 1; }
   message RejectResponse { User user = 1; }
   message DeleteResponse { User user = 1; }
   message CancelResponse { User user = 1; }
 
   oneof update {
-    FriendshipRequestResponse request = 1;
+    RequestResponse request = 1;
     AcceptResponse accept = 2;
     RejectResponse reject = 3;
     DeleteResponse delete = 4;
