@@ -93,6 +93,8 @@ message UpsertFriendshipResponse {
   message Accepted {
     string id = 1;
     int64 created_at = 2;
+    FriendProfile friend = 3;
+    optional string message = 4;
   }
   oneof response {
     Accepted accepted = 1;
@@ -103,7 +105,7 @@ message UpsertFriendshipResponse {
 
 message FriendshipUpdate {
   message RequestResponse {
-    User user = 1;
+    FriendProfile friend = 1;
     int64 created_at = 2;
     optional string message = 3;
     string id = 4;
@@ -123,7 +125,7 @@ message FriendshipUpdate {
 }
 
 message FriendConnectivityUpdate {
-  User user = 1;
+  FriendProfile friend = 1;
   ConnectivityStatus status = 2;
 }
 
