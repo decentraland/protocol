@@ -122,7 +122,7 @@ message FriendshipUpdate {
   }
 }
 
-message FriendUpdate {
+message FriendConnectivityUpdate {
   User user = 1;
   ConnectivityStatus status = 2;
 }
@@ -176,7 +176,7 @@ service SocialService {
   // Get the friendship status between the authenticated user and the one in the parameter
   rpc GetFriendshipStatus(GetFriendshipStatusPayload) returns (GetFriendshipStatusResponse) {}
 
-  // Subscribe to updates of friends status: ONLINE, OFFLINE, AWAY
-  rpc SubscribeToFriendUpdates(google.protobuf.Empty)
-      returns (stream FriendUpdate) {}
+  // Subscribe to connectivity updates of friends: ONLINE, OFFLINE, AWAY
+  rpc SubscribeToFriendConnectivityUpdates(google.protobuf.Empty)
+      returns (stream FriendConnectivityUpdate) {}
 }
