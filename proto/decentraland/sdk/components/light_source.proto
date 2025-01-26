@@ -10,6 +10,7 @@ message PBLightSource {
   float brightness = 2;                     // range from 1 (dim) to 100,000 (very bright), expressed in Lumens for Point and Spot
   float range = 3;                          // default = 10, expressed in meters
   ShadowType shadow = 5;                    // default = ShadowType.ST_NONE
+  Texture cookies = 8;                      // (optional) Texture mask through which shadows are cast to simulate caustics, soft shadows, and light shapes such as light entering from a window.
 
   oneof type {
     Point point = 6;
@@ -19,7 +20,7 @@ message PBLightSource {
   message Point {}
 
   message Spot {
-    float inner_angle = 1; // default = 21.8. Inner angle can't be higher than outer angle, otherwise will default to same value. Min value is 0
+    float inner_angle = 1; // default = 21.8. Inner angle can't be higher than outer angle, otherwise will default to same value. Min value is 0. Max value is 179
     float outer_angle = 2; // default = 30. Outer angle can't be lower than inner angle, otherwise will inner angle will be set to same value. Max value is 179
   }
 
