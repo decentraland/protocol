@@ -18,5 +18,5 @@ message PBGlobalLight {
   optional decentraland.common.Color3 ambient_color = 2;
   // ambient light intensity. the explorer default ambient brightness is multiplied by this non-physical quantity.
   // default 1
-  optional float ambient_brightness = 3;
+  optional float ambient_brightness = 3; 
 }
