@@ -6,12 +6,12 @@ import "decentraland/common/texture.proto";
 option (common.ecs_component_id) = 1079;
 
 message PBLightSource {
-  bool active = 4;                          // default = true
-  decentraland.common.Color3 color = 1;     // default = Color.white
-  float brightness = 2;                     // range from 1 (dim) to 100,000 (very bright), expressed in Lumens for Point and Spot
-  float range = 3;                          // default = 10, expressed in meters
-  ShadowType shadow = 5;                    // default = ShadowType.ST_NONE
-  decentraland.common.Texture cookies = 8;  // (optional) Texture mask through which shadows are cast to simulate caustics, soft shadows, and light shapes such as light entering from a window.
+  optional bool active = 4;                                       // default = true, whether the lightSource is active or not.
+  optional decentraland.common.Color3 color = 1;                  // default = Color.white, the tint of the light, in RGB format where each component is a floating point value with a range from 0 to 1.
+  optional float brightness = 2;                                  // default = 250, ranges from 1 (dim) to 100,000 (very bright), expressed in Lumens for Point and Spot.
+  optional float range = 3;                                       // default = 10, how far the light travels, expressed in meters.
+  optional ShadowType shadow = 5;                                 // default = ShadowType.ST_NONE The type of shadow the light source supports.
+  optional decentraland.common.Texture shadow_mask_texture = 8;   // Texture mask through which shadows are cast to simulate caustics, soft shadows, and light shapes such as light entering from a window.
 
   oneof type {
     Point point = 6;
@@ -21,13 +21,13 @@ message PBLightSource {
   message Point {}
 
   message Spot {
-    float inner_angle = 1; // default = 21.8. Inner angle can't be higher than outer angle, otherwise will default to same value. Min value is 0. Max value is 179
-    float outer_angle = 2; // default = 30. Outer angle can't be lower than inner angle, otherwise will inner angle will be set to same value. Max value is 179
+    optional float inner_angle = 1; // default = 21.8. Inner angle can't be higher than outer angle, otherwise will default to same value. Min value is 0. Max value is 179.
+    optional float outer_angle = 2; // default = 30. Outer angle can't be lower than inner angle, otherwise will inner angle will be set to same value. Max value is 179.
   }
 
   enum ShadowType {
-    ST_NONE = 0;
-    ST_SOFT = 1;
-    ST_HARD = 2;
+    ST_NONE = 0;  // No shadows are cast from this LightSource.
+    ST_SOFT = 1;  // More realistic type of shadow that reduces block artifacts, noise or pixelation, but requires more processing.
+    ST_HARD = 2;  // Less realistic type of shadow but more performant, uses hard edges.
   }
 }
