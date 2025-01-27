@@ -2,6 +2,7 @@ syntax = "proto3";
 package decentraland.sdk.components;
 import "decentraland/sdk/components/common/id.proto";
 import "decentraland/common/colors.proto";
+import "decentraland/common/texture.proto";
 option (common.ecs_component_id) = 1079;
 
 message PBLightSource {
