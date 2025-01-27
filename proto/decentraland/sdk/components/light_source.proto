@@ -11,7 +11,7 @@ message PBLightSource {
   float brightness = 2;                     // range from 1 (dim) to 100,000 (very bright), expressed in Lumens for Point and Spot
   float range = 3;                          // default = 10, expressed in meters
   ShadowType shadow = 5;                    // default = ShadowType.ST_NONE
-  Texture cookies = 8;                      // (optional) Texture mask through which shadows are cast to simulate caustics, soft shadows, and light shapes such as light entering from a window.
+  decentraland.common.Texture cookies = 8;  // (optional) Texture mask through which shadows are cast to simulate caustics, soft shadows, and light shapes such as light entering from a window.
 
   oneof type {
     Point point = 6;
