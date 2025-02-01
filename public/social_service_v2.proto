@@ -1,4 +1,0 @@
-syntax = "proto3";
-package decentraland.social;
-
-import public "decentraland/social_service_v2/social_service.proto";

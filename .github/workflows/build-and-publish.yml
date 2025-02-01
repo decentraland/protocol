@@ -3,6 +3,7 @@ on:
     branches:
       - main
       - protocol-squad
+      - experimental
   pull_request:
   release:
     types:
@@ -10,6 +11,9 @@ on:
 env: 
   IS_A_PR: ${{ github.event.pull_request.number != 'null' && github.head_ref != 'protocol-squad' }}
 
+
+env:
+  BRANCH_TAG: ${{ github.ref_name == 'experimental' && 'experimental' || '' }}
 
 name: build-deploy
 jobs:
@@ -28,7 +32,7 @@ jobs:
           echo "from env '${{env.IS_A_PR}}'"
           echo "- '${{github.event.pull_request.number}}'"
           echo "- env '${{github.head_ref}}'"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: install
         run: make install
       - name: buf build
@@ -56,8 +60,10 @@ jobs:
           ## inform gitlab after publishing to proceed with CDN propagation
           gitlab-token: ${{ secrets.GITLAB_TOKEN }}
           gitlab-pipeline-url: ${{ secrets.GITLAB_URL }}
+          custom-tag: ${{ env.BRANCH_TAG }}
+          branch-to-custom-tag: ${{ env.BRANCH_TAG }}
         env:
-          BRANCH_NAME: ${{ github.head_ref }}
+          BRANCH_NAME: ${{ github.ref_name }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           AWS_DEFAULT_REGION: us-east-1
           AWS_ACCESS_KEY_ID: ${{ secrets.SDK_TEAM_AWS_ID }}
