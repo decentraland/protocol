@@ -10,9 +10,6 @@ on:
       - created
 env: 
   IS_A_PR: ${{ github.event.pull_request.number != 'null' && github.head_ref != 'protocol-squad' }}
-
-
-env:
   BRANCH_TAG: ${{ github.ref_name == 'experimental' && 'experimental' || (github.ref_name == 'protocol-squad' && 'protocol-squad' || '') }}
 
 name: build-deploy
