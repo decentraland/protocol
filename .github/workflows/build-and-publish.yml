@@ -40,8 +40,6 @@ jobs:
         uses: menduz/oddish-action@master
         id: publish_dcl_protocol
         with:
-          custom-tag: protocol-squad
-          branch-to-custom-tag: protocol-squad
           registry-url: 'https://registry.npmjs.org'
           access: public
           ## use action runId instead of current date to generate snapshot numbers
