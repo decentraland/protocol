@@ -6,7 +6,7 @@ import "decentraland/common/vectors.proto";
 message MovePlayerToRequest {
   decentraland.common.Vector3 new_relative_position = 1;
   optional decentraland.common.Vector3 camera_target = 2;
-  optional decentraland.common.Quaternion new_rotation = 3;
+  optional decentraland.common.Vector3 avatar_target = 3;
 }
 
 message TeleportToRequest {
