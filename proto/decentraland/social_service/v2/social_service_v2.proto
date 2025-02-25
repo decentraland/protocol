@@ -10,7 +10,7 @@ message InternalServerError {}
 // Types
 message User { string address = 1; }
 
-message FriendProfile {
+message Profile {
   string address = 1;
   string name = 2;
   bool has_claimed_name = 3;
@@ -23,7 +23,7 @@ message Pagination {
 }
 
 message FriendshipRequestResponse {
-  FriendProfile friend = 1;
+  Profile friend = 1;
   int64 created_at = 2;
   optional string message = 3;
   string id = 4;
@@ -77,7 +77,7 @@ message PaginatedResponse {
 }
 
 message PaginatedFriendsProfilesResponse {
-  repeated FriendProfile friends = 1;
+  repeated Profile friends = 1;
   PaginatedResponse pagination_data = 2;
 }
 
@@ -93,7 +93,7 @@ message UpsertFriendshipResponse {
   message Accepted {
     string id = 1;
     int64 created_at = 2;
-    FriendProfile friend = 3;
+    Profile friend = 3;
     optional string message = 4;
   }
   oneof response {
@@ -105,7 +105,7 @@ message UpsertFriendshipResponse {
 
 message FriendshipUpdate {
   message RequestResponse {
-    FriendProfile friend = 1;
+    Profile friend = 1;
     int64 created_at = 2;
     optional string message = 3;
     string id = 4;
@@ -125,7 +125,7 @@ message FriendshipUpdate {
 }
 
 message FriendConnectivityUpdate {
-  FriendProfile friend = 1;
+  Profile friend = 1;
   ConnectivityStatus status = 2;
 }
 
@@ -155,6 +155,31 @@ message GetFriendshipStatusResponse {
   }
 }
 
+message BlockUserPayload {
+  User user = 1;
+}
+
+message BlockUserResponse {
+  Profile profile = 1;
+}
+
+message UnblockUserPayload {
+  User user = 1;
+}
+
+message UnblockUserResponse {
+  Profile profile = 1;
+}
+
+message GetBlockedUsersPayload {
+  optional Pagination pagination = 1;
+}
+
+message GetBlockedUsersResponse {
+  repeated Profile profiles = 1;
+  PaginatedResponse pagination_data = 2;
+}
+
 service SocialService {  
   // Get the list of friends for the authenticated user
   rpc GetFriends(GetFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
@@ -182,4 +207,10 @@ service SocialService {
   // Subscribe to connectivity updates of friends: ONLINE, OFFLINE, AWAY
   rpc SubscribeToFriendConnectivityUpdates(google.protobuf.Empty)
       returns (stream FriendConnectivityUpdate) {}
+
+  rpc BlockUser(BlockUserPayload) returns (BlockUserResponse) {}
+
+  rpc UnblockUser(UnblockUserPayload) returns (UnblockUserResponse) {}
+
+  rpc GetBlockedUsers(GetBlockedUsersPayload) returns (GetBlockedUsersResponse) {}
 }
