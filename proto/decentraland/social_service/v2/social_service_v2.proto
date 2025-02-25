@@ -160,7 +160,14 @@ message BlockUserPayload {
 }
 
 message BlockUserResponse {
-  Profile profile = 1;
+  message Ok {
+    Profile profile = 1;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InternalServerError internal_server_error = 2;
+  }
 }
 
 message UnblockUserPayload {
@@ -168,7 +175,14 @@ message UnblockUserPayload {
 }
 
 message UnblockUserResponse {
-  Profile profile = 1;
+  message Ok {
+    Profile profile = 1;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InternalServerError internal_server_error = 2;
+  }
 }
 
 message GetBlockedUsersPayload {
