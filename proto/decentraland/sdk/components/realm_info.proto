@@ -6,9 +6,9 @@ option (common.ecs_component_id) = 1106;
 
 message PBRealmInfo {
   string base_url = 1;                        // the domain of the realm server
-  string realm_name = 2;                      // the name of the realm server
-  int32 network_id = 3;                       // the Ethereum network
-  string comms_adapter = 4;                   // comms adapter, removing all query parameters (credentials)
+  string realm_name = 2;                      // the name of the realm server (more info https://adr.decentraland.org/adr/ADR-110)
+  int32 network_id = 3;                       // the network id (1=Ethereum, more info https://chainlist.org/)
+  string comms_adapter = 4;                   // comms adapter (more info https://adr.decentraland.org/adr/ADR-180)
   bool is_preview = 5;                        // true if the scene is running as a local preview, instead of published in Decentraland.
   optional string room = 6;                   // the room session id.
   optional bool is_connected_scene_room = 7;  // true if the user is connected to the scene room.
