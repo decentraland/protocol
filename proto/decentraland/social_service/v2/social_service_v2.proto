@@ -10,11 +10,19 @@ message InternalServerError {}
 // Types
 message User { string address = 1; }
 
-message UserProfile {
+message FriendProfile {
   string address = 1;
   string name = 2;
   bool has_claimed_name = 3;
   string profile_picture_url = 4;
+}
+
+message BlockedUserProfile {
+  string address = 1;
+  string name = 2;
+  bool has_claimed_name = 3;
+  string profile_picture_url = 4;
+  optional int64 blocked_at = 5;
 }
 
 message Pagination {
@@ -23,7 +31,7 @@ message Pagination {
 }
 
 message FriendshipRequestResponse {
-  UserProfile friend = 1;
+  FriendProfile friend = 1;
   int64 created_at = 2;
   optional string message = 3;
   string id = 4;
@@ -77,7 +85,7 @@ message PaginatedResponse {
 }
 
 message PaginatedFriendsProfilesResponse {
-  repeated UserProfile friends = 1;
+  repeated FriendProfile friends = 1;
   PaginatedResponse pagination_data = 2;
 }
 
@@ -93,7 +101,7 @@ message UpsertFriendshipResponse {
   message Accepted {
     string id = 1;
     int64 created_at = 2;
-    UserProfile friend = 3;
+    FriendProfile friend = 3;
     optional string message = 4;
   }
   oneof response {
@@ -105,7 +113,7 @@ message UpsertFriendshipResponse {
 
 message FriendshipUpdate {
   message RequestResponse {
-    UserProfile friend = 1;
+    FriendProfile friend = 1;
     int64 created_at = 2;
     optional string message = 3;
     string id = 4;
@@ -125,7 +133,7 @@ message FriendshipUpdate {
 }
 
 message FriendConnectivityUpdate {
-  UserProfile friend = 1;
+  FriendProfile friend = 1;
   ConnectivityStatus status = 2;
 }
 
@@ -161,7 +169,7 @@ message BlockUserPayload {
 
 message BlockUserResponse {
   message Ok {
-    UserProfile profile = 1;
+    BlockedUserProfile profile = 1;
   }
 
   oneof response {
@@ -176,7 +184,7 @@ message UnblockUserPayload {
 
 message UnblockUserResponse {
   message Ok {
-    UserProfile profile = 1;
+    BlockedUserProfile profile = 1;
   }
 
   oneof response {
@@ -190,7 +198,7 @@ message GetBlockedUsersPayload {
 }
 
 message GetBlockedUsersResponse {
-  repeated UserProfile profiles = 1;
+  repeated BlockedUserProfile profiles = 1;
   PaginatedResponse pagination_data = 2;
 }
 
