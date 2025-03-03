@@ -190,8 +190,17 @@ message GetBlockedUsersPayload {
 }
 
 message GetBlockedUsersResponse {
-  repeated Profile profiles = 1;
+  repeated UserProfile profiles = 1;
   PaginatedResponse pagination_data = 2;
+}
+
+message GetBlockingStatusPayload {
+  User user = 1;
+}
+
+message GetBlockingStatusResponse {
+  repeated User blocked_users = 1;
+  repeated User blocked_by_users = 2;
 }
 
 service SocialService {  
@@ -227,4 +236,6 @@ service SocialService {
   rpc UnblockUser(UnblockUserPayload) returns (UnblockUserResponse) {}
 
   rpc GetBlockedUsers(GetBlockedUsersPayload) returns (GetBlockedUsersResponse) {}
+
+  rpc GetBlockingStatus(GetBlockingStatusPayload) returns (GetBlockingStatusResponse) {}
 }
