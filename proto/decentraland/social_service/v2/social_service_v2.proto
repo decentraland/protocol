@@ -10,7 +10,7 @@ message InternalServerError {}
 // Types
 message User { string address = 1; }
 
-message Profile {
+message UserProfile {
   string address = 1;
   string name = 2;
   bool has_claimed_name = 3;
@@ -23,7 +23,7 @@ message Pagination {
 }
 
 message FriendshipRequestResponse {
-  Profile friend = 1;
+  UserProfile friend = 1;
   int64 created_at = 2;
   optional string message = 3;
   string id = 4;
@@ -77,7 +77,7 @@ message PaginatedResponse {
 }
 
 message PaginatedFriendsProfilesResponse {
-  repeated Profile friends = 1;
+  repeated UserProfile friends = 1;
   PaginatedResponse pagination_data = 2;
 }
 
@@ -93,7 +93,7 @@ message UpsertFriendshipResponse {
   message Accepted {
     string id = 1;
     int64 created_at = 2;
-    Profile friend = 3;
+    UserProfile friend = 3;
     optional string message = 4;
   }
   oneof response {
@@ -105,7 +105,7 @@ message UpsertFriendshipResponse {
 
 message FriendshipUpdate {
   message RequestResponse {
-    Profile friend = 1;
+    UserProfile friend = 1;
     int64 created_at = 2;
     optional string message = 3;
     string id = 4;
@@ -125,7 +125,7 @@ message FriendshipUpdate {
 }
 
 message FriendConnectivityUpdate {
-  Profile friend = 1;
+  UserProfile friend = 1;
   ConnectivityStatus status = 2;
 }
 
@@ -161,7 +161,7 @@ message BlockUserPayload {
 
 message BlockUserResponse {
   message Ok {
-    Profile profile = 1;
+    UserProfile profile = 1;
   }
 
   oneof response {
@@ -176,7 +176,7 @@ message UnblockUserPayload {
 
 message UnblockUserResponse {
   message Ok {
-    Profile profile = 1;
+    UserProfile profile = 1;
   }
 
   oneof response {
