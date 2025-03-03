@@ -194,10 +194,6 @@ message GetBlockedUsersResponse {
   PaginatedResponse pagination_data = 2;
 }
 
-message GetBlockingStatusPayload {
-  User user = 1;
-}
-
 message GetBlockingStatusResponse {
   repeated User blocked_users = 1;
   repeated User blocked_by_users = 2;
@@ -237,5 +233,5 @@ service SocialService {
 
   rpc GetBlockedUsers(GetBlockedUsersPayload) returns (GetBlockedUsersResponse) {}
 
-  rpc GetBlockingStatus(GetBlockingStatusPayload) returns (GetBlockingStatusResponse) {}
+  rpc GetBlockingStatus(google.protobuf.Empty) returns (GetBlockingStatusResponse) {}
 }
