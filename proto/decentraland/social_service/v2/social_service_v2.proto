@@ -195,8 +195,8 @@ message GetBlockedUsersResponse {
 }
 
 message GetBlockingStatusResponse {
-  repeated User blocked_users = 1;
-  repeated User blocked_by_users = 2;
+  repeated string blocked_users = 1;
+  repeated string blocked_by_users = 2;
 }
 
 service SocialService {  
