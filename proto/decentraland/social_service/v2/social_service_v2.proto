@@ -150,6 +150,7 @@ enum FriendshipStatus {
   DELETED = 5;
   BLOCKED = 6;
   NONE = 7;
+  BLOCKED_BY = 8;
 }
 
 message GetFriendshipStatusResponse {
