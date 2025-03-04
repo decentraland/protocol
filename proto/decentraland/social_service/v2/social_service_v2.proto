@@ -207,6 +207,11 @@ message GetBlockingStatusResponse {
   repeated string blocked_by_users = 2;
 }
 
+message BlockUpdate {
+  string address = 1;
+  bool is_blocked = 2;
+}
+
 service SocialService {  
   // Get the list of friends for the authenticated user
   rpc GetFriends(GetFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
@@ -242,4 +247,6 @@ service SocialService {
   rpc GetBlockedUsers(GetBlockedUsersPayload) returns (GetBlockedUsersResponse) {}
 
   rpc GetBlockingStatus(google.protobuf.Empty) returns (GetBlockingStatusResponse) {}
+
+  rpc SubscribeToBlockUpdates(google.protobuf.Empty) returns (stream BlockUpdate) {}
 }
