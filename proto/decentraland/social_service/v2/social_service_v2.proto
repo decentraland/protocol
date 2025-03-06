@@ -4,9 +4,18 @@ package decentraland.social_service.v2;
 import "google/protobuf/empty.proto";
 
 // Errors
-message InvalidFriendshipAction {}
-message InternalServerError {}
-
+message InvalidFriendshipAction {
+  optional string message = 1;
+}
+message InternalServerError {
+  optional string message = 1;
+}
+message InvalidRequest {
+  optional string message = 1;
+}
+message ProfileNotFound {
+  optional string message = 1;
+}
 // Types
 message User { string address = 1; }
 
@@ -176,6 +185,8 @@ message BlockUserResponse {
   oneof response {
     Ok ok = 1;
     InternalServerError internal_server_error = 2;
+    InvalidRequest invalid_request = 3;
+    ProfileNotFound profile_not_found = 4;
   }
 }
 
@@ -191,6 +202,8 @@ message UnblockUserResponse {
   oneof response {
     Ok ok = 1;
     InternalServerError internal_server_error = 2;
+    InvalidRequest invalid_request = 3;
+    ProfileNotFound profile_not_found = 4;
   }
 }
 
