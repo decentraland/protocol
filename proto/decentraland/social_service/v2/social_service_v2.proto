@@ -16,6 +16,7 @@ message InvalidRequest {
 message ProfileNotFound {
   optional string message = 1;
 }
+
 // Types
 message User { string address = 1; }
 
@@ -131,6 +132,7 @@ message FriendshipUpdate {
   message RejectResponse { User user = 1; }
   message DeleteResponse { User user = 1; }
   message CancelResponse { User user = 1; }
+  message BlockResponse { User user = 1; }
 
   oneof update {
     RequestResponse request = 1;
@@ -138,6 +140,7 @@ message FriendshipUpdate {
     RejectResponse reject = 3;
     DeleteResponse delete = 4;
     CancelResponse cancel = 5;
+    BlockResponse block = 6;
   }
 }
 
