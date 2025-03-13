@@ -4,6 +4,7 @@ package decentraland.sdk.components;
 import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1080;
 import "decentraland/common/colors.proto";
+import "decentraland/sdk/components/common/optional_string_array.proto";
 
 // The AvatarShape component contains the information required to draw and animate avatar, acting as
 // a simplified GLTF container for this specific case. 
@@ -38,6 +39,7 @@ message PBAvatarShape {
   //     Shoes   : "urn:decentraland:off-chain:base-avatars:bun_shoes"]
   repeated string wearables = 10; 
   repeated string emotes = 11; // available emotes (default empty)
-  repeated string force_render = 12; // slots that will render even if hidden
+
+  optional decentraland.common.OptionalStringArray force_render = 12; // slots that will render even if hidden
 }
 

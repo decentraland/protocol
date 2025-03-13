@@ -2,6 +2,7 @@ syntax = "proto3";
 package decentraland.sdk.components;
 
 import "decentraland/sdk/components/common/id.proto";
+import "decentraland/sdk/components/common/optional_string_array.proto";
 option (common.ecs_component_id) = 1091;
 
 // AvatarEquipData is used to read the information about the avatar's owneables.
@@ -10,5 +11,5 @@ option (common.ecs_component_id) = 1091;
 message PBAvatarEquippedData {
   repeated string wearable_urns = 1;
   repeated string emote_urns = 2;
-  repeated string force_render = 3; // slots that will render even if hidden
+  optional decentraland.common.OptionalStringArray force_render = 3; // slots that will render even if hidden
 }

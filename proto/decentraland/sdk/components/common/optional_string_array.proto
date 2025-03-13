@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package decentraland.sdk.components.common;
+
+// used for string array fields that must be optional for backward compatibility of components
+message OptionalStringArray {
+    repeated string values = 1;
+}
