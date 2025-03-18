@@ -201,6 +201,60 @@ message UnblockUserResponse {
   message Ok {
     BlockedUserProfile profile = 1;
   }
+}
+
+enum PrivateMessagePrivacySetting {
+  ALL = 0;
+  ONLY_FRIENDS = 1;
+}
+
+enum BlockedUsersMessagesVisibilitySetting {
+  SHOW_MESSAGES = 0;
+  DO_NOT_SHOW_MESSAGES = 1;
+}
+
+message SocialSettings {
+  PrivateMessagePrivacySetting private_messages_privacy = 1;
+  BlockedUsersMessagesVisibilitySetting blocked_users_messages_visibility = 2;
+}
+
+message GetSocialSettingsResponse {
+  message Ok {
+    SocialSettings settings = 1;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InternalServerError internal_server_error = 2;
+  }
+}
+
+message UpsertSocialSettingsPayload {
+  optional PrivateMessagePrivacySetting private_messages_privacy = 1;
+  optional BlockedUsersMessagesVisibilitySetting blocked_users_messages_visibility = 2;
+}
+
+message UpsertSocialSettingsResponse {
+  oneof response {
+    SocialSettings ok = 1;
+    InternalServerError internal_server_error = 2;
+    InvalidRequest invalid_request = 3;
+  }
+}
+
+message GetPrivateMessagesSettingsPayload {
+  repeated User user = 1;
+}
+
+message GetPrivateMessagesSettingsResponse {
+  message PrivateMessagesSettings {
+    User user = 1;
+    PrivateMessagePrivacySetting private_messages_privacy = 2;
+  }
+
+  message Ok {
+    repeated PrivateMessagesSettings settings = 1;
+  }
 
   oneof response {
     Ok ok = 1;
@@ -266,4 +320,13 @@ service SocialService {
   rpc GetBlockingStatus(google.protobuf.Empty) returns (GetBlockingStatusResponse) {}
 
   rpc SubscribeToBlockUpdates(google.protobuf.Empty) returns (stream BlockUpdate) {}
+  
+  // Get all the social settings for the authenticated user
+  rpc GetSocialSettings(google.protobuf.Empty) returns (GetSocialSettingsResponse) {}
+
+  // Insert or update the social settings for the authenticated user
+  rpc UpsertSocialSettings(UpsertSocialSettingsPayload) returns (UpsertSocialSettingsResponse) {}
+
+  // Get the private messages privacy settings for the requested users
+  rpc GetPrivateMessagesSettings(GetPrivateMessagesSettingsPayload) returns (GetPrivateMessagesSettingsResponse) {}
 }
