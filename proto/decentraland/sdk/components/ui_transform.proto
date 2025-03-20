@@ -168,5 +168,8 @@ message PBUiTransform {
   optional float border_bottom_right_radius = 68;
 
   // Border Color
-  optional decentraland.common.Color4 border_color = 69;
+  optional decentraland.common.Color4 border_top_color = 69;
+  optional decentraland.common.Color4 border_bottom_color = 70;
+  optional decentraland.common.Color4 border_left_color = 71;
+  optional decentraland.common.Color4 border_right_color = 72;
 }
