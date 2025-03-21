@@ -201,6 +201,13 @@ message UnblockUserResponse {
   message Ok {
     BlockedUserProfile profile = 1;
   }
+
+  oneof response {
+    Ok ok = 1;
+    InternalServerError internal_server_error = 2;
+    InvalidRequest invalid_request = 3;
+    ProfileNotFound profile_not_found = 4;
+  }
 }
 
 enum PrivateMessagePrivacySetting {
