@@ -3,6 +3,7 @@ syntax = "proto3";
 package decentraland.sdk.components;
 
 import "decentraland/sdk/components/common/id.proto";
+import "decentraland/common/colors.proto";
 
 option (common.ecs_component_id) = 1050;
 
@@ -143,6 +144,32 @@ message PBUiTransform {
   float padding_right = 49;
   YGUnit padding_bottom_unit = 50; // YGUnit.YGU_UNDEFINED
   float padding_bottom = 51;
-  
+
   optional PointerFilterMode pointer_filter = 52; // default: PointerFilterMode.PFM_NONE
+
+  // Border Width
+  optional YGUnit border_left_width_unit = 53; // YGUnit.YGU_UNDEFINED
+  optional float border_left_width = 54;
+  optional YGUnit border_top_width_unit = 55; // YGUnit.YGU_UNDEFINED
+  optional float border_top_width = 56;
+  optional YGUnit border_right_width_unit = 57; // YGUnit.YGU_UNDEFINED
+  optional float border_right_width = 58;
+  optional YGUnit border_bottom_width_unit = 59; // YGUnit.YGU_UNDEFINED
+  optional float border_bottom_width = 60;
+
+  // Border Radius
+  optional YGUnit border_top_left_radius_unit = 61; // YGUnit.YGU_UNDEFINED
+  optional float border_top_left_radius = 62;
+  optional YGUnit border_top_right_radius_unit = 63; // YGUnit.YGU_UNDEFINED
+  optional float border_top_right_radius = 64;
+  optional YGUnit border_bottom_left_radius_unit = 65; // YGUnit.YGU_UNDEFINED
+  optional float border_bottom_left_radius = 66;
+  optional YGUnit border_bottom_right_radius_unit = 67; // YGUnit.YGU_UNDEFINED
+  optional float border_bottom_right_radius = 68;
+
+  // Border Color
+  optional decentraland.common.Color4 border_top_color = 69;
+  optional decentraland.common.Color4 border_bottom_color = 70;
+  optional decentraland.common.Color4 border_left_color = 71;
+  optional decentraland.common.Color4 border_right_color = 72;
 }
