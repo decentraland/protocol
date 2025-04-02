@@ -26,6 +26,11 @@ message PBTextureCamera {
         Orthographic orthographic = 9;
         /* Portal portal = 10; */ 
     };
+
+    // controls whether this camera acts as a receiver for audio on sources with matching `PBCameraLayers`.
+    // range: 0 (off) - 1 (full volume)
+    // default: 0
+    optional float volume = 10;
 }
 
 message Perspective {
