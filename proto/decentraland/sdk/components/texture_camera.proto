@@ -28,7 +28,8 @@ message PBTextureCamera {
     };
 
     // controls whether this camera acts as a receiver for audio on sources with matching `PBCameraLayers`.
-    // default 0
+    // range: 0 (off) - 1 (full volume)
+    // default: 0
     optional float volume = 10;
 }
 
