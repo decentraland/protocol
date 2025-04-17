@@ -257,6 +257,7 @@ message GetPrivateMessagesSettingsResponse {
   message PrivateMessagesSettings {
     User user = 1;
     PrivateMessagePrivacySetting private_messages_privacy = 2;
+    bool is_friend = 3;
   }
 
   message Ok {
