@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1077;
+
+// PBTimeComponent provides synchronized time information based on NTP server data
+// This component can be used to maintain consistent time across all clients
+message PBTimeComponent {
+  // The current synchronized time (in milliseconds since epoch)
+  uint64 timestamp = 1;
+
+  // The synchronization status
+  SyncStatus status = 7;
+}
+
+// Status of time synchronization
+enum SyncStatus {
+  // The component is not yet synchronized with the NTP server
+  SS_UNINITIALIZED = 0;
+
+  // The component is currently attempting to synchronize with the NTP server
+  SS_SYNCHRONIZING = 1;
+
+  // The component is successfully synchronized with the NTP server
+  SS_SYNCHRONIZED = 2;
+
+  // The component failed to synchronize with the NTP server
+  SS_ERROR = 3;
+}
