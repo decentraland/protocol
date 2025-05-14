@@ -9,7 +9,7 @@ option (common.ecs_component_id) = 1077;
 // This component can be used to maintain consistent time across all clients
 message PBTimeComponent {
   // The current synchronized time (in milliseconds since epoch)
-  uint64 timestamp = 1;
+  uint64 synced_timestamp = 1;
 
   // The synchronization status
   SyncStatus status = 7;
