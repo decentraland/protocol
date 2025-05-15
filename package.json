@@ -2,7 +2,10 @@
   "name": "@dcl/protocol",
   "version": "1.0.0",
   "description": "",
-  "repository": "decentraland/protocol.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decentraland/protocol.git"
+  },
   "homepage": "https://github.com/decentraland/protocol#readme",
   "bugs": "https://github.com/decentraland/protocol/issues",
   "keywords": [],
