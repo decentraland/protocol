@@ -7,7 +7,7 @@ option (common.ecs_component_id) = 1077;
 
 // PBTimeComponent provides synchronized time information based on NTP server data
 // This component can be used to maintain consistent time across all clients
-message PBTimeComponent {
+message PBSyncedClock {
   // The current synchronized time (in milliseconds since epoch)
   uint64 synced_timestamp = 1;
 
