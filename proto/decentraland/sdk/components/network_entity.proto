@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1078;
+
+/**
+ * NetworkEntity marks an entity for network synchronization.
+
+ * When receiving network messages, to find which local entity they refer to,
+ * we look for an entity that has both the same networkId and entityId as the message.
+ */
+message PBNetworkEntity {
+  // The enumId or local entity ID
+  uint32 entity_id = 1;
+  
+  // - 0 for fixed entities (created with enumId at initialization)
+  // - User's address hash for dynamic entities (created at runtime)
+  uint64 network_id = 2;
+}
