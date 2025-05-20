@@ -27,7 +27,8 @@ message PBPrimaryPointerInfo {
   optional decentraland.common.Vector2 screen_coordinates = 2;  // Current position in screen space (pixels)
   optional decentraland.common.Vector2 screen_delta = 3;  // Movement since last frame (pixels)
   optional decentraland.common.Vector3 world_ray_direction = 4; // Direction vector for 3D ray casting
-  repeated TouchPoint touch_points = 5;  // Multiple touch points for multi-touch support
+  // Commented out to later add touch support
+  //repeated TouchPoint touch_points = 5;  // Multiple touch points for multi-touch support
 }
 
 // Commented out to later add touch support
