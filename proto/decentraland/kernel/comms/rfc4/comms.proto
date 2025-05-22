@@ -59,6 +59,13 @@ message Movement {
   bool is_stunned = 15;
   
   float rotation_y = 16;
+  
+  message NetworkEntity {
+    uint32 entity_id = 1;
+    uint64 network_id = 2;
+  }
+
+  optional NetworkEntity network_entity = 17;
 }
 
 message MovementCompressed {
