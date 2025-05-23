@@ -66,6 +66,7 @@ message Movement {
   }
 
   optional NetworkEntity network_entity = 17;
+  uint64 synced_timestamp = 18;
 }
 
 message MovementCompressed {
