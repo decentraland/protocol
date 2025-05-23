@@ -23,7 +23,7 @@ option (common.ecs_component_id) = 1209;
 // - Enable VR controller interactions
 // - Convert screen coordinates to world space rays for 3D interactions
 //
-// Note: Touch, Pad and Wand support will be added later
+// Note: Touch, Pad, and Wand support, as well as dragging, will be added later.
 message PBPrimaryPointerInfo {
   optional PointerType pointer_type = 1;  // The type of input device being used
   optional decentraland.common.Vector2 screen_coordinates = 2;  // Current position in screen space (pixels)
