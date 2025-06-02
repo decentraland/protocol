@@ -295,7 +295,7 @@ message BlockUpdate {
 
 // Starting a private voice chat
 
-message StartPrivateVoiceChat {
+message StartPrivateVoiceChatPayload {
   string callee_address = 1;
 }
 
@@ -310,59 +310,6 @@ message StartPrivateVoiceChatResponse {
     InvalidRequest invalid_request = 3;
   }
 }
-
-// Rejecting a private voice chat
-
-message RejectPrivateVoiceChat {
-  string call_id = 1;
-}
-
-message RejectPrivateVoiceChatResponse {
-  message Ok {
-    string call_id = 1;
-  }
-
-  oneof response {
-    Ok ok = 1;
-    InternalServerError internal_server_error = 2;
-    InvalidRequest invalid_request = 3;
-  }
-}
-
-// Accepting a private voice chat
-
-message AcceptPrivateVoiceChat {
-  string call_id = 1;
-}
-
-message AcceptPrivateVoiceChatResponse {
-  message Ok {
-    string call_id = 1;
-    string token = 2;
-    string url = 3;
-  }
-
-  oneof response {
-    Ok ok = 1;
-    InternalServerError internal_server_error = 2;
-    InvalidRequest invalid_request = 3;
-  }
-}
-
-// Private voice chat accepted (sent from server to client)
-
-message PrivateVoiceChatAccepted {
-  string call_id = 1;
-  string token = 2;
-  string url = 3;
-}
-
-// Private voice chat rejected (sent from server to client)
-
-message PrivateVoiceChatRejected {
-  string call_id = 1;
-}
-
 
 service SocialService {  
   // Get the list of friends for the authenticated user
@@ -410,4 +357,7 @@ service SocialService {
 
   // Get the private messages privacy settings for the requested users
   rpc GetPrivateMessagesSettings(GetPrivateMessagesSettingsPayload) returns (GetPrivateMessagesSettingsResponse) {}
+
+  // Start a private voice chat
+  rpc StartPrivateVoiceChat(StartPrivateVoiceChatPayload) returns (StartPrivateVoiceChatResponse) {}
 }
