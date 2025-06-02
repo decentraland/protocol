@@ -315,6 +315,7 @@ message StartPrivateVoiceChatResponse {
     InternalServerError internal_server_error = 2;
     InvalidRequest invalid_request = 3;
     ConflictingRequest conflicting_request = 4;
+    ForbiddenRequest forbidden_request = 5;
   }
 }
 
