@@ -16,6 +16,12 @@ message InvalidRequest {
 message ProfileNotFound {
   optional string message = 1;
 }
+message ConflictingRequest {
+  optional string message = 1;
+}
+message ForbiddenRequest {
+  optional string message = 1;
+}
 
 // Types
 message User { string address = 1; }
