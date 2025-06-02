@@ -1,5 +1,5 @@
 BIN="./node_modules/.bin" 
-BUF_VERSION=1.8.0
+BUF_VERSION=1.42.0
 OS = $(shell uname -s)
 OS_ARCH = $(shell uname -m)
 
