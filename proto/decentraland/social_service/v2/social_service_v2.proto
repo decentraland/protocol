@@ -16,6 +16,9 @@ message InvalidRequest {
 message ProfileNotFound {
   optional string message = 1;
 }
+message ConflictingRequest {
+  optional string message = 1;
+}
 
 // Types
 message User { string address = 1; }
@@ -308,6 +311,7 @@ message StartPrivateVoiceChatResponse {
     Ok ok = 1;
     InternalServerError internal_server_error = 2;
     InvalidRequest invalid_request = 3;
+    ConflictingRequest conflicting_request = 4;
   }
 }
 
