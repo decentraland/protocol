@@ -23,6 +23,7 @@ all: buf-lint buf-build test
 
 install:
 	npm i
+	npm list protobufjs
 	rm -rf proto/google || true
 	cp -r node_modules/protobufjs/google proto/google
 
