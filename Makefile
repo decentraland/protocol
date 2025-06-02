@@ -1,5 +1,5 @@
 BIN="./node_modules/.bin" 
-BUF_VERSION=1.31.0
+BUF_VERSION=1.8.0
 OS = $(shell uname -s)
 OS_ARCH = $(shell uname -m)
 
@@ -23,7 +23,6 @@ all: buf-lint buf-build test
 
 install:
 	npm i
-	npm list protobufjs
 	rm -rf proto/google || true
 	cp -r node_modules/protobufjs/google proto/google
 
