@@ -331,6 +331,8 @@ message AcceptPrivateVoiceChatPayload {
 message AcceptPrivateVoiceChatResponse {
   message Ok {
     string call_id = 1;
+    string url = 2;
+    string token = 3;
   }
   
   oneof response {
