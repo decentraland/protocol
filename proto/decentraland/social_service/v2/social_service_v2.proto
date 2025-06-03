@@ -344,6 +344,26 @@ message AcceptPrivateVoiceChatResponse {
   }
 }
 
+// Rejecting a private voice chat
+
+message RejectPrivateVoiceChatPayload {
+  string call_id = 1;
+}
+
+message RejectPrivateVoiceChatResponse {
+  message Ok {
+    string call_id = 1;
+  }
+  
+  oneof response {
+    Ok ok = 1;
+    InternalServerError internal_server_error = 2;
+    InvalidRequest invalid_request = 3;
+    NotFoundError not_found = 4;
+    ForbiddenError forbidden_error = 5;
+  }
+}
+
 service SocialService {  
   // Get the list of friends for the authenticated user
   rpc GetFriends(GetFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
@@ -396,4 +416,7 @@ service SocialService {
 
   // Accept a private voice chat
   rpc AcceptPrivateVoiceChat(AcceptPrivateVoiceChatPayload) returns (AcceptPrivateVoiceChatResponse) {}
+
+  // Reject a private voice chat
+  rpc RejectPrivateVoiceChat(RejectPrivateVoiceChatPayload) returns (RejectPrivateVoiceChatResponse) {}
 }
