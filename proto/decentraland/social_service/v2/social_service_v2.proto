@@ -363,6 +363,20 @@ message RejectPrivateVoiceChatResponse {
   }
 }
 
+// Private voice chat updates
+
+enum PrivateVoiceChatStatus {
+  VOICE_CHAT_REQUESTED = 0;
+  VOICE_CHAT_ACCEPTED = 1;
+  VOICE_CHAT_REJECTED = 2;
+  VOICE_CHAT_ENDED = 3;
+}
+
+message PrivateVoiceChatUpdate {
+  string call_id = 1;
+  PrivateVoiceChatStatus status = 2;
+}
+
 service SocialService {  
   // Get the list of friends for the authenticated user
   rpc GetFriends(GetFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
@@ -418,4 +432,7 @@ service SocialService {
 
   // Reject a private voice chat
   rpc RejectPrivateVoiceChat(RejectPrivateVoiceChatPayload) returns (RejectPrivateVoiceChatResponse) {}
+
+  // Subscribe to private voice chat updates
+  rpc SubscribeToPrivateVoiceChatUpdates(google.protobuf.Empty) returns (stream PrivateVoiceChatUpdate) {}
 }
