@@ -172,4 +172,6 @@ message PBUiTransform {
   optional decentraland.common.Color4 border_bottom_color = 70;
   optional decentraland.common.Color4 border_left_color = 71;
   optional decentraland.common.Color4 border_right_color = 72;
+
+  optional int32 z_index = 73; // default 0
 }
