@@ -393,6 +393,7 @@ message EndPrivateVoiceChatResponse {
   oneof response {
     Ok ok = 1;
     InternalServerError internal_server_error = 2;
+    NotFoundError not_found = 3;
   }
 }
 
