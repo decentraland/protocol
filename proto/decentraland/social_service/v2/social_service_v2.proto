@@ -377,6 +377,26 @@ message PrivateVoiceChatUpdate {
   PrivateVoiceChatStatus status = 2;
 }
 
+// Ending a private voice chat
+// This is sent from the client to the server whenever the user wants to end the voice chat
+// This could occur before the voice chat is accepted or after it is accepted
+
+message EndPrivateVoiceChatPayload {
+  string call_id = 1;
+}
+
+message EndPrivateVoiceChatResponse {
+  message Ok {
+    string call_id = 1;
+  }
+  
+  oneof response {
+    Ok ok = 1;
+    InternalServerError internal_server_error = 2;
+  }
+}
+
+
 service SocialService {  
   // Get the list of friends for the authenticated user
   rpc GetFriends(GetFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
@@ -433,4 +453,9 @@ service SocialService {
   // Reject a private voice chat
   rpc RejectPrivateVoiceChat(RejectPrivateVoiceChatPayload) returns (RejectPrivateVoiceChatResponse) {}
 
+  // End a private voice chat
+  rpc EndPrivateVoiceChat(EndPrivateVoiceChatPayload) returns (EndPrivateVoiceChatResponse) {}
+
+  // Subscribe to private voice chat updates
+  // rpc SubscribeToPrivateVoiceChatUpdates(google.protobuf.Empty) returns (stream PrivateVoiceChatUpdate) {}
 }
