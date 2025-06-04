@@ -433,6 +433,4 @@ service SocialService {
   // Reject a private voice chat
   rpc RejectPrivateVoiceChat(RejectPrivateVoiceChatPayload) returns (RejectPrivateVoiceChatResponse) {}
 
-  // Subscribe to private voice chat updates
-  rpc SubscribeToPrivateVoiceChatUpdates(google.protobuf.Empty) returns (stream PrivateVoiceChatUpdate) {}
 }
