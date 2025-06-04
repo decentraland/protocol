@@ -305,7 +305,7 @@ message BlockUpdate {
 // Starting a private voice chat
 
 message StartPrivateVoiceChatPayload {
-  string callee_address = 1;
+  User callee = 1;
 }
 
 message StartPrivateVoiceChatResponse {
