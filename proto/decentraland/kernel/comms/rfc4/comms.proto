@@ -101,6 +101,7 @@ message ProfileResponse {
 message Chat {
   string message = 1;
   double timestamp = 2;
+  optional string from = 3;
 }
 
 message Scene {
