@@ -13,7 +13,7 @@
     "test": "./scripts/check-proto-compabitility.sh"
   },
   "overrides": {
-    "protobufjs": "7.4.0"
+    "protobufjs": "7.2.4"
   },
   "devDependencies": {
     "@protobuf-ts/protoc": "^2.11.0",
