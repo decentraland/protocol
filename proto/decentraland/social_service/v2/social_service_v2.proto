@@ -397,6 +397,21 @@ message EndPrivateVoiceChatResponse {
   }
 }
 
+// Get incoming private voice chat request
+
+message GetIncomingPrivateVoiceChatRequestResponse {
+  message Ok {
+    User caller = 1;
+    string call_id = 2;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    NotFoundError not_found = 2;
+    InternalServerError internal_server_error = 3;
+  }
+}
+
 
 service SocialService {  
   // Get the list of friends for the authenticated user
@@ -456,6 +471,9 @@ service SocialService {
 
   // End a private voice chat
   rpc EndPrivateVoiceChat(EndPrivateVoiceChatPayload) returns (EndPrivateVoiceChatResponse) {}
+
+  // Get the incoming private voice chat request
+  rpc GetIncomingPrivateVoiceChatRequest(google.protobuf.Empty) returns (GetIncomingPrivateVoiceChatRequestResponse) {}
 
   // Subscribe to private voice chat updates
   // rpc SubscribeToPrivateVoiceChatUpdates(google.protobuf.Empty) returns (stream PrivateVoiceChatUpdate) {}
