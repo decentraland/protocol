@@ -12,9 +12,6 @@
   "scripts": {
     "test": "./scripts/check-proto-compabitility.sh"
   },
-  "overrides": {
-    "protobufjs": "7.2.4"
-  },
   "devDependencies": {
     "@protobuf-ts/protoc": "^2.11.0",
     "proto-compatibility-tool": "^1.1.2-20220925163655.commit-25bd040",
