@@ -24,7 +24,8 @@
     "protocVersion": "22.2"
   },
   "dependencies": {
-    "@dcl/ts-proto": "1.154.0"
+    "@dcl/ts-proto": "1.154.0",
+    "protobufjs": "7.2.4"
   },
   "files": [
     "proto",
