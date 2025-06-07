@@ -173,5 +173,6 @@ message PBUiTransform {
   optional decentraland.common.Color4 border_left_color = 71;
   optional decentraland.common.Color4 border_right_color = 72;
 
-  optional int32 z_index = 77; // default 0
+  optional float opacity = 73; // default: 1
+  optional int32 z_index = 77; // default: 0 — controls render stacking order. Higher values appear in front of lower values.
 }
