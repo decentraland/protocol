@@ -370,11 +370,14 @@ enum PrivateVoiceChatStatus {
   VOICE_CHAT_ACCEPTED = 1;
   VOICE_CHAT_REJECTED = 2;
   VOICE_CHAT_ENDED = 3;
+  VOICE_CHAT_EXPIRED = 4;
 }
 
 message PrivateVoiceChatUpdate {
   string call_id = 1;
   PrivateVoiceChatStatus status = 2;
+  optional User caller = 3;
+  optional User callee = 4;
 }
 
 // Ending a private voice chat
@@ -476,5 +479,5 @@ service SocialService {
   rpc GetIncomingPrivateVoiceChatRequest(google.protobuf.Empty) returns (GetIncomingPrivateVoiceChatRequestResponse) {}
 
   // Subscribe to private voice chat updates
-  // rpc SubscribeToPrivateVoiceChatUpdates(google.protobuf.Empty) returns (stream PrivateVoiceChatUpdate) {}
+  rpc SubscribeToPrivateVoiceChatUpdates(google.protobuf.Empty) returns (stream PrivateVoiceChatUpdate) {}
 }
