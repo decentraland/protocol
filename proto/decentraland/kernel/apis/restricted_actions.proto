@@ -51,6 +51,12 @@ message MovePlayerToResponse { }
 
 message TeleportToResponse { }
 
+message CopyToClipboardRequest {
+  string text = 1;
+}
+
+message EmptyResponse { }
+
 service RestrictedActionsService {
   // MovePlayerTo will move the player in a position relative to the current scene
   rpc MovePlayerTo(MovePlayerToRequest) returns (MovePlayerToResponse) {}
@@ -76,4 +82,6 @@ service RestrictedActionsService {
 
   // TriggerSceneEmote will trigger an scene emote file in this current user
   rpc TriggerSceneEmote(TriggerSceneEmoteRequest) returns (SuccessResponse) {}
+
+  rpc CopyToClipboard(CopyToClipboardRequest) returns (EmptyResponse) {}
 }
