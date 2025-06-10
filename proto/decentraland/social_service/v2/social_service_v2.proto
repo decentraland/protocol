@@ -331,8 +331,7 @@ message AcceptPrivateVoiceChatPayload {
 message AcceptPrivateVoiceChatResponse {
   message Ok {
     string call_id = 1;
-    string url = 2;
-    string token = 3;
+    PrivateVoiceChatCredentials credentials = 2;
   }
   
   oneof response {
@@ -373,11 +372,17 @@ enum PrivateVoiceChatStatus {
   VOICE_CHAT_EXPIRED = 4;
 }
 
+message PrivateVoiceChatCredentials {
+  string url = 1;
+  string token = 2;
+}
+
 message PrivateVoiceChatUpdate {
   string call_id = 1;
   PrivateVoiceChatStatus status = 2;
   optional User caller = 3;
   optional User callee = 4;
+  optional PrivateVoiceChatCredentials credentials = 5;
 }
 
 // Ending a private voice chat
