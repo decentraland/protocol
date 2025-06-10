@@ -102,7 +102,8 @@ message Chat {
   string message = 1;
   double timestamp = 2;
 
-  // Extension: optional forwarded_from to identify the original sender of the message
+  // Extension: optional forwarded_from to identify the original sender when
+  // messages are forwarded through a SFU
   optional string forwarded_from = 3;
 }
 
