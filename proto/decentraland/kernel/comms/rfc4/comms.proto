@@ -101,6 +101,10 @@ message ProfileResponse {
 message Chat {
   string message = 1;
   double timestamp = 2;
+
+  // Extension: optional forwarded_from to identify the original sender when
+  // messages are forwarded through an SFU
+  optional string forwarded_from = 3;
 }
 
 message Scene {
