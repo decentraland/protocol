@@ -101,7 +101,9 @@ message ProfileResponse {
 message Chat {
   string message = 1;
   double timestamp = 2;
-  optional string from = 3;
+
+  // Extension: optional forwarded_from to identify the original sender of the message
+  optional string forwarded_from = 3;
 }
 
 message Scene {
