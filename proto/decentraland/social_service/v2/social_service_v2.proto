@@ -373,8 +373,7 @@ enum PrivateVoiceChatStatus {
 }
 
 message PrivateVoiceChatCredentials {
-  string url = 1;
-  string token = 2;
+  string connection_url = 1;
 }
 
 message PrivateVoiceChatUpdate {
