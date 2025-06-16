@@ -291,6 +291,12 @@ message BlockUpdate {
   bool is_blocked = 2;
 }
 
+message CommunityMemberConnectivityUpdate {
+  string community_id = 1;
+  User member = 2;
+  ConnectivityStatus status = 3;
+}
+
 service SocialService {  
   // Get the list of friends for the authenticated user
   rpc GetFriends(GetFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
@@ -337,4 +343,8 @@ service SocialService {
 
   // Get the private messages privacy settings for the requested users
   rpc GetPrivateMessagesSettings(GetPrivateMessagesSettingsPayload) returns (GetPrivateMessagesSettingsResponse) {}
+
+  // Subscribe to community member connectivity updates: ONLINE, OFFLINE
+  rpc SubscribeToCommunityMemberConnectivityUpdates(google.protobuf.Empty)
+      returns (stream CommunityMemberConnectivityUpdate) {}
 }
