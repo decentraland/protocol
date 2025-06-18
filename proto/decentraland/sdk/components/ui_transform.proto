@@ -194,5 +194,5 @@ message PBUiTransform {
   optional ScrollPositionValue scroll_position = 75; // default position=(0,0)
   optional ShowScrollBar scroll_visible = 76; // default ShowScrollBar.SSB_BOTH
 
-  optional int32 z_index = 77; // default 0
+  optional int32 z_index = 77; // default: 0 — controls render stacking order. Higher values appear in front of lower values.
 }
