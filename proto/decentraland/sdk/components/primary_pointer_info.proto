@@ -3,22 +3,41 @@ package decentraland.sdk.components;
 
 import "decentraland/common/vectors.proto";
 import "decentraland/sdk/components/common/id.proto";
+
 option (common.ecs_component_id) = 1209;
 
+// The PBPrimaryPointerInfo component provides information about the current state of the primary 
+// pointer input device (mouse, touch, gamepad, or VR controller). It tracks the pointer's position,
+// movement, and interaction capabilities in both 2D screen space and 3D world space.
+//
+// This component is essential for:
+// - Tracking cursor/pointer position and movement
+// - Converting 2D screen coordinates to 3D world space interactions
+// - Supporting multiple input methods (mouse, touch, gamepad, VR)
+// - Enabling ray-based interactions for 3D object selection
+//
+// The component can be used to:
+// - Implement drag-and-drop functionality
+// - Handle touch interactions on mobile devices
+// - Support gamepad navigation
+// - Enable VR controller interactions
+// - Convert screen coordinates to world space rays for 3D interactions
+//
+// Note: Touch, Pad, and Wand support, as well as dragging, will be added later.
 message PBPrimaryPointerInfo {
-  optional PointerType pointer_type = 1;
-  // in pixels
-  optional decentraland.common.Vector2 screen_coordinates = 2;
-  // in pixels
-  optional decentraland.common.Vector2 screen_delta = 3;
+  optional PointerType pointer_type = 1;  // The type of input device being used
+  optional decentraland.common.Vector2 screen_coordinates = 2;  // Current position in screen space (pixels)
+  optional decentraland.common.Vector2 screen_delta = 3;  // Movement since last frame (pixels)
   // ray direction that can be used with the primary camera origin for
   // raycasting from the cursor into the world
-  optional decentraland.common.Vector3 world_ray_direction = 4;
+  optional decentraland.common.Vector3 world_ray_direction = 4; // Direction vector for 3D ray casting
 }
 
+// PointerType enumerates the different input devices that can be used for pointer interactions.
+// Each type has specific characteristics and use cases in the virtual world.
 enum PointerType {
-  POT_NONE = 0;
-  POT_MOUSE = 1;
+  POT_NONE = 0;   // No pointer input
+  POT_MOUSE = 1;  // Traditional mouse input
   POT_PAD = 2;
   POT_TOUCH = 3;
   POT_WAND = 4;
