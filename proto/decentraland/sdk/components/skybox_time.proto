@@ -1,0 +1,23 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+
+
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1210;
+
+// wip
+//
+//
+message PBSkyboxTime {
+  float fixed_time_of_day = 1;  // wip
+  optional TransitionMode transition_mode = 2;  // wip default is TransitionMode.TM_FORWARD
+}
+
+// wip
+//
+//
+enum TransitionMode {
+  TM_FORWARD = 0;   // wip
+  TM_BACKWARD = 1;  // wip
+}
