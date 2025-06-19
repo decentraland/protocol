@@ -10,8 +10,8 @@ option (common.ecs_component_id) = 1210;
 //
 //
 message PBSkyboxTime {
-  float fixedTimeOfDay = 1;  // wip
-  optional TransitionMode transitionMode = 2;  // wip default is forward
+  float fixed_time_of_day = 1;  // wip
+  optional TransitionMode transition_mode = 2;  // wip default is TransitionMode.TM_FORWARD
 }
 
 // wip
