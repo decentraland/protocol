@@ -16,6 +16,15 @@ message InvalidRequest {
 message ProfileNotFound {
   optional string message = 1;
 }
+message ConflictingError {
+  optional string message = 1;
+}
+message ForbiddenError {
+  optional string message = 1;
+}
+message NotFoundError {
+  optional string message = 1;
+}
 
 // Types
 message User { string address = 1; }
@@ -291,6 +300,126 @@ message BlockUpdate {
   bool is_blocked = 2;
 }
 
+// Private voice chats
+
+// Starting a private voice chat
+
+message StartPrivateVoiceChatPayload {
+  User callee = 1;
+}
+
+message StartPrivateVoiceChatResponse {
+  message Ok {
+    string call_id = 1;
+  }
+  
+  oneof response {
+    Ok ok = 1;
+    InternalServerError internal_server_error = 2;
+    InvalidRequest invalid_request = 3;
+    ConflictingError conflicting_error = 4;
+    ForbiddenError forbidden_error = 5;
+  }
+}
+
+// Accepting a private voice chat
+
+message AcceptPrivateVoiceChatPayload {
+  string call_id = 1;
+}
+
+message AcceptPrivateVoiceChatResponse {
+  message Ok {
+    string call_id = 1;
+    PrivateVoiceChatCredentials credentials = 2;
+  }
+  
+  oneof response {
+    Ok ok = 1;
+    InternalServerError internal_server_error = 2;
+    InvalidRequest invalid_request = 3;
+    NotFoundError not_found = 4;
+    ForbiddenError forbidden_error = 5;
+  }
+}
+
+// Rejecting a private voice chat
+
+message RejectPrivateVoiceChatPayload {
+  string call_id = 1;
+}
+
+message RejectPrivateVoiceChatResponse {
+  message Ok {
+    string call_id = 1;
+  }
+  
+  oneof response {
+    Ok ok = 1;
+    InternalServerError internal_server_error = 2;
+    InvalidRequest invalid_request = 3;
+    NotFoundError not_found = 4;
+  }
+}
+
+// Private voice chat updates
+
+enum PrivateVoiceChatStatus {
+  VOICE_CHAT_REQUESTED = 0;
+  VOICE_CHAT_ACCEPTED = 1;
+  VOICE_CHAT_REJECTED = 2;
+  VOICE_CHAT_ENDED = 3;
+  VOICE_CHAT_EXPIRED = 4;
+}
+
+message PrivateVoiceChatCredentials {
+  string connection_url = 1;
+}
+
+message PrivateVoiceChatUpdate {
+  string call_id = 1;
+  PrivateVoiceChatStatus status = 2;
+  optional User caller = 3;
+  optional User callee = 4;
+  optional PrivateVoiceChatCredentials credentials = 5;
+}
+
+// Ending a private voice chat
+// This is sent from the client to the server whenever the user wants to end the voice chat
+// This could occur before the voice chat is accepted or after it is accepted
+
+message EndPrivateVoiceChatPayload {
+  string call_id = 1;
+}
+
+message EndPrivateVoiceChatResponse {
+  message Ok {
+    string call_id = 1;
+  }
+  
+  oneof response {
+    Ok ok = 1;
+    InternalServerError internal_server_error = 2;
+    NotFoundError not_found = 3;
+  }
+}
+
+// Get incoming private voice chat request
+
+message GetIncomingPrivateVoiceChatRequestResponse {
+  message Ok {
+    User caller = 1;
+    string call_id = 2;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    NotFoundError not_found = 2;
+    InternalServerError internal_server_error = 3;
+  }
+}
+
+
 service SocialService {  
   // Get the list of friends for the authenticated user
   rpc GetFriends(GetFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
@@ -337,4 +466,22 @@ service SocialService {
 
   // Get the private messages privacy settings for the requested users
   rpc GetPrivateMessagesSettings(GetPrivateMessagesSettingsPayload) returns (GetPrivateMessagesSettingsResponse) {}
+
+  // Start a private voice chat
+  rpc StartPrivateVoiceChat(StartPrivateVoiceChatPayload) returns (StartPrivateVoiceChatResponse) {}
+
+  // Accept a private voice chat
+  rpc AcceptPrivateVoiceChat(AcceptPrivateVoiceChatPayload) returns (AcceptPrivateVoiceChatResponse) {}
+
+  // Reject a private voice chat
+  rpc RejectPrivateVoiceChat(RejectPrivateVoiceChatPayload) returns (RejectPrivateVoiceChatResponse) {}
+
+  // End a private voice chat
+  rpc EndPrivateVoiceChat(EndPrivateVoiceChatPayload) returns (EndPrivateVoiceChatResponse) {}
+
+  // Get the incoming private voice chat request
+  rpc GetIncomingPrivateVoiceChatRequest(google.protobuf.Empty) returns (GetIncomingPrivateVoiceChatRequestResponse) {}
+
+  // Subscribe to private voice chat updates
+  rpc SubscribeToPrivateVoiceChatUpdates(google.protobuf.Empty) returns (stream PrivateVoiceChatUpdate) {}
 }
