@@ -6,18 +6,15 @@ import "decentraland/sdk/components/common/id.proto";
 
 option (common.ecs_component_id) = 1210;
 
-// wip
-//
-//
+// The SkyboxTime component allows controlling the time of day for the skybox,
+// affecting the lighting and appearance of the sky in the scene.
 message PBSkyboxTime {
-  float fixed_time_of_day = 1;  // wip
-  optional TransitionMode transition_mode = 2;  // wip default is TransitionMode.TM_FORWARD
+  float fixed_time_of_day = 1;  // fixed time of day value from 0.0 (midnight) to 1.0 (midnight next day), where 0.5 is noon
+  optional TransitionMode transition_mode = 2;  // default = TransitionMode.TM_FORWARD, controls the direction of time transitions
 }
 
-// wip
-//
-//
+// Controls the direction for animated skybox transitions
 enum TransitionMode {
-  TM_FORWARD = 0;   // wip
-  TM_BACKWARD = 1;  // wip
+  TM_FORWARD = 0;   // transitions forward (default)
+  TM_BACKWARD = 1;  // transitions backward
 }
