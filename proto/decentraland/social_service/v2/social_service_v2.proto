@@ -300,6 +300,12 @@ message BlockUpdate {
   bool is_blocked = 2;
 }
 
+message CommunityMemberConnectivityUpdate {
+  string community_id = 1;
+  User member = 2;
+  ConnectivityStatus status = 3;
+}
+
 // Private voice chats
 
 // Starting a private voice chat
@@ -466,6 +472,10 @@ service SocialService {
 
   // Get the private messages privacy settings for the requested users
   rpc GetPrivateMessagesSettings(GetPrivateMessagesSettingsPayload) returns (GetPrivateMessagesSettingsResponse) {}
+
+  // Subscribe to community member connectivity updates: ONLINE, OFFLINE
+  rpc SubscribeToCommunityMemberConnectivityUpdates(google.protobuf.Empty)
+      returns (stream CommunityMemberConnectivityUpdate) {}
 
   // Start a private voice chat
   rpc StartPrivateVoiceChat(StartPrivateVoiceChatPayload) returns (StartPrivateVoiceChatResponse) {}
