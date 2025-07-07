@@ -67,9 +67,8 @@ message MovementCompressed {
 }
 
 message PlayerEmote {
-  uint32 incremental_id = 1;
+  float timestamp = 1;
   string urn = 2;
-  float timestamp = 3;
 }
 
 message SceneEmote {
