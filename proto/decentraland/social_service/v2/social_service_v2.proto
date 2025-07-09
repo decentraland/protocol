@@ -425,6 +425,63 @@ message GetIncomingPrivateVoiceChatRequestResponse {
   }
 }
 
+// Community Voice Chat messages
+message StartCommunityVoiceChatPayload {
+  string community_id = 1;
+}
+
+message StartCommunityVoiceChatResponse {
+  message Ok {
+    string voice_chat_id = 1;
+    PrivateVoiceChatCredentials credentials = 2;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    ConflictingError conflicting_error = 4;
+    InternalServerError internal_server_error = 5;
+  }
+}
+
+message JoinCommunityVoiceChatPayload {
+  string community_id = 1;
+}
+
+message JoinCommunityVoiceChatResponse {
+  message Ok {
+    string voice_chat_id = 1;
+    PrivateVoiceChatCredentials credentials = 2;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    NotFoundError not_found_error = 4;
+    ConflictingError conflicting_error = 5;
+    InternalServerError internal_server_error = 6;
+  }
+}
+
+message EndCommunityVoiceChatPayload {
+  string voice_chat_id = 1;
+}
+
+message EndCommunityVoiceChatResponse {
+  message Ok {
+    // Empty response
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    NotFoundError not_found_error = 4;
+    InternalServerError internal_server_error = 5;
+  }
+}
 
 service SocialService {  
   // Get the list of friends for the authenticated user
@@ -494,4 +551,13 @@ service SocialService {
 
   // Subscribe to private voice chat updates
   rpc SubscribeToPrivateVoiceChatUpdates(google.protobuf.Empty) returns (stream PrivateVoiceChatUpdate) {}
+
+  // Start a community voice chat
+  rpc StartCommunityVoiceChat(StartCommunityVoiceChatPayload) returns (StartCommunityVoiceChatResponse) {}
+
+  // Join a community voice chat
+  rpc JoinCommunityVoiceChat(JoinCommunityVoiceChatPayload) returns (JoinCommunityVoiceChatResponse) {}
+
+  // End a community voice chat
+  rpc EndCommunityVoiceChat(EndCommunityVoiceChatPayload) returns (EndCommunityVoiceChatResponse) {}
 }
