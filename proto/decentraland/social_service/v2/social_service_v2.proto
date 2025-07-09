@@ -578,4 +578,4 @@ service SocialService {
 
   // Subscribe to community voice chat updates (only 'started' events)
   rpc SubscribeToCommunityVoiceChatUpdates(google.protobuf.Empty) returns (stream CommunityVoiceChatUpdate) {}
-} 
+}
