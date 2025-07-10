@@ -439,8 +439,7 @@ message StartCommunityVoiceChatPayload {
 
 message StartCommunityVoiceChatResponse {
   message Ok {
-    string voice_chat_id = 1;
-    CommunityVoiceChatCredentials credentials = 2;  // Moderator gets credentials immediately
+    CommunityVoiceChatCredentials credentials = 1;  // Moderator gets credentials immediately
   }
 
   oneof response {
@@ -473,23 +472,7 @@ message JoinCommunityVoiceChatResponse {
   }
 }
 
-// Getting active community voice chats for user's communities
-message GetCommunityVoiceChatsResponse {
-  message CommunityVoiceChat {
-    string voice_chat_id = 1;
-    string community_id = 2;
-    int64 created_at = 3;
-  }
 
-  message Ok {
-    repeated CommunityVoiceChat active_voice_chats = 1;
-  }
-
-  oneof response {
-    Ok ok = 1;
-    InternalServerError internal_server_error = 2;
-  }
-}
 
 // Community voice chat updates/events - only 'started' status
 message CommunityVoiceChatUpdate {
@@ -572,9 +555,6 @@ service SocialService {
 
   // Join a community voice chat
   rpc JoinCommunityVoiceChat(JoinCommunityVoiceChatPayload) returns (JoinCommunityVoiceChatResponse) {}
-
-  // Get active community voice chats for user's communities
-  rpc GetCommunityVoiceChats(google.protobuf.Empty) returns (GetCommunityVoiceChatsResponse) {}
 
   // Subscribe to community voice chat updates (only 'started' events)
   rpc SubscribeToCommunityVoiceChatUpdates(google.protobuf.Empty) returns (stream CommunityVoiceChatUpdate) {}
