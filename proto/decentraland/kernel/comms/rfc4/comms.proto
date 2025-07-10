@@ -59,6 +59,7 @@ message Movement {
   float rotation_y = 16;
   // interpolation
   bool is_instant = 17;
+  bool is_emoting = 18;
 }
 
 message MovementCompressed {
