@@ -40,3 +40,5 @@ import public "decentraland/sdk/components/ui_text.proto";
 import public "decentraland/sdk/components/ui_transform.proto";
 import public "decentraland/sdk/components/video_player.proto";
 import public "decentraland/sdk/components/visibility_component.proto";
+import public "decentraland/sdk/components/delayed_interpolation.proto";
+
