@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+import "decentraland/sdk/components/material.proto";
+
+option (common.ecs_component_id) = 1099;
+
+message PBGltfNodeModifiers {
+  message GltfNodeModifier {
+    string path = 1;
+    optional bool override_shadows = 2;
+    optional PBMaterial material = 3;
+  }
+  repeated GltfNodeModifier modifiers  = 1;
+}
