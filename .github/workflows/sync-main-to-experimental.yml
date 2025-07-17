@@ -1,0 +1,39 @@
+name: Create PR for syncing main to experimental
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Create or update sync branch
+        run: |
+          git fetch origin experimental
+          git checkout -B chore/sync
+          git push --force --set-upstream origin chore/sync
+
+      - name: Create or update PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=$(gh pr list --base experimental --head chore/sync --state open --json number --jq '.[0].number')
+
+          if [ -n "$PR_NUMBER" ]; then
+            echo "PR #$PR_NUMBER already exists, adding a comment..."
+            gh pr comment $PR_NUMBER --body "🔄 Updated with latest changes from **main** on $(date -u '+%Y-%m-%d %H:%M UTC')"
+          else
+            echo "Creating new PR..."
+            gh pr create \
+              --base experimental \
+              --head chore/sync \
+              --title "chore: sync main to experimental" \
+              --body ":crown: *An automated PR to keep experimental in sync with main*" \
+              --label "auto-pr"
+          fi
