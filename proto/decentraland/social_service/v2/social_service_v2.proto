@@ -472,7 +472,84 @@ message JoinCommunityVoiceChatResponse {
   }
 }
 
+// Request to speak in community voice chat
+message RequestToSpeakInCommunityVoiceChatPayload {
+  string community_id = 1;
+}
 
+message RequestToSpeakInCommunityVoiceChatResponse {
+  message Ok {
+    string message = 1;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    NotFoundError not_found_error = 4;
+    InternalServerError internal_server_error = 5;
+  }
+}
+
+// Promote speaker in community voice chat
+message PromoteSpeakerInCommunityVoiceChatPayload {
+  string community_id = 1;
+  string user_address = 2;
+}
+
+message PromoteSpeakerInCommunityVoiceChatResponse {
+  message Ok {
+    string message = 1;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    NotFoundError not_found_error = 4;
+    InternalServerError internal_server_error = 5;
+  }
+}
+
+// Demote speaker in community voice chat
+message DemoteSpeakerInCommunityVoiceChatPayload {
+  string community_id = 1;
+  string user_address = 2;
+}
+
+message DemoteSpeakerInCommunityVoiceChatResponse {
+  message Ok {
+    string message = 1;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    NotFoundError not_found_error = 4;
+    InternalServerError internal_server_error = 5;
+  }
+}
+
+// Kick player from community voice chat
+message KickPlayerFromCommunityVoiceChatPayload {
+  string community_id = 1;
+  string user_address = 2;
+}
+
+message KickPlayerFromCommunityVoiceChatResponse {
+  message Ok {
+    string message = 1;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    NotFoundError not_found_error = 4;
+    InternalServerError internal_server_error = 5;
+  }
+}
 
 // Community voice chat updates/events - only 'started' status
 message CommunityVoiceChatUpdate {
@@ -555,6 +632,18 @@ service SocialService {
 
   // Join a community voice chat
   rpc JoinCommunityVoiceChat(JoinCommunityVoiceChatPayload) returns (JoinCommunityVoiceChatResponse) {}
+
+  // Request to speak in community voice chat
+  rpc RequestToSpeakInCommunityVoiceChat(RequestToSpeakInCommunityVoiceChatPayload) returns (RequestToSpeakInCommunityVoiceChatResponse) {}
+
+  // Promote speaker in community voice chat (moderator only)
+  rpc PromoteSpeakerInCommunityVoiceChat(PromoteSpeakerInCommunityVoiceChatPayload) returns (PromoteSpeakerInCommunityVoiceChatResponse) {}
+
+  // Demote speaker in community voice chat (moderator only)
+  rpc DemoteSpeakerInCommunityVoiceChat(DemoteSpeakerInCommunityVoiceChatPayload) returns (DemoteSpeakerInCommunityVoiceChatResponse) {}
+
+  // Kick player from community voice chat (moderator only)
+  rpc KickPlayerFromCommunityVoiceChat(KickPlayerFromCommunityVoiceChatPayload) returns (KickPlayerFromCommunityVoiceChatResponse) {}
 
   // Subscribe to community voice chat updates (only 'started' events)
   rpc SubscribeToCommunityVoiceChatUpdates(google.protobuf.Empty) returns (stream CommunityVoiceChatUpdate) {}
