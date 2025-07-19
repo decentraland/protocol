@@ -10,7 +10,7 @@ option (common.ecs_component_id) = 1099;
 message PBGltfNodeModifiers {
   message GltfNodeModifier {
     string path = 1;
-    optional bool override_shadows = 2;
+    optional bool cast_shadows = 2;
     optional PBMaterial material = 3;
   }
   repeated GltfNodeModifier modifiers  = 1;
