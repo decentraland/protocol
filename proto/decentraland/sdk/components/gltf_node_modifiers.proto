@@ -7,11 +7,19 @@ import "decentraland/sdk/components/material.proto";
 
 option (common.ecs_component_id) = 1099;
 
+// GltfNodeModifiers component is to be used attached to entities that have the GltfContainer component.
+//
+// This allows to override either the Material or the casting shadows behaviour of the target GLTF node.
+// 
+// * If the 'path' of the first modifier in the collection is an empty string: the configuration will
+// affect all of the GLTF nodes altogether (as a global modifier).
+// * Otherwise, for the modifies whose 'path' is found in the GLTF hierarchy, the modifier will affect only
+// the target nodes.
 message PBGltfNodeModifiers {
   message GltfNodeModifier {
-    string path = 1;
-    optional bool cast_shadows = 2;
-    optional PBMaterial material = 3;
+    string path = 1; // The GLTF hierarchy path of the target Node to be affected
+    optional bool cast_shadows = 2; // The casting shadows enabled override
+    optional PBMaterial material = 3; // The Material that will be overridden on the target node
   }
   repeated GltfNodeModifier modifiers  = 1;
 }
