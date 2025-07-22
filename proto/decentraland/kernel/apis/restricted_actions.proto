@@ -51,6 +51,16 @@ message MovePlayerToResponse { }
 
 message TeleportToResponse { }
 
+message SetUiFocusRequest {
+  string element_id = 1;
+}
+
+message CopyToClipboardRequest {
+  string text = 1;
+}
+
+message EmptyResponse { }
+
 service RestrictedActionsService {
   // MovePlayerTo will move the player in a position relative to the current scene
   rpc MovePlayerTo(MovePlayerToRequest) returns (MovePlayerToResponse) {}
@@ -76,4 +86,10 @@ service RestrictedActionsService {
 
   // TriggerSceneEmote will trigger an scene emote file in this current user
   rpc TriggerSceneEmote(TriggerSceneEmoteRequest) returns (SuccessResponse) {}
+
+  // Sets the focus to a specific UI element
+  rpc SetUiFocus(SetUiFocusRequest) returns (SuccessResponse) {}
+
+  // Copies the specified text to the user's clipboard
+  rpc CopyToClipboard(CopyToClipboardRequest) returns (EmptyResponse) {}
 }

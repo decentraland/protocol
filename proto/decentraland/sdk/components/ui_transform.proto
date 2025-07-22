@@ -4,6 +4,7 @@ package decentraland.sdk.components;
 
 import "decentraland/sdk/components/common/id.proto";
 import "decentraland/common/colors.proto";
+import "decentraland/common/vectors.proto";
 
 option (common.ecs_component_id) = 1050;
 
@@ -78,6 +79,20 @@ enum YGEdge {
 enum PointerFilterMode {
   PFM_NONE = 0;
   PFM_BLOCK = 1;
+}
+
+enum ShowScrollBar {
+  SSB_BOTH = 0;
+  SSB_ONLY_VERTICAL = 1;
+  SSB_ONLY_HORIZONTAL = 2;
+  SSB_HIDDEN = 3;
+}
+
+message ScrollPositionValue {
+  oneof value {
+    decentraland.common.Vector2 position = 1;
+    string reference = 2;
+  }
 }
 
 message PBUiTransform {
@@ -174,5 +189,10 @@ message PBUiTransform {
   optional decentraland.common.Color4 border_right_color = 72;
 
   optional float opacity = 73; // default: 1
+
+  optional string element_id = 74; // reference for scroll_position. default empty
+  optional ScrollPositionValue scroll_position = 75; // default position=(0,0)
+  optional ShowScrollBar scroll_visible = 76; // default ShowScrollBar.SSB_BOTH
+
   optional int32 z_index = 77; // default: 0 — controls render stacking order. Higher values appear in front of lower values.
 }
