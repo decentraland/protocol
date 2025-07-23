@@ -552,8 +552,8 @@ message KickPlayerFromCommunityVoiceChatResponse {
 }
 
 enum CommunityVoiceChatStatus {
-  VOICE_CHAT_STARTED = 0;
-  VOICE_CHAT_ENDED = 1;
+  COMMUNITY_VOICE_CHAT_STARTED = 0;
+  COMMUNITY_VOICE_CHAT_ENDED = 1;
 }
 
 // Community voice chat updates/events - 'started' and 'ended' status  
