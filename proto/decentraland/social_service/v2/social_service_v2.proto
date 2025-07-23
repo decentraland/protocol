@@ -551,12 +551,17 @@ message KickPlayerFromCommunityVoiceChatResponse {
   }
 }
 
+enum CommunityVoiceChatStatus {
+  VOICE_CHAT_STARTED = 0;
+  VOICE_CHAT_ENDED = 1;
+}
+
 // Community voice chat updates/events - 'started' and 'ended' status  
 message CommunityVoiceChatUpdate {
   string community_id = 1;
   string voice_chat_id = 2;
   int64 created_at = 3;
-  string status = 4; // 'started' or 'ended'
+  CommunityVoiceChatStatus status = 4; // 'started' or 'ended'
   optional int64 ended_at = 5; // Only present when status is 'ended'
 }
 
