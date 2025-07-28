@@ -1,22 +1,20 @@
 syntax = "proto3";
 package decentraland.social_service.v3;
 
-// Errors
-message InternalServerError {
-  optional string message = 1;
-}
-message InvalidRequest {
-  optional string message = 1;
-}
+import "decentraland/social_service/errors.proto";
 
 // Common types
 message User { string address = 1; }
 
+message Profile {
+  string name = 1;
+  bool has_claimed_name = 2;
+  string profile_picture_url = 3;
+}
+
 message Friend {
   string address = 1;
-  optional string name = 2;
-  optional bool has_claimed_name = 3;
-  optional string profile_picture_url = 4;
+  optional Profile profile = 2;
 }
 
 message Pagination {
@@ -48,6 +46,6 @@ message GetMutualFriendsResponse {
   }
 }
 
-service SocialServiceV2 {
+service SocialService {
   rpc GetMutualFriends(GetMutualFriendsPayload) returns (GetMutualFriendsResponse) {}
 }
