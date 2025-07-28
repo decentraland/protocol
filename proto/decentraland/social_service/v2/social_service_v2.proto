@@ -425,6 +425,145 @@ message GetIncomingPrivateVoiceChatRequestResponse {
   }
 }
 
+// Community Voice Chat messages
+
+// Community voice chat credentials - specific type for community chats
+message CommunityVoiceChatCredentials {
+  string connection_url = 1;
+}
+
+// Starting a community voice chat
+message StartCommunityVoiceChatPayload {
+  string community_id = 1;
+}
+
+message StartCommunityVoiceChatResponse {
+  message Ok {
+    CommunityVoiceChatCredentials credentials = 1;  // Moderator gets credentials immediately
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    ConflictingError conflicting_error = 4;
+    InternalServerError internal_server_error = 5;
+  }
+}
+
+// Joining a community voice chat
+message JoinCommunityVoiceChatPayload {
+  string community_id = 1;
+}
+
+message JoinCommunityVoiceChatResponse {
+  message Ok {
+    string voice_chat_id = 1;
+    CommunityVoiceChatCredentials credentials = 2;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    NotFoundError not_found_error = 4;
+    ConflictingError conflicting_error = 5;
+    InternalServerError internal_server_error = 6;
+  }
+}
+
+// Request to speak in community voice chat
+message RequestToSpeakInCommunityVoiceChatPayload {
+  string community_id = 1;
+}
+
+message RequestToSpeakInCommunityVoiceChatResponse {
+  message Ok {
+    string message = 1;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    NotFoundError not_found_error = 4;
+    InternalServerError internal_server_error = 5;
+  }
+}
+
+// Promote speaker in community voice chat
+message PromoteSpeakerInCommunityVoiceChatPayload {
+  string community_id = 1;
+  string user_address = 2;
+}
+
+message PromoteSpeakerInCommunityVoiceChatResponse {
+  message Ok {
+    string message = 1;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    NotFoundError not_found_error = 4;
+    InternalServerError internal_server_error = 5;
+  }
+}
+
+// Demote speaker in community voice chat
+message DemoteSpeakerInCommunityVoiceChatPayload {
+  string community_id = 1;
+  string user_address = 2;
+}
+
+message DemoteSpeakerInCommunityVoiceChatResponse {
+  message Ok {
+    string message = 1;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    NotFoundError not_found_error = 4;
+    InternalServerError internal_server_error = 5;
+  }
+}
+
+// Kick player from community voice chat
+message KickPlayerFromCommunityVoiceChatPayload {
+  string community_id = 1;
+  string user_address = 2;
+}
+
+message KickPlayerFromCommunityVoiceChatResponse {
+  message Ok {
+    string message = 1;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    NotFoundError not_found_error = 4;
+    InternalServerError internal_server_error = 5;
+  }
+}
+
+enum CommunityVoiceChatStatus {
+  COMMUNITY_VOICE_CHAT_STARTED = 0;
+  COMMUNITY_VOICE_CHAT_ENDED = 1;
+}
+
+// Community voice chat updates/events - 'started' and 'ended' status  
+message CommunityVoiceChatUpdate {
+  string community_id = 1;
+  string voice_chat_id = 2;
+  int64 created_at = 3;
+  CommunityVoiceChatStatus status = 4; // 'started' or 'ended'
+  optional int64 ended_at = 5; // Only present when status is 'ended'
+}
 
 service SocialService {  
   // Get the list of friends for the authenticated user
@@ -494,4 +633,25 @@ service SocialService {
 
   // Subscribe to private voice chat updates
   rpc SubscribeToPrivateVoiceChatUpdates(google.protobuf.Empty) returns (stream PrivateVoiceChatUpdate) {}
+
+  // Start a community voice chat (moderator/owner only)
+  rpc StartCommunityVoiceChat(StartCommunityVoiceChatPayload) returns (StartCommunityVoiceChatResponse) {}
+
+  // Join a community voice chat
+  rpc JoinCommunityVoiceChat(JoinCommunityVoiceChatPayload) returns (JoinCommunityVoiceChatResponse) {}
+
+  // Request to speak in community voice chat
+  rpc RequestToSpeakInCommunityVoiceChat(RequestToSpeakInCommunityVoiceChatPayload) returns (RequestToSpeakInCommunityVoiceChatResponse) {}
+
+  // Promote speaker in community voice chat (moderator only)
+  rpc PromoteSpeakerInCommunityVoiceChat(PromoteSpeakerInCommunityVoiceChatPayload) returns (PromoteSpeakerInCommunityVoiceChatResponse) {}
+
+  // Demote speaker in community voice chat (moderator only)
+  rpc DemoteSpeakerInCommunityVoiceChat(DemoteSpeakerInCommunityVoiceChatPayload) returns (DemoteSpeakerInCommunityVoiceChatResponse) {}
+
+  // Kick player from community voice chat (moderator only)
+  rpc KickPlayerFromCommunityVoiceChat(KickPlayerFromCommunityVoiceChatPayload) returns (KickPlayerFromCommunityVoiceChatResponse) {}
+
+  // Subscribe to community voice chat updates (only 'started' events)
+  rpc SubscribeToCommunityVoiceChatUpdates(google.protobuf.Empty) returns (stream CommunityVoiceChatUpdate) {}
 }
