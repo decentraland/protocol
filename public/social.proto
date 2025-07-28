@@ -4,3 +4,4 @@ package decentraland.social;
 
 import public "decentraland/social_service/v1/social_service_v1.proto";
 import public "decentraland/social_service/v2/social_service_v2.proto";
+import public "decentraland/social_service/v3/social_service_v3.proto";

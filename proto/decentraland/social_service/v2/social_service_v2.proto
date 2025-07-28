@@ -116,19 +116,6 @@ message PaginatedFriendshipRequestsResponse {
   optional PaginatedResponse pagination_data = 3;
 }
 
-message GetMutualFriendsResponse {
-  message Ok {
-    repeated FriendProfile friends = 1;
-    PaginatedResponse pagination_data = 2;
-  }
-
-  oneof response {
-    Ok ok = 1;
-    InternalServerError internal_server_error = 2;
-    InvalidRequest invalid_request = 3;
-  }
-}
-
 message UpsertFriendshipResponse {
   message Accepted {
     string id = 1;
@@ -585,10 +572,8 @@ service SocialService {
   rpc GetFriends(GetFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
 
   // Get the list of mutual friends between the authenticated user and the one in the parameter
-  // @deprecated Use GetMutualFriendsV2 instead
+  // @deprecated
   rpc GetMutualFriends(GetMutualFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
-
-  rpc GetMutualFriendsV2(GetMutualFriendsPayload) returns (GetMutualFriendsResponse) {}
 
   // Get the pending friendship requests for the authenticated user
   rpc GetPendingFriendshipRequests(GetFriendshipRequestsPayload) returns (PaginatedFriendshipRequestsResponse) {}
