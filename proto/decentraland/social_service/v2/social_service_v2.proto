@@ -550,7 +550,6 @@ service SocialService {
   rpc GetFriends(GetFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
 
   // Get the list of mutual friends between the authenticated user and the one in the parameter
-  // @deprecated
   rpc GetMutualFriends(GetMutualFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
 
   // Get the pending friendship requests for the authenticated user
