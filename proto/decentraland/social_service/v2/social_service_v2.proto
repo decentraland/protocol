@@ -2,29 +2,7 @@ syntax = "proto3";
 package decentraland.social_service.v2;
 
 import "google/protobuf/empty.proto";
-
-// Errors
-message InvalidFriendshipAction {
-  optional string message = 1;
-}
-message InternalServerError {
-  optional string message = 1;
-}
-message InvalidRequest {
-  optional string message = 1;
-}
-message ProfileNotFound {
-  optional string message = 1;
-}
-message ConflictingError {
-  optional string message = 1;
-}
-message ForbiddenError {
-  optional string message = 1;
-}
-message NotFoundError {
-  optional string message = 1;
-}
+import "decentraland/social_service/errors.proto";
 
 // Types
 message User { string address = 1; }
@@ -127,6 +105,7 @@ message UpsertFriendshipResponse {
     Accepted accepted = 1;
     InvalidFriendshipAction invalid_friendship_action = 2;
     InternalServerError internal_server_error = 3;
+    InvalidRequest invalid_request = 4;
   }
 }
 
@@ -182,6 +161,7 @@ message GetFriendshipStatusResponse {
   oneof response {
     Ok accepted = 1;
     InternalServerError internal_server_error = 2;
+    InvalidRequest invalid_request = 3;
   }
 }
 
