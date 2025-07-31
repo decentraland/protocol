@@ -544,6 +544,9 @@ message CommunityVoiceChatUpdate {
   CommunityVoiceChatStatus status = 4; // 'started' or 'ended'
   optional int64 ended_at = 5; // Only present when status is 'ended'
   repeated string positions = 6; // Positions/coordinates associated with the community
+  bool is_member = 7; // Whether the receiving user is a member of the community
+  string community_name = 8; // Name of the community
+  optional string community_image = 9; // Image/picture of the community
 }
 
 service SocialService {  
