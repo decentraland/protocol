@@ -543,6 +543,7 @@ message CommunityVoiceChatUpdate {
   int64 created_at = 3;
   CommunityVoiceChatStatus status = 4; // 'started' or 'ended'
   optional int64 ended_at = 5; // Only present when status is 'ended'
+  repeated string positions = 6; // Positions/coordinates associated with the community
 }
 
 service SocialService {  
