@@ -531,6 +531,25 @@ message KickPlayerFromCommunityVoiceChatResponse {
   }
 }
 
+// End community voice chat (moderator/owner only)
+message EndCommunityVoiceChatPayload {
+  string community_id = 1;
+}
+
+message EndCommunityVoiceChatResponse {
+  message Ok {
+    string message = 1;
+  }
+
+  oneof response {
+    Ok ok = 1;
+    InvalidRequest invalid_request = 2;
+    ForbiddenError forbidden_error = 3;
+    NotFoundError not_found_error = 4;
+    InternalServerError internal_server_error = 5;
+  }
+}
+
 enum CommunityVoiceChatStatus {
   COMMUNITY_VOICE_CHAT_STARTED = 0;
   COMMUNITY_VOICE_CHAT_ENDED = 1;
@@ -635,6 +654,9 @@ service SocialService {
 
   // Kick player from community voice chat (moderator only)
   rpc KickPlayerFromCommunityVoiceChat(KickPlayerFromCommunityVoiceChatPayload) returns (KickPlayerFromCommunityVoiceChatResponse) {}
+
+  // End community voice chat (moderator/owner only)
+  rpc EndCommunityVoiceChat(EndCommunityVoiceChatPayload) returns (EndCommunityVoiceChatResponse) {}
 
   // Subscribe to community voice chat updates (only 'started' events)
   rpc SubscribeToCommunityVoiceChatUpdates(google.protobuf.Empty) returns (stream CommunityVoiceChatUpdate) {}
