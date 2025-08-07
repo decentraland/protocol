@@ -55,10 +55,11 @@ message Movement {
   bool is_long_jump = 12;
   bool is_long_fall = 13;
   bool is_falling = 14;
-
   bool is_stunned = 15;
-  
   float rotation_y = 16;
+  // interpolation
+  bool is_instant = 17;
+  bool is_emoting = 18;
 }
 
 message MovementCompressed {
@@ -67,7 +68,7 @@ message MovementCompressed {
 }
 
 message PlayerEmote {
-  uint32 incremental_id = 1;
+  float timestamp = 1;
   string urn = 2;
 }
 
@@ -101,6 +102,10 @@ message ProfileResponse {
 message Chat {
   string message = 1;
   double timestamp = 2;
+
+  // Extension: optional forwarded_from to identify the original sender when
+  // messages are forwarded through an SFU
+  optional string forwarded_from = 3;
 }
 
 message Scene {
