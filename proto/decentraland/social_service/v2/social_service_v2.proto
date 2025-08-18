@@ -455,6 +455,7 @@ message JoinCommunityVoiceChatResponse {
 // Request to speak in community voice chat
 message RequestToSpeakInCommunityVoiceChatPayload {
   string community_id = 1;
+  bool is_raising_hand = 2; // true to raise hand (request to speak), false to lower hand (withdraw request)
 }
 
 message RequestToSpeakInCommunityVoiceChatResponse {
