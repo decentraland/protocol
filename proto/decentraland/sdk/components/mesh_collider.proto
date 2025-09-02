@@ -59,4 +59,5 @@ enum ColliderLayer {
   CL_CUSTOM6 = 8192;
   CL_CUSTOM7 = 16384;
   CL_CUSTOM8 = 32768;
+  CL_PLAYER = 65536;
 }
