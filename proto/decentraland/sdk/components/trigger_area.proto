@@ -13,11 +13,11 @@ option (common.ecs_component_id) = 1060;
 //
 // The area size and rotation is defined by the Entity's Transform.
 message PBTriggerArea {
-  optional MeshType mesh = 1;         // default: MT_BOX
+  optional TriggerAreaMeshType mesh = 1;         // default: MT_BOX
   optional uint32 collision_mask = 2; // default: CL_PLAYER
 }
 
-enum MeshType {
-  MT_BOX = 0;
-  MT_SPHERE = 1;
+enum TriggerAreaMeshType {
+  TAMT_BOX = 0;
+  TAMT_SPHERE = 1;
 }
