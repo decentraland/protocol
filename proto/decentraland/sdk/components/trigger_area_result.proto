@@ -24,6 +24,7 @@ message PBTriggerAreaResult {
   decentraland.common.Quaternion triggered_entity_rotation = 3; // The rotation of the triggered entity at the time of the trigger
   TriggerAreaEventType event_type = 4;                          // The state of the trigger event (ENTER, STAY, EXIT)
   uint32 timestamp = 5;                                         // The timestamp of the trigger event
+  Trigger trigger = 6;
 }
 
 enum TriggerAreaEventType {
