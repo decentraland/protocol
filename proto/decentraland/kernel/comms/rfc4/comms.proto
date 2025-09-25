@@ -71,6 +71,7 @@ message PlayerEmote {
   uint32 incremental_id = 1;
   string urn = 2;
   float timestamp = 3;
+  uint32 social_emote_outcome = 4; // -1 means it does not use an outcome animation
 }
 
 message SceneEmote {
