@@ -72,6 +72,7 @@ message PlayerEmote {
   string urn = 2;
   float timestamp = 3;
   int32 social_emote_outcome = 4; // -1 means it does not use an outcome animation
+  bool is_reacting = 5; // to a social emote started by other user
 }
 
 message SceneEmote {
