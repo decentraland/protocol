@@ -10,5 +10,4 @@ message PBAvatarEmoteCommand {
   string emote_urn = 1;
   bool loop = 2;
   uint32 timestamp = 3;          // monotonic counter
-  uint32 social_emote_outcome = 4; // -1 means it does not use an outcome animation
 }
