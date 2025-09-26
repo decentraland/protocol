@@ -13,7 +13,7 @@ message PBTriggerAreaResult {
   // Trigger data object
   message Trigger {
     uint32 entity = 1;                                          // The entity that triggered the Trigger Area
-    uint32 layer = 2;                                           // The collision layer of the entity that triggered the Trigger Area
+    uint32 layers = 2;                                          // The collision layermask of the entity that triggered the Trigger Area
     decentraland.common.Vector3 position = 3;                   // The position of the entity that triggered the trigger
     decentraland.common.Quaternion rotation = 4;                // The rotation of the entity that triggered the trigger
     decentraland.common.Vector3 scale = 5;                      // The scale of the entity that triggered the trigger
