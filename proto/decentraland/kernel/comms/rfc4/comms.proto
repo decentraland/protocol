@@ -71,9 +71,9 @@ message PlayerEmote {
   uint32 incremental_id = 1;
   string urn = 2;
   float timestamp = 3;
-  int32 social_emote_outcome = 4; // -1 means it does not use an outcome animation
-  bool is_reacting = 5; // to a social emote started by other user
-  string social_emote_initiator = 6; // wallet address of the user that initiated social emote
+  optional int32 social_emote_outcome = 4; // -1 means it does not use an outcome animation
+  optional bool is_reacting = 5; // to a social emote started by other user
+  optional string social_emote_initiator = 6; // wallet address of the user that initiated social emote
 }
 
 message SceneEmote {
