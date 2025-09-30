@@ -563,15 +563,6 @@ message MuteSpeakerFromCommunityVoiceChatResponse {
   message Ok {
     bool muted = 1; // The resulting mute state
   }
-  message ForbiddenError {
-    string message = 1;
-  }
-  message NotFoundError {
-    string message = 1;
-  }
-  message InvalidRequest {
-    string message = 1;
-  }
   
   oneof response {
     Ok ok = 1;
