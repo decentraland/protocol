@@ -62,6 +62,7 @@ message MoveContinuous {
 message TextureMoveContinuous {
   decentraland.common.Vector2 direction = 1;
   float speed = 2;
+  optional TextureMovementType movement_type = 3; // default = TextureMovementType.TMT_OFFSET
 }
 
 enum TextureMovementType {
