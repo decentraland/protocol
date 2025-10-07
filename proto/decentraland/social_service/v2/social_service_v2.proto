@@ -552,6 +552,27 @@ message RejectSpeakRequestInCommunityVoiceChatResponse {
   }
 }
 
+// Community Voice Chat Messages
+message MuteSpeakerFromCommunityVoiceChatPayload {
+  string community_id = 1;
+  string user_address = 2;
+  bool muted = 3;
+}
+
+message MuteSpeakerFromCommunityVoiceChatResponse {
+  message Ok {
+    bool muted = 1; // The resulting mute state
+  }
+  
+  oneof response {
+    Ok ok = 1;
+    ForbiddenError forbidden_error = 2;
+    NotFoundError not_found_error = 3;
+    InvalidRequest invalid_request = 4;
+    InternalServerError internal_server_error = 5;
+  }
+}
+
 // End community voice chat (moderator/owner only)
 message EndCommunityVoiceChatPayload {
   string community_id = 1;
@@ -684,4 +705,7 @@ service SocialService {
 
   // Subscribe to community voice chat updates (only 'started' events)
   rpc SubscribeToCommunityVoiceChatUpdates(google.protobuf.Empty) returns (stream CommunityVoiceChatUpdate) {}
+
+  // Mute or unmute a speaker in a community voice chat
+  rpc MuteSpeakerFromCommunityVoiceChat(MuteSpeakerFromCommunityVoiceChatPayload) returns (MuteSpeakerFromCommunityVoiceChatResponse) {}
 }
