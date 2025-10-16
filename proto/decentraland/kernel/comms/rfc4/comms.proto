@@ -74,6 +74,7 @@ message PlayerEmote {
   optional int32 social_emote_outcome = 4; // -1 means it does not use an outcome animation
   optional bool is_reacting = 5; // to a social emote started by other user
   optional string social_emote_initiator = 6; // wallet address of the user that initiated social emote
+  optional string target_avatar = 7; // wallet address of the user whose avatar is the target of a directed emote
 }
 
 message SceneEmote {
