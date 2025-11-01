@@ -77,6 +77,12 @@ message PlayerEmote {
   optional string target_avatar = 7; // wallet address of the user whose avatar is the target of a directed emote
 }
 
+message StopEmote {
+  uint32 incremental_id = 1;
+  string urn = 2;
+  float timestamp = 3;
+}
+
 message SceneEmote {
   string scene_entity_id = 1;
   string source = 2;
