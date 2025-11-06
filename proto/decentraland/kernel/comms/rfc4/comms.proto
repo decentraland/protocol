@@ -73,10 +73,11 @@ message PlayerEmote {
   float timestamp = 3;
   optional bool is_stopping = 4; // true means the emote has been stopped in the sender's client
   optional bool is_repeating = 5; // true when it is not the first time the looping animation plays
-  optional int32 social_emote_outcome = 6; // -1 means it does not use an outcome animation
-  optional bool is_reacting = 7; // to a social emote started by other user
-  optional string social_emote_initiator = 8; // wallet address of the user that initiated social emote
-  optional string target_avatar = 9; // wallet address of the user whose avatar is the target of a directed emote
+  optional uint32 interaction_id = 6; // a number that corresponds to the incremental_id of the message that was used for reacting to a social emote, identifies an interaction univocaly
+  optional int32 social_emote_outcome = 7; // -1 means it does not use an outcome animation
+  optional bool is_reacting = 8; // to a social emote started by other user
+  optional string social_emote_initiator = 9; // wallet address of the user that initiated social emote
+  optional string target_avatar = 10; // wallet address of the user whose avatar is the target of a directed emote
 }
 
 message SceneEmote {
