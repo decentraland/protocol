@@ -73,7 +73,7 @@ message PlayerEmote {
   float timestamp = 3;
   optional bool is_stopping = 4; // true means the emote has been stopped in the sender's client
   optional bool is_repeating = 5; // true when it is not the first time the looping animation plays
-  optional uint32 interaction_id = 6; // identifies an interaction univocaly, established when the start animation is triggered
+  optional int32 interaction_id = 6; // identifies an interaction univocaly, established when the start animation is triggered
   optional int32 social_emote_outcome = 7; // -1 means it does not use an outcome animation
   optional bool is_reacting = 8; // to a social emote started by other user
   optional string social_emote_initiator = 9; // wallet address of the user that initiated social emote
