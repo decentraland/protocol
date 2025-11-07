@@ -105,6 +105,6 @@ service RestrictedActionsService {
   // Returns the element_id of any currently focused textentry or dropdown
   rpc GetUiFocus(GetUiFocusRequest) returns (UiFocusResponse) {}
 
-  // Copies the specified text to the user's clipboard
+  // CopyToClipboard copies the provided text into the clipboard
   rpc CopyToClipboard(CopyToClipboardRequest) returns (EmptyResponse) {}
 }

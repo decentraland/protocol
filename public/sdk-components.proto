@@ -15,6 +15,7 @@ import public "decentraland/sdk/components/camera_mode_area.proto";
 import public "decentraland/sdk/components/camera_mode.proto";
 import public "decentraland/sdk/components/engine_info.proto";
 import public "decentraland/sdk/components/gltf_container.proto";
+import public "decentraland/sdk/components/gltf_node_modifiers.proto";
 import public "decentraland/sdk/components/gltf_container_loading_state.proto";
 import public "decentraland/sdk/components/gltf_node.proto";
 import public "decentraland/sdk/components/gltf_node_state.proto";
