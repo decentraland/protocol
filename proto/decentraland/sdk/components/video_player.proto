@@ -13,8 +13,8 @@ message PBVideoPlayer {
   optional float volume = 4; // default 1.0
   optional float playback_rate = 5; // default 1.0
   optional bool loop = 6; // default false
-  // either the audio will be global or spatial (default: true)
+  // either the audio will be global or spatial (default: false)
   // global: plays the same way for every listener. It is not affected by distance, direction, or position.
   // spatial: changes depending on where the listener is relative to the sound source
-  optional bool global = 7;
+  optional bool is_spatial = 7;
 }
