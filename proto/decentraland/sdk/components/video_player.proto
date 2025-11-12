@@ -16,5 +16,5 @@ message PBVideoPlayer {
   // either the audio will be global or spatial (default: false)
   // global: plays the same way for every listener. It is not affected by distance, direction, or position.
   // spatial: changes depending on where the listener is relative to the sound source
-  bool is_spatial = 7;
+  optional bool is_spatial = 7;
 }
