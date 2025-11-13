@@ -14,5 +14,7 @@ message PBAudioStream {
   // either the audio will be global or spatial (default: false)
   // global: plays the same way for every listener. It is not affected by distance, direction, or position.
   // spatial: changes depending on where the listener is relative to the sound source
-  optional bool is_spatial = 4;
+  optional bool spatial = 4;
+  // The distance where sound either becomes inaudible or stops attenuation
+  optional float spatial_max_distance = 8;
 }
