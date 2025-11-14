@@ -88,7 +88,7 @@ message LookAtPosition
   float position_x = 2;
   float position_y = 3;
   float position_z = 4;
-  string targetAvatarWalletAddress = 5;
+  string target_avatar_wallet_address = 5;
 }
 
 message SceneEmote {
