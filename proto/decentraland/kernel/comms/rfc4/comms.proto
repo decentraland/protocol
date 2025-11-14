@@ -18,6 +18,7 @@ message Packet {
     PlayerEmote player_emote = 9;
     SceneEmote scene_emote = 10;
     MovementCompressed movement_compressed = 12;
+	LookAtPosition look_at_position = 13;
   }
   uint32 protocol_version = 11;
 }
