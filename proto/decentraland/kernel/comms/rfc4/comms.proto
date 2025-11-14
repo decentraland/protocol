@@ -80,6 +80,16 @@ message PlayerEmote {
   optional string target_avatar = 10; // wallet address of the user whose avatar is the target of a directed emote
 }
 
+// Message sent to force an avatar to look at a position
+message LookAtPosition
+{
+  float timestamp = 1;
+  // world position
+  float position_x = 2;
+  float position_y = 3;
+  float position_z = 4;
+}
+
 message SceneEmote {
   string scene_entity_id = 1;
   string source = 2;
