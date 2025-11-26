@@ -60,6 +60,9 @@ message Movement {
   // interpolation
   bool is_instant = 17;
   bool is_emoting = 18;
+  // head-sync (local-space yaw and pitch angles, in radians)
+  float head_yaw = 19;
+  float head_pitch = 20;
 }
 
 message MovementCompressed {
