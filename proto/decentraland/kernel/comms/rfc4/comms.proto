@@ -60,7 +60,7 @@ message Movement {
   // interpolation
   bool is_instant = 17;
   bool is_emoting = 18;
-  // head-sync (local-space yaw and pitch angles, in radians)
+  // head-sync (local-space yaw and pitch angles, in degrees)
   float head_yaw = 19;
   float head_pitch = 20;
 }
@@ -68,6 +68,7 @@ message Movement {
 message MovementCompressed {
   int32 temporal_data = 1; // bit-compressed: timestamp + animations 
   int64 movement_data = 2; // bit-compressed: position + velocity 
+  int32 head_sync_data = 3; // bit-compressed: enabled flag + yaw + pitch
 }
 
 message PlayerEmote {
