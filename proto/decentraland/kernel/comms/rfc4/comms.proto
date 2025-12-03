@@ -61,8 +61,9 @@ message Movement {
   bool is_instant = 17;
   bool is_emoting = 18;
   // head-sync (local-space yaw and pitch angles, in degrees)
-  float head_yaw = 19;
-  float head_pitch = 20;
+  bool head_free_look_enabled = 19;
+  float head_yaw = 20;
+  float head_pitch = 21;
 }
 
 message MovementCompressed {
