@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1212;
+
+message PBAudioAnalysis {
+    float amplitude = 1;
+
+    // protobuf doesn't support fixed arrays like C-lang does. Therefore float band[8] array maps per field.
+    float band_0 = 2;
+    float band_1 = 3;
+    float band_2 = 4;
+    float band_3 = 5;
+    float band_4 = 6;
+    float band_5 = 7;
+    float band_6 = 8;
+    float band_7 = 9;
+
+    float spectral_centroid = 10;
+    float spectral_flux = 11;
+
+    bool onset = 12;
+
+    float bpm = 13;
+}
