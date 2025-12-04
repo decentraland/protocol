@@ -17,10 +17,11 @@ message PBAudioAnalysis {
     float band_6 = 8;
     float band_7 = 9;
 
-    float spectral_centroid = 10;
-    float spectral_flux = 11;
+    // planned to be added later
+    // float spectral_centroid = 10;
+    // float spectral_flux = 11;
 
-    bool onset = 12;
+    // bool onset = 12;
 
-    float bpm = 13;
+    // float bpm = 13;
 }
