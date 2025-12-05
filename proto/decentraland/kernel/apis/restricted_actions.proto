@@ -48,6 +48,8 @@ message SuccessResponse {
 
 message TriggerEmoteResponse { }
 
+message MovePlayerToResponse { bool success = 1; }
+
 message TeleportToResponse { }
 
 message CopyToClipboardRequest {
@@ -58,7 +60,7 @@ message EmptyResponse { }
 
 service RestrictedActionsService {
   // MovePlayerTo will move the player in a position relative to the current scene
-  rpc MovePlayerTo(MovePlayerToRequest) returns (SuccessResponse) {}
+  rpc MovePlayerTo(MovePlayerToRequest) returns (MovePlayerToResponse) {}
 
   // TeleportTo will move the user to the specified world LAND parcel coordinates
   rpc TeleportTo(TeleportToRequest) returns (TeleportToResponse) {}
