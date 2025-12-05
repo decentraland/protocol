@@ -15,8 +15,8 @@ message PBAudioAnalysis {
     PBAudioAnalysisMode mode = 1;
 
     // Used only when mode == MODE_LOGARITHMIC
-    float amplitude_gain = 100;
-    float bands_gain = 101;
+    optional float amplitude_gain = 100;
+    optional float bands_gain = 101;
     // End when mode == MODE_LOGARITHMIC
 
     // End Parameters section
