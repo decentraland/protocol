@@ -18,6 +18,7 @@ message Packet {
     PlayerEmote player_emote = 9;
     SceneEmote scene_emote = 10;
     MovementCompressed movement_compressed = 12;
+	LookAtPosition look_at_position = 13;
   }
   uint32 protocol_version = 11;
 }
@@ -71,6 +72,24 @@ message PlayerEmote {
   uint32 incremental_id = 1;
   string urn = 2;
   float timestamp = 3;
+  optional bool is_stopping = 4; // true means the emote has been stopped in the sender's client
+  optional bool is_repeating = 5; // true when it is not the first time the looping animation plays
+  optional int32 interaction_id = 6; // identifies an interaction univocaly, established when the start animation is triggered
+  optional int32 social_emote_outcome = 7; // -1 means it does not use an outcome animation
+  optional bool is_reacting = 8; // to a social emote started by other user
+  optional string social_emote_initiator = 9; // wallet address of the user that initiated social emote
+  optional string target_avatar = 10; // wallet address of the user whose avatar is the target of a directed emote
+}
+
+// Message sent to force an avatar to look at a position
+message LookAtPosition
+{
+  float timestamp = 1;
+  // world position
+  float position_x = 2;
+  float position_y = 3;
+  float position_z = 4;
+  string target_avatar_wallet_address = 5;
 }
 
 message SceneEmote {
