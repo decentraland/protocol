@@ -6,4 +6,5 @@ option (common.ecs_component_id) = 1081;
 
 message PBVisibilityComponent {
     optional bool visible = 1; // default=true
+    optional bool propagate_to_children = 2; // default=false
 }
