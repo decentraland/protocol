@@ -6,4 +6,15 @@ option (common.ecs_component_id) = 1081;
 
 message PBVisibilityComponent {
     optional bool visible = 1; // default=true
+    
+    // Propagation follows certain rules:
+    // 1. If child has own PBVisibilityComponent -> Own component takes priority, skip in propagation
+    // 2. Child's PBVisibilityComponent removed -> Re-inherit from parent hierarchy
+    // 3. Child has own component + propagateToChildren=TRUE -> Child's propagation takes over for grandchildren (blocks ancestor)
+    // 4. Child has own component + propagateToChildren=FALSE -> "Pass-through": grandchildren inherit from ancestor, not child
+    // 5. Entity reparented into non-propagating hierarchy -> Reset to visible
+    // 6. Entity reparented into propagating hierarchy -> Inherit new hierarchy visibility
+    // 7. Reparented entity has children -> Propagate visibility to all descendants of reparented entity
+    // 8. Parent's PBVisibilityComponent removed -> Children reset to visible
+    optional bool propagate_to_children = 2; // default=false
 }
