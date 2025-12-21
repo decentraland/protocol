@@ -7,6 +7,7 @@ message MovePlayerToRequest {
   decentraland.common.Vector3 new_relative_position = 1;
   optional decentraland.common.Vector3 camera_target = 2;
   optional decentraland.common.Vector3 avatar_target = 3;
+  optional float duration = 4; // interpolate avatar towards target position
 }
 
 message TeleportToRequest {
@@ -47,8 +48,6 @@ message SuccessResponse {
 
 message TriggerEmoteResponse { }
 
-message MovePlayerToResponse { }
-
 message TeleportToResponse { }
 
 message CopyToClipboardRequest {
@@ -58,8 +57,10 @@ message CopyToClipboardRequest {
 message EmptyResponse { }
 
 service RestrictedActionsService {
-  // MovePlayerTo will move the player in a position relative to the current scene
-  rpc MovePlayerTo(MovePlayerToRequest) returns (MovePlayerToResponse) {}
+  // MovePlayerTo will move the player to a position relative to the current scene.
+  // If 'duration' field is used in the request, the success response depends on the
+  // whole interpolation being completed or interrupted (e.g: by input movement)
+  rpc MovePlayerTo(MovePlayerToRequest) returns (SuccessResponse) {}
 
   // TeleportTo will move the user to the specified world LAND parcel coordinates
   rpc TeleportTo(TeleportToRequest) returns (TeleportToResponse) {}
