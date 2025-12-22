@@ -7,7 +7,7 @@ message MovePlayerToRequest {
   decentraland.common.Vector3 new_relative_position = 1;
   optional decentraland.common.Vector3 camera_target = 2;
   optional decentraland.common.Vector3 avatar_target = 3;
-  optional float duration = 4; // interpolate avatar towards target position
+  optional float duration = 4; // by default (no duration param) the player is instantly moved and not interpolated
 }
 
 message TeleportToRequest {
