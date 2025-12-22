@@ -48,6 +48,10 @@ message SuccessResponse {
 
 message TriggerEmoteResponse { }
 
+message MovePlayerToResponse { 
+  bool success = 1;
+}
+
 message TeleportToResponse { }
 
 message CopyToClipboardRequest {
@@ -60,7 +64,7 @@ service RestrictedActionsService {
   // MovePlayerTo will move the player to a position relative to the current scene.
   // If 'duration' field is used in the request, the success response depends on the
   // whole interpolation being completed or interrupted (e.g: by input movement)
-  rpc MovePlayerTo(MovePlayerToRequest) returns (SuccessResponse) {}
+  rpc MovePlayerTo(MovePlayerToRequest) returns (MovePlayerToResponse) {}
 
   // TeleportTo will move the user to the specified world LAND parcel coordinates
   rpc TeleportTo(TeleportToRequest) returns (TeleportToResponse) {}
