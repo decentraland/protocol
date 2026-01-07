@@ -54,6 +54,19 @@ message MovePlayerToResponse {
 
 message TeleportToResponse { }
 
+message SetUiFocusRequest {
+  string element_id = 1;
+}
+
+message ClearUiFocusRequest { }
+
+message GetUiFocusRequest { }
+
+message UiFocusResponse { 
+  // the element that is/was focussed
+  optional string element_id = 1;
+}
+
 message CopyToClipboardRequest {
   string text = 1;
 }
@@ -87,6 +100,15 @@ service RestrictedActionsService {
 
   // TriggerSceneEmote will trigger an scene emote file in this current user
   rpc TriggerSceneEmote(TriggerSceneEmoteRequest) returns (SuccessResponse) {}
+
+  // Sets the focus to a specific UI element
+  rpc SetUiFocus(SetUiFocusRequest) returns (UiFocusResponse) {}
+
+  // Clears the focus from any currently focused textentry or dropdown
+  rpc ClearUiFocus(SetUiFocusRequest) returns (UiFocusResponse) {}
+
+  // Returns the element_id of any currently focused textentry or dropdown
+  rpc GetUiFocus(GetUiFocusRequest) returns (UiFocusResponse) {}
 
   // CopyToClipboard copies the provided text into the clipboard
   rpc CopyToClipboard(CopyToClipboardRequest) returns (EmptyResponse) {}
