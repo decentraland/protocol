@@ -10,4 +10,5 @@ import "decentraland/sdk/components/common/loading_state.proto";
 // the current state of the AssetLoad of an entity.
 message PBAssetLoadLoadingState {
   common.LoadingState current_state = 1;
+  string asset = 2;
 }
