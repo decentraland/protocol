@@ -1,0 +1,14 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1214;
+
+import "decentraland/sdk/components/common/loading_state.proto";
+
+// AssetLoadLoadingState is set by the engine and provides information about
+// the current state of the AssetLoad of an entity.
+message PBAssetLoadLoadingState {
+  common.LoadingState current_state = 1;
+  string asset = 2;
+}
