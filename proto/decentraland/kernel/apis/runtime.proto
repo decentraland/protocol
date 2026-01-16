@@ -2,6 +2,7 @@ syntax = "proto3";
 package decentraland.kernel.apis;
 
 import "decentraland/common/content_mapping.proto";
+import "decentraland/common/vectors.proto";
 import "decentraland/sdk/components/realm_info.proto";
 
 // This API will contain all the information related to the world runtime.
@@ -52,6 +53,22 @@ message GetExplorerInformationResponse {
   map<string, string> configurations = 3;
 }
 
+message GetWorldPositionRequest {
+  uint32 entity = 1;
+}
+
+message GetWorldPositionResponse {
+  decentraland.common.Vector3 position = 1;
+}
+
+message GetWorldRotationRequest {
+  uint32 entity = 1;
+}
+
+message GetWorldRotationResponse {
+  decentraland.common.Quaternion rotation = 1;
+}
+
 service RuntimeService {
   // Provides information about the current realm
   rpc GetRealm(GetRealmRequest) returns (GetRealmResponse) {}
@@ -68,4 +85,10 @@ service RuntimeService {
 
   // Provides information about the explorer
   rpc GetExplorerInformation(GetExplorerInformationRequest) returns (GetExplorerInformationResponse) {}
+
+  // Provides the world position of an entity (considering the whole parent tree)
+  rpc GetWorldPosition(GetWorldPositionRequest) returns (GetWorldPositionResponse) {}
+
+  // Provides the world rotation of an entity (considering the whole parent tree)
+  rpc GetWorldRotation(GetWorldRotationRequest) returns (GetWorldRotationResponse) {}
 }
