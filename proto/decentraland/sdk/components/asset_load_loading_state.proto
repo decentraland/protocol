@@ -11,4 +11,5 @@ import "decentraland/sdk/components/common/loading_state.proto";
 message PBAssetLoadLoadingState {
   common.LoadingState current_state = 1;
   string asset = 2;
+  uint32 timestamp = 3;          // monotonic counter
 }
