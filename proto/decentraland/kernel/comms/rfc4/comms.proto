@@ -57,6 +57,7 @@ message Movement {
   bool is_long_fall = 13;
   bool is_falling = 14;
   bool is_stunned = 15;
+  bool is_gliding = 23;
   float rotation_y = 16;
   // interpolation
   bool is_instant = 17;
