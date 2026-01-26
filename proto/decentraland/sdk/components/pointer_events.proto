@@ -27,6 +27,7 @@ message PBPointerEvents {
     optional float max_distance = 3;        // range of interaction (default 10)
     optional bool show_feedback = 4;        // enable or disable hover text and highlight (default true)
     optional bool show_highlight = 5;       // enable or disable hover highlight (default true)
+    optional float max_player_distance = 6; // range of interaction from the avatar's position (default 0)
   }
 
   message Entry {
