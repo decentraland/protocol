@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1101;
+
+// https://developer.valvesoftware.com/wiki/Source_Multiplayer_Networking#Entity_interpolation
+// https://gamedev.stackexchange.com/questions/142427/delayed-linear-interpolation-for-networking
+// https://github.com/menduz/Semi-Fixed-Time-Step-Interpolation
+//
+// The DelayedInterpolation component allows to animate the final transform of an entity.
+// The animation is performed time-traveling back in time .duration amount of milliseconds
+// and linearly interpolating the values of the transform from the past.
+//
+// The parameters used for this time-travel are set by the transform component and its
+// modifiers like billboard, avatar attachment point, etc.
+//
+// When an entity changes its parent entity, the tween's time-travel registry will
+// automatically reset. Meaning NO tweening will be performed upon reparenting.
+//
+// Tweens will be calculated AFTER the final position of the entity is calculated,
+// and BEFORE the position of the child entities is computed. Effectively applying
+// the animation to all its children.
+//
+// It is important to mention that tweens only apply to the local entity, if a parent entity P
+// has a linear tween, and it has a child entity C with another tween, by moving P, only P's tween will apply,
+// moving C's frame of reference but NOT animating it.
+message PBDelayedInterpolation {
+  float time_travel_duration = 1; // in milliseconds
+}
