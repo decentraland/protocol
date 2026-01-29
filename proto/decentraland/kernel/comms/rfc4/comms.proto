@@ -52,11 +52,12 @@ message Movement {
   float movement_blend_value = 8;
   float slide_blend_value = 9;
   bool is_grounded = 10;
-  bool is_jumping = 11;
+  int32 jump_count = 11;
   bool is_long_jump = 12;
   bool is_long_fall = 13;
   bool is_falling = 14;
   bool is_stunned = 15;
+  bool is_gliding = 23;
   float rotation_y = 16;
   // interpolation
   bool is_instant = 17;
