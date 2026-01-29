@@ -23,6 +23,7 @@ message PBTween {
 
   optional bool playing = 6; // default true (pause or running)
   optional float current_time = 7; // between 0 and 1
+  optional uint64 start_synced_timestamp = 9; // timestamp (in milliseconds) when the tween started, allows synchronization across clients
 }
 
 message Move {
