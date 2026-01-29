@@ -2,6 +2,7 @@ syntax = "proto3";
 package decentraland.social_service.v2;
 
 import "google/protobuf/empty.proto";
+import "decentraland/common/colors.proto";
 import "decentraland/social_service/errors.proto";
 
 // Types
@@ -12,6 +13,7 @@ message FriendProfile {
   string name = 2;
   bool has_claimed_name = 3;
   string profile_picture_url = 4;
+  optional decentraland.common.Color3 name_color = 5;
 }
 
 message BlockedUserProfile {
@@ -20,6 +22,7 @@ message BlockedUserProfile {
   bool has_claimed_name = 3;
   string profile_picture_url = 4;
   optional int64 blocked_at = 5;
+  optional decentraland.common.Color3 name_color = 6;
 }
 
 message Pagination {
