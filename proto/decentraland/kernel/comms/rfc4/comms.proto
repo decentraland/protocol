@@ -18,6 +18,7 @@ message Packet {
     PlayerEmote player_emote = 9;
     SceneEmote scene_emote = 10;
     MovementCompressed movement_compressed = 12;
+	LookAtPosition look_at_position = 13;
   }
   uint32 protocol_version = 11;
 }
@@ -60,17 +61,41 @@ message Movement {
   // interpolation
   bool is_instant = 17;
   bool is_emoting = 18;
+  // head-sync (enabled flags + world-space yaw and pitch angles, in degrees)
+  bool head_ik_yaw_enabled = 19;
+  bool head_ik_pitch_enabled = 20;
+  float head_yaw = 21;
+  float head_pitch = 22;
 }
 
 message MovementCompressed {
   int32 temporal_data = 1; // bit-compressed: timestamp + animations 
   int64 movement_data = 2; // bit-compressed: position + velocity 
+  int32 head_sync_data = 3; // bit-compressed: enabled flags + yaw + pitch
 }
 
 message PlayerEmote {
   uint32 incremental_id = 1;
   string urn = 2;
   float timestamp = 3;
+  optional bool is_stopping = 4; // true means the emote has been stopped in the sender's client
+  optional bool is_repeating = 5; // true when it is not the first time the looping animation plays
+  optional int32 interaction_id = 6; // identifies an interaction univocaly, established when the start animation is triggered
+  optional int32 social_emote_outcome = 7; // -1 means it does not use an outcome animation
+  optional bool is_reacting = 8; // to a social emote started by other user
+  optional string social_emote_initiator = 9; // wallet address of the user that initiated social emote
+  optional string target_avatar = 10; // wallet address of the user whose avatar is the target of a directed emote
+}
+
+// Message sent to force an avatar to look at a position
+message LookAtPosition
+{
+  float timestamp = 1;
+  // world position
+  float position_x = 2;
+  float position_y = 3;
+  float position_z = 4;
+  string target_avatar_wallet_address = 5;
 }
 
 message SceneEmote {
@@ -103,6 +128,10 @@ message ProfileResponse {
 message Chat {
   string message = 1;
   double timestamp = 2;
+
+  // Extension: optional forwarded_from to identify the original sender when
+  // messages are forwarded through an SFU
+  optional string forwarded_from = 3;
 }
 
 message Scene {
