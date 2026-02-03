@@ -51,11 +51,13 @@ message PBPointerEvents {
     optional bool show_feedback = 4;        // enable or disable hover text and highlight (default true)
     optional bool show_highlight = 5;       // enable or disable hover highlight (default true)
     optional float max_player_distance = 6; // range of interaction from the avatar's position (default 0)
+    optional uint32 priority = 7;           // resolution order when multiple events overlap, higher wins (default 0)
   }
 
   message Entry {
     common.PointerEventType event_type = 1; // the kind of interaction to detect
     Info event_info = 2;             // additional configuration for this detection
+    common.InteractionType interaction_type = 3; // the type of interaction source
   }
 
   repeated Entry pointer_events = 1; // the list of relevant events to detect
