@@ -27,3 +27,8 @@ enum PointerEventType {
   PET_HOVER_ENTER = 2;
   PET_HOVER_LEAVE = 3;
 }
+
+enum InteractionType {
+  CURSOR = 0;
+  PROXIMITY = 1;
+}
