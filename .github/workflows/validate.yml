@@ -1,7 +1,10 @@
 on:
   push:
     branches-ignore:
-      - "main"
+      - "protocol-squad"
+
+env:
+  BASE_BRANCH: protocol-squad # TODO: change to main for merging into main
 
 name: validate-compatibility
 jobs:
@@ -19,4 +22,4 @@ jobs:
       - name: build and compile test
         run: make test
       - name: run the check script
-        run: ./scripts/check-proto-compabitility.sh
+        run: ./scripts/check-proto-compabitility.sh ${{ env.BASE_BRANCH }}
