@@ -57,7 +57,7 @@ message Movement {
   bool is_long_fall = 13;
   bool is_falling = 14;
   bool is_stunned = 15;
-  bool is_gliding = 23;
+  GlideState glide_state = 23;
   float rotation_y = 16;
   // interpolation
   bool is_instant = 17;
@@ -67,6 +67,12 @@ message Movement {
   bool head_ik_pitch_enabled = 20;
   float head_yaw = 21;
   float head_pitch = 22;
+  enum GlideState {
+      PROP_CLOSED = 0;
+      OPENING_PROP = 1;
+      GLIDING = 2;
+      CLOSING_PROP = 3;
+  }
 }
 
 message MovementCompressed {
