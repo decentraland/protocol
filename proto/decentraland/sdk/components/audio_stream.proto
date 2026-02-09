@@ -11,4 +11,12 @@ message PBAudioStream {
   optional bool playing = 1; // whether the clip is currently playing
   optional float volume = 2; // the audio volume (default: 1.0)
   string url = 3;            // the audio stream HTTP URL
+  // either the audio will be global or spatial (default: false)
+  // global: plays the same way for every listener. It is not affected by distance, direction, or position.
+  // spatial: changes depending on where the listener is relative to the sound source
+  optional bool spatial = 4;
+  // Within the min distance the audio will cease to grow louder in volume (default: 0)
+  optional float spatial_min_distance = 5;
+  // The distance where sound either becomes inaudible or stops attenuation (default: 60)
+  optional float spatial_max_distance = 6;
 }
