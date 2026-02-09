@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/common/vectors.proto";
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1213;
+
+// The PBAvatarPhysicsImpulse component applies a one-shot physics impulse to the player avatar.
+// The direction vector is non-normalized: its magnitude encodes the impulse strength.
+// Each new impulse must increment the timestamp to ensure delivery via CRDT, even if
+// the direction is identical to the previous one.
+// After the renderer processes the impulse, it is consumed. Set the component again
+// to apply another impulse.
+message PBAvatarPhysicsImpulse {
+  // Impulse direction in world space. The vector length represents the impulse magnitude.
+  decentraland.common.Vector3 direction = 1;
+
+  // Monotonic counter to distinguish repeated impulses with the same direction.
+  uint32 timestamp = 2;
+}
