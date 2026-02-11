@@ -5,7 +5,7 @@ package decentraland.sdk.components;
 import "decentraland/sdk/components/common/id.proto";
 import "decentraland/common/vectors.proto";
 
-option (common.ecs_component_id) = 3000;
+option (common.ecs_component_id) = 1500;
 
 message PBAvatarMovementInfo {
   float step_time = 1;                                      // the length of time the current step velocity will apply for
