@@ -47,10 +47,10 @@ message PBRaycast {
   optional uint32 collision_mask = 9;
 
   // shape to cast, default ray
-  optional RaycastShape shape = 10; 
+  optional RaycastShape shape = 11; 
 
   // include hits with entities from other scenes
-  optional bool include_world = 11; 
+  optional bool include_world = 12; 
 }
 
 // RaycastQueryType indicates whether the ray should stop on the first collition, or continue.
