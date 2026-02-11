@@ -52,7 +52,7 @@ message Movement {
   float movement_blend_value = 8;
   float slide_blend_value = 9;
   bool is_grounded = 10;
-  bool is_jumping = 11;
+  reserved 11; // deprecated `is_jumping` field
   int32 jump_count = 24;
   bool is_long_jump = 12;
   bool is_long_fall = 13;
