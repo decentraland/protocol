@@ -7,7 +7,7 @@ import "decentraland/common/vectors.proto";
 
 option (common.ecs_component_id) = 3001;
 
-message AvatarMovement {
+message PBAvatarMovement {
   decentraland.common.Vector3 velocity = 1;
   float orientation = 2; // 0-360, we don't allow pitch/roll
   optional decentraland.common.Vector3 ground_direction = 3;

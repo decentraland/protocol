@@ -9,6 +9,8 @@ import public "decentraland/sdk/components/avatar_base.proto";
 import public "decentraland/sdk/components/avatar_emote_command.proto";
 import public "decentraland/sdk/components/avatar_equipped_data.proto";
 import public "decentraland/sdk/components/avatar_modifier_area.proto";
+import public "decentraland/sdk/components/avatar_movement.proto";
+import public "decentraland/sdk/components/avatar_movement_info.proto";
 import public "decentraland/sdk/components/avatar_shape.proto";
 import public "decentraland/sdk/components/billboard.proto";
 import public "decentraland/sdk/components/camera_mode_area.proto";
