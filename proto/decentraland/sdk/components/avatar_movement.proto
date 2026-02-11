@@ -3,13 +3,14 @@ syntax = "proto3";
 package decentraland.sdk.components;
 
 import "decentraland/sdk/components/common/id.proto";
+import "decentraland/common/vectors.proto";
 
 option (common.ecs_component_id) = 3001;
 
 message AvatarMovement {
   decentraland.common.Vector3 velocity = 1;
   float orientation = 2; // 0-360, we don't allow pitch/roll
-  optional Vector3 ground_direction = 3;
+  optional decentraland.common.Vector3 ground_direction = 3;
 }
 
 // engine behaviour (uses only capsule shapecasts and GJK closest point for portability):
