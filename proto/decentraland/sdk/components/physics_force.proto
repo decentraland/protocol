@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/common/vectors.proto";
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1216;
+
+// This component applies a continuous physics force (currently only to the player avatar).
+// The force is applied every physics tick while the component is present on the entity.
+// Remove the component to stop applying the force.
+message PBPhysicsForce {
+  // Force direction in world space. The vector length represents the force magnitude.
+  decentraland.common.Vector3 direction = 1;
+}
