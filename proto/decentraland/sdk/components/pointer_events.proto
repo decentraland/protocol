@@ -57,7 +57,7 @@ message PBPointerEvents {
   message Entry {
     common.PointerEventType event_type = 1; // the kind of interaction to detect
     Info event_info = 2;             // additional configuration for this detection
-    common.InteractionType interaction_type = 3; // the type of interaction source
+    optional common.InteractionType interaction_type = 3; // the type of interaction source (default 0 == CURSOR)
   }
 
   repeated Entry pointer_events = 1; // the list of relevant events to detect
