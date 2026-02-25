@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package decentraland.pulse;
+
+message Handshake {
+	bytes auth_chain = 1;
+}
+
+message ClientMessage {
+  oneof message {
+    Handshake handshake = 1;
+  }
+}
