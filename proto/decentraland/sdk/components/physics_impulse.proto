@@ -7,8 +7,12 @@ import "decentraland/sdk/components/common/id.proto";
 
 option (common.ecs_component_id) = 1215;
 
+/**
+ * @internal Low-level component. Use Physics.applyImpulseToPlayer() instead.
+ * Direct manipulation will conflict with the force accumulation registry.
+ */
 // This component applies a one-shot physics impulse (currently only to the player avatar).
-// In case of several impulses, scene should accumulate 
+// In case of several impulses, scene should accumulate
 // The direction vector is non-normalized: its magnitude encodes the impulse strength.
 // Each new impulse must increment the timestamp to ensure delivery via CRDT, even if
 // the direction is identical to the previous one.
