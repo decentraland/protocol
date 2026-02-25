@@ -14,6 +14,5 @@ option (common.ecs_component_id) = 1416;
 // This component applies a continuous physics force (as a summary of all forces from the scene).
 // State-like component: the force is applied every physics tick while the component is present on the entity.
 message PBPhysicsForce {
-  // Force vector in world space. The vector length represents the force magnitude.
-  decentraland.common.Vector3 vector = 1;
+  decentraland.common.Vector3 vector = 1; // Includes force direction and magnitude
 }
