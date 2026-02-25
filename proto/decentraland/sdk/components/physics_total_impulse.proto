@@ -10,6 +10,7 @@ option (common.ecs_component_id) = 1415;
 /**
  * @internal Low-level component. Use Physics.applyImpulseToPlayer() instead.
  * Direct manipulation will conflict with the force accumulation registry.
+ * Summary component: stores the accumulated result of all impulses registered by the scene in the current frame.
  */
 // This component applies a one-shot physics summary impulse.
 // In case of several impulses, scene should accumulate.
