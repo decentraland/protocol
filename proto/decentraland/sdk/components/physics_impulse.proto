@@ -7,7 +7,8 @@ import "decentraland/sdk/components/common/id.proto";
 
 option (common.ecs_component_id) = 1215;
 
-// This component applies a one-shot physics impulse (curerntly only to the player avatar).
+// This component applies a one-shot physics impulse (currently only to the player avatar).
+// In case of several impulses, scene should accumulate 
 // The direction vector is non-normalized: its magnitude encodes the impulse strength.
 // Each new impulse must increment the timestamp to ensure delivery via CRDT, even if
 // the direction is identical to the previous one.
@@ -15,8 +16,8 @@ option (common.ecs_component_id) = 1215;
 // to apply another impulse.
 message PBPhysicsImpulse {
   // Impulse direction in world space. The vector length represents the impulse magnitude.
-  decentraland.common.Vector3 direction = 1;
+  decentraland.common.Vector3 vector = 1;
 
   // Monotonic counter to distinguish repeated impulses with the same direction.
-  uint32 timestamp = 2;
+  uint32 eventID = 2;
 }
