@@ -8,7 +8,7 @@ import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1415;
 
 /**
- * @internal Low-level component. Use Physics.applyImpulseToPlayer() instead.
+ * @remarks Low-level component. Use Physics.applyImpulseToPlayer() instead.
  * Direct manipulation will conflict with the force accumulation registry.
 
  * This component applies a one-shot physics summary impulse.

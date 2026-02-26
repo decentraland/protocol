@@ -8,7 +8,7 @@ import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1416;
 
 /**
- * @internal Low-level component. Use Physics.applyForceToPlayer()/.removeForceToPlayer() instead.
+ * @remarks Low-level component. Use Physics.applyForceToPlayer()/.removeForceToPlayer() instead.
  * Direct manipulation will conflict with the force accumulation registry.
 
  * This component applies a continuous physics force (as a summary of all forces from the scene).
