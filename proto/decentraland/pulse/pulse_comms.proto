@@ -2,12 +2,23 @@ syntax = "proto3";
 
 package decentraland.pulse;
 
-message Handshake {
+message HandshakeRequest {
 	bytes auth_chain = 1;
+}
+
+message HandshakeResponse {
+  bool success = 1;
+  optional string error = 2;
 }
 
 message ClientMessage {
   oneof message {
-    Handshake handshake = 1;
+    HandshakeRequest handshake = 1;
+  }
+}
+
+message ServerMessage {
+  oneof message {
+      HandshakeResponse handshake = 1;
   }
 }
