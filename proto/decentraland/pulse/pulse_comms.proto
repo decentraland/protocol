@@ -20,5 +20,58 @@ message ClientMessage {
 message ServerMessage {
   oneof message {
       HandshakeResponse handshake = 1;
+      PlayerStateFull player_state_full = 2;
+      PlayerStateDelta player_state_delta = 3;
   }
+}
+
+message PlayerState {
+  uint32 subject_id = 1;
+  uint32 sequence = 2;
+  uint32 server_tick = 3;
+
+  Vector3 position = 4;
+  Vector3 velocity = 5;
+
+  float rotation_y = 6;
+
+  float movement_blend = 7;
+  float slide_blend = 8;
+
+  float head_yaw = 9;
+  float head_pitch = 10;
+
+  uint32 state_flags = 11;
+}
+
+message PlayerStateDelta {
+  uint32 subject_id = 1;
+  uint32 new_seq = 2;
+  uint32 server_tick = 3;
+
+  optional uint32 position_x = 4;
+  optional uint32 position_y = 5;
+  optional uint32 position_z = 6;
+
+  optional uint32 velocity_x = 7;
+  optional uint32 velocity_y = 8;
+  optional uint32 velocity_z = 9;
+
+  optional uint32 rotation_y = 10;
+  optional uint32 movement_blend = 11;
+  optional uint32 slide_blend = 12;
+  optional uint32 head_yaw = 13;
+  optional uint32 head_pitch = 14;
+
+  uint32 state_flags = 15;
+}
+
+message PlayerStateFull {
+  PlayerState state = 1;
+}
+
+message Vector3 {
+  float x = 1;
+  float y = 2;
+  float z = 3;
 }
