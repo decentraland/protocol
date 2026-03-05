@@ -70,6 +70,11 @@ message PlayerStateFull {
   PlayerState state = 1;
 }
 
+message PlayerJoined {
+  string user_id = 1;
+  PlayerState state = 2;
+}
+
 message Vector3 {
   float x = 1;
   float y = 2;
