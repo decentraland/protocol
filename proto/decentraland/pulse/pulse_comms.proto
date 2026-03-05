@@ -22,6 +22,7 @@ message ServerMessage {
       HandshakeResponse handshake = 1;
       PlayerStateFull player_state_full = 2;
       PlayerStateDelta player_state_delta = 3;
+      PlayerJoined player_joined = 4;
   }
 }
 
