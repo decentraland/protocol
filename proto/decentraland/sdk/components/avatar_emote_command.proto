@@ -10,5 +10,4 @@ message PBAvatarEmoteCommand {
   string emote_urn = 1;
   bool loop = 2;
   uint32 timestamp = 3;          // monotonic counter
-  optional AvatarMask mask = 4;
 }
