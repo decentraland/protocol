@@ -10,4 +10,10 @@ message PBAvatarEmoteCommand {
   string emote_urn = 1;
   bool loop = 2;
   uint32 timestamp = 3;          // monotonic counter
+  optional AvatarMask mask = 4;
+}
+
+// Mask for which bones an animation applies to.
+enum AvatarMask {
+  AM_UPPER_BODY = 0;
 }
