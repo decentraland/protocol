@@ -28,6 +28,7 @@
     "proto/decentraland",
     "out-ts",
     "out-js",
-    "public"
+    "public",
+    "protoc-gen-bitwise"
   ]
 }
