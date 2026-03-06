@@ -17,7 +17,7 @@ message TeleportToRequest {
 
 message TriggerEmoteRequest {
   string predefined_emote = 1;
-  optional AvatarMask mask = 2;
+  optional decentraland.sdk.components.common.AvatarMask mask = 2;
 }
 
 message ChangeRealmRequest {
@@ -42,7 +42,7 @@ message CommsAdapterRequest {
 message TriggerSceneEmoteRequest {
   string src = 1;
   optional bool loop = 2;
-  optional AvatarMask mask = 3;
+  optional decentraland.sdk.components.common.AvatarMask avatar_mask = 3;
 }
 
 message SuccessResponse {
