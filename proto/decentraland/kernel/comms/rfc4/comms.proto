@@ -74,6 +74,12 @@ message Movement {
       GLIDING = 2;
       CLOSING_PROP = 3;
   }
+    // point-at
+  float point_at_x = 24;
+  float point_at_y = 25;
+  float point_at_z = 26;
+  bool is_pointing_at = 27;
+  bool is_dragging_point_at = 28;
 }
 
 message MovementCompressed {
