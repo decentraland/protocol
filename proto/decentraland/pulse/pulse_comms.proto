@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package decentraland.pulse;
 
+import "decentraland/common/options.proto";
+
 message HandshakeRequest {
 	bytes auth_chain = 1;
 }
@@ -15,7 +17,6 @@ message ClientMessage {
   oneof message {
     HandshakeRequest handshake = 1;
     PlayerStateFull player_state_full = 2;
-    PlayerStateDelta player_state_delta = 3;
   }
 }
 
@@ -23,7 +24,7 @@ message ServerMessage {
   oneof message {
       HandshakeResponse handshake = 1;
       PlayerStateFull player_state_full = 2;
-      PlayerStateDelta player_state_delta = 3;
+      PlayerStateDeltaTier0 player_state_delta = 3;
       PlayerJoined player_joined = 4;
   }
 }
@@ -64,7 +65,7 @@ message PlayerState {
   GlideState glide_state = 12;
 }
 
-message PlayerStateDelta {
+message PlayerStateDeltaTier0 {
   uint32 subject_id = 1;
   uint32 new_seq = 2;
   uint32 server_tick = 3;
@@ -77,11 +78,11 @@ message PlayerStateDelta {
   optional uint32 velocity_y = 8;
   optional uint32 velocity_z = 9;
 
-  optional uint32 rotation_y = 10;
+  optional uint32 rotation_y = 10 [(decentraland.common.quantized) = { min:  0,  max:   360.0, bits: 7 }];
   optional uint32 movement_blend = 11;
   optional uint32 slide_blend = 12;
-  optional uint32 head_yaw = 13;
-  optional uint32 head_pitch = 14;
+  optional uint32 head_yaw = 13 [(decentraland.common.quantized) = { min:  0,  max:   360.0, bits: 7 }];
+  optional uint32 head_pitch = 14 [(decentraland.common.quantized) = { min:  0,  max:   180.0, bits: 6 }];
 
   uint32 state_flags = 15;
 }
