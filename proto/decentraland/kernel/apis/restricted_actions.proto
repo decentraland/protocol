@@ -2,6 +2,7 @@ syntax = "proto3";
 package decentraland.kernel.apis;
 
 import "decentraland/common/vectors.proto";
+import "decentraland/sdk/components/common/avatar_mask.proto";
 
 message MovePlayerToRequest {
   decentraland.common.Vector3 new_relative_position = 1;
@@ -16,6 +17,7 @@ message TeleportToRequest {
 
 message TriggerEmoteRequest {
   string predefined_emote = 1;
+  optional AvatarMask mask = 2;
 }
 
 message ChangeRealmRequest {
@@ -40,6 +42,7 @@ message CommsAdapterRequest {
 message TriggerSceneEmoteRequest {
   string src = 1;
   optional bool loop = 2;
+  optional AvatarMask mask = 3;
 }
 
 message SuccessResponse {
