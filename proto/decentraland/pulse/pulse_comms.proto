@@ -28,6 +28,22 @@ message ServerMessage {
   }
 }
 
+enum PlayerAnimationFlags {
+  NONE = 0;
+  GROUNDED = 1;
+  LONG_JUMP = 2;
+  LONG_FALL = 4;
+  FALLING = 8;
+  STUNNED = 16;
+}
+
+enum GlideState {
+  PROP_CLOSED = 0;
+  OPENING_PROP = 1;
+  GLIDING = 2;
+  CLOSING_PROP = 3;
+}
+
 message PlayerState {
   uint32 subject_id = 1;
   uint32 sequence = 2;
@@ -41,10 +57,11 @@ message PlayerState {
   float movement_blend = 7;
   float slide_blend = 8;
 
-  float head_yaw = 9;
-  float head_pitch = 10;
+  optional float head_yaw = 9;
+  optional float head_pitch = 10;
 
   uint32 state_flags = 11;
+  GlideState glide_state = 12;
 }
 
 message PlayerStateDelta {
