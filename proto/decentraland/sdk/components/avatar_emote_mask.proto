@@ -1,7 +1,0 @@
-syntax = "proto3";
-package decentraland.sdk.components;
-
-// Mask for which bones an emote applies to.
-enum AvatarEmoteMask {
-  AEM_UPPER_BODY = 0;
-}
