@@ -86,6 +86,7 @@ message MovementCompressed {
   int32 temporal_data = 1; // bit-compressed: timestamp + animations 
   int64 movement_data = 2; // bit-compressed: position + velocity 
   int32 head_sync_data = 3; // bit-compressed: enabled flags + yaw + pitch
+  int64 point_at_data = 4; // bit-compressed: flags + point coordinates 
 }
 
 message PlayerEmote {
