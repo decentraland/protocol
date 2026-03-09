@@ -5,4 +5,5 @@ package decentraland.sdk.components.common;
 enum AvatarEmoteMask {
   AEM_FULL_BODY = 0;
   AEM_UPPER_BODY = 1;
+  UNRECOGNIZED = -1;
 }
