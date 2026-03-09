@@ -2,12 +2,7 @@ syntax = "proto3";
 package decentraland.kernel.apis;
 
 import "decentraland/common/vectors.proto";
-
-// Mask for which bones an animation applies to.
-enum AvatarEmoteMask {
-  AEM_FULL_BODY = 0;
-  AEM_UPPER_BODY = 1;
-}
+import "decentraland/sdk/components/common/avatar_emote_mask.proto";
 
 message MovePlayerToRequest {
   decentraland.common.Vector3 new_relative_position = 1;
@@ -22,7 +17,7 @@ message TeleportToRequest {
 
 message TriggerEmoteRequest {
   string predefined_emote = 1;
-  optional uint32 mask = 2;
+  optional decentraland.sdk.components.common.AvatarEmoteMask mask = 2;
 }
 
 message ChangeRealmRequest {
@@ -47,7 +42,7 @@ message CommsAdapterRequest {
 message TriggerSceneEmoteRequest {
   string src = 1;
   optional bool loop = 2;
-  optional uint32 mask = 3;
+  optional decentraland.sdk.components.common.AvatarEmoteMask mask = 3;
 }
 
 message SuccessResponse {
