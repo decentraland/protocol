@@ -3,6 +3,12 @@ package decentraland.kernel.apis;
 
 import "decentraland/common/vectors.proto";
 
+// Mask for which bones an animation applies to.
+enum AvatarEmoteMask {
+  AEM_FULL_BODY = 0;
+  AEM_UPPER_BODY = 1;
+}
+
 message MovePlayerToRequest {
   decentraland.common.Vector3 new_relative_position = 1;
   optional decentraland.common.Vector3 camera_target = 2;
