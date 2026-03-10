@@ -92,4 +92,7 @@ service RestrictedActionsService {
 
   // CopyToClipboard copies the provided text into the clipboard
   rpc CopyToClipboard(CopyToClipboardRequest) returns (EmptyResponse) {}
+
+  // StopEmote will stop the current emote
+  rpc StopEmote() returns (SuccessResponse) {}
 }
