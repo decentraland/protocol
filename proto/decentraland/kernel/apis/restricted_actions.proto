@@ -48,7 +48,17 @@ message SuccessResponse {
 
 message TriggerEmoteResponse { }
 
-message MovePlayerToResponse { 
+message MovePlayerToResponse {
+  bool success = 1;
+}
+
+message WalkPlayerToRequest {
+  decentraland.common.Vector3 new_relative_position = 1;
+  float stop_threshold = 2;
+  optional float timeout = 3; // max seconds before the request is failed; not passed to the movement scene
+}
+
+message WalkPlayerToResponse {
   bool success = 1;
 }
 
@@ -78,6 +88,12 @@ service RestrictedActionsService {
   // If 'duration' field is used in the request, the success response depends on the
   // whole interpolation being completed or interrupted (e.g: by input movement)
   rpc MovePlayerTo(MovePlayerToRequest) returns (MovePlayerToResponse) {}
+
+  // WalkPlayerTo will walk the player to a position relative to the current scene,
+  // managed by the movement controller scene. Returns success when the player reaches
+  // within stop_threshold distance, or false if the path is blocked, the player gets
+  // stuck, the player interrupts the walk with manual input, or the optional timeout expires.
+  rpc WalkPlayerTo(WalkPlayerToRequest) returns (WalkPlayerToResponse) {}
 
   // TeleportTo will move the user to the specified world LAND parcel coordinates
   rpc TeleportTo(TeleportToRequest) returns (TeleportToResponse) {}
