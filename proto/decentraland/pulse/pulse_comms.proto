@@ -18,6 +18,7 @@ message ClientMessage {
   oneof message {
     HandshakeRequest handshake = 1;
     PlayerStateInput input = 2;
+    ResyncRequest resync = 3;
   }
 }
 
@@ -27,6 +28,7 @@ message ServerMessage {
       PlayerStateFull player_state_full = 2;
       PlayerStateDeltaTier0 player_state_delta = 3;
       PlayerJoined player_joined = 4;
+      PlayerLeft player_left = 5;
   }
 }
 
@@ -100,6 +102,7 @@ message PlayerStateDeltaTier0 {
   optional GlideState glide_state = 17;
 }
 
+// Full State is sent to the client when it is out of sync, and can't recover with a diff only
 message PlayerStateFull {
   uint32 subject_id = 1;
   uint32 sequence = 2;
@@ -116,4 +119,12 @@ message PlayerJoined {
 // Notification to the client, that a peer has left, it can mean disconnection or leaving the area of interest
 message PlayerLeft {
   uint32 subject_id = 1;
+}
+
+// Client sends resync request if it has a gap in the known sequences and, thus, can't apply a delta.
+// It's sent reliably to prevent further desynchronization
+message ResyncRequest {
+  uint32 subject_id = 1;
+  // highest seq the client actually has for this subject
+  uint32 known_seq = 2;
 }
