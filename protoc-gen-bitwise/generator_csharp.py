@@ -47,6 +47,11 @@ def _format_float(value: float) -> str:
     return text + 'f'
 
 
+def _format_step(step: float) -> str:
+    """Format a quantization step size for display in a doc comment (e.g. ≈ 0.003)."""
+    return f'\u2248 {step:.6g}'
+
+
 # ---------------------------------------------------------------------------
 # Per-message code generation
 # ---------------------------------------------------------------------------
@@ -61,7 +66,7 @@ def _gen_message(msg_proto, indent: str = '    ') -> list[str] | None:
     Returns a list of lines (without trailing newline) or None if the message
     has no quantized uint32 fields.
     """
-    props: list[tuple[str, str, str, int]] = []  # (prop_name, mn, mx, bits)
+    props: list[tuple[str, str, str, int, float]] = []  # (prop_name, mn, mx, bits, step)
 
     for field in msg_proto.field:
         # Repeated/map fields are not supported
@@ -76,11 +81,14 @@ def _gen_message(msg_proto, indent: str = '    ') -> list[str] | None:
         if quantized is None:
             continue
 
+        step = (quantized.max - quantized.min) / ((1 << quantized.bits) - 1)
+
         props.append((
             _snake_to_pascal(field.name),
             _format_float(quantized.min),
             _format_float(quantized.max),
             quantized.bits,
+            step,
         ))
 
     if not props:
@@ -92,10 +100,11 @@ def _gen_message(msg_proto, indent: str = '    ') -> list[str] | None:
     lines.append(f'public partial class {msg_proto.name}')
     lines.append('{')
 
-    for prop_name, mn, mx, bits in props:
+    for prop_name, mn, mx, bits, step in props:
         backing = '_' + prop_name[0].lower() + prop_name[1:]
         backings.append(backing)
         lines.append(f'{i}private float? {backing};')
+        lines.append(f'{i}/// <summary>Float accessor for <see cref="{prop_name}"/>. Range [{mn}, {mx}], {bits} bits, step {_format_step(step)}.</summary>')
         lines.append(f'{i}public float {prop_name}Quantized')
         lines.append(f'{i}{{')
         lines.append(f'{i}{i}get => {backing} ??= Quantize.Decode({prop_name}, {mn}, {mx}, {bits});')

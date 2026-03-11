@@ -52,41 +52,52 @@ message PlayerStateInput {
 }
 
 message PlayerState {
-  decentraland.common.Vector3 position = 1;
-  decentraland.common.Vector3 velocity = 2;
+  uint32 parcel_index = 1;
+  
+  decentraland.common.Vector3 position = 2;
+  decentraland.common.Vector3 velocity = 3;
 
-  float rotation_y = 3;
+  float rotation_y = 4;
 
-  float movement_blend = 4;
-  float slide_blend = 5;
+  float movement_blend = 5;
+  float slide_blend = 6;
 
-  optional float head_yaw = 6;
-  optional float head_pitch = 7;
+  optional float head_yaw = 7;
+  optional float head_pitch = 8;
 
-  uint32 state_flags = 8;
-  GlideState glide_state = 9;
+  uint32 state_flags = 9;
+  GlideState glide_state = 10;
 }
 
 message PlayerStateDeltaTier0 {
   uint32 subject_id = 1;
   uint32 new_seq = 2;
   uint32 server_tick = 3;
+  
+  // While the player doesn't cross the parcel, this field is omitted from diff
+  optional uint32 parcel_index = 4;
 
-  optional uint32 position_x = 4;
-  optional uint32 position_y = 5;
-  optional uint32 position_z = 6;
+  // X position inside the parcel
+  optional uint32 position_x = 5 [(decentraland.common.quantized) = { min:  0,  max:   16, bits: 8 }];
+  
+  // Y position
+  optional uint32 position_y = 6 [(decentraland.common.quantized) = { min:  0,  max:   200, bits: 13 }];
+  
+  // Z position inside the parcel
+  optional uint32 position_z = 7 [(decentraland.common.quantized) = { min:  0,  max:   16, bits: 8 }];
 
-  optional uint32 velocity_x = 7;
-  optional uint32 velocity_y = 8;
-  optional uint32 velocity_z = 9;
+  optional uint32 velocity_x = 8 [(decentraland.common.quantized) = { min:  -50,  max:   50, bits: 8 }];
+  optional uint32 velocity_y = 9 [(decentraland.common.quantized) = { min:  -50,  max:   50, bits: 8 }];
+  optional uint32 velocity_z = 10 [(decentraland.common.quantized) = { min:  -50,  max:   50, bits: 8 }];
 
-  optional uint32 rotation_y = 10 [(decentraland.common.quantized) = { min:  0,  max:   360.0, bits: 7 }];
-  optional uint32 movement_blend = 11;
-  optional uint32 slide_blend = 12;
-  optional uint32 head_yaw = 13 [(decentraland.common.quantized) = { min:  0,  max:   360.0, bits: 7 }];
-  optional uint32 head_pitch = 14 [(decentraland.common.quantized) = { min:  0,  max:   180.0, bits: 6 }];
+  optional uint32 rotation_y = 11 [(decentraland.common.quantized) = { min:  0,  max:   360.0, bits: 7 }];
+  optional uint32 movement_blend = 12 [(decentraland.common.quantized) = { min:  0,  max:   1, bits: 4 }];
+  optional uint32 slide_blend = 13 [(decentraland.common.quantized) = { min:  0,  max:   1, bits: 4 }];
+  optional uint32 head_yaw = 14 [(decentraland.common.quantized) = { min:  0,  max:   360.0, bits: 7 }];
+  optional uint32 head_pitch = 15 [(decentraland.common.quantized) = { min:  0,  max:   180.0, bits: 6 }];
 
-  uint32 state_flags = 15;
+  optional uint32 state_flags = 16;
+  optional GlideState glide_state = 17;
 }
 
 message PlayerStateFull {
@@ -96,7 +107,13 @@ message PlayerStateFull {
   PlayerState state = 4;
 }
 
+// Notification to the client, that a peer has joined, it can mean connection or entering the area of interest, it's up to the server to decide 
 message PlayerJoined {
   string user_id = 1;
   PlayerStateFull state = 2;
+}
+
+// Notification to the client, that a peer has left, it can mean disconnection or leaving the area of interest
+message PlayerLeft {
+  uint32 subject_id = 1;
 }
