@@ -7,6 +7,7 @@ import "decentraland/common/vectors.proto";
 
 message HandshakeRequest {
 	bytes auth_chain = 1;
+  int32 profile_version = 2;
 }
 
 message HandshakeResponse {
@@ -14,11 +15,23 @@ message HandshakeResponse {
   optional string error = 2;
 }
 
+// Similarly to the LiveKit pipeline, a peer announces the version of its profile but
+// it only does it when it's changed as it's sent reliably and stored on the server for other peers
+message ProfileVersionAnnouncement {
+  int32 version = 1;
+}
+
+message PlayerProfileVersionsAnnounced {
+  uint32 subject_id = 1;
+  int32 version = 2;
+}
+
 message ClientMessage {
   oneof message {
     HandshakeRequest handshake = 1;
     PlayerStateInput input = 2;
     ResyncRequest resync = 3;
+    ProfileVersionAnnouncement profile_announcement = 4;
   }
 }
 
@@ -29,6 +42,7 @@ message ServerMessage {
       PlayerStateDeltaTier0 player_state_delta = 3;
       PlayerJoined player_joined = 4;
       PlayerLeft player_left = 5;
+      PlayerProfileVersionsAnnounced player_profile_version_announced = 6;
   }
 }
 
@@ -54,7 +68,7 @@ message PlayerStateInput {
 }
 
 message PlayerState {
-  uint32 parcel_index = 1;
+  int32 parcel_index = 1;
   
   decentraland.common.Vector3 position = 2;
   decentraland.common.Vector3 velocity = 3;
@@ -77,7 +91,7 @@ message PlayerStateDeltaTier0 {
   uint32 server_tick = 3;
   
   // While the player doesn't cross the parcel, this field is omitted from diff
-  optional uint32 parcel_index = 4;
+  optional int32 parcel_index = 4;
 
   // X position inside the parcel
   optional uint32 position_x = 5 [(decentraland.common.quantized) = { min:  0,  max:   16, bits: 8 }];
@@ -113,7 +127,8 @@ message PlayerStateFull {
 // Notification to the client, that a peer has joined, it can mean connection or entering the area of interest, it's up to the server to decide 
 message PlayerJoined {
   string user_id = 1;
-  PlayerStateFull state = 2;
+  int32 profile_version = 2;
+  PlayerStateFull state = 3;
 }
 
 // Notification to the client, that a peer has left, it can mean disconnection or leaving the area of interest
