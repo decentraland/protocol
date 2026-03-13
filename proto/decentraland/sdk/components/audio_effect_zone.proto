@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+import "decentraland/common/vectors.proto";
+
+option (common.ecs_component_id) = 1073;
+
+// The AudioEffectZone component can be attached to an Entity to define a region of space
+// where audio effects are applied to sound sources (avatars, AudioSource) inside the zone.
+//
+// The Entity's Transform position determines the center-point of the region, while its size
+// is given as a vector in the `area` property below. The Transform rotation is applied, but
+// the scale is ignored.
+
+message PBAudioEffectZone {
+  decentraland.common.Vector3 area = 1; // The 3D size of the effect region.
+
+  oneof effect {
+    SilenceEffect silence = 10;
+  }
+
+  message SilenceEffect {} // Mutes all audio sources inside the zone.
+}
