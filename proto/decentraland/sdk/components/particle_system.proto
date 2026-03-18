@@ -54,6 +54,7 @@ message PBParticleSystem {
   // --- Simulation ---
   optional bool loop = 24;     // default = true. Loop the emission cycle.
   optional bool prewarm = 25;  // default = false. Start as if already simulated for one full loop cycle. Requires loop = true.
+  optional SimulationSpace simulation_space = 27; // default = PSS_LOCAL. Controls whether particles simulate in local or world space.
 
   // --- Limit Velocity Over Lifetime ---
   optional LimitVelocity limit_velocity = 26; // Clamps particle speed over its lifetime.
@@ -82,7 +83,7 @@ message PBParticleSystem {
     uint32 tiles_y = 2;      // Number of rows in the sprite sheet.
     uint32 start_frame = 3;  // First frame index (inclusive).
     uint32 end_frame = 4;    // Last frame index (inclusive). 0 = use all frames.
-    optional float cycles_per_lifetime = 5; // default = 1. How many animation cycles to play over a particle's lifetime.
+    optional float frames_per_second = 5; // default = 30. Playback speed in frames per second.
   }
 
   // Clamps particle speed over lifetime.
@@ -120,5 +121,10 @@ message PBParticleSystem {
     PS_PLAYING = 0; // Particle system is emitting and simulating.
     PS_PAUSED = 1;  // Simulation is frozen; no new particles are emitted.
     PS_STOPPED = 2; // Simulation stopped and existing particles cleared.
+  }
+
+  enum SimulationSpace {
+    PSS_LOCAL = 0; // Particles move with the entity transform.
+    PSS_WORLD = 1; // Particles stay in world position after emission.
   }
 }
