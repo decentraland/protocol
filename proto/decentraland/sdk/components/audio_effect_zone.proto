@@ -5,7 +5,7 @@ package decentraland.sdk.components;
 import "decentraland/sdk/components/common/id.proto";
 import "decentraland/common/vectors.proto";
 
-option (common.ecs_component_id) = 1073;
+option (common.ecs_component_id) = 1217;
 
 // The AudioEffectZone component can be attached to an Entity to define a region of space
 // where audio effects are applied to sound sources (avatars, AudioSource) inside the zone.
@@ -16,10 +16,41 @@ option (common.ecs_component_id) = 1073;
 
 message PBAudioEffectZone {
   decentraland.common.Vector3 area = 1; // The 3D size of the effect region.
-
+  
   oneof effect {
     SilenceEffect silence = 10;
+    DeSpatializationEffect despatialize = 11;
+    AmplificationEffect amplify = 12;
+    ReverbEffect reverb = 13;
+    EchoEffect echo = 14;
   }
 
-  message SilenceEffect {} // Mutes all audio sources inside the zone.
+  // All audio sources will be muted while Listener is in zone.
+  message SilenceEffect {
+    optional string exclude_ids = 1;
+  } 
+  
+  message DeSpatializationEffect {} // Removes spatialization of the audio source inside.
+  
+  message AmplificationEffect {
+    optional float volume_multiplier = 1;    // default 2.0
+    optional float distance_multiplier = 2;  // default 2.0
+  }
+  
+  message EchoEffect {}
+  
+  message ReverbEffect {
+    optional ReverbPreset preset = 1;
+  }
+
+  message PitchEffect {
+    optional float amount = 1;    // default 2.0
+  }
+  
+  enum ReverbPreset {
+    RP_ROOM = 0;
+    RP_ARENA = 1;
+    RP_CAVE = 2;
+    RP_AUDITOTRIUM = 3;
+  }
 }
