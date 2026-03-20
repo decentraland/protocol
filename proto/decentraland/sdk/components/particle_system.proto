@@ -27,6 +27,7 @@ message PBParticleSystem {
   // --- Rotation ---
   optional FloatRange initial_rotation = 9;      // default = {0, 0}. Initial rotation in degrees, randomized between start and end.
   optional FloatRange rotation_over_time = 10;   // default = {0, 0}. Angular velocity in degrees/sec, lerped over lifetime.
+  optional bool face_travel_direction = 28; // default = false. Particles orient along their velocity direction.
 
   // --- Color ---
   optional ColorRange initial_color = 11;    // default = {white, white}. Particle color at spawn, randomized between start and end.
@@ -38,7 +39,7 @@ message PBParticleSystem {
   // --- Rendering ---
   optional decentraland.common.Texture texture = 14; // Particle texture. default = null (plain white quad).
   optional BlendMode blend_mode = 15;                // default = PSB_ALPHA
-  optional bool billboard = 16;                      // default = true. Particles always face the camera.
+  reserved 16; // Reserved for future Billboard property.
 
   // --- Sprite Sheet Animation ---
   optional SpriteSheetAnimation sprite_sheet = 17;
