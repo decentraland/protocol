@@ -74,12 +74,18 @@ message Movement {
       GLIDING = 2;
       CLOSING_PROP = 3;
   }
+  // point-at
+  float point_at_x = 25;
+  float point_at_y = 26;
+  float point_at_z = 27;
+  bool is_pointing_at = 28;
 }
 
 message MovementCompressed {
   int32 temporal_data = 1; // bit-compressed: timestamp + animations 
   int64 movement_data = 2; // bit-compressed: position + velocity 
   int32 head_sync_data = 3; // bit-compressed: enabled flags + yaw + pitch
+  int32 point_at_data = 4; // bit-compressed: flag + point coordinates
 }
 
 message PlayerEmote {
