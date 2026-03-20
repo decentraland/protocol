@@ -32,6 +32,8 @@ message ClientMessage {
     PlayerStateInput input = 2;
     ResyncRequest resync = 3;
     ProfileVersionAnnouncement profile_announcement = 4;
+    EmoteStart emote_start = 5;
+    EmoteStop emote_stop = 6;
   }
 }
 
@@ -43,6 +45,8 @@ message ServerMessage {
       PlayerJoined player_joined = 4;
       PlayerLeft player_left = 5;
       PlayerProfileVersionsAnnounced player_profile_version_announced = 6;
+      EmoteStarted emote_started = 7;
+      EmoteStopped emote_stopped = 8;
   }
 }
 
@@ -142,4 +146,38 @@ message ResyncRequest {
   uint32 subject_id = 1;
   // highest seq the client actually has for this subject
   uint32 known_seq = 2;
+}
+
+// Client → Server. Client requests to start an emote.
+// Client stops sending MovementInput while emoting.
+message EmoteStart {
+  string emote_id = 1;
+}
+
+// Client → Server. Client requests to stop a looping emote.
+// One-shot emotes are terminated by the server timer.
+message EmoteStop {
+}
+
+enum EmoteStopReason {
+  COMPLETED = 0;  // one-shot timer expired on the server
+  CANCELLED = 1;  // client sent EmoteStop (looping emotes)
+}
+
+// Server → All Observers
+// Full player state is piggybacked to ensure the emote is played in the right place.
+// Observers use server_tick to scrub animation forward by transit latency.
+message EmoteStarted {
+  uint32 subject_id = 1;
+  uint32 server_tick = 2;
+  string emote_id = 3;
+  PlayerState player_state = 4;
+}
+
+// Server → All Observers
+// Client resumes MovementInput only after receiving this.
+message EmoteStopped {
+  uint32 subject_id = 1;
+  uint32 server_tick = 2;
+  EmoteStopReason reason = 3;
 }
