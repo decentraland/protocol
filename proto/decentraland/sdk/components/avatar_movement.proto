@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+import "decentraland/common/vectors.proto";
+
+option (common.ecs_component_id) = 1501;
+
+message PBAvatarMovement {
+  decentraland.common.Vector3 velocity = 1;
+  float orientation = 2;                                    // 0-360, we don't allow pitch/roll
+  optional decentraland.common.Vector3 ground_direction = 3;
+  optional bool walk_success = 4;                           // set for one frame when a walk_target ends: true = reached target, false = failed; absent = in progress or no walk
+}
+
+// engine behaviour (uses only capsule shapecasts and GJK closest point for portability):
+// 1: set avatar orientation from movement info -> P1
+// 2: record "ground collider" - nearest collider within threshold distance in ground_direction using avatar collider shapecast
+// 3: update all colliders, record previous transform and new transform.
+// 4: apply ground collider movement: take collider closest point, modify P1 translation and rotation by closest point translation and rotation change -> P2
+// 5: resolve collisions using position-based constraints
+//   initialize constraints to -inf, +inf
+//   repeat
+//       for each collider[i] that collides with the P3+N player:
+//           if closest point = capsule middle (i.e. collider collides with P3 collider but with radius 0), 
+//               ignore / continue
+//           else 
+//               update constraints based on minimum movement to escape collision
+//               e.g. if avatar is 1cm into the floor, constraint_min = max(constraint_min, vec3(0, 0.01, 0))
+//       reposition player to satisfy constraints for each axis:
+//           y: satsify floor before ceiling: new position = max(constraint_min, min(constraint_max, current position))
+//           x and z: if squashed, take average, else satisfy the required constraint
+//           if constraint_min > constraint_max then new position = average(constraint_min, constraint_max) 
+//           else new position = clamp(current position, constraint_min, constraint_max)
+//   while position !~= previous position
+// 6: apply velocity (collide and slide)
+//   disable anything we are initially colliding with
+//   shapecast avatar from position to position + velocity * timestep
+//   on impact:
+//       project velocity onto slide plane (standard "Collide & Slide")
+//       velocity = old velocity - (normal * dot(velocity, normal))
+//       repeat continue with residual velocity and residual time
+// 7: provide AvatarMovementInfo values
+//      actual velocity = (final - P3+N) / timestep
+//      external_velocity = (P3+N - P1) / timestep
