@@ -99,6 +99,7 @@ message PlayerEmote {
   optional bool is_reacting = 8; // to a social emote started by other user
   optional string social_emote_initiator = 9; // wallet address of the user that initiated social emote
   optional string target_avatar = 10; // wallet address of the user whose avatar is the target of a directed emote
+  optional uint32 mask = 11; // mask for which bones an animation applies to.
 }
 
 // Message sent to force an avatar to look at a position
