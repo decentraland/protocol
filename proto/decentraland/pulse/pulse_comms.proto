@@ -1,0 +1,183 @@
+syntax = "proto3";
+
+package decentraland.pulse;
+
+import "decentraland/common/options.proto";
+import "decentraland/common/vectors.proto";
+
+message HandshakeRequest {
+	bytes auth_chain = 1;
+  int32 profile_version = 2;
+}
+
+message HandshakeResponse {
+  bool success = 1;
+  optional string error = 2;
+}
+
+// Similarly to the LiveKit pipeline, a peer announces the version of its profile but
+// it only does it when it's changed as it's sent reliably and stored on the server for other peers
+message ProfileVersionAnnouncement {
+  int32 version = 1;
+}
+
+message PlayerProfileVersionsAnnounced {
+  uint32 subject_id = 1;
+  int32 version = 2;
+}
+
+message ClientMessage {
+  oneof message {
+    HandshakeRequest handshake = 1;
+    PlayerStateInput input = 2;
+    ResyncRequest resync = 3;
+    ProfileVersionAnnouncement profile_announcement = 4;
+    EmoteStart emote_start = 5;
+    EmoteStop emote_stop = 6;
+  }
+}
+
+message ServerMessage {
+  oneof message {
+      HandshakeResponse handshake = 1;
+      PlayerStateFull player_state_full = 2;
+      PlayerStateDeltaTier0 player_state_delta = 3;
+      PlayerJoined player_joined = 4;
+      PlayerLeft player_left = 5;
+      PlayerProfileVersionsAnnounced player_profile_version_announced = 6;
+      EmoteStarted emote_started = 7;
+      EmoteStopped emote_stopped = 8;
+  }
+}
+
+enum PlayerAnimationFlags {
+  NONE = 0;
+  GROUNDED = 1;
+  LONG_JUMP = 2;
+  LONG_FALL = 4;
+  FALLING = 8;
+  STUNNED = 16;
+}
+
+enum GlideState {
+  PROP_CLOSED = 0;
+  OPENING_PROP = 1;
+  GLIDING = 2;
+  CLOSING_PROP = 3;
+}
+
+// Since the server doesn't simulate the scenes state, it trusts the values from the client
+message PlayerStateInput {
+  PlayerState state = 1;
+}
+
+message PlayerState {
+  int32 parcel_index = 1;
+  
+  decentraland.common.Vector3 position = 2;
+  decentraland.common.Vector3 velocity = 3;
+
+  float rotation_y = 4;
+
+  float movement_blend = 5;
+  float slide_blend = 6;
+
+  optional float head_yaw = 7;
+  optional float head_pitch = 8;
+
+  uint32 state_flags = 9;
+  GlideState glide_state = 10;
+}
+
+message PlayerStateDeltaTier0 {
+  uint32 subject_id = 1;
+  uint32 new_seq = 2;
+  uint32 server_tick = 3;
+  
+  // While the player doesn't cross the parcel, this field is omitted from diff
+  optional int32 parcel_index = 4;
+
+  // X position inside the parcel
+  optional uint32 position_x = 5 [(decentraland.common.quantized) = { min:  0,  max:   16, bits: 8 }];
+  
+  // Y position
+  optional uint32 position_y = 6 [(decentraland.common.quantized) = { min:  0,  max:   200, bits: 13 }];
+  
+  // Z position inside the parcel
+  optional uint32 position_z = 7 [(decentraland.common.quantized) = { min:  0,  max:   16, bits: 8 }];
+
+  optional uint32 velocity_x = 8 [(decentraland.common.quantized) = { min:  -50,  max:   50, bits: 8 }];
+  optional uint32 velocity_y = 9 [(decentraland.common.quantized) = { min:  -50,  max:   50, bits: 8 }];
+  optional uint32 velocity_z = 10 [(decentraland.common.quantized) = { min:  -50,  max:   50, bits: 8 }];
+
+  optional uint32 rotation_y = 11 [(decentraland.common.quantized) = { min:  0,  max:   360.0, bits: 7 }];
+  optional uint32 movement_blend = 12 [(decentraland.common.quantized) = { min:  0,  max:   1, bits: 4 }];
+  optional uint32 slide_blend = 13 [(decentraland.common.quantized) = { min:  0,  max:   1, bits: 4 }];
+  optional uint32 head_yaw = 14 [(decentraland.common.quantized) = { min:  0,  max:   360.0, bits: 7 }];
+  optional uint32 head_pitch = 15 [(decentraland.common.quantized) = { min:  0,  max:   180.0, bits: 6 }];
+
+  optional uint32 state_flags = 16;
+  optional GlideState glide_state = 17;
+}
+
+// Full State is sent to the client when it is out of sync, and can't recover with a diff only
+message PlayerStateFull {
+  uint32 subject_id = 1;
+  uint32 sequence = 2;
+  uint32 server_tick = 3;
+  PlayerState state = 4;
+}
+
+// Notification to the client, that a peer has joined, it can mean connection or entering the area of interest, it's up to the server to decide 
+message PlayerJoined {
+  string user_id = 1;
+  int32 profile_version = 2;
+  PlayerStateFull state = 3;
+}
+
+// Notification to the client, that a peer has left, it can mean disconnection or leaving the area of interest
+message PlayerLeft {
+  uint32 subject_id = 1;
+}
+
+// Client sends resync request if it has a gap in the known sequences and, thus, can't apply a delta.
+// It's sent reliably to prevent further desynchronization
+message ResyncRequest {
+  uint32 subject_id = 1;
+  // highest seq the client actually has for this subject
+  uint32 known_seq = 2;
+}
+
+// Client → Server. Client requests to start an emote.
+// Client stops sending MovementInput while emoting.
+message EmoteStart {
+  string emote_id = 1;
+}
+
+// Client → Server. Client requests to stop a looping emote.
+// One-shot emotes are terminated by the server timer.
+message EmoteStop {
+}
+
+enum EmoteStopReason {
+  COMPLETED = 0;  // one-shot timer expired on the server
+  CANCELLED = 1;  // client sent EmoteStop (looping emotes)
+}
+
+// Server → All Observers
+// Full player state is piggybacked to ensure the emote is played in the right place.
+// Observers use server_tick to scrub animation forward by transit latency.
+message EmoteStarted {
+  uint32 subject_id = 1;
+  uint32 server_tick = 2;
+  string emote_id = 3;
+  PlayerState player_state = 4;
+}
+
+// Server → All Observers
+// Client resumes MovementInput only after receiving this.
+message EmoteStopped {
+  uint32 subject_id = 1;
+  uint32 server_tick = 2;
+  EmoteStopReason reason = 3;
+}
