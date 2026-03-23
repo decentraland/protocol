@@ -152,6 +152,7 @@ message ResyncRequest {
 // Client stops sending MovementInput while emoting.
 message EmoteStart {
   string emote_id = 1;
+  optional uint32 duration_ms = 2;
 }
 
 // Client → Server. Client requests to stop a looping emote.
