@@ -160,7 +160,8 @@ message Voice {
 
 message Reaction {                                                                                                        
   int32 emoji_index = 1;
-  float timestamp = 2;                                                                                        
+  float timestamp = 2;
+  int32 count = 3;                                                                                       
 }                                                                                                                         
                                                                                                                             
 message ChatReaction {                                                                                                    
