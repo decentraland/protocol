@@ -3,6 +3,7 @@ syntax = "proto3";
 package decentraland.sdk.components;
 
 import "decentraland/common/colors.proto";
+import "decentraland/common/floats.proto";
 import "decentraland/common/texture.proto";
 import "decentraland/common/vectors.proto";
 import "decentraland/sdk/components/common/id.proto";
@@ -21,20 +22,20 @@ message PBParticleSystem {
   optional decentraland.common.Vector3 additional_force = 6; // Constant force vector applied to each particle (world space).
 
   // --- Size ---
-  optional FloatRange initial_size = 7;     // default = {1, 1}. Particle size at spawn.
-  optional FloatRange size_over_time = 8;   // default = {1, 1}. Particle size lerped from start to end over its lifetime.
+  optional decentraland.common.FloatRange initial_size = 7;     // default = {1, 1}. Particle size at spawn.
+  optional decentraland.common.FloatRange size_over_time = 8;   // default = {1, 1}. Particle size lerped from start to end over its lifetime.
 
   // --- Rotation ---
-  optional FloatRange initial_rotation = 9;      // default = {0, 0}. Initial rotation in degrees, randomized between start and end.
-  optional FloatRange rotation_over_time = 10;   // default = {0, 0}. Angular velocity in degrees/sec, lerped over lifetime.
+  optional decentraland.common.FloatRange initial_rotation = 9;      // default = {0, 0}. Initial rotation in degrees, randomized between start and end.
+  optional decentraland.common.FloatRange rotation_over_time = 10;   // default = {0, 0}. Angular velocity in degrees/sec, lerped over lifetime.
   optional bool face_travel_direction = 28; // default = false. Particles orient along their velocity direction.
 
   // --- Color ---
-  optional ColorRange initial_color = 11;    // default = {white, white}. Particle color at spawn, randomized between start and end.
-  optional ColorRange color_over_time = 12;  // default = {white, white}. Particle color lerped from start to end over its lifetime.
+  optional decentraland.common.ColorRange initial_color = 11;    // default = {white, white}. Particle color at spawn, randomized between start and end.
+  optional decentraland.common.ColorRange color_over_time = 12;  // default = {white, white}. Particle color lerped from start to end over its lifetime.
 
   // --- Velocity ---
-  optional FloatRange initial_velocity_speed = 13; // default = {1, 1}. Initial speed in m/s, randomized between start and end.
+  optional decentraland.common.FloatRange initial_velocity_speed = 13; // default = {1, 1}. Initial speed in m/s, randomized between start and end.
 
   // --- Rendering ---
   optional decentraland.common.Texture texture = 14; // Particle texture. default = null (plain white quad).
@@ -62,21 +63,11 @@ message PBParticleSystem {
 
   // --- Playback ---
   optional PlaybackState playback_state = 22; // default = PS_PLAYING
-  optional uint32 restart_count = 23;         // Increment to trigger a restart (stop+clear+play). LWW-safe restart signal.
+
+  // --- Emission Bursts ---
+  repeated Burst bursts = 29;
 
   // ---- Nested types ----
-
-  // A range of float values. Randomized or lerped between start and end.
-  message FloatRange {
-    float start = 1;
-    float end = 2;
-  }
-
-  // A range of Color4 values. Randomized or lerped between start and end.
-  message ColorRange {
-    decentraland.common.Color4 start = 1;
-    decentraland.common.Color4 end = 2;
-  }
 
   // Sprite sheet (texture atlas) animation settings.
   message SpriteSheetAnimation {
@@ -110,6 +101,15 @@ message PBParticleSystem {
   // Emitter spawns particles from the surface or volume of a box.
   message Box {
     optional decentraland.common.Vector3 size = 1; // default = {1, 1, 1}
+  }
+
+  // Emission burst configuration.
+  message Burst {
+    float time = 1;                // Seconds from start of cycle.
+    uint32 count = 2;             // Particles to emit.
+    optional int32 cycles = 3;    // default = 1. Repeat count (0 = infinite).
+    optional float interval = 4;  // default = 0.01. Seconds between cycles.
+    optional float probability = 5; // default = 1.0. Emission chance [0,1].
   }
 
   enum BlendMode {
