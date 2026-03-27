@@ -73,9 +73,7 @@ message PBParticleSystem {
   message SpriteSheetAnimation {
     uint32 tiles_x = 1;      // Number of columns in the sprite sheet.
     uint32 tiles_y = 2;      // Number of rows in the sprite sheet.
-    uint32 start_frame = 3;  // First frame index (inclusive).
-    uint32 end_frame = 4;    // Last frame index (inclusive). 0 = use all frames.
-    optional float frames_per_second = 5; // default = 30. Playback speed in frames per second.
+    optional float frames_per_second = 3; // default = 30. Playback speed in frames per second.
   }
 
   // Clamps particle speed over lifetime.
