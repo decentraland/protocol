@@ -34,6 +34,7 @@ message ClientMessage {
     ProfileVersionAnnouncement profile_announcement = 4;
     EmoteStart emote_start = 5;
     EmoteStop emote_stop = 6;
+    TeleportRequest teleport = 7;
   }
 }
 
@@ -47,6 +48,7 @@ message ServerMessage {
       PlayerProfileVersionsAnnounced player_profile_version_announced = 6;
       EmoteStarted emote_started = 7;
       EmoteStopped emote_stopped = 8;
+      TeleportPerformed teleported = 9;
   }
 }
 
