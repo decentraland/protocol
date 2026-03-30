@@ -182,3 +182,15 @@ message EmoteStopped {
   uint32 server_tick = 2;
   EmoteStopReason reason = 3;
 }
+
+// Client → Server
+message TeleportRequest {
+  decentraland.common.Vector3 position = 1;
+}
+
+// Server → All Observers
+message TeleportPerformed {
+  uint32 subject_id = 1;
+  uint32 server_tick = 2;
+  decentraland.common.Vector3 position = 3;
+}
