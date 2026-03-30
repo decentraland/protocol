@@ -87,6 +87,8 @@ message PlayerState {
 
   uint32 state_flags = 9;
   GlideState glide_state = 10;
+
+  int32 jump_count = 11;
 }
 
 message PlayerStateDeltaTier0 {
@@ -118,6 +120,8 @@ message PlayerStateDeltaTier0 {
 
   optional uint32 state_flags = 16;
   optional GlideState glide_state = 17;
+
+  optional int32 jump_count = 18;
 }
 
 // Full State is sent to the client when it is out of sync, and can't recover with a diff only
