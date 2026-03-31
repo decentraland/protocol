@@ -95,35 +95,40 @@ message PlayerState {
 
 message PlayerStateDeltaTier0 {
   uint32 subject_id = 1;
-  uint32 new_seq = 2;
-  uint32 server_tick = 3;
+  
+  // Between two consecutive server simulation ticks, the subject may have sent multiple inputs, each incrementing Seq by 1. So
+  // the delta's NewSeq will naturally jump by more than 1 compared to the previous delta — even with zero packet loss.
+  // Without the "BaselineSeq" the client has no way to detect the package loss
+  uint32 baseline_seq = 2;
+  uint32 new_seq = 3;
+  uint32 server_tick = 4;
   
   // While the player doesn't cross the parcel, this field is omitted from diff
-  optional int32 parcel_index = 4;
+  optional int32 parcel_index = 5;
 
   // X position inside the parcel
-  optional uint32 position_x = 5 [(decentraland.common.quantized) = { min:  0,  max:   16, bits: 8 }];
+  optional uint32 position_x = 6 [(decentraland.common.quantized) = { min:  0,  max:   16, bits: 8 }];
   
   // Y position
-  optional uint32 position_y = 6 [(decentraland.common.quantized) = { min:  0,  max:   200, bits: 13 }];
+  optional uint32 position_y = 7 [(decentraland.common.quantized) = { min:  0,  max:   200, bits: 13 }];
   
   // Z position inside the parcel
-  optional uint32 position_z = 7 [(decentraland.common.quantized) = { min:  0,  max:   16, bits: 8 }];
+  optional uint32 position_z = 8 [(decentraland.common.quantized) = { min:  0,  max:   16, bits: 8 }];
 
-  optional uint32 velocity_x = 8 [(decentraland.common.quantized) = { min:  -50,  max:   50, bits: 8 }];
-  optional uint32 velocity_y = 9 [(decentraland.common.quantized) = { min:  -50,  max:   50, bits: 8 }];
-  optional uint32 velocity_z = 10 [(decentraland.common.quantized) = { min:  -50,  max:   50, bits: 8 }];
+  optional uint32 velocity_x = 9 [(decentraland.common.quantized) = { min:  -50,  max:   50, bits: 8 }];
+  optional uint32 velocity_y = 10 [(decentraland.common.quantized) = { min:  -50,  max:   50, bits: 8 }];
+  optional uint32 velocity_z = 11 [(decentraland.common.quantized) = { min:  -50,  max:   50, bits: 8 }];
 
-  optional uint32 rotation_y = 11 [(decentraland.common.quantized) = { min:  0,  max:   360.0, bits: 7 }];
-  optional uint32 movement_blend = 12 [(decentraland.common.quantized) = { min:  0,  max:   3, bits: 5 }];
-  optional uint32 slide_blend = 13 [(decentraland.common.quantized) = { min:  0,  max:   1, bits: 4 }];
-  optional uint32 head_yaw = 14 [(decentraland.common.quantized) = { min:  0,  max:   360.0, bits: 7 }];
-  optional uint32 head_pitch = 15 [(decentraland.common.quantized) = { min:  0,  max:   180.0, bits: 6 }];
+  optional uint32 rotation_y = 12 [(decentraland.common.quantized) = { min:  0,  max:   360.0, bits: 7 }];
+  optional uint32 movement_blend = 13 [(decentraland.common.quantized) = { min:  0,  max:   3, bits: 5 }];
+  optional uint32 slide_blend = 14 [(decentraland.common.quantized) = { min:  0,  max:   1, bits: 4 }];
+  optional uint32 head_yaw = 15 [(decentraland.common.quantized) = { min:  0,  max:   360.0, bits: 7 }];
+  optional uint32 head_pitch = 16 [(decentraland.common.quantized) = { min:  0,  max:   180.0, bits: 6 }];
 
-  optional uint32 state_flags = 16;
-  optional GlideState glide_state = 17;
+  optional uint32 state_flags = 17;
+  optional GlideState glide_state = 18;
 
-  optional int32 jump_count = 18;
+  optional int32 jump_count = 19;
 }
 
 // Full State is sent to the client when it is out of sync, and can't recover with a diff only
