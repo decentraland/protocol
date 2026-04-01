@@ -59,6 +59,8 @@ enum PlayerAnimationFlags {
   LONG_FALL = 4;
   FALLING = 8;
   STUNNED = 16;
+  HEAD_YAW = 32;
+  HEAD_PITCH = 64;
 }
 
 enum GlideState {
