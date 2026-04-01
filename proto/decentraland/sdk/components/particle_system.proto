@@ -26,8 +26,8 @@ message PBParticleSystem {
   optional decentraland.common.FloatRange size_over_time = 8;   // default = {1, 1}. Particle size lerped from start to end over its lifetime.
 
   // --- Rotation ---
-  optional decentraland.common.FloatRange initial_rotation = 9;      // default = {0, 0}. Initial rotation in degrees, randomized between start and end.
-  optional decentraland.common.FloatRange rotation_over_time = 10;   // default = {0, 0}. Angular velocity in degrees/sec, lerped over lifetime.
+  optional decentraland.common.Quaternion initial_rotation = 9;      // default = identity (0,0,0,1). 3D start rotation for each particle.
+  optional decentraland.common.Quaternion rotation_over_time = 10;   // default = identity (0,0,0,1). Per-axis angular velocity as quaternion; converted to Euler XYZ.
   optional bool face_travel_direction = 28; // default = false. Particles orient along their velocity direction.
 
   // --- Color ---
@@ -40,7 +40,7 @@ message PBParticleSystem {
   // --- Rendering ---
   optional decentraland.common.Texture texture = 14; // Particle texture. default = null (plain white quad).
   optional BlendMode blend_mode = 15;                // default = PSB_ALPHA
-  reserved 16; // Reserved for future Billboard property.
+  optional bool billboard = 16;  // default = true
 
   // --- Sprite Sheet Animation ---
   optional SpriteSheetAnimation sprite_sheet = 17;
