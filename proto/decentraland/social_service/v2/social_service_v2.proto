@@ -212,9 +212,15 @@ enum BlockedUsersMessagesVisibilitySetting {
   DO_NOT_SHOW_MESSAGES = 1;
 }
 
+enum SituationReactionsVisibility {
+  SHOW = 0;
+  HIDE = 1;
+}
+
 message SocialSettings {
   PrivateMessagePrivacySetting private_messages_privacy = 1;
   BlockedUsersMessagesVisibilitySetting blocked_users_messages_visibility = 2;
+  SituationReactionsVisibility show_situation_reactions = 3;
 }
 
 message GetSocialSettingsResponse {
@@ -231,6 +237,7 @@ message GetSocialSettingsResponse {
 message UpsertSocialSettingsPayload {
   optional PrivateMessagePrivacySetting private_messages_privacy = 1;
   optional BlockedUsersMessagesVisibilitySetting blocked_users_messages_visibility = 2;
+  optional SituationReactionsVisibility show_situation_reactions = 3;
 }
 
 message UpsertSocialSettingsResponse {
