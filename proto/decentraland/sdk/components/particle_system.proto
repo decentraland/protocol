@@ -18,7 +18,7 @@ message PBParticleSystem {
   optional float lifetime = 4;          // default = 5. Particle lifetime in seconds.
 
   // --- Motion ---
-  optional float gravity = 5;           // default = 0. Unity gravity modifier (multiplier of Physics.gravity).
+  optional float gravity = 5;           // default = 0. Multiplier of Explorer's physics engine Gravity (normally -9.81)
   optional decentraland.common.Vector3 additional_force = 6; // Constant force vector applied to each particle (world space).
 
   // --- Size ---
