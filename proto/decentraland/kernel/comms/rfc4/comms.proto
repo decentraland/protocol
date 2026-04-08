@@ -18,7 +18,7 @@ message Packet {
     PlayerEmote player_emote = 9;
     SceneEmote scene_emote = 10;
     MovementCompressed movement_compressed = 12;
-	  LookAtPosition look_at_position = 13;
+    LookAtPosition look_at_position = 13;
     Reaction reaction = 14;
     ChatReaction chat_reaction = 15;
   }
@@ -158,14 +158,14 @@ message Voice {
   }
 }
 
-message Reaction {                                                                                                        
+message Reaction {
   int32 emoji_index = 1;
   float timestamp = 2;
-  int32 count = 3;                                                                                       
-}                                                                                                                         
-                                                                                                                            
-message ChatReaction {                                                                                                    
-  int32 emoji_index = 1;                                                                                                
+  int32 count = 3;
+}
+
+message ChatReaction {
+  int32 emoji_index = 1;
   string message_id = 2;
-  string address = 3;                                                                                                     
-}       
+  string address = 3;
+}
