@@ -183,9 +183,10 @@ enum EmoteStopReason {
 // Observers use server_tick to scrub animation forward by transit latency.
 message EmoteStarted {
   uint32 subject_id = 1;
-  uint32 server_tick = 2;
-  string emote_id = 3;
-  PlayerState player_state = 4;
+  uint32 sequence = 2;
+  uint32 server_tick = 3;
+  string emote_id = 4;
+  PlayerState player_state = 5;
 }
 
 // Server → All Observers
