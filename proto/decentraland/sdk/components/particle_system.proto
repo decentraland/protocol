@@ -65,7 +65,8 @@ message PBParticleSystem {
   optional PlaybackState playback_state = 22; // default = PS_PLAYING
 
   // --- Emission Bursts ---
-  repeated Burst bursts = 29;
+  reserved 29; // deprecated 'repeated Burst bursts = 29'
+  optional Bursts bursts = 30;
 
   // ---- Nested types ----
 
@@ -102,6 +103,10 @@ message PBParticleSystem {
   }
 
   // Emission burst configuration.
+  message Bursts {
+    repeated Burst values = 1;
+  }
+  
   message Burst {
     float time = 1;                // Seconds from start of cycle.
     uint32 count = 2;             // Particles to emit.
