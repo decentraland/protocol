@@ -2,6 +2,7 @@ syntax = "proto3";
 package decentraland.social_service.v2;
 
 import "google/protobuf/empty.proto";
+import "decentraland/common/colors.proto";
 import "decentraland/social_service/errors.proto";
 
 // Types
@@ -12,6 +13,7 @@ message FriendProfile {
   string name = 2;
   bool has_claimed_name = 3;
   string profile_picture_url = 4;
+  optional decentraland.common.Color3 name_color = 5;
 }
 
 message BlockedUserProfile {
@@ -20,6 +22,7 @@ message BlockedUserProfile {
   bool has_claimed_name = 3;
   string profile_picture_url = 4;
   optional int64 blocked_at = 5;
+  optional decentraland.common.Color3 name_color = 6;
 }
 
 message Pagination {
@@ -209,9 +212,15 @@ enum BlockedUsersMessagesVisibilitySetting {
   DO_NOT_SHOW_MESSAGES = 1;
 }
 
+enum SituationReactionsVisibility {
+  SHOW = 0;
+  HIDE = 1;
+}
+
 message SocialSettings {
   PrivateMessagePrivacySetting private_messages_privacy = 1;
   BlockedUsersMessagesVisibilitySetting blocked_users_messages_visibility = 2;
+  SituationReactionsVisibility show_situation_reactions = 3;
 }
 
 message GetSocialSettingsResponse {
@@ -228,6 +237,7 @@ message GetSocialSettingsResponse {
 message UpsertSocialSettingsPayload {
   optional PrivateMessagePrivacySetting private_messages_privacy = 1;
   optional BlockedUsersMessagesVisibilitySetting blocked_users_messages_visibility = 2;
+  optional SituationReactionsVisibility show_situation_reactions = 3;
 }
 
 message UpsertSocialSettingsResponse {
