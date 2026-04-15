@@ -191,10 +191,13 @@ message EmoteStarted {
 
 // Server → All Observers
 // Client resumes MovementInput only after receiving this.
+// Carries full PlayerState so the client can snap to the correct position on resume.
 message EmoteStopped {
   uint32 subject_id = 1;
   uint32 server_tick = 2;
   EmoteStopReason reason = 3;
+  uint32 sequence = 4;
+  PlayerState player_state = 5;
 }
 
 // Client → Server
