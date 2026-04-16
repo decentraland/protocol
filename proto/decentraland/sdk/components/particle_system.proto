@@ -65,8 +65,7 @@ message PBParticleSystem {
   optional PlaybackState playback_state = 22; // default = PS_PLAYING
 
   // --- Emission Bursts ---
-  reserved 29; // deprecated 'repeated Burst bursts = 29'
-  optional BurstConfiguration burst_configuration = 30;
+  optional BurstConfiguration bursts = 29;
 
   // ---- Nested types ----
 
