@@ -20,6 +20,35 @@ message VideoTracksActiveStreamsData {
     VideoTrackSourceType source_type = 3;
 }
 
+message SubscribeToTopicRequest {
+  string topic = 1;
+}
+
+message SubscribeToTopicResponse {}
+
+message PublishDataRequest {
+  string topic = 1;
+  string data = 2;
+}
+
+message PublishDataResponse {}
+
+message ConsumeMessagesRequest {
+  string topic = 1;
+}
+
+message ConsumeMessages {
+  string sender = 1;
+  string data = 2;
+}
+
+message ConsumeMessagesResponse {
+  repeated ConsumeMessages messages = 1;
+}
+
 service CommsApiService {
   rpc GetActiveVideoStreams(VideoTracksActiveStreamsRequest) returns (VideoTracksActiveStreamsResponse) {}
+  rpc SubscribeToTopic(SubscribeToTopicRequest) returns (SubscribeToTopicResponse) {}
+  rpc PublishData(PublishDataRequest) returns (PublishDataResponse) {}
+  rpc ConsumeMessages(ConsumeMessagesRequest) returns (ConsumeMessagesResponse) {}
 }
