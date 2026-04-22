@@ -200,10 +200,13 @@ message EmoteStopped {
   PlayerState player_state = 5;
 }
 
-// Client → Server
+// Client → Server. Also announces the peer's realm; peers in different realms never see each
+// other. Must be the first gameplay message after handshake. Same-realm re-teleports are valid.
 message TeleportRequest {
   int32 parcel_index = 1;
   decentraland.common.Vector3 position = 2;
+  // Non-empty realm identifier. Rejected if empty.
+  string realm = 3;
 }
 
 // Server → All Observers
