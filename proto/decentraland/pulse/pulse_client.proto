@@ -8,6 +8,16 @@ import "decentraland/pulse/pulse_shared.proto";
 message HandshakeRequest {
 	bytes auth_chain = 1;
   int32 profile_version = 2;
+  optional PlayerInitialState initial_state = 3;
+}
+
+// Describes the initial state of the player if (re-)connected in the middle of the session
+message PlayerInitialState {
+  PlayerState state = 1;
+  optional string emote_id = 2;
+  optional uint32 emote_duration_ms = 3;
+  // Indicates how many milliseconds ago the emote was started
+  optional uint32 emote_start_offset_ms = 4;
 }
 
 // Similarly to the LiveKit pipeline, a peer announces the version of its profile but
