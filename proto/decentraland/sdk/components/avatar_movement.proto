@@ -12,6 +12,20 @@ message PBAvatarMovement {
   float orientation = 2;                                    // 0-360, we don't allow pitch/roll
   optional decentraland.common.Vector3 ground_direction = 3;
   optional bool walk_success = 4;                           // set for one frame when a walk_target ends: true = reached target, false = failed; absent = in progress or no walk
+  optional MovementAnimation animation = 5;                 // if set, the engine plays this animation instead of selecting one from velocity heuristics
+}
+
+// Describes the animation the movement scene wants the avatar to play.
+// One GLB = one clip (following the scene-emote convention: single clip, or a clip named with `_Avatar` suffix).
+// When absent the engine falls back to its built-in velocity-based selection (walk/run/jump/idle).
+message MovementAnimation {
+  string src = 1;                                           // scene-relative path to the gltf/glb asset (resolved via the scene content map)
+  bool loop = 2;                                            // whether the clip repeats once it reaches the end
+  float speed = 3;                                          // playback speed multiplier (1.0 = clip's native rate)
+  bool idle = 4;                                            // true: a triggerSceneEmote may take over; false: emotes are suppressed while this animation plays
+  optional float transition_seconds = 5;                    // cross-fade duration when `src` changes; defaults to 0.2 when unset. Not applied to loop/speed/idle changes.
+  optional float playback_time = 6;                         // if set, the engine seeks to this position (in seconds) this frame. Clear on subsequent frames to allow normal playback. The scene can read `AvatarAnimationState.playback_time` first to decide.
+  repeated string sounds = 7;                               // scene-relative paths to audio clips (.mp3/.ogg) to play this frame on the avatar audio bus. Fire-and-forget: each listed clip plays once per frame it appears; leaving a clip set for multiple frames re-triggers it. No stop mechanism. Use `AvatarAnimationState.playback_time` to trigger sounds at the right point in the clip (e.g. foot plants).
 }
 
 // engine behaviour (uses only capsule shapecasts and GJK closest point for portability):
