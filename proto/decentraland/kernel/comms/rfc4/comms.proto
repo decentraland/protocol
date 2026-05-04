@@ -21,6 +21,7 @@ message Packet {
     LookAtPosition look_at_position = 13;
     Reaction reaction = 14;
     ChatReaction chat_reaction = 15;
+    FacialExpression facial_expression = 16;
   }
   uint32 protocol_version = 11;
 }
@@ -173,4 +174,15 @@ message ChatReaction {
   int32 emoji_index = 1;
   string message_id = 2;
   string address = 3;
+}
+
+// Facial expression state per ADR-317.
+// Each field is a 0-based tile index into the corresponding 4x4 facial-feature atlas.
+// Values outside 0-15 MUST be ignored by receivers in this version.
+// Edge-triggered: senders emit only when an index changes; not periodic.
+// Local-only blink and lip-sync are NOT part of this message.
+message FacialExpression {
+  uint32 eyebrows_index = 1;
+  uint32 eyes_index = 2;
+  uint32 mouth_index = 3;
 }
