@@ -26,5 +26,5 @@ message PBUiCanvasInformation {
   // platform UI (for example: the notch, status bar, home indicator, or rounded
   // corners on mobile). scenes should avoid placing critical UI within these
   // insets to ensure it is not occluded. on desktop this is typically (0, 0, 0, 0).
-  decentraland.common.BorderRect screen_inset_area = 5;
+  optional decentraland.common.BorderRect screen_inset_area = 5;
 }
