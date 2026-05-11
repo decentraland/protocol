@@ -51,6 +51,14 @@ message PlayerStateDeltaTier0 {
   optional GlideState glide_state = 18;
 
   optional int32 jump_count = 19;
+
+  // Hit position the player is pointing at, expressed relative to `position`.
+  // Only meaningful when POINTING_AT is set in `state_flags`. Range matches the
+  // gameplay raycast cutoff (CharacterControllerSettings.PointAtMaxDistance = 100m);
+  // 7 bits keep each axis in a 1-byte varint at the cost of ~1.6m step size.
+  optional uint32 point_at_x = 20 [(decentraland.common.quantized) = { min: -100.0, max: 100.0, bits: 7 }];
+  optional uint32 point_at_y = 21 [(decentraland.common.quantized) = { min: -100.0, max: 100.0, bits: 7 }];
+  optional uint32 point_at_z = 22 [(decentraland.common.quantized) = { min: -100.0, max: 100.0, bits: 7 }];
 }
 
 // Full State is sent to the client when it is out of sync, and can't recover with a diff only

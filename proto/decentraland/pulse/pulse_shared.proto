@@ -13,6 +13,7 @@ enum PlayerAnimationFlags {
   STUNNED = 16;
   HEAD_YAW = 32;
   HEAD_PITCH = 64;
+  POINTING_AT = 128;
 }
 
 enum GlideState {
@@ -40,4 +41,8 @@ message PlayerState {
   GlideState glide_state = 10;
 
   int32 jump_count = 11;
+
+  // Hit position the player is pointing at, expressed relative to `position`.
+  // Only meaningful when POINTING_AT is set in `state_flags`.
+  optional decentraland.common.Vector3 point_at = 12;
 }
