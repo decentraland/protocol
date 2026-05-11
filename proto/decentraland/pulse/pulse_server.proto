@@ -52,13 +52,19 @@ message PlayerStateDeltaTier0 {
 
   optional int32 jump_count = 19;
 
-  // Hit position the player is pointing at, expressed relative to `position`.
-  // Only meaningful when POINTING_AT is set in `state_flags`. Range matches the
-  // gameplay raycast cutoff (CharacterControllerSettings.PointAtMaxDistance = 100m);
-  // 7 bits keep each axis in a 1-byte varint at the cost of ~1.6m step size.
-  optional uint32 point_at_x = 20 [(decentraland.common.quantized) = { min: -100.0, max: 100.0, bits: 7 }];
-  optional uint32 point_at_y = 21 [(decentraland.common.quantized) = { min: -100.0, max: 100.0, bits: 7 }];
-  optional uint32 point_at_z = 22 [(decentraland.common.quantized) = { min: -100.0, max: 100.0, bits: 7 }];
+  // Absolute world hit position the player is pointing at.
+  // Only meaningful when POINTING_AT is set in `state_flags`.
+  //
+  // X/Z use 17 bits over the world span (~±3000m, covers GenesisCity + border +
+  // raycast cutoff) which yields ~0.046m steps — at least as fine as the player's
+  // own parcel_index + position_x/z combined precision (0.0625m), so no separate
+  // parcel index is needed for point-at.
+  //
+  // Y uses 7 bits over the player altitude range (matches position_y), step ~1.6m.
+  // Point At is not supposed to change frequently so the wire overhead should be minimal
+  optional uint32 point_at_x = 20 [(decentraland.common.quantized) = { min: -3000.0, max: 3000.0, bits: 17 }];
+  optional uint32 point_at_y = 21 [(decentraland.common.quantized) = { min:     0.0, max:  200.0, bits:  7 }];
+  optional uint32 point_at_z = 22 [(decentraland.common.quantized) = { min: -3000.0, max: 3000.0, bits: 17 }];
 }
 
 // Full State is sent to the client when it is out of sync, and can't recover with a diff only

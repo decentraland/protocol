@@ -42,7 +42,7 @@ message PlayerState {
 
   int32 jump_count = 11;
 
-  // Hit position the player is pointing at, expressed relative to `position`.
+  // Absolute world hit position the player is pointing at.
   // Only meaningful when POINTING_AT is set in `state_flags`.
   optional decentraland.common.Vector3 point_at = 12;
 }
