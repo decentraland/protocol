@@ -27,8 +27,15 @@ message PBTriggerAreaResult {
   Trigger trigger = 6;
 }
 
+// Event kind for a TriggerArea collision callback.
+//
+// Note: TAET_STAY is deprecated. Per the updated contract, the Explorer emits
+// only TAET_ENTER and TAET_EXIT events; SDK runtimes are responsible for
+// synthesizing per-tick "stay" callbacks between them. The enum value is
+// retained for wire compatibility with legacy Explorers and SDKs but new
+// senders SHOULD NOT emit it.
 enum TriggerAreaEventType {
   TAET_ENTER = 0;
-  TAET_STAY = 1;
+  TAET_STAY = 1 [deprecated = true];
   TAET_EXIT = 2;
 }
