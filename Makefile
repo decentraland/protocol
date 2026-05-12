@@ -23,6 +23,9 @@ all: buf-lint buf-build test
 
 install:
 	npm i
+	# proto-compatibility-tool (last release 2022) crashes on string reservations
+	# surfaced by protobufjs >=7.5. Skip strings to keep the tool's pre-upgrade coverage.
+	perl -i -pe 's/throw new Error\(`How to handle string reservations\?`\);/continue;/' node_modules/proto-compatibility-tool/dist/index.js
 
 list-components-ids:
 	@bash scripts/list-components-ids.sh
