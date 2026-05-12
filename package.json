@@ -22,7 +22,12 @@
   },
   "dependencies": {
     "@dcl/ts-proto": "1.154.0",
-    "protobufjs": "7.2.4"
+    "protobufjs": "^7.5.7"
+  },
+  "overrides": {
+    "proto-compatibility-tool": {
+      "protobufjs": "7.2.4"
+    }
   },
   "files": [
     "proto",
