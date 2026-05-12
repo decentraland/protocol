@@ -1,0 +1,44 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1212;
+
+enum PBAudioAnalysisMode {
+    MODE_RAW = 0;
+    MODE_LOGARITHMIC = 1;
+}
+
+message PBAudioAnalysis {
+
+    // Parameters section
+    PBAudioAnalysisMode mode = 1;
+
+    // Used only when mode == MODE_LOGARITHMIC
+    optional float amplitude_gain = 100;
+    optional float bands_gain = 101;
+    // End when mode == MODE_LOGARITHMIC
+
+    // End Parameters section
+
+    // Result section
+    float amplitude = 200;
+
+    // Protobuf doesn't support fixed arrays -> 8 band fields
+    float band_0 = 201;
+    float band_1 = 202;
+    float band_2 = 203;
+    float band_3 = 204;
+    float band_4 = 205;
+    float band_5 = 206;
+    float band_6 = 207;
+    float band_7 = 208;
+
+    // End Result section
+
+    // Future fields
+    // float spectral_centroid = 13;
+    // float spectral_flux = 14;
+    // bool onset = 15;
+    // float bpm = 16;
+}
