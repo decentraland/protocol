@@ -13,7 +13,7 @@
     "test": "./scripts/check-proto-compabitility.sh"
   },
   "devDependencies": {
-    "@protobuf-ts/protoc": "^2.8.1",
+    "@protobuf-ts/protoc": "^2.11.0",
     "proto-compatibility-tool": "^1.1.2-20220925163655.commit-25bd040",
     "typescript": "^5.0.4"
   },

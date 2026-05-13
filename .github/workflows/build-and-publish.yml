@@ -22,6 +22,8 @@ jobs:
       dcl_protocol_s3_bucket_key: ${{ steps.publish_dcl_protocol.outputs.s3-bucket-key }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: install
         run: make install
       - name: buf build
@@ -32,7 +34,7 @@ jobs:
         uses: menduz/oddish-action@master
         id: publish_dcl_protocol
         with:
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
           access: public
           ## use action runId instead of current date to generate snapshot numbers
           deterministic-snapshot: true
@@ -42,7 +44,7 @@ jobs:
 
           ## publish every package to s3
           s3-bucket: ${{ secrets.SDK_TEAM_S3_BUCKET }}
-          s3-bucket-key-prefix: '@dcl/protocol/branch/${{ steps.myref.outputs.branch }}'
+          s3-bucket-key-prefix: "@dcl/protocol/branch/${{ steps.myref.outputs.branch }}"
           s3-bucket-region: ${{ secrets.SDK_TEAM_AWS_REGION }}
           ## inform gitlab after publishing to proceed with CDN propagation
           gitlab-token: ${{ secrets.GITLAB_TOKEN }}
@@ -67,7 +69,7 @@ jobs:
         id: fc
         with:
           issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
+          comment-author: "github-actions[bot]"
           body-includes: Test this pull request
 
       - name: Get the current branch name
@@ -87,9 +89,13 @@ jobs:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            # Test this pull request
-            - The `@dcl/protocol` package can be tested in scenes by running
+            # Test this pull request on NPM or Yarn
+            - The `@dcl/protocol` package can be tested in scenes by running the following NPM command:
                ```bash
                npm install "${{ steps.url-generator.outputs.body }}"
+               ```
+            - The `@dcl/protocol` package can be tested in scenes by running the following YARN command:
+               ```bash
+               yarn add "${{ steps.url-generator.outputs.body }}"
                ```
           edit-mode: replace
