@@ -18,6 +18,8 @@ message PlayerInitialState {
   optional uint32 emote_duration_ms = 3;
   // Indicates how many milliseconds ago the emote was started
   optional uint32 emote_start_offset_ms = 4;
+  // Non-empty realm identifier. Rejected if empty.
+  string realm = 5;
 }
 
 // Similarly to the LiveKit pipeline, a peer announces the version of its profile but
