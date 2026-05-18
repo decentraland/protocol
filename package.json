@@ -25,9 +25,10 @@
     "protobufjs": "7.2.4"
   },
   "files": [
-    "proto",
+    "proto/decentraland",
     "out-ts",
     "out-js",
-    "public"
+    "public",
+    "protoc-gen-bitwise"
   ]
 }
