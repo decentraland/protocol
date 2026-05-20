@@ -190,9 +190,21 @@ message PBUiTransform {
 
   optional float opacity = 73; // default: 1
 
-  optional string element_id = 74; // reference for scroll_position. default empty
-  optional ScrollPositionValue scroll_position = 75; // default position=(0,0)
-  optional ShowScrollBar scroll_visible = 76; // default ShowScrollBar.SSB_BOTH
+  // Unique name for this UI element (HTML-`id`-like). Registered in a
+  // named-element table so other components/RPCs can refer to it: today
+  // consumed by ScrollPositionValue.reference (scroll a named child into view)
+  // and the UI focus RPC. default empty
+  optional string element_id = 74;
+
+  // Scroll offset for this node's scroll viewport (only meaningful when
+  // overflow = YGO_SCROLL). Either a literal Vector2 position, or a string
+  // referencing another element's element_id to scroll into view.
+  // default position=(0,0)
+  optional ScrollPositionValue scroll_position = 75;
+
+  // Which scroll bars to render when this node is scrollable.
+  // default ShowScrollBar.SSB_BOTH
+  optional ShowScrollBar scroll_visible = 76;
 
   optional int32 z_index = 77; // default: 0 — controls render stacking order. Higher values appear in front of lower values.
 }
