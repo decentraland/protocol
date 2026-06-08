@@ -31,7 +31,7 @@ jobs:
       - name: build and compile test
         run: make test
       - name: publish packages
-        uses: menduz/oddish-action@master
+        uses: decentraland/oddish-action@914e7c59e93e708152aa703c50196740c0526c1d # @master
         id: publish_dcl_protocol
         with:
           registry-url: "https://registry.npmjs.org"

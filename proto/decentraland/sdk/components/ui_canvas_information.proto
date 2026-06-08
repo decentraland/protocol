@@ -21,4 +21,10 @@ message PBUiCanvasInformation {
   // chat UI hidden and with no minimap could have a rect that covers the whole screen.
   // on the contrary, if the chat UI is shown, the rect would be smaller.
   decentraland.common.BorderRect interactable_area = 4;
+  // informs the sdk about the screen inset area (safe margins). these are the
+  // insets from each edge of the screen that are reserved by the device or
+  // platform UI (for example: the notch, status bar, home indicator, or rounded
+  // corners on mobile). scenes should avoid placing critical UI within these
+  // insets to ensure it is not occluded. on desktop this is typically (0, 0, 0, 0).
+  optional decentraland.common.BorderRect screen_inset_area = 5;
 }
