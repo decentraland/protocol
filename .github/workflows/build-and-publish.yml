@@ -31,7 +31,7 @@ jobs:
       - name: build and compile test
         run: make test
       - name: publish packages
-        uses: decentraland/oddish-action@914e7c59e93e708152aa703c50196740c0526c1d # @master
+        uses: decentraland/oddish-action@0074f2d535c43b5c83f136525304a6277166d77f # @master
         id: publish_dcl_protocol
         with:
           registry-url: "https://registry.npmjs.org"
@@ -53,7 +53,6 @@ jobs:
           branch-to-custom-tag: ${{ env.BRANCH_TAG }}
         env:
           BRANCH_NAME: ${{ github.ref_name }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           AWS_DEFAULT_REGION: us-east-1
           AWS_ACCESS_KEY_ID: ${{ secrets.SDK_TEAM_AWS_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SDK_TEAM_AWS_SECRET }}
