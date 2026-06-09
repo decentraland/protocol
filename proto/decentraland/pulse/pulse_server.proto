@@ -101,6 +101,7 @@ message EmoteStarted {
   uint32 server_tick = 3;
   string emote_id = 4;
   PlayerState player_state = 5;
+  optional int32 mask = 6;
 }
 
 // Server → All Observers
