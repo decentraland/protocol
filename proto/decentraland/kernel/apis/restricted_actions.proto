@@ -16,6 +16,7 @@ message TeleportToRequest {
 
 message TriggerEmoteRequest {
   string predefined_emote = 1;
+  optional uint32 mask = 2;
 }
 
 message ChangeRealmRequest {
@@ -40,6 +41,7 @@ message CommsAdapterRequest {
 message TriggerSceneEmoteRequest {
   string src = 1;
   optional bool loop = 2;
+  optional uint32 mask = 3;
 }
 
 message SuccessResponse {
@@ -59,6 +61,8 @@ message CopyToClipboardRequest {
 }
 
 message EmptyResponse { }
+
+message StopEmoteRequest { }
 
 service RestrictedActionsService {
   // MovePlayerTo will move the player to a position relative to the current scene.
@@ -90,4 +94,7 @@ service RestrictedActionsService {
 
   // CopyToClipboard copies the provided text into the clipboard
   rpc CopyToClipboard(CopyToClipboardRequest) returns (EmptyResponse) {}
+
+  // StopEmote will stop the current emote
+  rpc StopEmote(StopEmoteRequest) returns (SuccessResponse) {}
 }

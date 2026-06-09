@@ -42,3 +42,8 @@ message PBAvatarShape {
   optional bool show_only_wearables = 12; // hides the skin + hair + facial features (default: false)
 }
 
+// Mask for which bones an animation applies to.
+enum AvatarEmoteMask {
+  AEM_FULL_BODY = 0;
+  AEM_UPPER_BODY = 1;
+}
