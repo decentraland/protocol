@@ -2,7 +2,10 @@
   "name": "@dcl/protocol",
   "version": "1.0.0",
   "description": "",
-  "repository": "decentraland/protocol.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decentraland/protocol.git"
+  },
   "homepage": "https://github.com/decentraland/protocol#readme",
   "bugs": "https://github.com/decentraland/protocol/issues",
   "keywords": [],
@@ -13,7 +16,7 @@
     "test": "./scripts/check-proto-compabitility.sh"
   },
   "devDependencies": {
-    "@protobuf-ts/protoc": "^2.8.1",
+    "@protobuf-ts/protoc": "^2.11.0",
     "proto-compatibility-tool": "^1.1.2-20220925163655.commit-25bd040",
     "typescript": "^5.0.4"
   },
