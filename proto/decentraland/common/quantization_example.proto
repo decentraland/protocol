@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+package decentraland.common;
+
+import "decentraland/common/options.proto";
+
+// High-frequency player state messages sent on Channel 1 (unreliable sequenced).
+//
+// Every message below uses the protoc-gen-bitwise annotations to minimise
+// wire size.  Wire costs are listed per-message so the trade-offs are clear.
+//
+// Annotation cheat-sheet:
+//   [(decentraland.common.quantized)  = { min: F, max: F, bits: N }]
+//       → stores a float as a uint32 quantized to N bits over [min, max].
+//       → protobuf encodes the uint32 as a varint: values ≤ 2^14-1 cost 2 bytes,
+//         values ≤ 2^21-1 cost 3 bytes; the generated partial class adds a
+//         float {Name}Quantized accessor that encodes/decodes transparently.
+//   [(decentraland.common.bit_packed) = { bits: N }]
+//       → documents that this uint32 uses at most N bits; protobuf encodes it
+//         as a varint (same savings, no generated accessor needed).
+//   (no annotation)
+//       → standard protobuf encoding (bool/double/etc. at natural width).
+//
+// Varint byte costs at worst-case (all bits set):
+//   ≤ 7 bits  → 1 byte   (max 127)
+//   ≤ 14 bits → 2 bytes  (max 16 383)
+//   ≤ 21 bits → 3 bytes  (max 2 097 151)
+// Proto3 omits fields equal to their default value (0), so average cost is lower.
+
+// ---------------------------------------------------------------------------
+// PositionDelta — Δ position relative to last acknowledged full snapshot.
+//
+// Sent every client tick (~10 Hz) on Channel 1.
+//
+//  Field       | Type   | Range          | Q bits | Wire worst-case
+//  ------------|--------|----------------|--------|-----------------------
+//  dx          | uint32 | [-100, 100]    |   16   | tag 1B + varint 3B = 4B
+//  dy          | uint32 | [-100, 100]    |   16   | tag 1B + varint 3B = 4B
+//  dz          | uint32 | [-100, 100]    |   16   | tag 1B + varint 3B = 4B
+//  entity_id   | uint32 | [0, 1 048 575] |   20   | tag 1B + varint 3B = 4B
+//  sequence    | uint32 | [0,     4 095] |   12   | tag 1B + varint 2B = 3B
+//  ---------------------------------------------------------------------------
+//  Worst-case: 19 B  (vs. 20 B raw: 3×float + 2×uint32)
+//  Step: dx/dy/dz ≈ 0.003 units
+// ---------------------------------------------------------------------------
+message PositionDelta {
+  uint32 dx        = 1 [(decentraland.common.quantized)  = { min: -100.0, max: 100.0, bits: 16 }];
+  uint32 dy        = 2 [(decentraland.common.quantized)  = { min: -100.0, max: 100.0, bits: 16 }];
+  uint32 dz        = 3 [(decentraland.common.quantized)  = { min: -100.0, max: 100.0, bits: 16 }];
+  uint32 entity_id = 4 [(decentraland.common.bit_packed) = { bits: 20 }];
+  uint32 sequence  = 5 [(decentraland.common.bit_packed) = { bits: 12 }];
+}
+
+// ---------------------------------------------------------------------------
+// PlayerInput — client input snapshot for server-side reconciliation.
+//
+// Sent every client frame (~30 Hz) on Channel 1.
+//
+//  Field       | Type   | Range          | Q bits | Wire worst-case
+//  ------------|--------|----------------|--------|-----------------------
+//  move_x      | uint32 | [-1, 1]        |    8   | tag 1B + varint 2B = 3B
+//  move_z      | uint32 | [-1, 1]        |    8   | tag 1B + varint 2B = 3B
+//  yaw         | uint32 | [-180, 180]    |   12   | tag 1B + varint 2B = 3B
+//  buttons     | uint32 | bitmask        |    8   | tag 1B + varint 2B = 3B
+//  sequence    | uint32 | [0, 4 095]     |   12   | tag 1B + varint 2B = 3B
+//  ---------------------------------------------------------------------------
+//  Worst-case: 15 B  (vs. 20 B raw: 3×float + 2×uint32)
+//  Step: move_x/move_z ≈ 0.008; yaw ≈ 0.088°
+// ---------------------------------------------------------------------------
+message PlayerInput {
+  // Normalised joystick axes in [-1, 1].
+  uint32 move_x   = 1 [(decentraland.common.quantized)  = { min: -1.0,   max: 1.0,   bits:  8 }];
+  uint32 move_z   = 2 [(decentraland.common.quantized)  = { min: -1.0,   max: 1.0,   bits:  8 }];
+
+  // Horizontal look direction in degrees.
+  uint32 yaw      = 3 [(decentraland.common.quantized)  = { min: -180.0, max: 180.0, bits: 12 }];
+
+  // Bitmask of active buttons (see ButtonFlags below).
+  uint32 buttons  = 4 [(decentraland.common.bit_packed) = { bits:  8 }];
+
+  // Rolling input sequence number used by the server for reconciliation.
+  uint32 sequence = 5 [(decentraland.common.bit_packed) = { bits: 12 }];
+}
+
+// Bitmask values for PlayerInput.buttons.
+enum ButtonFlags {
+  BF_NONE      = 0;
+  BF_JUMP      = 1;   // bit 0
+  BF_SPRINT    = 2;   // bit 1
+  BF_INTERACT  = 4;   // bit 2
+  BF_EMOTE     = 8;   // bit 3
+  BF_CROUCH    = 16;  // bit 4
+  // bits 5-7 reserved
+}
+
+// ---------------------------------------------------------------------------
+// AvatarStateSnapshot — full authoritative state, sent on Channel 0 (reliable)
+// or on resync requests.  Demonstrates wider ranges and mixed encodings.
+//
+//  Field            | Type   | Range            | Q bits | Wire worst-case
+//  -----------------|--------|------------------|--------|-----------------------
+//  x                | uint32 | [-4096, 4096]    |   16   | tag 1B + varint 3B = 4B
+//  y                | uint32 | [-256,   256]    |   14   | tag 1B + varint 2B = 3B
+//  z                | uint32 | [-4096, 4096]    |   16   | tag 1B + varint 3B = 4B
+//  pitch            | uint32 | [-90,    90]     |   10   | tag 1B + varint 2B = 3B
+//  yaw              | uint32 | [-180,  180]     |   12   | tag 1B + varint 2B = 3B
+//  entity_id        | uint32 | [0, 1 048 575]   |   20   | tag 1B + varint 3B = 4B
+//  animation_state  | uint32 | [0,       63]    |    6   | tag 1B + varint 1B = 2B
+//  is_grounded      | bool   | —                |   —    | tag 1B + varint 1B = 2B
+//  timestamp        | double | —                |   —    | tag 1B + fixed64  8B = 9B
+//  ---------------------------------------------------------------------------
+//  Worst-case: 34 B  (vs. 45 B raw: 5×float + 2×uint32 + bool + double)
+//  Step: x/z ≈ 0.125 units; y ≈ 0.031 units; pitch ≈ 0.176°; yaw ≈ 0.088°
+// ---------------------------------------------------------------------------
+message AvatarStateSnapshot {
+  // World-space position.
+  uint32 x               = 1 [(decentraland.common.quantized)  = { min: -4096.0, max: 4096.0, bits: 16 }];
+  uint32 y               = 2 [(decentraland.common.quantized)  = { min:  -256.0, max:  256.0, bits: 14 }];
+  uint32 z               = 3 [(decentraland.common.quantized)  = { min: -4096.0, max: 4096.0, bits: 16 }];
+
+  // View angles.
+  uint32 pitch           = 4 [(decentraland.common.quantized)  = { min:  -90.0,  max:   90.0, bits: 10 }];
+  uint32 yaw             = 5 [(decentraland.common.quantized)  = { min: -180.0,  max:  180.0, bits: 12 }];
+
+  // Identity and animation state.
+  uint32 entity_id       = 6 [(decentraland.common.bit_packed) = { bits: 20 }];
+  uint32 animation_state = 7 [(decentraland.common.bit_packed) = { bits:  6 }];
+
+  // Un-annotated fields — encoded at their natural width.
+  bool   is_grounded     = 8;
+  double timestamp       = 9;   // server epoch milliseconds
+}
