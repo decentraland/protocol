@@ -100,13 +100,11 @@ client can read it without knowledge of the plugin.
 
 | Requirement | Version |
 |---|---|
-| Python | 3.10+ |
-| `protobuf` Python package | 4.x or 3.20+ |
+| Node.js | 16+ |
 | `protoc` | 3.19+ |
 
-```bash
-pip install protobuf
-```
+The plugin is a dependency-free Node script — no `npm install` or extra
+packages are required to run it.
 
 ## Step 1 — Annotate your `.proto` file
 
@@ -157,10 +155,15 @@ protoc \
   --proto_path=proto \
   --proto_path=/path/to/google/protobuf/include \
   --csharp_out=generated/cs \
-  --plugin=protoc-gen-bitwise=protoc-gen-bitwise/plugin.py \
+  --plugin=protoc-gen-bitwise=protoc-gen-bitwise/plugin.js \
   --bitwise_out=generated/cs \
   proto/decentraland/kernel/comms/v3/comms.proto
 ```
+
+> `plugin.js` carries a `#!/usr/bin/env node` shebang. On Windows, protoc
+> cannot exec a `.js` directly, so point `--plugin` at a small `.cmd` wrapper
+> that runs `node plugin.js`; on unix an equivalent shell script is used. Both
+> consumer repos (Pulse, unity-explorer) generate this wrapper automatically.
 
 The plugin emits one `*.Bitwise.cs` file (PascalCase, flat in the output
 directory) for each `.proto` file that contains at least one `[(quantized)]`
