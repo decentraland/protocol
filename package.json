@@ -13,7 +13,8 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "scripts": {
-    "test": "./scripts/check-proto-compabitility.sh"
+    "test": "./scripts/check-proto-compabitility.sh",
+    "gen:test": "node protoc-gen-bitwise/test/generator.test.js"
   },
   "devDependencies": {
     "@protobuf-ts/protoc": "^2.11.0",
@@ -32,6 +33,7 @@
     "out-ts",
     "out-js",
     "public",
-    "protoc-gen-bitwise"
+    "protoc-gen-bitwise/*.js",
+    "protoc-gen-bitwise/runtime"
   ]
 }
