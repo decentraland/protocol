@@ -60,13 +60,13 @@ def _gen_message(msg_proto, indent: str = '    ') -> list[str] | None:
     """
     Generate a C# partial class for a proto message.
 
-    For each uint32 field with a [(quantized)] annotation, emits a cached float
-    property {FieldName}Quantized backed by the raw uint32 field.
+    For each uint32 field with a [(quantized)] or [(quantized_power)] annotation,
+    emits a cached float property {FieldName}Quantized backed by the raw uint32 field.
 
     Returns a list of lines (without trailing newline) or None if the message
     has no quantized uint32 fields.
     """
-    props: list[tuple[str, str, str, int, float]] = []  # (prop_name, mn, mx, bits, step)
+    props: list[tuple[str, str, str, str]] = []  # (prop_name, doc, get_expr, set_expr)
 
     for field in msg_proto.field:
         # Repeated/map fields are not supported
@@ -77,19 +77,32 @@ def _gen_message(msg_proto, indent: str = '    ') -> list[str] | None:
         if field.type != _FT.TYPE_UINT32:
             continue
 
-        quantized, _ = get_field_options(field.options)
-        if quantized is None:
+        quantized, _, quantized_power = get_field_options(field.options)
+        prop_name = _snake_to_pascal(field.name)
+
+        if quantized is not None:
+            mn = _format_float(quantized.min)
+            mx = _format_float(quantized.max)
+            bits = quantized.bits
+            step = (quantized.max - quantized.min) / ((1 << bits) - 1)
+            doc = f'Range [{mn}, {mx}], {bits} bits, step {_format_step(step)}.'
+            get_expr = f'Quantize.Decode({prop_name}, {mn}, {mx}, {bits})'
+            set_expr = f'Quantize.Encode(value, {mn}, {mx}, {bits})'
+        elif quantized_power is not None:
+            mx = _format_float(quantized_power.max)
+            pw = _format_float(quantized_power.pow)
+            bits = quantized_power.bits
+            # Power curve is non-uniform; the finest step sits next to zero (first magnitude code).
+            mag_steps = (1 << (bits - 1)) - 1
+            near_zero_step = quantized_power.max * (1.0 / mag_steps) ** quantized_power.pow
+            doc = (f'Range [-{mx}, {mx}], power {pw}, {bits} bits '
+                   f'(sign + {bits - 1}-bit magnitude), near-zero step {_format_step(near_zero_step)}.')
+            get_expr = f'Quantize.DecodePower({prop_name}, {mx}, {pw}, {bits})'
+            set_expr = f'Quantize.EncodePower(value, {mx}, {pw}, {bits})'
+        else:
             continue
 
-        step = (quantized.max - quantized.min) / ((1 << quantized.bits) - 1)
-
-        props.append((
-            _snake_to_pascal(field.name),
-            _format_float(quantized.min),
-            _format_float(quantized.max),
-            quantized.bits,
-            step,
-        ))
+        props.append((prop_name, doc, get_expr, set_expr))
 
     if not props:
         return None
@@ -100,15 +113,15 @@ def _gen_message(msg_proto, indent: str = '    ') -> list[str] | None:
     lines.append(f'public partial class {msg_proto.name}')
     lines.append('{')
 
-    for prop_name, mn, mx, bits, step in props:
+    for prop_name, doc, get_expr, set_expr in props:
         backing = '_' + prop_name[0].lower() + prop_name[1:]
         backings.append(backing)
         lines.append(f'{i}private float? {backing};')
-        lines.append(f'{i}/// <summary>Float accessor for <see cref="{prop_name}"/>. Range [{mn}, {mx}], {bits} bits, step {_format_step(step)}.</summary>')
+        lines.append(f'{i}/// <summary>Float accessor for <see cref="{prop_name}"/>. {doc}</summary>')
         lines.append(f'{i}public float {prop_name}Quantized')
         lines.append(f'{i}{{')
-        lines.append(f'{i}{i}get => {backing} ??= Quantize.Decode({prop_name}, {mn}, {mx}, {bits});')
-        lines.append(f'{i}{i}set {{ {backing} = value; {prop_name} = Quantize.Encode(value, {mn}, {mx}, {bits}); }}')
+        lines.append(f'{i}{i}get => {backing} ??= {get_expr};')
+        lines.append(f'{i}{i}set {{ {backing} = value; {prop_name} = {set_expr}; }}')
         lines.append(f'{i}}}')
         lines.append('')
 

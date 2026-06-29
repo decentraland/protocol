@@ -31,5 +31,34 @@ namespace Decentraland.Networking.Bitwise
             var steps = (1u << bits) - 1;
             return (float)encoded / steps * (max - min) + min;
         }
+
+        /// <summary>
+        ///     Encodes <paramref name="value" /> with a power-law curve into a sign bit plus an
+        ///     (<paramref name="bits" /> - 1)-bit linear unorm magnitude. The magnitude is
+        ///     <c>(|value| / max)^(1/pow)</c>, so the inverse <see cref="DecodePower" /> reconstructs
+        ///     <c>sign * max * u^pow</c>. Zero is representable exactly; <paramref name="pow" /> &gt; 1
+        ///     concentrates resolution near zero. Magnitudes outside [0, <paramref name="max" />] are
+        ///     clamped.
+        /// </summary>
+        public static uint EncodePower(float value, float max, float pow, int bits)
+        {
+            var magnitudeSteps = (1u << (bits - 1)) - 1;
+            var t = Math.Clamp(MathF.Abs(value) / max, 0f, 1f);
+            var u = MathF.Pow(t, 1f / pow);
+            var magnitude = (uint)MathF.Round(u * magnitudeSteps);
+            var sign = value < 0f ? 1u << (bits - 1) : 0u;
+            return sign | magnitude;
+        }
+
+        /// <summary>Decodes a power-law quantized <see cref="uint" /> back to a float (inverse of
+        /// <see cref="EncodePower" />).</summary>
+        public static float DecodePower(uint encoded, float max, float pow, int bits)
+        {
+            var signBit = 1u << (bits - 1);
+            var magnitudeSteps = signBit - 1;
+            var u = (float)(encoded & magnitudeSteps) / magnitudeSteps;
+            var magnitude = max * MathF.Pow(u, pow);
+            return (encoded & signBit) != 0 ? -magnitude : magnitude;
+        }
     }
 }

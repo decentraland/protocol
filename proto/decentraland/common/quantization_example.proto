@@ -15,6 +15,11 @@ import "decentraland/common/options.proto";
 //       → protobuf encodes the uint32 as a varint: values ≤ 2^14-1 cost 2 bytes,
 //         values ≤ 2^21-1 cost 3 bytes; the generated partial class adds a
 //         float {Name}Quantized accessor that encodes/decodes transparently.
+//   [(decentraland.common.quantized_power) = { max: F, pow: F, bits: N }]
+//       → stores a signed float over [-max, max] as a sign bit + (N-1)-bit linear
+//         unorm magnitude, reconstructed as sign·max·u^pow. Zero is exact, and
+//         pow>1 buys fine resolution near zero at the cost of coarse near ±max.
+//         Same generated float {Name}Quantized accessor as the linear option.
 //   [(decentraland.common.bit_packed) = { bits: N }]
 //       → documents that this uint32 uses at most N bits; protobuf encodes it
 //         as a varint (same savings, no generated accessor needed).
@@ -80,6 +85,29 @@ message PlayerInput {
 
   // Rolling input sequence number used by the server for reconciliation.
   uint32 sequence = 5 [(decentraland.common.bit_packed) = { bits: 12 }];
+}
+
+// ---------------------------------------------------------------------------
+// VelocityState — per-axis velocity, demonstrating the power-law quantizer.
+//
+// Velocity needs an exact zero (a stopped avatar must read 0, not a quantization
+// residual, or it drifts) and fine resolution at locomotion speeds, but only
+// coarse resolution near the ±50 m/s extremes. The linear quantizer can give
+// none of these from 8 bits: its codes straddle zero (±0.196) and spend uniform
+// resolution on speeds that never occur. quantized_power solves all three.
+//
+//  Field  | Type   | Range      | pow | bits | Wire worst-case
+//  -------|--------|------------|-----|------|-----------------------
+//  vx     | uint32 | [-50, 50]  |  2  |  8   | tag 1B + varint 2B = 3B
+//  vy     | uint32 | [-50, 50]  |  2  |  8   | tag 1B + varint 2B = 3B
+//  vz     | uint32 | [-50, 50]  |  2  |  8   | tag 1B + varint 2B = 3B
+//  ---------------------------------------------------------------------------
+//  Step: ≈ 0.003 m/s near zero, ≈ 0.78 m/s near ±50 (vs. 0.392 uniform linear)
+// ---------------------------------------------------------------------------
+message VelocityState {
+  uint32 vx = 1 [(decentraland.common.quantized_power) = { max: 50.0, pow: 2.0, bits: 8 }];
+  uint32 vy = 2 [(decentraland.common.quantized_power) = { max: 50.0, pow: 2.0, bits: 8 }];
+  uint32 vz = 3 [(decentraland.common.quantized_power) = { max: 50.0, pow: 2.0, bits: 8 }];
 }
 
 // Bitmask values for PlayerInput.buttons.

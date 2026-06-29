@@ -18,6 +18,7 @@ import struct
 # Extension field numbers as defined in options.proto
 QUANTIZED_FIELD_NUMBER = 50001
 BIT_PACKED_FIELD_NUMBER = 50002
+QUANTIZED_POWER_FIELD_NUMBER = 50003
 
 
 # ---------------------------------------------------------------------------
@@ -95,6 +96,38 @@ class QuantizedFloatOptions:
         return f'QuantizedFloatOptions(min={self.min}, max={self.max}, bits={self.bits})'
 
 
+class QuantizedPowerFloatOptions:
+    """Mirrors the QuantizedPowerFloatOptions proto message."""
+
+    __slots__ = ('max', 'pow', 'bits')
+
+    def __init__(self, max_val: float = 0.0, pow_val: float = 0.0, bits: int = 0):
+        self.max = max_val
+        self.pow = pow_val
+        self.bits = bits
+
+    @classmethod
+    def from_bytes(cls, data: bytes) -> 'QuantizedPowerFloatOptions':
+        obj = cls()
+        pos = 0
+        while pos < len(data):
+            tag, pos = _read_varint(data, pos)
+            field_num = tag >> 3
+            wire_type = tag & 0x7
+            if field_num == 1 and wire_type == 5:    # max  (float)
+                obj.max, pos = _read_float32(data, pos)
+            elif field_num == 2 and wire_type == 5:  # pow  (float)
+                obj.pow, pos = _read_float32(data, pos)
+            elif field_num == 3 and wire_type == 0:  # bits (uint32)
+                obj.bits, pos = _read_varint(data, pos)
+            else:
+                pos = _skip_field(data, pos, wire_type)
+        return obj
+
+    def __repr__(self):
+        return f'QuantizedPowerFloatOptions(max={self.max}, pow={self.pow}, bits={self.bits})'
+
+
 class BitPackedOptions:
     """Mirrors the BitPackedOptions proto message."""
 
@@ -130,25 +163,28 @@ def get_field_options(field_options_proto):
     Extract custom bitwise options from a FieldDescriptorProto.options object.
 
     Serialises the options message to bytes and walks the wire-format stream
-    looking for extension fields 50001 (quantized) and 50002 (bit_packed).
+    looking for extension fields 50001 (quantized), 50002 (bit_packed) and
+    50003 (quantized_power).
 
     Args:
         field_options_proto: google.protobuf.descriptor_pb2.FieldOptions instance
             (may be a default/empty instance when no options are set).
 
     Returns:
-        tuple[QuantizedFloatOptions | None, BitPackedOptions | None]
+        tuple[QuantizedFloatOptions | None, BitPackedOptions | None,
+              QuantizedPowerFloatOptions | None]
     """
     try:
         raw = field_options_proto.SerializeToString()
     except Exception:
-        return None, None
+        return None, None, None
 
     if not raw:
-        return None, None
+        return None, None, None
 
     quantized = None
     bit_packed = None
+    quantized_power = None
     pos = 0
 
     while pos < len(raw):
@@ -164,8 +200,10 @@ def get_field_options(field_options_proto):
                 quantized = QuantizedFloatOptions.from_bytes(value_bytes)
             elif field_num == BIT_PACKED_FIELD_NUMBER:
                 bit_packed = BitPackedOptions.from_bytes(value_bytes)
+            elif field_num == QUANTIZED_POWER_FIELD_NUMBER:
+                quantized_power = QuantizedPowerFloatOptions.from_bytes(value_bytes)
             # else: unknown length-delimited field — already consumed
         else:
             pos = _skip_field(raw, pos, wire_type)
 
-    return quantized, bit_packed
+    return quantized, bit_packed, quantized_power
