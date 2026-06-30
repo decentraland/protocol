@@ -15,11 +15,14 @@ message QuantizedFloatOptions {
 }
 
 // Options for quantizing a signed float with a power-law curve, stored as a uint32 field.
-// The value is split into a sign bit plus an (bits-1)-bit linear unorm magnitude `u in [0, 1]`,
+// The value is split into an (bits-1)-bit linear unorm magnitude `u in [0, 1]` plus a sign,
 // and reconstructed as `value = sign * max * u^pow`. Because `u = 0` maps to exactly `0`, zero is
 // representable (unlike the linear quantizer, whose codes straddle zero), and `pow > 1` concentrates
 // resolution near zero — useful for fields like velocity that need fine detail at low magnitudes and
 // only coarse detail near the extremes. The range is symmetric ([-max, max]); there is no `min`.
+// The encoded layout puts the magnitude in the high bits and the sign in the LSB
+// (`(magnitude << 1) | sign`), so the varint cost tracks magnitude, not direction: a small `|value|`
+// of either sign stays in one varint byte. Zero canonicalizes to `0`, so proto3 omits a stopped field.
 // The generator emits a float {Name}Quantized accessor, same as the linear option.
 message QuantizedPowerFloatOptions {
   float  max  = 1;
