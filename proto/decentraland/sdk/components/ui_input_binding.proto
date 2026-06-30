@@ -7,7 +7,7 @@ option (common.ecs_component_id) = 1219;
 // The UiInputBinding component binds a UI entity to one or more InputActions. While the
 // element is pressed (touch or pointer) the listed actions are held down, driving both
 // the local player input and scene InputAction listeners, just like the native on-screen
-// buttons. It is typically combined with MobileInputControls to replace the native
+// buttons. It is typically combined with TouchscreenInputControls to replace the native
 // controls with a custom touch UI.
 message PBUiInputBinding {
     repeated common.InputAction actions = 1; // the input actions fired while this element is pressed

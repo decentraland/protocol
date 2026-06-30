@@ -3,13 +3,13 @@ package decentraland.sdk.components;
 import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1218;
 
-// The MobileInputControls component lets a scene hide the native on-screen mobile
+// The TouchscreenInputControls component lets a scene hide the native on-screen mobile
 // controls (the virtual joystick and/or the action button cluster) so creators can
 // render their own touch UI and bind it with the UiInputBinding component.
 //
 // It must be set on the PlayerEntity. It is a no-op on platforms without native
 // on-screen controls (e.g. desktop).
-message PBMobileInputControls {
+message PBTouchscreenInputControls {
     bool hide_joystick = 1; // hide the native virtual joystick
     bool hide_gamepad = 2;  // hide the native action button cluster (jump / primary / etc.)
 }
