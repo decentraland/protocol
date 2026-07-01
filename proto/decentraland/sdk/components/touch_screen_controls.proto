@@ -27,4 +27,5 @@ message PBTouchScreenControls {
     // When unset, the default central button (jump) is kept.
     optional common.InputAction main_action = 2;
     bool hide_joystick = 3; // hide the native virtual joystick
+    bool hide_crosshair = 4; // hide the on-screen crosshair / reticle
 }
