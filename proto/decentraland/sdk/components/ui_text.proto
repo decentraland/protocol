@@ -22,5 +22,5 @@ message PBUiText {
   optional common.TextAlignMode text_align = 3;  // alignment within the bounds (default: center)
   optional common.Font font = 4;                 // font for the text (default: sans-serif)
   optional int32 font_size = 5;                  // size of the text (default: 10)
-  optional TextWrap text_wrap = 6;               // wrap text when the border is reached (default: TW_WRAP)
+  optional TextWrap text_wrap = 6;               // wrap text when the border is reached (default: TW_NO_WRAP)
 }
