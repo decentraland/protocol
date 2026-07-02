@@ -118,18 +118,39 @@ function generateMessage(msgProto, indent) {
     // Only uint32 fields are candidates for quantized accessors.
     if (field.type !== TYPE_UINT32) continue
 
-    const { quantized } = getFieldOptions(field.optionsRaw)
-    if (quantized === null) continue
+    const { quantized, quantizedPower } = getFieldOptions(field.optionsRaw)
+    const propName = snakeToPascal(field.name)
 
-    const step = (quantized.max - quantized.min) / ((1 << quantized.bits) - 1)
+    let doc, getExpr, setExpr, step
+    if (quantized !== null) {
+      const mn = formatFloat(quantized.min)
+      const mx = formatFloat(quantized.max)
+      const bits = quantized.bits
+      // Uniform quantizer — the step is constant across the whole range.
+      step = (quantized.max - quantized.min) / ((1 << bits) - 1)
+      doc = `Range [${mn}, ${mx}], ${bits} bits, step ${formatStep(step)}.`
+      getExpr = `Quantize.Decode(${propName}, ${mn}, ${mx}, ${bits})`
+      setExpr = `Quantize.Encode(value, ${mn}, ${mx}, ${bits})`
+    } else if (quantizedPower !== null) {
+      const mx = formatFloat(quantizedPower.max)
+      const pw = formatFloat(quantizedPower.pow)
+      const bits = quantizedPower.bits
+      // Power curve is non-uniform: the finest step sits next to zero (first magnitude code),
+      // the COARSEST at the top of the range. The coarsest step upper-bounds the error for any
+      // value, so that's what the exposed {Name}QuantizedStep const carries (safe as a tolerance).
+      const magSteps = (1 << (bits - 1)) - 1
+      const nearZeroStep = quantizedPower.max * Math.pow(1 / magSteps, quantizedPower.pow)
+      step = quantizedPower.max * (1 - Math.pow((magSteps - 1) / magSteps, quantizedPower.pow))
+      doc =
+        `Range [-${mx}, ${mx}], power ${pw}, ${bits} bits ` +
+        `(sign + ${bits - 1}-bit magnitude), near-zero step ${formatStep(nearZeroStep)}.`
+      getExpr = `Quantize.DecodePower(${propName}, ${mx}, ${pw}, ${bits})`
+      setExpr = `Quantize.EncodePower(value, ${mx}, ${pw}, ${bits})`
+    } else {
+      continue
+    }
 
-    props.push({
-      propName: snakeToPascal(field.name),
-      mn: formatFloat(quantized.min),
-      mx: formatFloat(quantized.max),
-      bits: quantized.bits,
-      step,
-    })
+    props.push({ propName, doc, getExpr, setExpr, step })
   }
 
   if (props.length === 0) return null
@@ -139,17 +160,17 @@ function generateMessage(msgProto, indent) {
   lines.push(`public partial class ${msgProto.name}`)
   lines.push('{')
 
-  for (const { propName, mn, mx, bits, step } of props) {
+  for (const { propName, doc, getExpr, setExpr, step } of props) {
     const backing = '_' + propName[0].toLowerCase() + propName.slice(1)
     backings.push(backing)
     lines.push(`${i}private float? ${backing};`)
-    lines.push(
-      `${i}/// <summary>Float accessor for <see cref="${propName}"/>. Range [${mn}, ${mx}], ${bits} bits, step ${formatStep(step)}.</summary>`,
-    )
+    lines.push(`${i}/// <summary>Coarsest quantization step of <see cref="${propName}Quantized"/>. Safe as an equality tolerance.</summary>`)
+    lines.push(`${i}public const float ${propName}QuantizedStep = ${formatFloat(step)};`)
+    lines.push(`${i}/// <summary>Float accessor for <see cref="${propName}"/>. ${doc}</summary>`)
     lines.push(`${i}public float ${propName}Quantized`)
     lines.push(`${i}{`)
-    lines.push(`${i}${i}get => ${backing} ??= Quantize.Decode(${propName}, ${mn}, ${mx}, ${bits});`)
-    lines.push(`${i}${i}set { ${backing} = value; ${propName} = Quantize.Encode(value, ${mn}, ${mx}, ${bits}); }`)
+    lines.push(`${i}${i}get => ${backing} ??= ${getExpr};`)
+    lines.push(`${i}${i}set { ${backing} = value; ${propName} = ${setExpr}; }`)
     lines.push(`${i}}`)
     lines.push('')
   }
