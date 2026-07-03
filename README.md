@@ -134,6 +134,7 @@ message PositionDelta {
 | Annotation | Target type | Parameters | Effect |
 |---|---|---|---|
 | `[(decentraland.common.quantized)]` | `uint32` | `min`, `max`, `bits` | Plugin emits a cached `float {Name}Quantized` accessor |
+| `[(decentraland.common.quantized_power)]` | `uint32` | `max`, `pow`, `bits` | Power-law quantizer over `[-max, max]`: `(bits-1)`-bit magnitude (high bits) + sign (LSB), decoded as `sign·max·u^pow`. Exact zero; `pow>1` gives fine resolution near zero, coarse near `±max`; sign in the LSB keeps small magnitudes one varint byte. Cached `float {Name}Quantized` accessor (`Quantize.EncodePower`/`DecodePower`) |
 | `[(decentraland.common.bit_packed)]` | `uint32` | `bits` | Documents the value range; protobuf handles varint compaction automatically |
 
 ### Wire cost at worst-case (all bits set)

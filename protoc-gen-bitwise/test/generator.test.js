@@ -68,6 +68,16 @@ function bitPackedOptions(bits) {
   return lengthDelimited(50002, inner)
 }
 
+// FieldOptions bytes carrying ext 50003 (quantized_power) = { max, pow, bits }
+function quantizedPowerOptions(max, pow, bits) {
+  const inner = Buffer.concat([
+    tag(1, 5), floatLE(max),
+    tag(2, 5), floatLE(pow),
+    tag(3, 0), encodeVarint(bits),
+  ])
+  return lengthDelimited(50003, inner)
+}
+
 function field(name, type, optionsRaw) {
   return { name, label: LABEL_OPTIONAL, type, optionsRaw: optionsRaw || null }
 }
@@ -105,6 +115,14 @@ const quantizationExample = {
       ],
     },
     {
+      name: 'VelocityState',
+      field: [
+        field('vx', TYPE_UINT32, quantizedPowerOptions(50, 2, 8)),
+        field('vy', TYPE_UINT32, quantizedPowerOptions(50, 2, 8)),
+        field('vz', TYPE_UINT32, quantizedPowerOptions(50, 2, 8)),
+      ],
+    },
+    {
       name: 'AvatarStateSnapshot',
       field: [
         field('x', TYPE_UINT32, quantizedOptions(-4096, 4096, 16)),
@@ -135,9 +153,9 @@ const pulseServer = {
         field('position_x', TYPE_UINT32, quantizedOptions(0, 16, 8)),
         field('position_y', TYPE_UINT32, quantizedOptions(0, 200, 13)),
         field('position_z', TYPE_UINT32, quantizedOptions(0, 16, 8)),
-        field('velocity_x', TYPE_UINT32, quantizedOptions(-50, 50, 8)),
-        field('velocity_y', TYPE_UINT32, quantizedOptions(-50, 50, 8)),
-        field('velocity_z', TYPE_UINT32, quantizedOptions(-50, 50, 8)),
+        field('velocity_x', TYPE_UINT32, quantizedPowerOptions(50, 2, 8)),
+        field('velocity_y', TYPE_UINT32, quantizedPowerOptions(50, 2, 8)),
+        field('velocity_z', TYPE_UINT32, quantizedPowerOptions(50, 2, 8)),
         field('rotation_y', TYPE_UINT32, quantizedOptions(0, 360, 7)),
         field('movement_blend', TYPE_UINT32, quantizedOptions(0, 3, 5)),
         field('slide_blend', TYPE_UINT32, quantizedOptions(0, 1, 4)),

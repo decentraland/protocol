@@ -32,13 +32,23 @@ message QuantizedFloatOptions {
   uint32 bits = 3;
 }
 
+// Signed power-law quantizer: an (bits-1)-bit magnitude (high bits) plus a sign
+// (LSB), decoded as sign * max * u^pow. Exact zero; pow>1 concentrates resolution
+// near zero; sign in the LSB keeps small magnitudes in one varint byte.
+message QuantizedPowerFloatOptions {
+  float  max  = 1;
+  float  pow  = 2;
+  uint32 bits = 3;
+}
+
 message BitPackedOptions {
   uint32 bits = 1;
 }
 
 extend google.protobuf.FieldOptions {
-  QuantizedFloatOptions quantized  = 50001;
-  BitPackedOptions      bit_packed = 50002;
+  QuantizedFloatOptions      quantized       = 50001;
+  BitPackedOptions           bit_packed      = 50002;
+  QuantizedPowerFloatOptions quantized_power = 50003;
 }
 ```
 
