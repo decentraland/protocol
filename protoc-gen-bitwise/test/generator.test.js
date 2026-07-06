@@ -176,11 +176,22 @@ const cases = [
   { proto: pulseServer, golden: 'PulseServer.Bitwise.cs' },
 ]
 
+// Set UPDATE_GOLDEN=1 to rewrite the golden files from the current generator output
+// (after an intentional generator change), then re-run without it to verify.
+const update = process.env.UPDATE_GOLDEN === '1'
+
 let failed = 0
 for (const { proto, golden } of cases) {
   const result = generateCsharp(proto)
   assert.ok(result, `expected output for ${golden}`)
   assert.strictEqual(result.name, golden, `output filename for ${golden}`)
+
+  if (update) {
+    fs.writeFileSync(path.join(__dirname, 'golden', golden), result.content)
+    console.log(`updated - ${golden}`)
+    continue
+  }
+
   try {
     assert.strictEqual(result.content, readGolden(golden))
     console.log(`ok   - ${golden} matches golden`)
@@ -189,6 +200,11 @@ for (const { proto, golden } of cases) {
     console.error(`FAIL - ${golden} differs from golden`)
     console.error(e.message)
   }
+}
+
+if (update) {
+  console.log('\nGolden files updated. Re-run `npm run gen:test` to verify.')
+  process.exit(0)
 }
 
 if (failed > 0) {
