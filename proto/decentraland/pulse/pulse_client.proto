@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package decentraland.pulse;
 
-import "decentraland/common/vectors.proto";
 import "decentraland/pulse/pulse_shared.proto";
 import "decentraland/common/options.proto";
 
