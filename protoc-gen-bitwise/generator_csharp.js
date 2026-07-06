@@ -160,35 +160,27 @@ function generateMessage(msgProto, indent) {
 
   if (props.length === 0) return null
 
-  const backings = []
   const lines = []
   lines.push(`public partial class ${msgProto.name}`)
   lines.push('{')
 
+  // Decode on every get, encode on every set — no backing cache. The raw uint32 property is the
+  // single source of truth, so the float accessor can never disagree with the code on the wire
+  // (get-after-set returns the on-grid value a receiver decodes) and there is no stale-cache
+  // hazard when the raw field is mutated directly. Decode is a multiply-add; only power fields
+  // pay a MathF.Pow.
   for (const { propName, doc, getExpr, setExpr, step } of props) {
-    const backing = '_' + propName[0].toLowerCase() + propName.slice(1)
-    backings.push(backing)
-    lines.push(`${i}private float? ${backing};`)
     lines.push(`${i}/// <summary>Coarsest quantization step of <see cref="${propName}Quantized"/>. Safe as an equality tolerance.</summary>`)
     lines.push(`${i}public const float ${propName}QuantizedStep = ${formatFloat(step)};`)
     lines.push(`${i}/// <summary>Float accessor for <see cref="${propName}"/>. ${doc}</summary>`)
     lines.push(`${i}public float ${propName}Quantized`)
     lines.push(`${i}{`)
-    lines.push(`${i}${i}get => ${backing} ??= ${getExpr};`)
-    lines.push(`${i}${i}set { ${backing} = value; ${propName} = ${setExpr}; }`)
+    lines.push(`${i}${i}get => ${getExpr};`)
+    lines.push(`${i}${i}set => ${propName} = ${setExpr};`)
     lines.push(`${i}}`)
     lines.push('')
   }
 
-  lines.push(`${i}/// <summary>Clears all cached decoded values. Call after mutating raw uint32 fields directly.</summary>`)
-  lines.push(`${i}public void ResetDecodedCache()`)
-  lines.push(`${i}{`)
-  for (const backing of backings) {
-    lines.push(`${i}${i}${backing} = null;`)
-  }
-  lines.push(`${i}}`)
-
-  lines.push('')
   lines.push(`${i}/// <summary>`)
   lines.push(`${i}///     True when every quantized field holds a wire code within its declared bit width`)
   lines.push(`${i}///     (<c>0 .. 2^bits-1</c>). The encoder never emits a code above this bound, so a larger`)
