@@ -118,49 +118,82 @@ function generateMessage(msgProto, indent) {
     // Only uint32 fields are candidates for quantized accessors.
     if (field.type !== TYPE_UINT32) continue
 
-    const { quantized } = getFieldOptions(field.optionsRaw)
-    if (quantized === null) continue
+    const { quantized, quantizedPower } = getFieldOptions(field.optionsRaw)
+    const propName = snakeToPascal(field.name)
 
-    const step = (quantized.max - quantized.min) / ((1 << quantized.bits) - 1)
+    let doc, getExpr, setExpr, step, bits
+    if (quantized !== null) {
+      const mn = formatFloat(quantized.min)
+      const mx = formatFloat(quantized.max)
+      bits = quantized.bits
+      // Uniform quantizer — the step is constant across the whole range.
+      step = (quantized.max - quantized.min) / ((1 << bits) - 1)
+      doc = `Range [${mn}, ${mx}], ${bits} bits, step ${formatStep(step)}.`
+      getExpr = `Quantize.Decode(${propName}, ${mn}, ${mx}, ${bits})`
+      setExpr = `Quantize.Encode(value, ${mn}, ${mx}, ${bits})`
+    } else if (quantizedPower !== null) {
+      const mx = formatFloat(quantizedPower.max)
+      const pw = formatFloat(quantizedPower.pow)
+      bits = quantizedPower.bits
+      // Power curve is non-uniform: the finest step sits next to zero (first magnitude code),
+      // the COARSEST at the top of the range. The coarsest step upper-bounds the error for any
+      // value, so that's what the exposed {Name}QuantizedStep const carries (safe as a tolerance).
+      const magSteps = (1 << (bits - 1)) - 1
+      const nearZeroStep = quantizedPower.max * Math.pow(1 / magSteps, quantizedPower.pow)
+      step = quantizedPower.max * (1 - Math.pow((magSteps - 1) / magSteps, quantizedPower.pow))
+      doc =
+        `Range [-${mx}, ${mx}], power ${pw}, ${bits} bits ` +
+        `(sign + ${bits - 1}-bit magnitude), near-zero step ${formatStep(nearZeroStep)}.`
+      getExpr = `Quantize.DecodePower(${propName}, ${mx}, ${pw}, ${bits})`
+      setExpr = `Quantize.EncodePower(value, ${mx}, ${pw}, ${bits})`
+    } else {
+      continue
+    }
 
-    props.push({
-      propName: snakeToPascal(field.name),
-      mn: formatFloat(quantized.min),
-      mx: formatFloat(quantized.max),
-      bits: quantized.bits,
-      step,
-    })
+    // Highest code the encoder can emit for this field. Both the linear quantizer (top code
+    // `2^bits - 1`) and the power quantizer (`(magnitude << 1) | sign` with an `bits-1`-bit
+    // magnitude, so top code `((2^(bits-1)-1) << 1) | 1 == 2^bits - 1`) share this bound.
+    const maxCode = 2 ** bits - 1
+
+    props.push({ propName, doc, getExpr, setExpr, step, maxCode })
   }
 
   if (props.length === 0) return null
 
-  const backings = []
   const lines = []
   lines.push(`public partial class ${msgProto.name}`)
   lines.push('{')
 
-  for (const { propName, mn, mx, bits, step } of props) {
-    const backing = '_' + propName[0].toLowerCase() + propName.slice(1)
-    backings.push(backing)
-    lines.push(`${i}private float? ${backing};`)
-    lines.push(
-      `${i}/// <summary>Float accessor for <see cref="${propName}"/>. Range [${mn}, ${mx}], ${bits} bits, step ${formatStep(step)}.</summary>`,
-    )
+  // Decode on every get, encode on every set — no backing cache. The raw uint32 property is the
+  // single source of truth, so the float accessor can never disagree with the code on the wire
+  // (get-after-set returns the on-grid value a receiver decodes) and there is no stale-cache
+  // hazard when the raw field is mutated directly. Decode is a multiply-add; only power fields
+  // pay a MathF.Pow.
+  for (const { propName, doc, getExpr, setExpr, step } of props) {
+    lines.push(`${i}/// <summary>Coarsest quantization step of <see cref="${propName}Quantized"/>. Safe as an equality tolerance.</summary>`)
+    lines.push(`${i}public const float ${propName}QuantizedStep = ${formatFloat(step)};`)
+    lines.push(`${i}/// <summary>Float accessor for <see cref="${propName}"/>. ${doc}</summary>`)
     lines.push(`${i}public float ${propName}Quantized`)
     lines.push(`${i}{`)
-    lines.push(`${i}${i}get => ${backing} ??= Quantize.Decode(${propName}, ${mn}, ${mx}, ${bits});`)
-    lines.push(`${i}${i}set { ${backing} = value; ${propName} = Quantize.Encode(value, ${mn}, ${mx}, ${bits}); }`)
+    lines.push(`${i}${i}get => ${getExpr};`)
+    lines.push(`${i}${i}set => ${propName} = ${setExpr};`)
     lines.push(`${i}}`)
     lines.push('')
   }
 
-  lines.push(`${i}/// <summary>Clears all cached decoded values. Call after mutating raw uint32 fields directly.</summary>`)
-  lines.push(`${i}public void ResetDecodedCache()`)
-  lines.push(`${i}{`)
-  for (const backing of backings) {
-    lines.push(`${i}${i}${backing} = null;`)
-  }
-  lines.push(`${i}}`)
+  lines.push(`${i}/// <summary>`)
+  lines.push(`${i}///     True when every quantized field holds a wire code within its declared bit width`)
+  lines.push(`${i}///     (<c>0 .. 2^bits-1</c>). The encoder never emits a code above this bound, so a larger`)
+  lines.push(`${i}///     value is a malformed/hostile message: decoding it would land far outside the field's`)
+  lines.push(`${i}///     <c>[min, max]</c> and, since the server relays raw codes verbatim, poison every observer.`)
+  lines.push(`${i}///     Reject before storing or relaying. Pure integer comparison — no decode.`)
+  lines.push(`${i}/// </summary>`)
+  lines.push(`${i}public bool AreQuantizedFieldsInRange() =>`)
+  props.forEach(({ propName, maxCode }, idx) => {
+    const prefix = idx === 0 ? '' : '&& '
+    const suffix = idx === props.length - 1 ? ';' : ''
+    lines.push(`${i}${i}${prefix}${propName} <= ${maxCode}u${suffix}`)
+  })
 
   lines.push('}')
   return lines
