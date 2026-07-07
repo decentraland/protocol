@@ -7,14 +7,34 @@ import "decentraland/sdk/components/common/id.proto";
 // https://adr.decentraland.org/adr/ADR-198
 option (common.ecs_component_id) = 1090;
 
-// The Billboard component makes an Entity automatically reorient its rotation to face the camera. 
-// As the name indicates, it’s used to display in-game billboards and frequently combined with 
+// The Billboard component makes an Entity automatically reorient its rotation to face a target.
+// By default the target is the camera. Optionally, a specific entity can be set as the target
+// via the `look_at_entity` field, in which case the Billboard entity will always rotate to face
+// the Transform position of that entity instead.
+//
+// As the name indicates, it's used to display in-game billboards and frequently combined with
 // the TextShape component.
 //
 // Billboard only affects the Entity's rotation. Its scale and position are still determined by its
 // Transform.
 message PBBillboard {
   optional BillboardMode billboard_mode = 1; // the BillboardMode (default: BM_ALL)
+
+  // Optional entity to face instead of the camera.
+  //
+  // When set, the entity with the Billboard component will rotate to always face the
+  // world-space position of the Transform of the entity with this ID.
+  //
+  // Behavior:
+  // - When `look_at_entity` is not set (default), the Billboard faces the camera, as it
+  //   always has.
+  // - When `look_at_entity` is set to an entity that exists and has a Transform component,
+  //   the Billboard rotates to face the world position of that entity's Transform.
+  // - When `look_at_entity` is set to an entity that does not exist, has been destroyed,
+  //   or does not have a Transform component, the Billboard falls back to facing the camera.
+  // - The Billboard entity itself is still free to move; only its rotation is affected.
+  // - The `billboard_mode` field still controls which axes are affected by the rotation.
+  optional uint32 look_at_entity = 2;
 }
 
 // BillboardMode indicates one or more axis for automatic rotation, in OR-able bit flag form.
@@ -26,4 +46,3 @@ enum BillboardMode {
   BM_Z = 4;
   BM_ALL = 7; // bitwise combination BM_X | BM_Y | BM_Z
 }
-
