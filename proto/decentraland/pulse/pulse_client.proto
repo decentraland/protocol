@@ -66,6 +66,17 @@ message TeleportRequest {
   string realm = 5;
 }
 
+// Scene-listener connect: same signed-fetch auth chain as HandshakeRequest, plus an
+// immutable parcel-set area of interest. No initial state — a listener is never a subject.
+message SceneListenerHandshakeRequest {
+  // Signed-fetch headers JSON — identical shape to HandshakeRequest.auth_chain.
+  bytes auth_chain = 1;
+  // AoI realm partition — same rules as TeleportRequest.realm.
+  string realm = 2;
+  // ParcelEncoder-packed parcel indices; fixed for the connection lifetime.
+  repeated int32 parcel_indices = 3;
+}
+
 message ClientMessage {
   oneof message {
     HandshakeRequest handshake = 1;
@@ -75,5 +86,6 @@ message ClientMessage {
     EmoteStart emote_start = 5;
     EmoteStop emote_stop = 6;
     TeleportRequest teleport = 7;
+    SceneListenerHandshakeRequest scene_listener_handshake = 8;
   }
 }
