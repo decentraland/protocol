@@ -67,3 +67,191 @@ In this case, there is no problem with when each PR is merged. It's recommendabl
 ## Comms
 
 TODO
+
+---
+
+# Bitwise Serialization Plugin (`protoc-gen-bitwise`)
+
+A custom protoc plugin that generates C# partial classes with typed float
+accessors for quantized `uint32` fields in high-frequency MMO networking
+messages (position deltas, player input, etc.).  It runs alongside
+`--csharp_out` in the same protoc invocation; the two output files coexist
+via C# `partial class`.
+
+## How it works
+
+Protobuf encodes `uint32` values as varints, which are already compact for
+small values: a value up to 2¹⁴−1 costs 2 bytes, up to 2²¹−1 costs 3 bytes.
+Rather than a separate binary packing layer, the plugin leverages this:
+
+1. Declare quantized fields as `uint32` in the `.proto` schema and annotate
+   them with `[(decentraland.common.quantized)]` to specify the float range
+   and bit resolution.
+2. `--csharp_out` generates the standard protobuf class with the raw `uint32`
+   property (e.g. `PositionX`).
+3. `--bitwise_out` (this plugin) generates a `partial class` extension with a
+   cached float accessor (e.g. `PositionXQuantized`) that encodes/decodes
+   transparently via `Quantize.Encode` / `Quantize.Decode`.
+
+The wire representation is a standard protobuf message — any protobuf-capable
+client can read it without knowledge of the plugin.
+
+## Prerequisites
+
+| Requirement | Version |
+|---|---|
+| Node.js | 16+ |
+| `protoc` | 3.19+ |
+
+The plugin is a dependency-free Node script — no `npm install` or extra
+packages are required to run it.
+
+## Step 1 — Annotate your `.proto` file
+
+Declare quantized fields as `uint32` and import `options.proto`:
+
+```protobuf
+syntax = "proto3";
+
+import "decentraland/common/options.proto";
+
+package decentraland.kernel.comms.v3;
+
+message PositionDelta {
+  // Float range [-100, 100] quantized to 16 bits ≈ 0.003-unit precision.
+  // Stored as uint32 on the wire; protobuf encodes it as a 3-byte varint.
+  uint32 dx        = 1 [(decentraland.common.quantized)  = { min: -100.0, max: 100.0, bits: 16 }];
+  uint32 dy        = 2 [(decentraland.common.quantized)  = { min: -100.0, max: 100.0, bits: 16 }];
+  uint32 dz        = 3 [(decentraland.common.quantized)  = { min: -100.0, max: 100.0, bits: 16 }];
+
+  // Unannotated uint32: protobuf varint encodes small values compactly by default.
+  uint32 entity_id = 4 [(decentraland.common.bit_packed) = { bits: 20 }];
+}
+```
+
+### Annotation reference
+
+| Annotation | Target type | Parameters | Effect |
+|---|---|---|---|
+| `[(decentraland.common.quantized)]` | `uint32` | `min`, `max`, `bits` | Plugin emits a cached `float {Name}Quantized` accessor |
+| `[(decentraland.common.quantized_power)]` | `uint32` | `max`, `pow`, `bits` | Power-law quantizer over `[-max, max]`: `(bits-1)`-bit magnitude (high bits) + sign (LSB), decoded as `sign·max·u^pow`. Exact zero; `pow>1` gives fine resolution near zero, coarse near `±max`; sign in the LSB keeps small magnitudes one varint byte. Cached `float {Name}Quantized` accessor (`Quantize.EncodePower`/`DecodePower`) |
+| `[(decentraland.common.bit_packed)]` | `uint32` | `bits` | Documents the value range; protobuf handles varint compaction automatically |
+
+### Wire cost at worst-case (all bits set)
+
+| Quantization bits | Max value | Varint bytes | Tag (field ≤ 15) | Total per field |
+|---|---|---|---|---|
+| 8 | 255 | 2 | 1 | 3 B |
+| 12 | 4 095 | 2 | 1 | 3 B |
+| 14 | 16 383 | 2 | 1 | 3 B |
+| 16 | 65 535 | 3 | 1 | 4 B |
+| 20 | 1 048 575 | 3 | 1 | 4 B |
+
+Proto3 omits fields equal to their default value (0), so average cost is lower.
+
+## Step 2 — Run protoc
+
+```bash
+protoc \
+  --proto_path=proto \
+  --proto_path=/path/to/google/protobuf/include \
+  --csharp_out=generated/cs \
+  --plugin=protoc-gen-bitwise=protoc-gen-bitwise/plugin.js \
+  --bitwise_out=generated/cs \
+  proto/decentraland/kernel/comms/v3/comms.proto
+```
+
+> `plugin.js` carries a `#!/usr/bin/env node` shebang. On Windows, protoc
+> cannot exec a `.js` directly, so point `--plugin` at a small `.cmd` wrapper
+> that runs `node plugin.js`; on unix an equivalent shell script is used. Both
+> consumer repos (Pulse, unity-explorer) generate this wrapper automatically.
+
+The plugin emits one `*.Bitwise.cs` file (PascalCase, flat in the output
+directory) for each `.proto` file that contains at least one `[(quantized)]`
+field.
+
+## Step 3 — Copy the runtime
+
+Copy `Quantize.cs` into your project:
+
+```
+Assets/
+└── Scripts/
+    └── Networking/
+        └── Bitwise/
+            └── Quantize.cs   ← protoc-gen-bitwise/runtime/cs/Quantize.cs
+```
+
+`Quantize.cs` lives in the `Decentraland.Networking.Bitwise` namespace and
+provides two static methods used by the generated accessors:
+
+```csharp
+public static class Quantize
+{
+    public static uint  Encode(float value, float min, float max, int bits);
+    public static float Decode(uint encoded, float min, float max, int bits);
+}
+```
+
+## Step 4 — Use the generated code
+
+The plugin emits a `partial class` that adds float accessors on top of the
+standard protobuf-generated `uint32` properties:
+
+```csharp
+using Decentraland.Kernel.Comms.V3;
+
+// --- Build and send ---
+var delta = new PositionDelta();
+delta.DxQuantized = 3.14f;   // encodes to uint32, stored in delta.Dx
+delta.DyQuantized = 0f;
+delta.DzQuantized = -7.5f;
+delta.EntityId    = 42u;
+
+byte[] bytes = delta.ToByteArray();   // standard protobuf serialization
+SendOnChannel1(bytes);
+
+// --- Receive and read ---
+var received = PositionDelta.Parser.ParseFrom(receivedBytes);
+float x = received.DxQuantized;   // decoded from the stored uint32 on each access
+float y = received.DyQuantized;
+float z = received.DzQuantized;
+```
+
+## Generated file example
+
+For the `PositionDelta` message above the plugin emits `PositionDelta.Bitwise.cs`:
+
+```csharp
+// <auto-generated>
+//   Generated by protoc-gen-bitwise. DO NOT EDIT.
+//   Source: decentraland/kernel/comms/v3/comms.proto
+// </auto-generated>
+
+using Decentraland.Networking.Bitwise;
+
+namespace Decentraland.Kernel.Comms.V3
+{
+    public partial class PositionDelta
+    {
+        public float DxQuantized
+        {
+            get => Quantize.Decode(Dx, -100.0f, 100.0f, 16);
+            set => Dx = Quantize.Encode(value, -100.0f, 100.0f, 16);
+        }
+
+        public float DyQuantized
+        {
+            get => Quantize.Decode(Dy, -100.0f, 100.0f, 16);
+            set => Dy = Quantize.Encode(value, -100.0f, 100.0f, 16);
+        }
+
+        public float DzQuantized
+        {
+            get => Quantize.Decode(Dz, -100.0f, 100.0f, 16);
+            set => Dz = Quantize.Encode(value, -100.0f, 100.0f, 16);
+        }
+    }
+
+} // namespace Decentraland.Kernel.Comms.V3
+```

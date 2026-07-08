@@ -13,10 +13,11 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "scripts": {
-    "test": "./scripts/check-proto-compabitility.sh"
+    "test": "./scripts/check-proto-compabitility.sh",
+    "gen:test": "node protoc-gen-bitwise/test/generator.test.js"
   },
   "devDependencies": {
-    "@protobuf-ts/protoc": "^2.8.1",
+    "@protobuf-ts/protoc": "^2.11.0",
     "proto-compatibility-tool": "^1.1.2-20220925163655.commit-25bd040",
     "typescript": "^5.0.4"
   },
@@ -28,9 +29,11 @@
     "protobufjs": "7.2.4"
   },
   "files": [
-    "proto",
+    "proto/decentraland",
     "out-ts",
     "out-js",
-    "public"
+    "public",
+    "protoc-gen-bitwise/*.js",
+    "protoc-gen-bitwise/runtime"
   ]
 }
