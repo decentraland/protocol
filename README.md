@@ -134,6 +134,7 @@ message PositionDelta {
 | Annotation | Target type | Parameters | Effect |
 |---|---|---|---|
 | `[(decentraland.common.quantized)]` | `uint32` | `min`, `max`, `bits` | Plugin emits a cached `float {Name}Quantized` accessor |
+| `[(decentraland.common.quantized_power)]` | `uint32` | `max`, `pow`, `bits` | Power-law quantizer over `[-max, max]`: `(bits-1)`-bit magnitude (high bits) + sign (LSB), decoded as `sign·max·u^pow`. Exact zero; `pow>1` gives fine resolution near zero, coarse near `±max`; sign in the LSB keeps small magnitudes one varint byte. Cached `float {Name}Quantized` accessor (`Quantize.EncodePower`/`DecodePower`) |
 | `[(decentraland.common.bit_packed)]` | `uint32` | `bits` | Documents the value range; protobuf handles varint compaction automatically |
 
 ### Wire cost at worst-case (all bits set)
@@ -212,12 +213,9 @@ SendOnChannel1(bytes);
 
 // --- Receive and read ---
 var received = PositionDelta.Parser.ParseFrom(receivedBytes);
-float x = received.DxQuantized;   // decoded on first access, cached thereafter
+float x = received.DxQuantized;   // decoded from the stored uint32 on each access
 float y = received.DyQuantized;
 float z = received.DzQuantized;
-
-// If raw uint32 fields are mutated directly after construction, invalidate the cache:
-received.ResetDecodedCache();
 ```
 
 ## Generated file example
@@ -236,33 +234,22 @@ namespace Decentraland.Kernel.Comms.V3
 {
     public partial class PositionDelta
     {
-        private float? _dx;
         public float DxQuantized
         {
-            get => _dx ??= Quantize.Decode(Dx, -100.0f, 100.0f, 16);
-            set { _dx = value; Dx = Quantize.Encode(value, -100.0f, 100.0f, 16); }
+            get => Quantize.Decode(Dx, -100.0f, 100.0f, 16);
+            set => Dx = Quantize.Encode(value, -100.0f, 100.0f, 16);
         }
 
-        private float? _dy;
         public float DyQuantized
         {
-            get => _dy ??= Quantize.Decode(Dy, -100.0f, 100.0f, 16);
-            set { _dy = value; Dy = Quantize.Encode(value, -100.0f, 100.0f, 16); }
+            get => Quantize.Decode(Dy, -100.0f, 100.0f, 16);
+            set => Dy = Quantize.Encode(value, -100.0f, 100.0f, 16);
         }
 
-        private float? _dz;
         public float DzQuantized
         {
-            get => _dz ??= Quantize.Decode(Dz, -100.0f, 100.0f, 16);
-            set { _dz = value; Dz = Quantize.Encode(value, -100.0f, 100.0f, 16); }
-        }
-
-        /// <summary>Clears all cached decoded values. Call after mutating raw uint32 fields directly.</summary>
-        public void ResetDecodedCache()
-        {
-            _dx = null;
-            _dy = null;
-            _dz = null;
+            get => Quantize.Decode(Dz, -100.0f, 100.0f, 16);
+            set => Dz = Quantize.Encode(value, -100.0f, 100.0f, 16);
         }
     }
 
