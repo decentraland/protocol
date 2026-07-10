@@ -114,20 +114,16 @@ message UpsertFriendshipResponse {
 
 // Subscription stream lifecycle
 
-// Reason codes for a server-initiated closure of a subscription stream.
+// Reason codes for a server-initiated closure of a subscription stream. Only reasons that
+// can actually be delivered are listed: a close notice reaches the client as the final
+// stream message, which requires the connection to still be alive. That rules out
+// shutdown/stale-cleanup closes, where the socket is already gone before the server tears
+// the subscription down.
 enum SubscriptionStreamClosedReason {
   // The server did not specify a finer-grained reason.
   STREAM_CLOSED_UNKNOWN = 0;
-  // The server is shutting down or draining its connections.
-  STREAM_CLOSED_SERVER_SHUTTING_DOWN = 1;
   // The connection already has an active subscription for this stream.
-  STREAM_CLOSED_DUPLICATE_SUBSCRIPTION = 2;
-  // The connection is no longer authorized to keep the stream open.
-  STREAM_CLOSED_UNAUTHORIZED = 3;
-  // The server cleaned up the subscription after detecting its state was stale.
-  STREAM_CLOSED_STALE_SUBSCRIPTION = 4;
-  // An unrecoverable server-side error ended the stream.
-  STREAM_CLOSED_INTERNAL_ERROR = 5;
+  STREAM_CLOSED_DUPLICATE_SUBSCRIPTION = 1;
 }
 
 // Sent by the server as the FINAL message of a subscription stream to inform the
