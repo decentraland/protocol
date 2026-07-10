@@ -126,6 +126,7 @@ message TeleportPerformed {
   uint32 sequence = 2;
   uint32 server_tick = 3;
   PlayerState state = 4;
+  string realm = 5;
 }
 
 message ServerMessage {
