@@ -112,6 +112,34 @@ message UpsertFriendshipResponse {
   }
 }
 
+// Subscription stream lifecycle
+
+// Reason codes for a server-initiated closure of a subscription stream.
+enum SubscriptionStreamClosedReason {
+  // The server did not specify a finer-grained reason.
+  STREAM_CLOSED_UNKNOWN = 0;
+  // The server is shutting down or draining its connections.
+  STREAM_CLOSED_SERVER_SHUTTING_DOWN = 1;
+  // The connection already has an active subscription for this stream.
+  STREAM_CLOSED_DUPLICATE_SUBSCRIPTION = 2;
+  // The connection is no longer authorized to keep the stream open.
+  STREAM_CLOSED_UNAUTHORIZED = 3;
+  // The server cleaned up the subscription after detecting its state was stale.
+  STREAM_CLOSED_STALE_SUBSCRIPTION = 4;
+  // An unrecoverable server-side error ended the stream.
+  STREAM_CLOSED_INTERNAL_ERROR = 5;
+}
+
+// Sent by the server as the FINAL message of a subscription stream to inform the
+// client why the stream is being closed. When the `stream_closed` field is present
+// on a streamed update, the message carries no update data and the stream ends
+// right after it.
+message SubscriptionStreamClosed {
+  SubscriptionStreamClosedReason reason = 1;
+  // Optional human-readable detail, meant for logging/debugging (not for UI).
+  optional string message = 2;
+}
+
 message FriendshipUpdate {
   message RequestResponse {
     FriendProfile friend = 1;
@@ -133,11 +161,19 @@ message FriendshipUpdate {
     CancelResponse cancel = 5;
     BlockResponse block = 6;
   }
+
+  // Present only on the final message of the stream; explains why the server closed it.
+  // When set, the `update` oneof is unset.
+  optional SubscriptionStreamClosed stream_closed = 7;
 }
 
 message FriendConnectivityUpdate {
   FriendProfile friend = 1;
   ConnectivityStatus status = 2;
+
+  // Present only on the final message of the stream; explains why the server closed it.
+  // When set, all other fields are unset.
+  optional SubscriptionStreamClosed stream_closed = 3;
 }
 
 message GetFriendshipStatusPayload {
@@ -288,12 +324,20 @@ message GetBlockingStatusResponse {
 message BlockUpdate {
   string address = 1;
   bool is_blocked = 2;
+
+  // Present only on the final message of the stream; explains why the server closed it.
+  // When set, all other fields are unset.
+  optional SubscriptionStreamClosed stream_closed = 3;
 }
 
 message CommunityMemberConnectivityUpdate {
   string community_id = 1;
   User member = 2;
   ConnectivityStatus status = 3;
+
+  // Present only on the final message of the stream; explains why the server closed it.
+  // When set, all other fields are unset.
+  optional SubscriptionStreamClosed stream_closed = 4;
 }
 
 // Private voice chats
@@ -378,6 +422,10 @@ message PrivateVoiceChatUpdate {
   optional User caller = 3;
   optional User callee = 4;
   optional PrivateVoiceChatCredentials credentials = 5;
+
+  // Present only on the final message of the stream; explains why the server closed it.
+  // When set, all other fields are unset.
+  optional SubscriptionStreamClosed stream_closed = 6;
 }
 
 // Ending a private voice chat
@@ -618,6 +666,10 @@ message CommunityVoiceChatUpdate {
   string community_name = 7; // Name of the community
   optional string community_image = 8; // Image/picture of the community
   repeated string worlds = 9; // World names associated with the community (world: true)
+
+  // Present only on the final message of the stream; explains why the server closed it.
+  // When set, all other fields are unset.
+  optional SubscriptionStreamClosed stream_closed = 10;
 }
 
 service SocialService {  
