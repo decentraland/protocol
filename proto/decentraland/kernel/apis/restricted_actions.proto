@@ -63,6 +63,8 @@ message CopyToClipboardRequest {
 
 message EmptyResponse { }
 
+message StopEmoteRequest { }
+
 service RestrictedActionsService {
   // MovePlayerTo will move the player to a position relative to the current scene.
   // If 'duration' field is used in the request, the success response depends on the
@@ -93,4 +95,7 @@ service RestrictedActionsService {
 
   // CopyToClipboard copies the provided text into the clipboard
   rpc CopyToClipboard(CopyToClipboardRequest) returns (EmptyResponse) {}
+
+  // StopEmote will stop the current emote
+  rpc StopEmote(StopEmoteRequest) returns (SuccessResponse) {}
 }
