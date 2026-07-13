@@ -83,7 +83,9 @@ function field(name, type, optionsRaw) {
 }
 
 function readGolden(name) {
-  return fs.readFileSync(path.join(__dirname, 'golden', name), 'utf8')
+  // Git may materialize the goldens with CRLF on Windows (core.autocrlf=true,
+  // no .gitattributes); the generator always emits LF, so normalize first.
+  return fs.readFileSync(path.join(__dirname, 'golden', name), 'utf8').replace(/\r\n/g, '\n')
 }
 
 // --------------------------------------------------------------------------
