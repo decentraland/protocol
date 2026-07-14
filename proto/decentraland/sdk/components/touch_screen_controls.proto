@@ -2,6 +2,7 @@ syntax = "proto3";
 package decentraland.sdk.components;
 import "decentraland/sdk/components/common/id.proto";
 import "decentraland/sdk/components/common/input_action.proto";
+import "decentraland/common/texture.proto";
 option (common.ecs_component_id) = 1218;
 
 // The TouchScreenControls component lets a scene configure the native on-screen touch
@@ -16,9 +17,9 @@ message PBTouchScreenControls {
     message TouchInput {
         common.InputAction input_action = 1; // which on-screen button this configures
         bool hide = 2;                        // hide this button (default: shown)
-        // Override the button glyph with this icon (content-mapped texture src). For the
-        // jump button it replaces all of its dynamic states (jump / double-jump / glide).
-        optional string icon = 3;
+        // Override the button glyph with this texture. For the jump button it replaces all
+        // of its dynamic states (jump / double-jump / glide).
+        optional decentraland.common.TextureUnion icon = 3;
     }
 
     repeated TouchInput touch_inputs = 1;
