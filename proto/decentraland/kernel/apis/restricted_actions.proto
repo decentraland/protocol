@@ -64,6 +64,33 @@ message EmptyResponse { }
 
 message StopEmoteRequest { }
 
+enum ExplorerUi {
+  EU_UNSPECIFIED = 0;
+  EU_MAP = 1;
+  EU_SETTINGS = 2;
+  EU_BACKPACK = 3;
+  EU_CAMERA_REEL = 4;
+  EU_COMMUNITIES = 5;
+  EU_PLACES = 6;
+  EU_EVENTS = 7;
+}
+
+enum OpenResult {
+  OR_UNSPECIFIED = 0;
+  OR_OPENED = 1;
+  OR_REJECTED_NOT_CURRENT_SCENE = 2;
+  OR_REJECTED_ALREADY_OPEN = 3;
+  OR_REJECTED_FEATURE_DISABLED = 4;
+}
+
+message OpenExplorerUiRequest {
+  ExplorerUi ui = 1;
+}
+
+message OpenExplorerUiResponse {
+  OpenResult open_result = 1;
+}
+
 service RestrictedActionsService {
   // MovePlayerTo will move the player to a position relative to the current scene.
   // If 'duration' field is used in the request, the success response depends on the
@@ -97,4 +124,7 @@ service RestrictedActionsService {
 
   // StopEmote will stop the current emote
   rpc StopEmote(StopEmoteRequest) returns (SuccessResponse) {}
+
+  // OpenExplorerUi opens a specific explorer UI panel
+  rpc OpenExplorerUi(OpenExplorerUiRequest) returns (OpenExplorerUiResponse) {}
 }
