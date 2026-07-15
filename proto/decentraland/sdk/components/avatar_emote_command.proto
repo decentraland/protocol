@@ -2,6 +2,7 @@ syntax = "proto3";
 package decentraland.sdk.components;
 
 import "decentraland/sdk/components/common/id.proto";
+import "decentraland/sdk/components/common/avatar_mask.proto";
 option (common.ecs_component_id) = 1088;
 
 // AvatarEmoteCommand is a grow only value set, used to signal the renderer about
@@ -9,5 +10,6 @@ option (common.ecs_component_id) = 1088;
 message PBAvatarEmoteCommand {
   string emote_urn = 1;
   bool loop = 2;
-  uint32 timestamp = 3;          // monotonic counter
+  uint32 timestamp = 3; // monotonic counter
+  optional decentraland.sdk.components.common.AvatarMask mask = 4;
 }

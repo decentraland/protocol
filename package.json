@@ -2,7 +2,10 @@
   "name": "@dcl/protocol",
   "version": "1.0.0",
   "description": "",
-  "repository": "decentraland/protocol.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decentraland/protocol.git"
+  },
   "homepage": "https://github.com/decentraland/protocol#readme",
   "bugs": "https://github.com/decentraland/protocol/issues",
   "keywords": [],
@@ -10,7 +13,8 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "scripts": {
-    "test": "./scripts/check-proto-compabitility.sh"
+    "test": "./scripts/check-proto-compabitility.sh",
+    "gen:test": "node protoc-gen-bitwise/test/generator.test.js"
   },
   "devDependencies": {
     "@protobuf-ts/protoc": "^2.11.0",
@@ -25,9 +29,11 @@
     "protobufjs": "7.2.4"
   },
   "files": [
-    "proto",
+    "proto/decentraland",
     "out-ts",
     "out-js",
-    "public"
+    "public",
+    "protoc-gen-bitwise/*.js",
+    "protoc-gen-bitwise/runtime"
   ]
 }
