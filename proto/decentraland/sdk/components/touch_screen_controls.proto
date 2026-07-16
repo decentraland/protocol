@@ -1,0 +1,38 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+import "decentraland/sdk/components/common/id.proto";
+import "decentraland/sdk/components/common/input_action.proto";
+import "decentraland/common/texture.proto";
+option (common.ecs_component_id) = 1218;
+
+// The TouchScreenControls component lets a scene configure the native on-screen touch
+// controls (the mobile joystick + gamepad). It must be set on the RootEntity.
+//
+// By default every on-screen button is shown; list a button in `touch_inputs` with
+// `hide = true` to remove it (declutter). `main_action` picks which action the large
+// central button triggers, and `hide_joystick` removes the native virtual joystick. It is
+// a no-op on platforms without native on-screen controls (e.g. desktop).
+//
+// Accepted actions: only the on-screen gamepad actions map to a button — `IA_POINTER`,
+// `IA_PRIMARY`, `IA_SECONDARY`, `IA_JUMP`, and `IA_ACTION_3`..`IA_ACTION_6`. Any other
+// `InputAction` (movement actions, `IA_ANY`, `IA_MODIFIER`, or unknown/future values) is
+// ignored: a `TouchInput` entry naming a non-button action has no effect, and a `main_action`
+// that isn't a valid gamepad action falls back to the default central button (`IA_JUMP`).
+message PBTouchScreenControls {
+    // Per-button configuration. A button not listed here keeps its default (shown).
+    message TouchInput {
+        common.InputAction input_action = 1; // which on-screen button this configures
+        bool hide = 2;                        // hide this button (default: shown)
+        // Override the button glyph with this texture. For the jump button it replaces all
+        // of its dynamic states (jump / double-jump / glide).
+        optional decentraland.common.TextureUnion icon = 3;
+    }
+
+    repeated TouchInput touch_inputs = 1;
+    // The large central button's action. Only the gamepad actions are valid:
+    // jump / pointer / primary (E) / secondary (F) / action_3..action_6 (1/2/3/4).
+    // When unset, the default central button (jump) is kept.
+    optional common.InputAction main_action = 2;
+    bool hide_joystick = 3; // hide the native virtual joystick
+    bool hide_crosshair = 4; // hide the on-screen crosshair / reticle
+}
