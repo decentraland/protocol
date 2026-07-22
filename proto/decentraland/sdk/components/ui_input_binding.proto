@@ -1,0 +1,27 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+import "decentraland/sdk/components/common/id.proto";
+import "decentraland/sdk/components/common/input_action.proto";
+option (common.ecs_component_id) = 1219;
+
+// The UiInputBinding component binds a UI entity to one or more InputActions. While the
+// element is pressed (touch or pointer) the listed actions are held down, driving both
+// the local player input and scene InputAction listeners, just like the native on-screen
+// buttons. It is typically combined with PBTouchScreenControls to replace the native
+// controls with a custom touch UI.
+//
+// Release semantics: the held actions are released as soon as the press that started them
+// ends. A renderer MUST release all actions held by this binding when any of the following
+// happens: the press/touch is lifted or cancelled, the pointer/touch leaves the element
+// (loses press ownership), the actions list changes (the previous set is released before
+// the new set is applied), the component is removed or its actions list becomes empty, the
+// UI element is hidden, disabled or removed from the tree, or the scene unloads. In short,
+// no action may remain held once the element is no longer both present and actively pressed.
+//
+// Multi-touch: the binding is a single held state, not reference-counted per pointer. The
+// actions are held while the element is pressed and released when that press ends; a second
+// simultaneous press on the same element does not stack, and does not extend the hold past
+// the first release.
+message PBUiInputBinding {
+    repeated common.InputAction actions = 1; // the input actions fired while this element is pressed
+}
