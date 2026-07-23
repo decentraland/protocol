@@ -81,8 +81,8 @@ enum ExplorerUi {
 enum OpenExplorerUiResult {
   UNSPECIFIED = 0;
   OPENED = 1;
-  REJECTED_NOT_CURRENT_SCENE = 2;   // the standard restricted-actions current-scene gate rejected the call
-  REJECTED_ALREADY_OPEN = 3;        // a fullscreen panel is already open
+  WAS_ALREADY_OPEN = 2;                 // a fullscreen panel is already open
+  REJECTED_NOT_CURRENT_SCENE = 3;   // the standard restricted-actions current-scene gate rejected the call
   REJECTED_FEATURE_DISABLED = 4;    // the requested section is hidden by feature flags or client doesn't have that feature
   REJECTED_NO_USER_GESTURE = 5;     // rejected: the call did not originate from a user gesture
 }
