@@ -66,20 +66,18 @@ message EmptyResponse { }
 message StopEmoteRequest { }
 
 // Identifies which fullscreen explorer panel OpenExplorerUi targets.
-// Additive: new panels are appended with the next number; existing values never change.
+// EU_SETTINGS holds 0 so an unset `ui` field defaults to the least-intrusive panel.
 enum ExplorerUi {
-  EU_UNSPECIFIED = 0;
+  EU_SETTINGS = 0;
   EU_MAP = 1;
-  EU_SETTINGS = 2;
-  EU_BACKPACK = 3;
-  EU_CAMERA_REEL = 4;
-  EU_COMMUNITIES = 5;
-  EU_PLACES = 6;
-  EU_EVENTS = 7;
+  EU_BACKPACK = 2;
+  EU_CAMERA_REEL = 3;
+  EU_COMMUNITIES = 4;
+  EU_PLACES = 5;
+  EU_EVENTS = 6;
 }
 
 // Verdict of an OpenExplorerUi request (enum rather than a bool so new outcomes stay expressible).
-// Additive: new rejection reasons may be appended; existing values never change.
 enum OpenExplorerUiResult {
   UNSPECIFIED = 0;
   OPENED = 1;
@@ -141,6 +139,5 @@ service RestrictedActionsService {
   rpc StopEmote(StopEmoteRequest) returns (SuccessResponse) {}
 
   // OpenExplorerUi opens a specific fullscreen explorer panel and returns the open verdict.
-  // Follows the same scene->explorer pathway as OpenNftDialog / OpenExternalUrl.
   rpc OpenExplorerUi(OpenExplorerUiRequest) returns (OpenExplorerUiResponse) {}
 }
