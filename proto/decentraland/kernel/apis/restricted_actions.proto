@@ -81,7 +81,7 @@ enum ExplorerUi {
 enum OpenExplorerUiResult {
   UNSPECIFIED = 0;
   OPENED = 1;
-  WAS_ALREADY_OPEN = 2;                 // a fullscreen panel is already open
+  WAS_ALREADY_OPEN = 2;             // a fullscreen panel is already open
   REJECTED_NOT_CURRENT_SCENE = 3;   // the standard restricted-actions current-scene gate rejected the call
   REJECTED_FEATURE_DISABLED = 4;    // the requested section is hidden by feature flags or client doesn't have that feature
   REJECTED_NO_USER_GESTURE = 5;     // rejected: the call did not originate from a user gesture
@@ -91,16 +91,13 @@ message OpenExplorerUiRequest {
   ExplorerUi ui = 1;
 
   // Extension point for future per-panel parameters, as a oneof so each panel gets its
-  // own optional param message without touching existing fields. Field numbers 10+ are
-  // for these params, e.g.:
+  // own optional param message without touching existing fields. 
   //   message MapParams { int32 focus_x = 1; int32 focus_y = 2; }
   //   oneof params { MapParams map = 10; }
 }
 
 message OpenExplorerUiResponse {
-  // Carries only the verdict of the open action. Post-open signals (panel closed, flow
-  // outcomes, milestones) are deliberately out of scope here and are delivered through a
-  // separate additive event channel (a grow-only scene component), keeping this contract stable.
+  // Carries only the verdict of the open action. 
   OpenExplorerUiResult open_result = 1;
 }
 
