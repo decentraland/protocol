@@ -101,6 +101,40 @@ message OpenExplorerUiResponse {
   OpenExplorerUiResult open_result = 1;
 }
 
+// Verdict of an OpenItemPurchase request. Values are prefixed because proto3 enum values are siblings
+// of their enum, so bare names would collide with OpenExplorerUiResult above.
+//
+// Deliberately coarse: a purchase that could not be completed is always OIP_FAILED, never a reason.
+// Reporting "insufficient credits" separately would let scene code probe a wallet's balance by
+// offering items at different prices, and the client already tells the player what happened.
+enum OpenItemPurchaseResult {
+  OIP_UNSPECIFIED = 0;
+  OIP_PURCHASED = 1;                    // the purchase was confirmed and its transaction was broadcast
+  OIP_DISMISSED = 2;                    // the player closed the confirmation without buying
+  OIP_REJECTED_NOT_CURRENT_SCENE = 3;   // the standard restricted-actions current-scene gate rejected the call
+  OIP_REJECTED_NO_USER_GESTURE = 4;     // rejected: the call did not originate from a user gesture
+  OIP_REJECTED_FEATURE_DISABLED = 5;    // in-world purchases are unavailable for this player or client
+  OIP_REJECTED_NOT_PURCHASABLE = 6;     // no listing for that urn: sold out, never listed, or not a collection item
+  OIP_FAILED = 7;
+}
+
+message OpenItemPurchaseRequest {
+  // The item to offer, e.g. urn:decentraland:matic:collections-v2:0x<contract>:<itemId>.
+  //
+  // The URN is the ONLY thing the scene supplies: the client resolves the price from the catalog,
+  // signs and runs its own confirmation. A scene-supplied price would let it overcharge the player,
+  // and a scene-supplied transaction could redirect the payment.
+  string urn = 1;
+
+  // Extension point for future fields (e.g. a quantity, or a campaign id for attribution) without
+  // touching existing ones. Quantity is absent on purpose: one offer, one confirmation.
+}
+
+message OpenItemPurchaseResponse {
+  // Carries only the verdict. Nothing about price, credit or transaction reaches the scene.
+  OpenItemPurchaseResult result = 1;
+}
+
 service RestrictedActionsService {
   // MovePlayerTo will move the player to a position relative to the current scene.
   // If 'duration' field is used in the request, the success response depends on the
@@ -137,4 +171,8 @@ service RestrictedActionsService {
 
   // OpenExplorerUi opens a specific fullscreen explorer panel and returns the open verdict.
   rpc OpenExplorerUi(OpenExplorerUiRequest) returns (OpenExplorerUiResponse) {}
+
+  // OpenItemPurchase asks the client to offer a marketplace item for sale in-world, running its own
+  // price resolution and confirmation, and returns the verdict so the scene can react.
+  rpc OpenItemPurchase(OpenItemPurchaseRequest) returns (OpenItemPurchaseResponse) {}
 }
