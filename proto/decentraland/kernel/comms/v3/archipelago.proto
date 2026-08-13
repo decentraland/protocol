@@ -39,6 +39,18 @@ message KickedMessage {
   KickedReason reason = 1;
 }
 
+message ProfileUpdateNotification {
+  string address = 1;
+  string profile_json = 2;
+  int64 timestamp = 3;
+}
+
+message SceneUpdateNotification {
+  string scene_id = 1;
+  repeated string parcels = 2;
+  int64 timestamp = 3;
+}
+
 message ServerPacket {
   oneof message {
     ChallengeResponseMessage challenge_response = 1;
@@ -47,6 +59,8 @@ message ServerPacket {
     LeftIslandMessage  left_island = 4;
     JoinIslandMessage join_island = 5;
     KickedMessage kicked = 6;
+    ProfileUpdateNotification profile_update = 7;
+    SceneUpdateNotification scene_update = 8;
   }
 }
 
