@@ -11,4 +11,5 @@ enum ExplorerUi {
   EU_COMMUNITIES = 4;
   EU_PLACES = 5;
   EU_EVENTS = 6;
+  EU_ITEM_PURCHASE = 7;
 }

@@ -83,6 +83,13 @@ message OpenExplorerUiRequest {
   // own optional param message without touching existing fields. 
   //   message MapParams { int32 focus_x = 1; int32 focus_y = 2; }
   //   oneof params { MapParams map = 10; }
+  message PurchaseParams {
+    string urn = 1;
+  }
+  
+  oneof params {
+    PurchaseParams purchase = 10;
+  }
 }
 
 message OpenExplorerUiResponse {
