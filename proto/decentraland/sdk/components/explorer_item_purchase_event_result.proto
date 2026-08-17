@@ -1,0 +1,23 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1221;
+
+// Grow-only value set appended to the scene root entity.
+// Reports the outcome of an EU_ITEM_PURCHASE flow triggered via OpenExplorerUi.
+message PBExplorerItemPurchaseResult {
+  message Purchased {}
+  message Dismissed {}
+  message Failed {}
+
+  string urn = 1;
+  uint32 timestamp = 2;
+  
+  oneof status {
+    Purchased purchased = 10;
+    Dismissed dismissed = 11;
+    Failed failed = 12;
+  }
+}
