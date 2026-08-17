@@ -13,7 +13,7 @@ message PBExplorerItemPurchaseResult {
   message Failed {}
 
   string urn = 1;
-  uint32 timestamp = 2;
+  uint32 timestamp = 2;   // The scene tick when the event occurred
   
   oneof status {
     Purchased purchased = 10;

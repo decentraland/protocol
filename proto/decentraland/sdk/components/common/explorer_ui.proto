@@ -12,8 +12,7 @@ enum ExplorerUi {
   EU_PLACES = 5;
   EU_EVENTS = 6;
   // Opens the item-purchase confirmation modal for the urn in PurchaseParams.
-  // UiOpened/UiClosed are emitted in PBExplorerItemPurchaseResult like for every other value; 
-  // the purchase outcome is reported via the dedicated result component (1221).
-  EU_ITEM_PURCHASE = 7; 
-  
+  // UiOpened/UiClosed are emitted in PBExplorerUiEventsResult like for every other value; 
+  // the purchase outcome is reported via the dedicated result component (1220).
+  EU_ITEM_PURCHASE = 7;
 }
