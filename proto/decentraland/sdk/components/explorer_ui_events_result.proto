@@ -10,7 +10,8 @@ option (common.ecs_component_id) = 1220;
 // opened, a panel was closed. It is a grow only value set appended to the scene root entity, so every
 // event of a tick is delivered and none overwrites another.
 message PBExplorerUiEventsResult {
-  // Emitted when an explorer panel is opened.
+  // Emitted when an explorer panel is opened. The OpenExplorerUi response carries the same fact,
+  // but it reaches only the caller; this channel is scene wide.
   message UiOpened {}
 
   // Emitted when an explorer panel is closed.
