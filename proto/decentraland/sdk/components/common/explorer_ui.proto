@@ -1,8 +1,7 @@
 syntax = "proto3";
 package decentraland.sdk.components.common;
 
-// Identifies which explorer panel OpenExplorerUi targets. Panels are not all fullscreen:
-// EU_ITEM_PURCHASE is a popup and can be shown while another panel is open.
+// Identifies which explorer panel OpenExplorerUi targets. Panels are not all fullscreen.
 // EU_SETTINGS holds 0 so an unset `ui` field defaults to the least-intrusive panel.
 enum ExplorerUi {
   EU_SETTINGS = 0;
