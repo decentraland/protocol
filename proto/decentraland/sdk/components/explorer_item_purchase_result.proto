@@ -14,7 +14,8 @@ message PBExplorerItemPurchaseResult {
 
   string urn = 1;
   uint32 timestamp = 2;   // The scene tick when the event occurred
-  
+  uint32 request_id = 3;  // The OpenExplorerUiRequest.request_id that caused this event; 0 if unset
+
   oneof status {
     Purchased purchased = 10;
     Dismissed dismissed = 11;

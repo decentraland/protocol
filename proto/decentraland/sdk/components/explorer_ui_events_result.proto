@@ -18,6 +18,7 @@ message PBExplorerUiEventsResult {
 
   decentraland.sdk.components.common.ExplorerUi ui = 1; // The panel that the event refers to
   uint32 timestamp = 2;                                 // The scene tick when the event occurred
+  uint32 request_id = 3;                                // The OpenExplorerUiRequest.request_id that caused this event; 0 if unset
 
   // Extension point, deliberately narrow: a variant belongs here only if it is meaningful for every
   // value of `ui`, because `ui` and `event` are independent axes and every combination of the two is
