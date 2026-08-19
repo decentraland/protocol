@@ -79,8 +79,8 @@ enum OpenExplorerUiResult {
 message OpenExplorerUiRequest {
   decentraland.sdk.components.common.ExplorerUi ui = 1;
   // Echoed back in the events this request produces, so they can be matched to their call.
-  // 0 means no correlation.
-  uint32 request_id = 2;
+  // Unset means no correlation.
+  optional uint32 request_id = 2;
 
   message PurchaseParams {
     string urn = 1;
