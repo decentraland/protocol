@@ -9,8 +9,8 @@ option (common.ecs_component_id) = 1048;
 // the tick_number and frame_number of the same frame could be used as correlation numbers
 // for timestamps in other components.
 message PBEngineInfo {
-  uint32 frame_number         = 1; // frame counter of the engine
-  float total_runtime         = 2; // total runtime of this scene in seconds
-  uint32 tick_number          = 3; // tick counter of the scene as per ADR-148
-  bool loading_screen_visible = 4; // loading screen current visibility state
+  uint32 frame_number = 1; // frame counter of the engine
+  float total_runtime = 2; // total runtime of this scene in seconds
+  uint32 tick_number  = 3; // tick counter of the scene as per ADR-148
+  bool scene_hidden   = 4; // visibility state of the scene regarding Explorer fullscreen UI
 }
