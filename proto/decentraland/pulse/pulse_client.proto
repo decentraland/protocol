@@ -66,6 +66,27 @@ message TeleportRequest {
   string realm = 5;
 }
 
+// Inclusive rectangle in parcel coordinates. A single parcel is min == max.
+message ParcelRect {
+  sint32 min_x = 1;
+  sint32 min_z = 2;
+  sint32 max_x = 3;
+  sint32 max_z = 4;
+}
+
+// Scene-listener connect: same signed-fetch auth chain as HandshakeRequest, plus an
+// immutable parcel-set area of interest. No initial state — a listener is never a subject.
+message SceneListenerHandshakeRequest {
+  // Signed-fetch headers JSON — identical shape to HandshakeRequest.auth_chain.
+  bytes auth_chain = 1;
+  // AoI realm partition — same rules as TeleportRequest.realm.
+  string realm = 2;
+  // Announced AoI as inclusive parcel-coordinate rects; fixed for the connection
+  // lifetime. The sum of rect areas is capped server-side (SceneListener:MaxParcels) —
+  // overlaps count per rect, so announce disjoint rects.
+  repeated ParcelRect parcel_rects = 3;
+}
+
 message ClientMessage {
   oneof message {
     HandshakeRequest handshake = 1;
@@ -75,5 +96,6 @@ message ClientMessage {
     EmoteStart emote_start = 5;
     EmoteStop emote_stop = 6;
     TeleportRequest teleport = 7;
+    SceneListenerHandshakeRequest scene_listener_handshake = 8;
   }
 }
