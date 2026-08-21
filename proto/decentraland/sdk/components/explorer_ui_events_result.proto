@@ -6,18 +6,20 @@ import "decentraland/sdk/components/common/explorer_ui.proto";
 
 option (common.ecs_component_id) = 1220;
 
-// PBExplorerUiEventsResult transports the lifecycle events of fullscreen explorer panels — a panel was
+// PBExplorerUiEventsResult transports the lifecycle events of explorer UI panels — a panel was
 // opened, a panel was closed. It is a grow only value set appended to the scene root entity, so every
 // event of a tick is delivered and none overwrites another.
 message PBExplorerUiEventsResult {
-  // Emitted when a fullscreen explorer panel is opened.
+  // Emitted when an explorer panel is opened. The OpenExplorerUi response carries the same fact,
+  // but it reaches only the caller; this channel is scene wide.
   message UiOpened {}
 
-  // Emitted when a fullscreen explorer panel is closed.
+  // Emitted when an explorer panel is closed.
   message UiClosed {}
 
   decentraland.sdk.components.common.ExplorerUi ui = 1; // The panel that the event refers to
   uint32 timestamp = 2;                                 // The scene tick when the event occurred
+  uint32 request_id = 3;                                // The OpenExplorerUiRequest.request_id that caused this event; 0 if unset
 
   // Extension point, deliberately narrow: a variant belongs here only if it is meaningful for every
   // value of `ui`, because `ui` and `event` are independent axes and every combination of the two is
