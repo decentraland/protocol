@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package decentraland.pulse;
+
+// Published by Pulse to NATS on `peer.{address}.cluster_change` whenever a peer's post-debounce
+// cluster assignment changes. Pulse is the sole author of cluster membership.
+//
+// A "cluster" is Pulse's own grouping of co-located peers, derived by union-find over occupied
+// area-of-interest grid cells. It is deliberately a different concept from archipelago's "island":
+// clusters have no size cap, are realm-partitioned, and carry no transport connection details.
+// Comms Gatekeeper subscribes here, mints the LiveKit connection string (the ban check is
+// authority-local to gatekeeper), and re-emits the legacy
+// decentraland.kernel.comms.v3.IslandChangedMessage on `engine.peer.{address}.island_changed`,
+// so the WebSocket Connector and clients stay untouched.
+message PeerClusterChange {
+  // Cluster the peer now belongs to. Stable across passes for an unchanged crowd.
+  string cluster_id = 1;
+
+  // The peer's realm. Clusters never span realms, so this qualifies cluster_id and keeps the
+  // event self-contained — consumers never have to join against the topology feed.
+  string realm = 2;
+}
