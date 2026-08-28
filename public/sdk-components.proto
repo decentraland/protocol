@@ -47,6 +47,7 @@ import public "decentraland/sdk/components/ui_dropdown.proto";
 import public "decentraland/sdk/components/ui_input_result.proto";
 import public "decentraland/sdk/components/ui_input.proto";
 import public "decentraland/sdk/components/ui_input_binding.proto";
+import public "decentraland/sdk/components/ui_scroll_result.proto";
 import public "decentraland/sdk/components/ui_text.proto";
 import public "decentraland/sdk/components/ui_transform.proto";
 import public "decentraland/sdk/components/video_player.proto";
