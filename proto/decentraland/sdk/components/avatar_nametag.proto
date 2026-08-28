@@ -17,7 +17,8 @@ option (common.ecs_component_id) = 1221;
 // player leaves the scene - a later write to a stale entity lands on whoever holds that id next.
 //
 // The plate does not replace the avatar's name. It is drawn above the nametag as its own line,
-// and it stays visible while the name itself is hidden, including by AMT_HIDE_NAMETAGS.
+// and it stays visible while the name itself is hidden by AMT_HIDE_NAMETAGS. It does follow the
+// client's nametag visibility setting: a player who turns nametags off sees no plates either.
 // Removing the component, or the entity, removes the plate.
 //
 // The plate is local to the client that renders it and is never relayed to other players. A
