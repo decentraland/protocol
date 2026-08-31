@@ -33,5 +33,5 @@ message PBAvatarNametag {
 
   optional decentraland.common.Color3 label_color = 2;      // (default: the client's native nametag text color)
   optional decentraland.common.Color3 background_color = 3; // (default: the client's native nametag background color)
-  optional decentraland.common.Color3 border_color = 4;     // (default: the client's native plate border - a translucent lightening of the background color)
+  optional decentraland.common.Color3 border_color = 4;     // (default: background_color, so the plate carries no visible border)
 }
