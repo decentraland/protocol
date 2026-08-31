@@ -28,7 +28,8 @@ option (common.ecs_component_id) = 1221;
 message PBAvatarNametag {
   // The plate content: one short line, for example "Club Owner". The client renders it on a
   // single line and truncates it with an ellipsis to fit the plate; multi-line text is not
-  // supported. An empty string hides the plate.
+  // supported. Leave it empty to draw the plate without any text, which is how a scene
+  // color-codes players without labelling them.
   string label = 1;
 
   optional decentraland.common.Color3 label_color = 2;      // (default: the client's native nametag text color)
