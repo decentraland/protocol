@@ -22,7 +22,9 @@ option (common.ecs_component_id) = 1221;
 //
 // The plate is local to the client that renders it; it is never relayed to other players.
 message PBAvatarNametag {
-  // The plate text: a single line, for example "Club Owner". Empty draws the plate without text.
+  // The plate text: a single line, for example "Club Owner". Empty draws the plate without text,
+  // and spaces are preserved: a label of spaces widens a text-less plate. For a plate sized
+  // exactly to a word without showing it, set label_color equal to background_color instead.
   string label = 1;
 
   optional decentraland.common.Color3 label_color = 2;      // (default: the client's native nametag text color)
