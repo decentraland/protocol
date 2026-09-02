@@ -13,7 +13,12 @@ message MovePlayerToRequest {
 }
 
 message TeleportToRequest {
-  decentraland.common.Vector2 world_coordinates = 1;
+  // The parcel to land on. Omitted: the realm's default spawn (only meaningful with `realm`).
+  optional decentraland.common.Vector2 world_coordinates = 1;
+  // The realm the parcel belongs to: a world name (`foo.dcl.eth`) or a realm url. When set, the
+  // client changes realm (a full reconnect, even to the realm the player is in) and lands on the
+  // parcel there. Omitted: the parcel is in the player's current realm.
+  optional string realm = 2;
 }
 
 message TriggerEmoteRequest {
@@ -56,7 +61,30 @@ message MovePlayerToResponse {
   bool success = 1;
 }
 
+message WalkPlayerToRequest {
+  decentraland.common.Vector3 new_relative_position = 1;
+  float stop_threshold = 2;
+  optional float timeout = 3; // max seconds before the request is failed; not passed to the movement scene
+}
+
+message WalkPlayerToResponse {
+  bool success = 1;
+}
+
 message TeleportToResponse { }
+
+message SetUiFocusRequest {
+  string element_id = 1;
+}
+
+message ClearUiFocusRequest { }
+
+message GetUiFocusRequest { }
+
+message UiFocusResponse {
+  // the element that is/was focussed
+  optional string element_id = 1;
+}
 
 message CopyToClipboardRequest {
   string text = 1;
@@ -97,11 +125,18 @@ service RestrictedActionsService {
   rpc MovePlayerTo(MovePlayerToRequest) returns (MovePlayerToResponse) {}
 
   // TeleportTo will move the user to the specified world LAND parcel coordinates
+  // WalkPlayerTo will walk the player to a position relative to the current scene,
+  // managed by the movement controller scene. Returns success when the player reaches
+  // within stop_threshold distance, or false if the path is blocked, the player gets
+  // stuck, the player interrupts the walk with manual input, or the optional timeout expires.
+  rpc WalkPlayerTo(WalkPlayerToRequest) returns (WalkPlayerToResponse) {}
+
   rpc TeleportTo(TeleportToRequest) returns (TeleportToResponse) {}
 
   // TriggerEmote will trigger an emote in this current user
   rpc TriggerEmote(TriggerEmoteRequest) returns (TriggerEmoteResponse) {}
 
+  // @deprecated, use TeleportTo with `realm` (and no `world_coordinates` for the realm's default spawn)
   // ChangeRealm prompts the user to change to a specific realm
   rpc ChangeRealm(ChangeRealmRequest) returns (SuccessResponse) {}
 
@@ -119,6 +154,15 @@ service RestrictedActionsService {
   rpc TriggerSceneEmote(TriggerSceneEmoteRequest) returns (SuccessResponse) {}
 
   // CopyToClipboard copies the provided text into the clipboard
+  // Sets the focus to a specific UI element
+  rpc SetUiFocus(SetUiFocusRequest) returns (UiFocusResponse) {}
+
+  // Clears the focus from any currently focused textentry or dropdown
+  rpc ClearUiFocus(ClearUiFocusRequest) returns (UiFocusResponse) {}
+
+  // Returns the element_id of any currently focused textentry or dropdown
+  rpc GetUiFocus(GetUiFocusRequest) returns (UiFocusResponse) {}
+
   rpc CopyToClipboard(CopyToClipboardRequest) returns (EmptyResponse) {}
 
   // StopEmote will stop the current emote

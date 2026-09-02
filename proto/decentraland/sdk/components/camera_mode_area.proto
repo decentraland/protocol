@@ -22,4 +22,5 @@ option (common.ecs_component_id) = 1071;
 message PBCameraModeArea {
   decentraland.common.Vector3 area = 1; // the 3D size of the region
   common.CameraType mode = 2;           // the camera mode to enforce
+  optional bool use_collider_range = 4; // if true, the player will be considered inside the area when they are within 0.3m of the area. default true
 }
