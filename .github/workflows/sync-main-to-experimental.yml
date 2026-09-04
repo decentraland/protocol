@@ -5,7 +5,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-# Two pushes to main must not race on force-pushing chore/sync.
+# Two pushes to main must not race on pushing chore/sync.
 concurrency:
   group: sync-main-to-experimental
   cancel-in-progress: false
@@ -37,15 +37,20 @@ jobs:
         run: |
           set -euo pipefail
 
-          git fetch --no-tags --force origin main experimental
+          # A wildcard refspec is required: origin/experimental and origin/chore/sync
+          # are both read below, and --force-with-lease resolves its lease through
+          # this mapping.
+          git config --replace-all remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+          git fetch --no-tags --force --prune origin
 
           PR_NUMBER="$(gh pr list --base experimental --head chore/sync --state open --json number --jq '.[0].number // empty')"
           echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
 
           # Start over from experimental, unless a sync PR is already open — then keep
-          # the existing branch so any manual conflict resolution on it survives.
+          # the existing branch, so commits that arrive on main while the PR is open
+          # accumulate on it and any manual conflict resolution survives.
           BASE=origin/experimental
-          if [ -n "$PR_NUMBER" ] && git fetch --no-tags --force origin chore/sync; then
+          if [ -n "$PR_NUMBER" ] && git rev-parse --verify --quiet refs/remotes/origin/chore/sync >/dev/null; then
             BASE=origin/chore/sync
           fi
           git checkout -B chore/sync "$BASE"
@@ -68,7 +73,9 @@ jobs:
           fi
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
-          git push --force --set-upstream origin chore/sync
+          # The lease guards a manual conflict resolution pushed to chore/sync
+          # since the fetch above.
+          git push --force-with-lease --set-upstream origin chore/sync
 
       - name: Create or update PR
         if: steps.sync.outputs.changed == 'true'
