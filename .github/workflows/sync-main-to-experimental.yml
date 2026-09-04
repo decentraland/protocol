@@ -5,6 +5,15 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+# Two pushes to main must not race on force-pushing chore/sync.
+concurrency:
+  group: sync-main-to-experimental
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   create-pr:
     runs-on: ubuntu-latest
@@ -12,22 +21,66 @@ jobs:
     steps:
       - name: Check out the code
         uses: actions/checkout@v4
+        with:
+          # full history, otherwise the merges below have no common ancestor
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Create or update sync branch
-        run: |
-          git fetch origin experimental
-          git checkout -B chore/sync
-          git push --force --set-upstream origin chore/sync
-
-      - name: Create or update PR
+        id: sync
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PR_NUMBER=$(gh pr list --base experimental --head chore/sync --state open --json number --jq '.[0].number')
+          set -euo pipefail
+
+          git fetch --no-tags --force origin main experimental
+
+          PR_NUMBER="$(gh pr list --base experimental --head chore/sync --state open --json number --jq '.[0].number // empty')"
+          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+
+          # Start over from experimental, unless a sync PR is already open — then keep
+          # the existing branch so any manual conflict resolution on it survives.
+          BASE=origin/experimental
+          if [ -n "$PR_NUMBER" ] && git fetch --no-tags --force origin chore/sync; then
+            BASE=origin/chore/sync
+          fi
+          git checkout -B chore/sync "$BASE"
+
+          # chore/sync must be experimental + main: anything that only exists on
+          # experimental has to survive the sync, or the package built from the branch
+          # ships main's protos alone.
+          for REF in origin/experimental origin/main; do
+            if ! git merge --no-edit -m "chore: merge $REF into chore/sync" "$REF"; then
+              git merge --abort || true
+              echo "::error::Conflict merging $REF into chore/sync. Resolve it manually on the chore/sync branch."
+              exit 1
+            fi
+          done
+
+          if git diff --quiet origin/experimental HEAD; then
+            echo "Nothing to sync: experimental already contains everything in main."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+          git push --force --set-upstream origin chore/sync
+
+      - name: Create or update PR
+        if: steps.sync.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.sync.outputs.pr_number }}
+        run: |
+          set -euo pipefail
 
           if [ -n "$PR_NUMBER" ]; then
             echo "PR #$PR_NUMBER already exists, adding a comment..."
-            gh pr comment $PR_NUMBER --body "🔄 Updated with latest changes from **main** on $(date -u '+%Y-%m-%d %H:%M UTC')"
+            gh pr comment "$PR_NUMBER" --body "🔄 Updated with latest changes from **main** on $(date -u '+%Y-%m-%d %H:%M UTC')"
           else
             echo "Creating new PR..."
             gh pr create \
