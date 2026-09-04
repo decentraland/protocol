@@ -13,8 +13,6 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
-  # gh pr comment and gh pr create --label reach a PR through the issues API
-  issues: write
 
 jobs:
   create-pr:
@@ -33,26 +31,20 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Create or update sync branch
-        id: sync
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
 
-          # A wildcard refspec is required: origin/experimental and origin/chore/sync
-          # are both read below, and --force-with-lease resolves its lease through
-          # this mapping.
+          # The wildcard is what the bare fetch below and --force-with-lease resolve
+          # branch names through.
           git config --replace-all remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
           git fetch --no-tags --force --prune origin
 
-          PR_NUMBER="$(gh pr list --base experimental --head chore/sync --state open --json number --jq '.[0].number // empty')"
-          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
-
-          # Start over from experimental, unless a sync PR is already open — then keep
-          # the existing branch, so commits that arrive on main while the PR is open
-          # accumulate on it and any manual conflict resolution survives.
+          # An existing chore/sync is a sync still in flight: keep it, so commits
+          # arriving on main accumulate on it and a manual conflict resolution pushed
+          # to it survives. The branch is deleted when its PR merges, so the next sync
+          # starts from experimental again.
           BASE=origin/experimental
-          if [ -n "$PR_NUMBER" ] && git rev-parse --verify --quiet refs/remotes/origin/chore/sync >/dev/null; then
+          if git rev-parse --verify --quiet refs/remotes/origin/chore/sync >/dev/null; then
             BASE=origin/chore/sync
           fi
           git checkout -B chore/sync "$BASE"
@@ -61,31 +53,54 @@ jobs:
           # experimental has to survive the sync, or the package built from the branch
           # ships main's protos alone.
           for REF in origin/experimental origin/main; do
-            if ! git merge --no-edit -m "chore: merge $REF into chore/sync" "$REF"; then
+            if ! git merge -m "chore: merge $REF into chore/sync" "$REF"; then
               git merge --abort || true
-              echo "::error::Conflict merging $REF into chore/sync. Resolve it manually on the chore/sync branch."
+              echo "::error::Merging $REF into chore/sync failed. To recover: branch chore/sync off experimental (or check out the existing one), merge main into it, resolve, push it, and open a PR against experimental. Later runs merge on top of that resolution."
               exit 1
             fi
           done
 
-          if git diff --quiet origin/experimental HEAD; then
-            echo "Nothing to sync: experimental already contains everything in main."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
+          # Push whenever the recomputed branch differs from the remote, so a stale
+          # chore/sync can never stay the head of an open PR.
+          REMOTE_HEAD="$(git rev-parse --verify --quiet refs/remotes/origin/chore/sync || echo absent)"
+          if [ "$(git rev-parse HEAD)" = "$REMOTE_HEAD" ]; then
+            echo "chore/sync on the remote is already up to date."
+          else
+            git push --force-with-lease origin chore/sync
           fi
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-
-          # The lease guards a manual conflict resolution pushed to chore/sync
-          # since the fetch above.
-          git push --force-with-lease --set-upstream origin chore/sync
 
       - name: Create or update PR
-        if: steps.sync.outputs.changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ steps.sync.outputs.pr_number }}
+          # Backticks here are data, not shell source: they reach gh through the
+          # variable and are never re-evaluated.
+          PR_BODY: |
+            :crown: *An automated PR to keep experimental in sync with main*
+
+            > [!IMPORTANT]
+            > **Do not merge this PR with the Squash button.**
+            >
+            > Squashing replaces `main`'s commits with a single new one, so `main` stops
+            > being an ancestor of `experimental` and the merge base freezes. Every later
+            > sync then re-applies changes `experimental` already has, and starts
+            > conflicting within a couple of runs.
+            >
+            > Land it by running the **Merge sync PR into experimental** workflow
+            > (Actions -> Merge sync PR into experimental -> Run workflow). It pushes a
+            > real merge commit, and this PR closes as merged.
+            >
+            > If it does get squashed, restore the ancestry with
+            > `git merge -s ours origin/main` on `experimental`.
         run: |
           set -euo pipefail
+
+          # gh pr create fails with "No commits between ..." when nothing is ahead.
+          if git merge-base --is-ancestor HEAD origin/experimental; then
+            echo "experimental already contains chore/sync; nothing to propose."
+            exit 0
+          fi
+
+          PR_NUMBER="$(gh pr list --base experimental --head chore/sync --state open --json number --jq '.[0].number // empty')"
 
           if [ -n "$PR_NUMBER" ]; then
             echo "PR #$PR_NUMBER already exists, adding a comment..."
@@ -96,6 +111,6 @@ jobs:
               --base experimental \
               --head chore/sync \
               --title "chore: sync main to experimental" \
-              --body ":crown: *An automated PR to keep experimental in sync with main*" \
+              --body "$PR_BODY" \
               --label "auto-pr"
           fi
