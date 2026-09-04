@@ -13,6 +13,8 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
+  # gh pr comment and gh pr create --label reach a PR through the issues API
+  issues: write
 
 jobs:
   create-pr:
