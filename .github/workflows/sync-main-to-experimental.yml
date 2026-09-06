@@ -34,9 +34,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          # The wildcard is what the bare fetch below and --force-with-lease resolve
-          # branch names through.
-          git config --replace-all remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
           git fetch --no-tags --force --prune origin
 
           # An existing chore/sync is a sync still in flight: keep it, so commits
@@ -95,8 +92,11 @@ jobs:
           set -euo pipefail
 
           # gh pr create fails with "No commits between ..." when nothing is ahead.
-          if git merge-base --is-ancestor HEAD origin/experimental; then
-            echo "experimental already contains chore/sync; nothing to propose."
+          # The tree check also covers a net-zero round of main changes, where commits
+          # exist but there is nothing left to propose.
+          if git merge-base --is-ancestor HEAD origin/experimental \
+             || git diff --quiet origin/experimental HEAD; then
+            echo "experimental already has everything chore/sync would propose."
             exit 0
           fi
 

@@ -35,7 +35,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          git config --replace-all remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
           git fetch --no-tags --force --prune origin
 
           if ! git rev-parse --verify --quiet refs/remotes/origin/chore/sync >/dev/null; then
@@ -45,6 +44,8 @@ jobs:
 
           if git merge-base --is-ancestor origin/chore/sync origin/experimental; then
             echo "experimental already contains chore/sync; nothing to merge."
+            # It is fully merged, so a leftover branch is only a failed cleanup.
+            git push origin --delete chore/sync || true
             exit 0
           fi
 
