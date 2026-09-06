@@ -1,0 +1,68 @@
+name: Merge sync PR into experimental
+
+# The repo allows only squash merges, and squashing the sync PR would drop main's
+# commits and freeze the merge base. This lands it as a real merge commit instead;
+# GitHub closes the sync PR as merged once its commits are reachable from experimental.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: merge-sync-to-experimental
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge chore/sync into experimental
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          git fetch --no-tags --force --prune origin
+
+          if ! git rev-parse --verify --quiet refs/remotes/origin/chore/sync >/dev/null; then
+            echo "::error::chore/sync does not exist on the remote; there is no sync to land."
+            exit 1
+          fi
+
+          if git merge-base --is-ancestor origin/chore/sync origin/experimental; then
+            echo "experimental already contains chore/sync; nothing to merge."
+            # It is fully merged, so a leftover branch is only a failed cleanup.
+            git push origin --delete chore/sync || true
+            exit 0
+          fi
+
+          PR_NUMBER="$(gh pr list --base experimental --head chore/sync --state open --json number --jq '.[0].number // empty')"
+
+          git checkout -B experimental origin/experimental
+          # --no-ff so the sync always shows up as one labelled merge commit, the way the
+          # PR button would have recorded it.
+          if ! git merge --no-ff -m "chore: sync main to experimental${PR_NUMBER:+ (#$PR_NUMBER)}" origin/chore/sync; then
+            git merge --abort || true
+            echo "::error::Merging chore/sync into experimental failed. Resolve it on chore/sync, push, and re-run this workflow."
+            exit 1
+          fi
+
+          git push origin experimental
+
+          # A PR closed by a push is not covered by delete_branch_on_merge, so remove the
+          # now fully-merged branch here: the sync job treats an existing chore/sync as a
+          # sync still in flight.
+          git push origin --delete chore/sync
