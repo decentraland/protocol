@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/common/colors.proto";
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1221;
+
+// The AvatarNametag component adds a plate with scene-provided text above an avatar's nametag,
+// for example to show a rank or a role that the scene assigns to that player.
+//
+// Valid only on an avatar-bearing entity:
+// - the local player: `engine.PlayerEntity`
+// - another player in the scene: that player's entity
+// - an NPC: any entity with an AvatarShape
+// Writes to any other entity are ignored.
+//
+// Player entity ids are not stable across disconnects: a write to a stale entity lands on
+// whoever holds that id next. Resolve the entity from the user id on every write, and remove
+// the component when the player leaves the scene.
+//
+// The plate is local to the client that renders it; it is never relayed to other players.
+message PBAvatarNametag {
+  // The plate text: a single line, for example "Club Owner". Empty draws the plate without text,
+  // and spaces are preserved: a label of spaces widens a text-less plate. For a plate sized
+  // exactly to a word without showing it, set label_color equal to background_color instead.
+  string label = 1;
+
+  optional decentraland.common.Color3 label_color = 2;      // (default: the client's native nametag text color)
+  optional decentraland.common.Color3 background_color = 3; // (default: the client's native nametag background color)
+  optional decentraland.common.Color3 border_color = 4;     // (default: background_color, so the plate carries no visible border)
+}
