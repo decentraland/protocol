@@ -6,13 +6,14 @@ name: Merge sync PR into experimental
 on:
   workflow_dispatch:
 
+# Shared with sync-main-to-experimental.yml: see the note there.
 concurrency:
-  group: merge-sync-to-experimental
+  group: chore-sync-branch
   cancel-in-progress: false
 
 permissions:
   contents: write
-  pull-requests: read
+  pull-requests: write
 
 jobs:
   merge:
@@ -51,6 +52,14 @@ jobs:
 
           PR_NUMBER="$(gh pr list --base experimental --head chore/sync --state open --json number --jq '.[0].number // empty')"
 
+          # The sync PR is opened as a draft so it cannot be squashed. Take it out of
+          # draft before the merge lands, so GitHub applies its normal
+          # merged-by-reachability handling to it.
+          if [ -n "$PR_NUMBER" ]; then
+            gh pr ready "$PR_NUMBER" \
+              || echo "::warning::Could not mark PR #$PR_NUMBER ready; it may close as Closed rather than Merged."
+          fi
+
           git checkout -B experimental origin/experimental
           # --no-ff so the sync always shows up as one labelled merge commit, the way the
           # PR button would have recorded it.
@@ -64,5 +73,22 @@ jobs:
 
           # A PR closed by a push is not covered by delete_branch_on_merge, so remove the
           # now fully-merged branch here: the sync job treats an existing chore/sync as a
-          # sync still in flight.
-          git push origin --delete chore/sync
+          # sync still in flight. Deleting a head branch also closes its PR, so wait for
+          # GitHub to register the merge first — otherwise the PR reads Closed, not Merged.
+          STATE=""
+          if [ -n "$PR_NUMBER" ]; then
+            for _ in $(seq 1 10); do
+              STATE="$(gh pr view "$PR_NUMBER" --json state --jq .state)"
+              [ "$STATE" = "MERGED" ] && break
+              sleep 3
+            done
+            if [ "$STATE" != "MERGED" ]; then
+              echo "::warning::PR #$PR_NUMBER still reads $STATE, so chore/sync is left in place rather than closing the PR unmerged. Re-run this workflow to clean it up."
+              exit 0
+            fi
+          fi
+
+          # Non-fatal: experimental is already pushed, so a failed cleanup is not a
+          # failed sync. The no-op path above finishes the job on any later run.
+          git push origin --delete chore/sync \
+            || echo "::warning::Could not delete chore/sync; re-run this workflow to clean it up."

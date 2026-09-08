@@ -5,9 +5,11 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-# Two pushes to main must not race on pushing chore/sync.
+# Shared with merge-sync-to-experimental.yml: both workflows mutate chore/sync, and
+# interleaving them either rejects this push or recreates a branch that one just
+# deleted. One group serializes every writer.
 concurrency:
-  group: sync-main-to-experimental
+  group: chore-sync-branch
   cancel-in-progress: false
 
 permissions:
@@ -58,10 +60,13 @@ jobs:
           done
 
           # Push whenever the recomputed branch differs from the remote, so a stale
-          # chore/sync can never stay the head of an open PR.
+          # chore/sync can never stay the head of an open PR. Skip it when there is
+          # nothing to propose either, so a no-op run does not leave a branch behind
+          # that later runs would read as a sync in flight.
           REMOTE_HEAD="$(git rev-parse --verify --quiet refs/remotes/origin/chore/sync || echo absent)"
-          if [ "$(git rev-parse HEAD)" = "$REMOTE_HEAD" ]; then
-            echo "chore/sync on the remote is already up to date."
+          if [ "$(git rev-parse HEAD)" = "$REMOTE_HEAD" ] \
+             || git merge-base --is-ancestor HEAD origin/experimental; then
+            echo "Nothing to push: chore/sync is current, or experimental already contains it."
           else
             git push --force-with-lease origin chore/sync
           fi
@@ -75,16 +80,17 @@ jobs:
             :crown: *An automated PR to keep experimental in sync with main*
 
             > [!IMPORTANT]
-            > **Do not merge this PR with the Squash button.**
+            > **This PR is a draft on purpose. Do not mark it ready in order to squash it.**
             >
-            > Squashing replaces `main`'s commits with a single new one, so `main` stops
-            > being an ancestor of `experimental` and the merge base freezes. Every later
-            > sync then re-applies changes `experimental` already has, and starts
-            > conflicting within a couple of runs.
+            > Squash is the only merge this repo allows, and squashing replaces `main`'s
+            > commits with a single new one: `main` stops being an ancestor of
+            > `experimental`, the merge base freezes, and every later sync re-applies
+            > changes `experimental` already has, conflicting within a couple of runs.
+            > As a draft, this PR has no merge button to press.
             >
             > Land it by running the **Merge sync PR into experimental** workflow
-            > (Actions -> Merge sync PR into experimental -> Run workflow). It pushes a
-            > real merge commit, and this PR closes as merged.
+            > (Actions -> Merge sync PR into experimental -> Run workflow). It marks this
+            > PR ready, pushes a real merge commit, and this PR closes as merged.
             >
             > If it does get squashed, restore the ancestry with
             > `git merge -s ours origin/main` on `experimental`.
@@ -107,7 +113,10 @@ jobs:
             gh pr comment "$PR_NUMBER" --body "🔄 Updated with latest changes from **main** on $(date -u '+%Y-%m-%d %H:%M UTC')"
           else
             echo "Creating new PR..."
+            # --draft: squash is the only merge the repo allows, and squashing this PR
+            # breaks the ancestry. A draft has no merge button at all.
             gh pr create \
+              --draft \
               --base experimental \
               --head chore/sync \
               --title "chore: sync main to experimental" \
