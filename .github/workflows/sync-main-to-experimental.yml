@@ -79,18 +79,26 @@ jobs:
           PR_BODY: |
             :crown: *An automated PR to keep experimental in sync with main*
 
+            **This PR is a draft on purpose: it is landed by a workflow, not by a button.**
+
+            ### How to land it
+
+            1. Test the `@dcl/protocol` tarball from the **build-deploy** comment below in
+               the Explorer, and review the diff as usual.
+            2. Go to **Actions -> Merge sync PR into experimental -> Run workflow**, from
+               `main`.
+            3. That workflow marks this PR ready, merges `chore/sync` into `experimental`
+               as a real merge commit, and this PR closes as **Merged**.
+
+            Further commits on `main` are merged onto this same branch while the PR is
+            open, so it stays current on its own.
+
             > [!IMPORTANT]
-            > **This PR is a draft on purpose. Do not mark it ready in order to squash it.**
-            >
-            > Squash is the only merge this repo allows, and squashing replaces `main`'s
-            > commits with a single new one: `main` stops being an ancestor of
-            > `experimental`, the merge base freezes, and every later sync re-applies
-            > changes `experimental` already has, conflicting within a couple of runs.
-            > As a draft, this PR has no merge button to press.
-            >
-            > Land it by running the **Merge sync PR into experimental** workflow
-            > (Actions -> Merge sync PR into experimental -> Run workflow). It marks this
-            > PR ready, pushes a real merge commit, and this PR closes as merged.
+            > Do not take this PR out of draft in order to squash it. Squash is the only
+            > merge this repo allows, and squashing replaces `main`'s commits with a single
+            > new one: `main` stops being an ancestor of `experimental`, the merge base
+            > freezes, and every later sync re-applies changes `experimental` already has,
+            > conflicting within a couple of runs.
             >
             > If it does get squashed, restore the ancestry with
             > `git merge -s ours origin/main` on `experimental`.
