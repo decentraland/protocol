@@ -14,7 +14,7 @@ buf-build: node_modules/.bin/buf
 	./node_modules/.bin/buf build proto/
 
 buf-breaking: node_modules/.bin/buf
-	./node_modules/.bin/buf breaking proto/ --against 'https://github.com/decentraland/protocol.git#subdir=proto'
+	./node_modules/.bin/buf breaking proto/ --against 'https://github.com/decentraland/protocol.git#branch=$(or $(BASE_BRANCH),main),subdir=proto'
 
 test: buf-lint
 	bash scripts/test.sh
