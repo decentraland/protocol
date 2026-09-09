@@ -14,6 +14,8 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
+  # Dispatching build-and-publish once the merge lands; see the Publish step.
+  actions: write
 
 jobs:
   merge:
@@ -31,6 +33,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Merge chore/sync into experimental
+        id: merge
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -70,6 +73,9 @@ jobs:
           fi
 
           git push origin experimental
+          # Signals the Publish step below. The no-op and merge-failure paths never
+          # reach here, so neither dispatches a pointless build.
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
 
           # A PR closed by a push is not covered by delete_branch_on_merge, so remove the
           # now fully-merged branch here: the sync job treats an existing chore/sync as a
@@ -92,3 +98,31 @@ jobs:
           # failed sync. The no-op path above finishes the job on any later run.
           git push origin --delete chore/sync \
             || echo "::warning::Could not delete chore/sync; re-run this workflow to clean it up."
+
+      # The merge above is pushed with GITHUB_TOKEN, and GitHub does not start
+      # workflows from events that token creates. So the build-deploy run that
+      # publishes @dcl/protocol@experimental never fires on its own -- experimental
+      # silently keeps serving whatever the last human-pushed merge published.
+      # A separate step rather than a line in the merge script: that script exits 0
+      # on the "PR did not register as merged" path, which must still publish.
+      - name: Publish experimental
+        if: steps.merge.outputs.pushed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          # GitHub reads the workflow_dispatch trigger from the target ref, and the
+          # merge above may be the push that first puts it on experimental. Retry
+          # while GitHub indexes the ref, rather than failing the whole sync on a race.
+          for attempt in $(seq 1 5); do
+            if gh workflow run build-and-publish.yml --ref experimental; then
+              echo "Dispatched build-deploy against experimental; it publishes the @dcl/protocol@experimental tag."
+              exit 0
+            fi
+            echo "Dispatch attempt $attempt failed; retrying."
+            sleep 5
+          done
+
+          echo "::error::experimental was merged and pushed, but starting build-and-publish failed, so the @dcl/protocol@experimental tag is now behind the branch. Recover by running the build-deploy workflow manually against experimental."
+          exit 1
