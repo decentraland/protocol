@@ -94,10 +94,11 @@ message PlayerEmote {
   uint32 incremental_id = 1;
   string urn = 2;
   float timestamp = 3;
-  // 4 to 10 carried the social-emote fields, which are not part of this protocol.
+  optional bool is_stopping = 4; // true means the emote has been stopped in the sender's client
+  // 5 to 10 carried the social-emote fields, which are not part of this protocol.
   // Numbers and names stay reserved so they are never reassigned a conflicting meaning.
-  reserved 4 to 10;
-  reserved "is_stopping", "is_repeating", "interaction_id", "social_emote_outcome", "is_reacting", "social_emote_initiator", "target_avatar";
+  reserved 5 to 10;
+  reserved "is_repeating", "interaction_id", "social_emote_outcome", "is_reacting", "social_emote_initiator", "target_avatar";
   optional uint32 mask = 11; // mask for which bones an animation applies to.
 }
 
