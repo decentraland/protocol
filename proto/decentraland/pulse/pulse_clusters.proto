@@ -19,4 +19,15 @@ message PeerClusterChange {
   // The peer's realm. Clusters never span realms, so this qualifies cluster_id and keeps the
   // event self-contained — consumers never have to join against the topology feed.
   string realm = 2;
+
+  // Session that owns this assignment: the lower-cased ephemeral address of the auth chain the
+  // peer authenticated with (the wallet itself for a chain without a delegation). Two devices of
+  // one wallet carry different values; one device's reconnects carry the same one.
+  string session = 3;
+
+  // Set only on the first publish of a new session for a wallet that still had a retained
+  // assignment under another session: that other session, and the cluster it was last published
+  // into. Empty on every other event, including a same-session reconnect.
+  string displaced_session = 4;
+  string displaced_cluster_id = 5;
 }
