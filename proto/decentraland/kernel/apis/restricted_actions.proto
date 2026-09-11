@@ -87,12 +87,12 @@ message OpenExplorerUiRequest {
   // Unset means no correlation, and 0 is reserved for the same meaning on the result, so ids start at 1.
   optional uint32 request_id = 2;
 
-  message PurchaseParams {
+  message ItemPurchaseParams {
     string urn = 1;
   }
 
   oneof params {
-    PurchaseParams purchase = 10;
+    ItemPurchaseParams item_purchase = 10;
   }
 }
 
