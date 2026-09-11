@@ -70,7 +70,7 @@ message StopEmoteRequest { }
 enum OpenExplorerUiResult {
   UNSPECIFIED = 0;
   OPENED = 1;
-  WAS_ALREADY_OPEN = 2;             // the requested panel is already open; other panels may be open too
+  WAS_ALREADY_OPEN = 2;             // the slot the requested panel occupies is already in use; panels sharing a slot exclude each other
   REJECTED_NOT_CURRENT_SCENE = 3;   // the standard restricted-actions current-scene gate rejected the call
   REJECTED_FEATURE_DISABLED = 4;    // the requested section is hidden by feature flags or client doesn't have that feature
   REJECTED_NO_USER_GESTURE = 5;     // rejected: the call did not originate from a user gesture
@@ -79,13 +79,13 @@ enum OpenExplorerUiResult {
 message OpenExplorerUiRequest {
   decentraland.sdk.components.common.ExplorerUi ui = 1;
   // Echoed back in the events this request produces, so they can be matched to their call.
-  // Unset means no correlation.
+  // Unset means no correlation, and 0 is reserved for the same meaning on the result, so ids start at 1.
   optional uint32 request_id = 2;
 
   message PurchaseParams {
     string urn = 1;
   }
-  
+
   oneof params {
     PurchaseParams purchase = 10;
   }
@@ -130,6 +130,6 @@ service RestrictedActionsService {
   // StopEmote will stop the current emote
   rpc StopEmote(StopEmoteRequest) returns (SuccessResponse) {}
 
-  // OpenExplorerUi opens a specific fullscreen explorer panel and returns the open verdict.
+  // OpenExplorerUi opens an explorer panel, fullscreen or modal, and returns the open verdict.
   rpc OpenExplorerUi(OpenExplorerUiRequest) returns (OpenExplorerUiResponse) {}
 }
