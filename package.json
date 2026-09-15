@@ -14,7 +14,8 @@
   "main": "index.js",
   "scripts": {
     "test": "./scripts/check-proto-compabitility.sh",
-    "gen:test": "node protoc-gen-bitwise/test/generator.test.js"
+    "gen:test": "node protoc-gen-bitwise/test/generator.test.js",
+    "test:session-control": "node test/session-control.test.js"
   },
   "devDependencies": {
     "@protobuf-ts/protoc": "^2.8.1",

@@ -32,11 +32,27 @@ message JoinIslandMessage {
 }
 
 enum KickedReason {
+  // Authoritative logical-session supersession, not same-session socket replacement.
   KR_NEW_SESSION = 0;
+  KR_BANNED = 1;
 }
 
 message KickedMessage {
   KickedReason reason = 1;
+}
+
+enum SessionStatus {
+  UNSPECIFIED = 0;
+  TAKEOVER_PENDING = 1;
+  TAKEOVER_FAILED = 2;
+}
+
+// Session-addressed control. Success is still IslandChangedMessage with usable credentials.
+message SessionStatusMessage {
+  SessionStatus state = 1;
+  // Minimum recovery suppression interval, not a countdown to a new handshake.
+  // Pending waits on the existing authenticated connection; failed requires explicit retry.
+  uint32 retry_after_ms = 2;
 }
 
 message ServerPacket {
@@ -47,6 +63,7 @@ message ServerPacket {
     LeftIslandMessage  left_island = 4;
     JoinIslandMessage join_island = 5;
     KickedMessage kicked = 6;
+    SessionStatusMessage session_status = 7;
   }
 }
 

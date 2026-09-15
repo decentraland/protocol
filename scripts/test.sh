@@ -26,4 +26,6 @@ echo "> Compiling TS project"
 
 node_modules/.bin/tsc -p tsconfig.json
 
+node test/session-control.test.js
+
 rm -rf out-cs || true
