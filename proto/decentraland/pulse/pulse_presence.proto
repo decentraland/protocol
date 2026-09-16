@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package decentraland.pulse;
+
+// Published by Pulse to NATS on `engine.parcel_changes`: the platform's single presence feed.
+// One entry per (peer, realm) state change: the first non-null placement in a realm is the
+// connect signal, an entry with `parcel` absent is the exit signal for that realm/instance,
+// and every entry carries the realm and the parcel the peer now stands on.
+//
+// Guarantees the producer (Pulse) holds — see archipelago-workers/docs/contracts/iteration-2/README.md:
+//   1. A peer's first placement in a realm emits one non-null entry, even if it never moves afterwards.
+//   2. Every exit path emits exactly one parcel-absent entry (clean disconnect, PENDING_AUTH / idle
+//      timeout, duplicate-session kick, BanEnforcer eviction, PeerDefense kick). A realm change
+//      emits a non-null entry for the new realm only; the old realm is implied.
+//   3. Within one batch a wallet appears at most once, with its latest state.
+//   4. Cadence: every Presence:BatchIntervalMs (default 2000) when non-empty; a snapshot=true batch
+//      on publisher start, every Presence:SnapshotIntervalMs (default 60000), and immediately after
+//      any outbox eviction, so consumers never run on a known-lossy delta stream.
+//   5. `realm` and `address` are lowercase; `server_name` is stable for the process lifetime.
+//
+// Consumer rule: keep lastSeq[server_name]; on a gap keep serving stale state and wait for the next
+// snapshot (<= 60 s) — never drop the map. On snapshot=true replace every entry whose server_name matches.
+
+message Parcel {
+  int32 x = 1;
+  int32 y = 2;
+}
+
+message ParcelChange {
+  string address = 1;          // lowercase 0x wallet
+  string realm   = 2;          // canonical lowercase
+  optional Parcel parcel = 3;  // absent => peer left this realm/instance
+}
+
+message ParcelChangesBatch {
+  string server_name = 1;      // NatsOptions.ServerName; consumers key seq per server_name
+  uint64 seq         = 2;      // monotonic per server_name, resets on restart (snapshot=true follows)
+  bool   snapshot    = 3;      // true => full state of this server, replaces everything known for server_name
+  uint64 server_time = 4;      // unix ms
+  repeated ParcelChange changes = 5;
+}
