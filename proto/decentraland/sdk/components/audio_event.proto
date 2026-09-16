@@ -9,4 +9,11 @@ option (common.ecs_component_id) = 1105;
 message PBAudioEvent {
   common.MediaState state = 1;
   uint32 timestamp = 2;     // monotonic counter
+
+  // Playback position report. Renderers write it on every state change and periodically while playing,
+  // so scenes can align gameplay with the audio that is actually heard (the renderer starts a clip some
+  // milliseconds after being asked to, and `PBAudioSource.current_time` is a write-only seek).
+  optional uint32 tick_number = 3;   // scene tick in which the report was taken, equals EngineInfo.tick_number
+  optional float current_offset = 4; // playback position of the clip in seconds at that tick
+  optional float clip_length = 5;    // total length of the clip in seconds, when known
 }
