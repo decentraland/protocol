@@ -23,6 +23,7 @@ message PBAvatarModifierArea {
   decentraland.common.Vector3 area = 1;      // the 3D size of the region
   repeated string exclude_ids = 2;           // user IDs that can enter and remain unaffected
   repeated AvatarModifierType modifiers = 3; // list of modifiers to apply
+  optional bool use_collider_range = 5;      // if true, the player will be considered inside the area when they are within 0.3m of the area. default true
 }
 
 // AvatarModifierType is an effect that should be applied to avatars inside the region.
