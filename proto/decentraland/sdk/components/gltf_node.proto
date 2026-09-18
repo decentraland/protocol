@@ -1,0 +1,16 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+option (common.ecs_component_id) = 1200;
+
+// GltfNode links a scene entity with a node from within a gltf, allowing the scene to inspect it or modify it.
+// The Explorer will  attach/update the following detected components in that entity:
+// - Transform
+// - MeshRenderer
+// - MeshCollider
+// - Material
+message PBGltfNode {
+  string node_path = 1; // the node path location inside the target Gltf
+  uint32 gltf_container_entity = 2; // the GltfContainer entity in which to look for the child node
+}
