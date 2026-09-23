@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+import "decentraland/common/vectors.proto";
+import "decentraland/sdk/components/avatar_locomotion_settings.proto";
+import "decentraland/sdk/components/input_modifier.proto";
+
+option (common.ecs_component_id) = 1500;
+
+message PBAvatarMovementInfo {
+  float step_time = 1;                                      // the length of time the current step velocity will apply for
+  float previous_step_time = 2;                             // the length of time the previous step velocity applied for
+  decentraland.common.Vector3 requested_velocity = 3;       // the velocity requested for the previous frame
+  decentraland.common.Vector3 actual_velocity = 4;          // the resulting velocity taking collisions into account
+  decentraland.common.Vector3 external_velocity = 5;        // the velocity imparted by movement of the "ground" platform or pushing from other moving colliders
+  decentraland.sdk.components.PBAvatarLocomotionSettings active_avatar_locomotion_settings = 6;
+  decentraland.sdk.components.PBInputModifier active_input_modifier = 7;
+  optional decentraland.common.Vector3 walk_target = 8;    // if set, the movement scene should walk the player to this scene-relative position
+  optional float walk_threshold = 9;                        // stop distance for walk_target; considered reached when within this distance
+  optional AvatarAnimationState active_animation_state = 10; // current state of a scene-driven movement animation. Absent when the engine is using its velocity-based fallback. `playback_time` freezes while a triggerSceneEmote is overriding the animation.
+}
+
+// Mirror of the scene-driven movement animation currently playing, reported by the engine.
+// Readable by any scene (not just the controller) so niche effects (e.g. dust cloud on landing) can react.
+// Active emotes are not represented here — scenes already have their own way to read them.
+message AvatarAnimationState {
+  string src = 1;                                           // same scene-relative path the controlling scene supplied
+  bool loop = 2;                                            // mirrors the request
+  float speed = 3;                                          // mirrors the request
+  bool idle = 4;                                            // mirrors the request
+  float playback_time = 5;                                  // seconds into the clip; wraps on loop; frozen while an emote override is playing
+  float duration = 6;                                       // total clip length in seconds
+  uint32 loop_count = 7;                                    // how many times the clip has completed since it started
+}
