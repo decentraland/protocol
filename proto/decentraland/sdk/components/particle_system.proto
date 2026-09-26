@@ -31,8 +31,8 @@ message PBParticleSystem {
   optional bool face_travel_direction = 28; // default = false. Particles orient along their velocity direction.
 
   // --- Color ---
-  optional decentraland.common.ColorRange initial_color = 11;    // default = {white, white}. Particle color at spawn, randomized between start and end.
-  optional decentraland.common.ColorRange color_over_time = 12;  // default = {white, white}. Particle color lerped from start to end over its lifetime.
+  optional decentraland.common.ColorRange initial_color = 11;    // default = {white, white}. Particle color at spawn, randomized between both values.
+  optional decentraland.common.ColorRange color_over_time = 12;  // default = {white, white}. Target color at end of lifetime, randomized between both values.
 
   // --- Velocity ---
   optional decentraland.common.FloatRange initial_velocity_speed = 13; // default = {1, 1}. Initial speed in m/s, randomized between start and end.
