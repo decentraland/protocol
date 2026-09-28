@@ -1,0 +1,20 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+import "decentraland/common/texture.proto";
+
+option (common.ecs_component_id) = 1223;
+
+// PBSkybox lets a scene customize the environment rendering while the player is
+// inside it. It is only read on the scene root entity (engine.RootEntity).
+// Both textures are equirectangular (2:1 latitude-longitude panoramas). Only
+// `Texture` (file) sources are supported; avatar and video textures are ignored.
+message PBSkybox {
+  // Replaces the reflection cubemap used by every reflective material.
+  // Unset: reflections are derived from `skybox_texture` when set, otherwise default.
+  optional decentraland.common.TextureUnion reflection_map = 1;
+  // Replaces the visible sky. Time-of-day lighting (ambient, sun, fog) is unaffected.
+  // Unset = default procedural skybox.
+  optional decentraland.common.TextureUnion skybox_texture = 2;
+}
