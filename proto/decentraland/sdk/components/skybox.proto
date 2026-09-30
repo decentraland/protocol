@@ -44,6 +44,7 @@ message PBSkybox {
     optional decentraland.common.ColorGradient zenith = 1;  // color at the top of the sky. Unset = time-of-day default
     optional decentraland.common.ColorGradient horizon = 2; // color at the horizon line. Unset = time-of-day default
     optional decentraland.common.ColorGradient nadir = 3;   // color below the horizon. Unset = time-of-day default
+    optional decentraland.common.ColorGradient rim = 4;     // glow along the horizon line. Unset = follows `horizon` when that is set, otherwise the time-of-day default
   }
 
   message Fog {
@@ -53,6 +54,7 @@ message PBSkybox {
   message Clouds {
     optional float opacity = 1; // default = 1, in the 0..1 range. 0 hides the clouds
     optional float speed = 2;   // default = 0.01, rotation speed of the cloud layer. 0 = static clouds
+    optional decentraland.common.ColorGradient color = 3; // tint of the cloud layer. Unset = time-of-day default
   }
 
   message Stars {
