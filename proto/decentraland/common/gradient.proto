@@ -1,0 +1,17 @@
+syntax = "proto3";
+package decentraland.common;
+
+import "decentraland/common/colors.proto";
+
+// A color sampled at a normalized position along a gradient.
+message ColorKey {
+  float time = 1;   // position along the gradient, in the 0..1 range
+  Color4 color = 2; // unclamped linear floats: values above 1 are allowed (HDR). Consumers that have no alpha ignore `a`
+}
+
+// Piecewise-linear color gradient. Keys are interpolated in ascending order of `time`; positions before
+// the first key or after the last one return that key's color. A single key is a constant color.
+// No keys means the gradient is unset.
+message ColorGradient {
+  repeated ColorKey keys = 1;
+}

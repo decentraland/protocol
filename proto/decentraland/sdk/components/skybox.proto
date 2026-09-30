@@ -3,13 +3,19 @@ package decentraland.sdk.components;
 
 import "decentraland/sdk/components/common/id.proto";
 import "decentraland/common/texture.proto";
+import "decentraland/common/gradient.proto";
 
 option (common.ecs_component_id) = 1223;
 
-// PBSkybox lets a scene customize the environment rendering while the player is
-// inside it. It is only read on the scene root entity (engine.RootEntity).
-// Both textures are equirectangular (2:1 latitude-longitude panoramas). Only
-// `Texture` (file) sources are supported; avatar and video textures are ignored.
+// PBSkybox lets a scene customize the environment rendering while the player is inside it.
+// It is only read on the scene root entity (engine.RootEntity). Textures are equirectangular 2:1,
+// only `Texture` sources. Every override is active ONLY while the player is inside the scene;
+// when the player leaves, the component is removed, or a group/field is unset, the environment
+// returns to the default time-of-day skybox. Gradients use `time` as normalized time of day
+// (0 = 00:00, 0.5 = 12:00, 1 = 24:00); single-key gradients are constant colors, and both
+// ends clamp (no midnight wrap). Overrides are global render state while active, affecting
+// how neighbouring parcels look from inside the scene, with instant application. Time-of-day
+// lighting continues underneath; ambient lighting is derived from `sky_colors`.
 message PBSkybox {
   // Replaces the reflection cubemap used by every reflective material.
   // Unset: reflections are derived from `skybox_texture` when set, otherwise default.
@@ -17,4 +23,39 @@ message PBSkybox {
   // Replaces the visible sky. Time-of-day lighting (ambient, sun, fog) is unaffected.
   // Unset = default procedural skybox.
   optional decentraland.common.TextureUnion skybox_texture = 2;
+  // Directional light (sun/moon) override. Unset = time-of-day default.
+  optional Sun sun = 3;
+  // Procedural sky colors. They also drive the ambient lighting: zenith sets the sky ambient, horizon the equator ambient and nadir the ground ambient.
+  // Inert while `skybox_texture` is set (the panorama replaces the procedural sky).
+  optional SkyColors sky_colors = 4;
+  // Fog color override. Whether fog renders at all remains a user quality setting; a scene cannot force it on or off.
+  optional Fog fog = 5;
+  // Cloud layer of the procedural sky. Inert while `skybox_texture` is set.
+  optional Clouds clouds = 6;
+  // Star field of the procedural sky. Inert while `skybox_texture` is set.
+  optional Stars stars = 7;
+
+  message Sun {
+    optional decentraland.common.ColorGradient color = 1; // tints the directional light and the sun disc. Gradient time is the normalized time of day. Unset = time-of-day default
+    optional bool visible = 2;                            // default = true. false hides the sun and moon discs and the lens flare; the lighting they cast is unaffected
+  }
+
+  message SkyColors {
+    optional decentraland.common.ColorGradient zenith = 1;  // color at the top of the sky. Unset = time-of-day default
+    optional decentraland.common.ColorGradient horizon = 2; // color at the horizon line. Unset = time-of-day default
+    optional decentraland.common.ColorGradient nadir = 3;   // color below the horizon. Unset = time-of-day default
+  }
+
+  message Fog {
+    optional decentraland.common.ColorGradient color = 1; // Unset = time-of-day default
+  }
+
+  message Clouds {
+    optional float opacity = 1; // default = 1, in the 0..1 range. 0 hides the clouds
+    optional float speed = 2;   // default = 0.01, rotation speed of the cloud layer. 0 = static clouds
+  }
+
+  message Stars {
+    optional float brightness = 1; // default = 4.62. Stars are only visible during the night part of the day cycle
+  }
 }
