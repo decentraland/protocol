@@ -8,20 +8,25 @@ import "decentraland/common/gradient.proto";
 option (common.ecs_component_id) = 1223;
 
 // PBSkybox lets a scene customize the environment rendering while the player is inside it.
-// It is only read on the scene root entity (engine.RootEntity). Textures are equirectangular 2:1,
-// only `Texture` sources. Every override is active ONLY while the player is inside the scene;
-// when the player leaves, the component is removed, or a group/field is unset, the environment
-// returns to the default time-of-day skybox. Gradients use `time` as normalized time of day
-// (0 = 00:00, 0.5 = 12:00, 1 = 24:00); single-key gradients are constant colors, and both
-// ends clamp (no midnight wrap). Overrides are global render state while active, affecting
-// how neighbouring parcels look from inside the scene, with instant application. Time-of-day
-// lighting continues underneath; ambient lighting is derived from `sky_colors`.
+// It is only read on the scene root entity (engine.RootEntity). Textures are equirectangular 2:1
+// and accept `Texture` (file) and `VideoTexture` sources; `AvatarTexture` is ignored. A video
+// source is sampled live; reflections derived from a video follow it with a few frames of delay.
+// Every override is active ONLY while the player is inside the scene; when the player leaves,
+// the component is removed, or a group/field is unset, the environment returns to the default
+// time-of-day skybox. Gradients use `time` as normalized time of day (0 = 00:00, 0.5 = 12:00,
+// 1 = 24:00); single-key gradients are constant colors, and both ends clamp (no midnight wrap).
+// Overrides are global render state while active, affecting how neighbouring parcels look from
+// inside the scene, with instant application. Time-of-day lighting continues underneath; ambient
+// lighting is derived from `sky_colors`.
 message PBSkybox {
-  // Replaces the reflection cubemap used by every reflective material.
+  // Replaces the reflection cubemap used by every reflective material. Equirectangular 2:1 image;
+  // accepts `Texture` (file) and `VideoTexture` sources; `AvatarTexture` is ignored. A video source
+  // is sampled live; reflections follow it with a few frames of delay.
   // Unset: reflections are derived from `skybox_texture` when set, otherwise default.
   optional decentraland.common.TextureUnion reflection_map = 1;
-  // Replaces the visible sky. Time-of-day lighting (ambient, sun, fog) is unaffected.
-  // Unset = default procedural skybox.
+  // Replaces the visible sky. Equirectangular 2:1 image; accepts `Texture` (file) and `VideoTexture`
+  // sources; `AvatarTexture` is ignored. A video source is sampled live.
+  // Time-of-day lighting (ambient, sun, fog) is unaffected. Unset = default procedural skybox.
   optional decentraland.common.TextureUnion skybox_texture = 2;
   // Directional light (sun/moon) override. Unset = time-of-day default.
   optional Sun sun = 3;
@@ -55,6 +60,11 @@ message PBSkybox {
     optional float opacity = 1; // default = 1, in the 0..1 range. 0 hides the clouds
     optional float speed = 2;   // default = 0.01, rotation speed of the cloud layer. 0 = static clouds
     optional decentraland.common.ColorGradient color = 3; // tint of the cloud layer. Unset = time-of-day default
+    // Equirectangular 2:1 cloud layer image replacing the default clouds. Channels: R = cloud tint
+    // intensity (multiplied by `color`), G = opacity/coverage, B = sun-highlight mask; a grayscale
+    // image works as a plain cloud mask. `Texture` and `VideoTexture` sources are supported.
+    // Unset = default clouds. Inert while `skybox_texture` is set.
+    optional decentraland.common.TextureUnion texture = 4;
   }
 
   message Stars {
