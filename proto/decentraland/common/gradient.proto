@@ -3,17 +3,14 @@ package decentraland.common;
 
 import "decentraland/common/colors.proto";
 
-// A color sampled at a normalized position along a gradient.
 message ColorKey {
-  float time = 1;   // position along the gradient, in the 0..1 range
-  Color4 color = 2; // unclamped linear floats: values above 1 are allowed (HDR). Consumers that have no alpha ignore `a`
+  float time = 1;   // position along the gradient, from 0 to 1. Values outside that range clamp to it
+  Color4 color = 2; // linear color. Values above 1 are allowed (HDR)
 }
 
-// Piecewise-linear color gradient. Keys are interpolated in ascending order of `time`; positions before
-// the first key or after the last one return that key's color. A single key is a constant color.
-// No keys means the gradient is unset. Two keys at the same `time` keep the later one.
-// Renderers may cap the number of keys they evaluate: the reference client keeps up to 8 and resamples
-// longer gradients at 8 evenly spaced positions, so prefer 8 keys or fewer for exact results.
+// Piecewise-linear, with keys interpolated in ascending order of `time`. Positions before the first key
+// or after the last key take that key's color. No keys means the gradient is unset.
+// If two keys have the same `time`, then the gradient keeps the key that comes later in `keys`.
 message ColorGradient {
   repeated ColorKey keys = 1;
 }

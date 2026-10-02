@@ -7,75 +7,67 @@ import "decentraland/common/gradient.proto";
 
 option (common.ecs_component_id) = 1223;
 
-// PBSkybox lets a scene customize the environment rendering while the player is inside it.
-// It is only read on the scene root entity (engine.RootEntity). Textures are equirectangular 2:1
-// and accept `Texture` (file) and `VideoTexture` sources; `AvatarTexture` is ignored. A video
-// source is sampled live; reflections derived from a video follow it with a few frames of delay.
-// Every override is active ONLY while the player is inside the scene; when the player leaves,
-// the component is removed, or a group/field is unset, the environment returns to the default
-// time-of-day skybox. Gradients use `time` as normalized time of day (0 = 00:00, 0.5 = 12:00,
-// 1 = 24:00); single-key gradients are constant colors, and both ends clamp (no midnight wrap).
-// Overrides are global render state while active, affecting how neighbouring parcels look from
-// inside the scene, with instant application. Time-of-day lighting continues underneath; ambient
-// lighting is derived from `sky_colors`.
+// PBSkybox overrides the environment rendering while the player is inside the scene.
+// Valid only on the scene root entity (`engine.RootEntity`).
+//
+// An unset field keeps the time-of-day default.
+// Gradient `time` is the normalized time of day: 0 = 00:00, 0.5 = 12:00, 1 = 24:00.
+// Gradients do not wrap around midnight.
+// Textures are equirectangular 2:1 images from a `Texture` or a `VideoTexture`. `AvatarTexture` is ignored.
+//
+// While active, the overrides are global: they also change how neighbouring parcels look from inside the scene.
 message PBSkybox {
-  // Replaces the reflection cubemap used by every reflective material. Equirectangular 2:1 image;
-  // accepts `Texture` (file) and `VideoTexture` sources; `AvatarTexture` is ignored. A video source
-  // is sampled live; reflections follow it with a few frames of delay.
-  // Unset: reflections are derived from `skybox_texture` when set, otherwise default.
+  // Replaces the reflection cubemap of every reflective material.
+  // Unset = derived from `skybox_texture` when that is set, otherwise the default.
   optional decentraland.common.TextureUnion reflection_map = 1;
-  // Replaces the visible sky. Equirectangular 2:1 image; accepts `Texture` (file) and `VideoTexture`
-  // sources; `AvatarTexture` is ignored. A video source is sampled live.
-  // Time-of-day lighting (ambient, sun, fog) is unaffected. Unset = default procedural skybox.
+  // Replaces the visible sky. The lighting (ambient, sun, fog) does not change.
   optional decentraland.common.TextureUnion skybox_texture = 2;
-  // Directional light (sun/moon) override. Unset = time-of-day default.
+  // Directional light of the sun and the moon.
   optional Sun sun = 3;
-  // Procedural sky colors. They also drive the ambient lighting: zenith sets the sky ambient, horizon the equator ambient and nadir the ground ambient.
-  // Inert while `skybox_texture` is set (the panorama replaces the procedural sky).
+  // Procedural sky colors. They also drive the ambient lighting. Ignored while `skybox_texture` is set.
   optional SkyColors sky_colors = 4;
-  // Fog color and distance override (exponential `density`, or linear `start_distance`/`end_distance`, whichever the renderer supports). Whether fog renders at all remains a user quality setting; a scene cannot force it on or off.
+  // Renderers use either the exponential `density` or the linear `start_distance`/`end_distance` range.
+  // A scene cannot turn fog on or off. That is a user quality setting.
   optional Fog fog = 5;
-  // Cloud layer of the procedural sky. Inert while `skybox_texture` is set.
+  // Ignored while `skybox_texture` is set.
   optional Clouds clouds = 6;
-  // Star field of the procedural sky. Inert while `skybox_texture` is set.
+  // Ignored while `skybox_texture` is set.
   optional Stars stars = 7;
 
   message Sun {
-    optional decentraland.common.ColorGradient color = 1; // tints the directional light and the sun disc. Gradient time is the normalized time of day. Unset = time-of-day default
-    optional bool visible = 2;                            // default = true. false hides the sun and moon discs and the lens flare; the lighting they cast is unaffected
+    optional decentraland.common.ColorGradient color = 1; // tints the directional light and the sun disc
+    optional bool visible = 2;                            // default = true. false hides the sun and moon discs and the lens flare, but not their light
   }
 
   message SkyColors {
-    optional decentraland.common.ColorGradient zenith = 1;  // color at the top of the sky. Unset = time-of-day default
-    optional decentraland.common.ColorGradient horizon = 2; // color at the horizon line. Unset = time-of-day default
-    optional decentraland.common.ColorGradient nadir = 3;   // color below the horizon. Unset = time-of-day default
-    optional decentraland.common.ColorGradient rim = 4;     // glow along the horizon line. Unset = follows `horizon` when that is set, otherwise the time-of-day default
+    optional decentraland.common.ColorGradient zenith = 1;
+    optional decentraland.common.ColorGradient horizon = 2;
+    optional decentraland.common.ColorGradient nadir = 3;
+    optional decentraland.common.ColorGradient rim = 4; // glow along the horizon line. Unset = follows `horizon` when that is set
   }
 
   message Fog {
-    optional decentraland.common.ColorGradient color = 1; // Unset = time-of-day default
-    // default = 0.0005. Exponential fog density per meter: fog = 1 - e^(-density * distance), so 1/density is the
-    // distance at which ~63% of the view is fogged (0.0005 ≈ 2 km, 0.02 ≈ 50 m). Negative values clamp to 0 and
-    // 0 = no visible fog. Whether fog renders at all remains a user quality setting.
-    optional float density = 2;
-    // Linear fog range in meters: fog starts at `start_distance` and is fully opaque from `end_distance` on.
+    optional decentraland.common.ColorGradient color = 1;
+    optional float density = 2; // default = 0.0005, per meter: fog = 1 - e^(-density * distance). Negative values clamp to 0
+    // Linear fog range in meters: no fog at `start_distance`, full fog from `end_distance` on.
     // Unset = renderer default.
     optional float start_distance = 3;
     optional float end_distance = 4;
   }
 
   message Clouds {
-    optional float opacity = 1; // default = 1, in the 0..1 range. 0 hides the clouds
-    optional float speed = 2;   // default = 0.01, rotation speed of the cloud layer. 0 = static clouds
-    optional decentraland.common.ColorGradient color = 3; // tint of the cloud layer. Unset = time-of-day default
-    // Equirectangular 2:1 cloud layer image replacing the default clouds. Channels: R = cloud tint
-    // intensity (multiplied by `color`), G = opacity/coverage, B = sun-highlight mask; a grayscale
-    // image works as a plain cloud mask. `Texture` and `VideoTexture` sources are supported.
-    // Unset = default clouds. Inert while `skybox_texture` is set.
+    optional float opacity = 1; // default = 1, from 0 to 1
+    optional float speed = 2;   // default = 0.01, in radians per second around the sky axis (0.01 is one turn every ~10 minutes). 0 = static, negative reverses the direction
+    optional decentraland.common.ColorGradient color = 3;
+    // Replaces the default clouds. The channels of the image:
+    // - R: cloud tint intensity, multiplied by `color`
+    // - G: opacity and coverage
+    // - B: sun-highlight mask
+    // A grayscale image works as a plain cloud mask.
     optional decentraland.common.TextureUnion texture = 4;
   }
 
   message Stars {
-    optional float brightness = 1; // default = 4.62. Stars are only visible during the night part of the day cycle
+    optional float brightness = 1; // default = 4.62, multiplier on the star texture (1 = as authored, values above 1 are HDR). 0 hides the stars, negative values clamp to 0. Stars are visible only at night
   }
 }
