@@ -33,7 +33,7 @@ message PBSkybox {
   // Procedural sky colors. They also drive the ambient lighting: zenith sets the sky ambient, horizon the equator ambient and nadir the ground ambient.
   // Inert while `skybox_texture` is set (the panorama replaces the procedural sky).
   optional SkyColors sky_colors = 4;
-  // Fog color override. Whether fog renders at all remains a user quality setting; a scene cannot force it on or off.
+  // Fog color and distance override (exponential `density`, or linear `start_distance`/`end_distance`, whichever the renderer supports). Whether fog renders at all remains a user quality setting; a scene cannot force it on or off.
   optional Fog fog = 5;
   // Cloud layer of the procedural sky. Inert while `skybox_texture` is set.
   optional Clouds clouds = 6;
@@ -54,6 +54,14 @@ message PBSkybox {
 
   message Fog {
     optional decentraland.common.ColorGradient color = 1; // Unset = time-of-day default
+    // default = 0.0005. Exponential fog density per meter: fog = 1 - e^(-density * distance), so 1/density is the
+    // distance at which ~63% of the view is fogged (0.0005 ≈ 2 km, 0.02 ≈ 50 m). Negative values clamp to 0 and
+    // 0 = no visible fog. Whether fog renders at all remains a user quality setting.
+    optional float density = 2;
+    // Linear fog range in meters: fog starts at `start_distance` and is fully opaque from `end_distance` on.
+    // Unset = renderer default.
+    optional float start_distance = 3;
+    optional float end_distance = 4;
   }
 
   message Clouds {
