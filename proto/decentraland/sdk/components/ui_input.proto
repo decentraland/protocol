@@ -17,4 +17,5 @@ message PBUiInput {
   optional common.Font font = 11; // default=0
   optional int32 font_size = 12; // default=10
   optional string value = 13;
+  optional string font_src = 16; // a ttf font file in the scene content or a Google Fonts family name; `font` is the fallback (default: unset)
 }
