@@ -15,13 +15,18 @@ option (common.ecs_component_id) = 1225;
 // is ignored.
 //
 // The effect follows the speaker: it applies to the voice of players standing inside the region,
-// for every listener. When a player stands inside several regions, the most restrictive value of
-// each property wins.
+// for every listener who is also standing in this scene. When a player stands inside several
+// regions, the most restrictive value of each property wins. An excluded player is treated as
+// outside the region, including for isolation. The region does not change PlayerVoiceState: a
+// muted speaker is still reported as speaking.
+//
+// The entity cannot also carry another area component that uses a trigger region
+// (AvatarModifierArea, CameraModeArea, TriggerArea).
 message PBVoiceChatModifierArea {
   decentraland.common.Vector3 area = 1; // the 3D size of the region
   repeated string exclude_ids = 2;      // user IDs that can enter and remain unaffected
   optional float volume_scale = 3;      // voice volume in [0, 1] (default: 1)
-  optional float max_distance = 4;      // meters at which the voice fades out, e.g. 3 to whisper (default: the client's Nearby range)
+  optional float max_distance = 4;      // meters at which the voice fades out, e.g. 3 to whisper; at least 0.1, and values beyond the client's Nearby range have no effect (default: the client's Nearby range)
   optional bool mute = 5;               // the voice is not heard at all (default: false)
   optional bool isolate = 6;            // the voice is only heard by listeners inside this region, who in turn only hear speakers inside it (default: false)
 }
