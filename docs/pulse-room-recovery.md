@@ -95,9 +95,15 @@ Exact SHA256 values for this local candidate:
 
 The normal full npm package is 729,793 bytes (7,946,598 unpacked); npm integrity is
 `sha512-BdeXJhG4HMvkK3RaiSETwfnilKaYGyWVm9lqU3W6P3YON0mJefv2kYjM/Yy7Y0E+K7qJVgphFecXudX5k9nLug==`.
-Gatekeeper vendors these exact bytes at `vendor/dcl-protocol-pulse-room-recovery-992db9fb.tgz` and uses a
-repo-portable `file:` dependency with a generated lockfile. Package version `1.0.0` describes this
-local archive, not a published registry release. No remote package version or CI URL is invented.
+Package version `1.0.0` describes this historical local archive, not a registry release.
+For the reviewable consumer PR, [CI run 37907573378](https://github.com/decentraland/protocol/actions/runs/37907573378)
+published `1.0.0-37907573378.commit-c4acba0` from merge commit
+`c4acba0921073fd71006e953b5cc4efce91497cd` (PR head `1e8a96749eb7696cd0ad173e0da615859b8589b9`).
+Gatekeeper pins that exact CDN artifact in its package manifest and lockfile, with archive SHA256
+`c2d21ff388e51ab753ac1381ef8991356d852c88840e01dcd5097b1650549f11`.
+The published schema matches after checkout line-ending normalization; generated TS/JS and
+declarations match the tested outputs. The different archive hash reflects the published version
+and packaging. This CI prerelease is not available under that version in the npm registry.
 
 Validation commands (serialize expensive work with `Local\DCL_It2_HeavyVerification`, same-process
 `WaitOne(0)`, at least 5 GB free RAM, Node heap 2048 MB):
@@ -119,6 +125,5 @@ boundaries and the additive retirement-observation default. Reproduce the packag
 inputs and verify hashes before using it.
 Two local `npm pack` runs over the same generated inputs produced the identical archive hash;
 this records observed local reproducibility, not a cross-platform deterministic-byte guarantee.
-Production remains gated on an actual immutable protocol release artifact, verified generated
-exports/source/hash, reviewed consumer pins and fresh clean-install validation. This local archive
-does not certify Cloud revocation enforcement, broker ACL deployment or production readiness.
+Production remains gated on promoting the dependency to the reviewed main-release artifact,
+consumer install validation, Cloud revocation acceptance, broker ACLs and coordinated bootstrap.
