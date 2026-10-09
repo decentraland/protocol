@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/common/vectors.proto";
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1225;
+
+// The VoiceChatModifierArea component can be attached to an Entity to define a region of space
+// that changes how players speaking inside it are heard in Nearby voice chat.
+//
+// The Entity's Transform position determines the center-point of the region, while its size is
+// given as a vector in the `area` property below. The Transform rotation is applied, but the scale
+// is ignored.
+//
+// The effect follows the speaker: it applies to the voice of players standing inside the region,
+// for every listener. When a player stands inside several regions, the most restrictive value of
+// each property wins.
+message PBVoiceChatModifierArea {
+  decentraland.common.Vector3 area = 1; // the 3D size of the region
+  repeated string exclude_ids = 2;      // user IDs that can enter and remain unaffected
+  optional float volume_scale = 3;      // voice volume in [0, 1] (default: 1)
+  optional float max_distance = 4;      // meters at which the voice fades out, e.g. 3 to whisper (default: the client's Nearby range)
+  optional bool mute = 5;               // the voice is not heard at all (default: false)
+  optional bool isolate = 6;            // the voice is only heard by listeners inside this region, who in turn only hear speakers inside it (default: false)
+}
