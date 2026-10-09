@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1224;
+
+// PlayerVoiceState reports whether a player is currently speaking in Nearby voice chat.
+// It is written by the engine on player entities (including `engine.PlayerEntity`) and only
+// reflects Nearby voice chat: private and community calls are never reported.
+message PBPlayerVoiceState {
+  bool is_speaking = 1; // true while the player's voice activity is detected
+}
