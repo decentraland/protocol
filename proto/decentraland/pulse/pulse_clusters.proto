@@ -30,4 +30,56 @@ message PeerClusterChange {
   // into. Empty on every other event, including a same-session reconnect.
   string displaced_session = 4;
   string displaced_cluster_id = 5;
+
+  // Authoritative backend room plan, also returned by assignment lookup and periodic hints.
+  // Absent plans and unspecified admission never permit issuing island credentials.
+  // Older readers ignore this barrier, so Pulse and Gatekeeper require coordinated activation.
+  RoomRecoveryPlan room_recovery = 6;
+}
+
+enum RoomAdmissionState {
+  UNSPECIFIED = 0;
+  PENDING = 1;
+  READY = 2;
+}
+
+message RoomRecoveryPlan {
+  // Random Pulse lifetime identifier. A new epoch starts blocked until controlled room reset.
+  string epoch = 1;
+  // Positive decimal revision, kept as a string to preserve arbitrary uint64 precision in JS.
+  string revision = 2;
+  RoomAdmissionState admission = 3;
+  // Retained departure record: never grants credentials, including when cleanup is complete.
+  bool cleanup_only = 4;
+  repeated RoomCleanupOperation operations = 5;
+  // Whole Unix seconds; token nbf must be at least this confirmed revocation cutoff.
+  uint64 token_not_before = 6;
+  bool bootstrap_required = 7;
+}
+
+message RoomCleanupOperation {
+  string operation_id = 1;
+  string cluster_id = 2;
+  // Whole Unix seconds, bounded to the JavaScript safe-integer range by consumers.
+  uint64 minimum_revoke_before = 3;
+}
+
+// Gatekeeper-only publication on peer.{wallet}.room_cleanup_completed. Pulse matches all
+// identifiers against the current plan before recording this effective whole-second cutoff.
+message RoomCleanupCompleted {
+  string epoch = 1;
+  string revision = 2;
+  string operation_id = 3;
+  string cluster_id = 4;
+  uint64 revoke_before = 5;
+  // Gatekeeper has positively observed this exact cleanup-only ready revision, retired its
+  // confirmed journal receipts and re-read readiness. Retirement observations carry no operation,
+  // cluster or cutoff; ordinary operation completions leave this false. Cross-purpose fields reject.
+  bool observed_ready = 6;
+}
+
+// Operator-only publication on pulse.room_recovery.bootstrap_completed, after a controlled
+// reset of old rooms. Confirmation authorizes this exact epoch; it is never automatic.
+message RoomRecoveryBootstrapCompleted {
+  string epoch = 1;
 }
