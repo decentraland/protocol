@@ -1,80 +1,78 @@
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
 const protobuf = require('protobufjs')
-const {
-  PeerClusterChange, RoomAdmissionState, RoomRecoveryPlan, RoomCleanupCompleted,
-  RoomRecoveryBootstrapCompleted
-} = require('../out-js/decentraland/pulse/pulse_clusters.gen')
+const { PeerClusterChange, PendingTakeover, TakeoverCompleted } = require('../out-js/decentraland/pulse/pulse_clusters.gen')
 
-// The released fields 1-5 are the compatibility boundary, independently parsed by an old reader.
 const OldChange = protobuf.parse(`syntax = "proto3";
 message PeerClusterChange {
   string cluster_id = 1; string realm = 2; string session = 3;
   string displaced_session = 4; string displaced_cluster_id = 5;
 }`).root.lookupType('PeerClusterChange')
 const legacy = { clusterId: 'c', realm: 'm', session: 's', displacedSession: 'old', displacedClusterId: 'r' }
-const plan = {
-  epoch: 'epoch-1', revision: '18446744073709551615', admission: RoomAdmissionState.PENDING,
-  cleanupOnly: false, operations: [{ operationId: 'op-1', clusterId: 'room-a', minimumRevokeBefore: 1770000000 }],
-  tokenNotBefore: 1770000001, bootstrapRequired: true
-}
+const takeover = { takeoverId: 'unique-1', displacedSession: 'old', displacedClusterId: 'room-a' }
 
-test('legacy golden bytes are unchanged and lack admission authority', () => {
+test('legacy golden bytes remain unchanged and do not grant new admission authority', () => {
   const bytes = PeerClusterChange.encode(PeerClusterChange.fromPartial(legacy)).finish()
   assert.equal(Buffer.from(bytes).toString('hex'), '0a016312016d1a017322036f6c642a0172')
-  assert.deepEqual(PeerClusterChange.decode(bytes), { ...legacy, roomRecovery: undefined })
+  assert.deepEqual(PeerClusterChange.decode(bytes), { ...legacy, pendingTakeovers: [], tokenNotBefore: undefined })
 })
 
-test('absent/default plans and unknown admission do not become READY', () => {
-  assert.equal(RoomRecoveryPlan.decode(new Uint8Array()).admission, RoomAdmissionState.UNSPECIFIED)
-  assert.equal(RoomRecoveryPlan.fromJSON({ admission: 'future-state' }).admission, RoomAdmissionState.UNRECOGNIZED)
-  const unknown = RoomRecoveryPlan.decode(Uint8Array.from([24, 99]))
-  assert.equal(unknown.admission, 99)
-  assert.notEqual(unknown.admission, RoomAdmissionState.READY)
+test('a present zero floor differs from an absent floor on wire and in JSON', () => {
+  const first = PeerClusterChange.fromPartial({ ...legacy, tokenNotBefore: 0 })
+  const bytes = PeerClusterChange.encode(first).finish()
+  assert.equal(Buffer.from(bytes).toString('hex'), '0a016312016d1a017322036f6c642a01724000')
+  assert.equal(PeerClusterChange.decode(bytes).tokenNotBefore, 0)
+  assert.equal(PeerClusterChange.fromJSON(PeerClusterChange.toJSON(first)).tokenNotBefore, 0)
+  assert.equal(PeerClusterChange.fromJSON(legacy).tokenNotBefore, undefined)
 })
 
-test('full authoritative plan and uint64 decimal revision round trip', () => {
-  const input = PeerClusterChange.fromPartial({ ...legacy, roomRecovery: plan })
+test('multiple pending takeovers and confirmed floor survive wire and JSON round trips', () => {
+  const input = PeerClusterChange.fromPartial({
+    ...legacy, tokenNotBefore: 1770000001,
+    pendingTakeovers: [takeover, { ...takeover, takeoverId: 'unique-2', displacedClusterId: 'room-b' }]
+  })
   assert.deepEqual(PeerClusterChange.decode(PeerClusterChange.encode(input).finish()), input)
   assert.deepEqual(PeerClusterChange.fromJSON(PeerClusterChange.toJSON(input)), input)
 })
 
-test('old readers skip the plan while preserving released assignment fields', () => {
-  const bytes = PeerClusterChange.encode(PeerClusterChange.fromPartial({ ...legacy, roomRecovery: plan })).finish()
+test('old readers skip new fields and cannot preserve capability when relaying', () => {
+  const bytes = PeerClusterChange.encode(PeerClusterChange.fromPartial({
+    ...legacy, pendingTakeovers: [takeover], tokenNotBefore: 0
+  })).finish()
   assert.deepEqual(OldChange.toObject(OldChange.decode(bytes)), legacy)
-  const relayed = OldChange.encode(OldChange.decode(bytes)).finish()
-  assert.equal(PeerClusterChange.decode(relayed).roomRecovery, undefined)
+  assert.equal(PeerClusterChange.decode(OldChange.encode(OldChange.decode(bytes)).finish()).tokenNotBefore, undefined)
 })
 
-test('future top-level fields are skipped by the generated reader', () => {
-  const bytes = PeerClusterChange.encode(PeerClusterChange.fromPartial(legacy)).uint32(802).string('future').finish()
-  assert.deepEqual(PeerClusterChange.decode(bytes), { ...legacy, roomRecovery: undefined })
+test('retired draft field six is ignored and never grants credential authority', () => {
+  const oldPlan = protobuf.Writer.create().uint32(10).string('old-epoch').uint32(24).int32(2).finish()
+  const bytes = PeerClusterChange.encode(PeerClusterChange.fromPartial(legacy)).uint32(50).bytes(oldPlan).finish()
+  const decoded = PeerClusterChange.decode(bytes)
+  assert.equal(decoded.tokenNotBefore, undefined)
+  assert.deepEqual(decoded.pendingTakeovers, [])
 })
 
-test('cleanup-only and bootstrap-required flags survive with ready admission', () => {
-  const input = RoomRecoveryPlan.fromPartial({ ...plan, admission: RoomAdmissionState.READY, cleanupOnly: true })
-  assert.deepEqual(RoomRecoveryPlan.decode(RoomRecoveryPlan.encode(input).finish()), input)
+test('future fields are skipped without altering retained takeover state', () => {
+  const input = PeerClusterChange.fromPartial({ ...legacy, pendingTakeovers: [takeover], tokenNotBefore: 42 })
+  const bytes = PeerClusterChange.encode(input).uint32(802).string('future').finish()
+  assert.deepEqual(PeerClusterChange.decode(bytes), input)
 })
 
-test('completion and bootstrap messages round trip exact identities', () => {
-  const completion = { epoch: plan.epoch, revision: plan.revision, operationId: 'op-1', clusterId: 'room-a', revokeBefore: 1770000001, observedReady: false }
-  assert.deepEqual(RoomCleanupCompleted.decode(RoomCleanupCompleted.encode(completion).finish()), completion)
-  const bootstrap = { epoch: plan.epoch }
-  assert.deepEqual(RoomRecoveryBootstrapCompleted.decode(RoomRecoveryBootstrapCompleted.encode(bootstrap).finish()), bootstrap)
+test('pending takeover and completion retain the exact operation identity', () => {
+  assert.deepEqual(PendingTakeover.decode(PendingTakeover.encode(takeover).finish()), takeover)
+  const completion = { takeoverId: takeover.takeoverId, revokeBefore: 1770000002 }
+  assert.deepEqual(TakeoverCompleted.decode(TakeoverCompleted.encode(completion).finish()), completion)
 })
 
-test('retirement observation is additive and defaults false on ordinary or old completions', () => {
-  const observation = { epoch: plan.epoch, revision: plan.revision, operationId: '', clusterId: '', revokeBefore: 0, observedReady: true }
-  assert.deepEqual(RoomCleanupCompleted.decode(RoomCleanupCompleted.encode(observation).finish()), observation)
-  const oldCompletion = protobuf.Writer.create().uint32(10).string(plan.epoch).uint32(18).string(plan.revision)
-    .uint32(26).string('op-1').uint32(34).string('room-a').uint32(40).uint64(1770000001).finish()
-  assert.equal(RoomCleanupCompleted.decode(oldCompletion).observedReady, false)
+test('assignment floor accepts the safe-integer boundary and rejects larger uint64 values', () => {
+  const input = PeerClusterChange.fromPartial({ tokenNotBefore: Number.MAX_SAFE_INTEGER })
+  assert.equal(PeerClusterChange.decode(PeerClusterChange.encode(input).finish()).tokenNotBefore, Number.MAX_SAFE_INTEGER)
+  const bytes = protobuf.Writer.create().uint32(64).uint64('9007199254740992').finish()
+  assert.throws(() => PeerClusterChange.decode(bytes), /larger than Number.MAX_SAFE_INTEGER/)
 })
 
-test('cutoff safe-integer boundary works and unsafe uint64 decode rejects', () => {
-  const input = RoomRecoveryPlan.fromPartial({ tokenNotBefore: Number.MAX_SAFE_INTEGER })
-  assert.equal(RoomRecoveryPlan.decode(RoomRecoveryPlan.encode(input).finish()).tokenNotBefore, Number.MAX_SAFE_INTEGER)
-  // Field 6 uint64, exactly 2^53: valid protobuf but unsafe for generated JS number consumers.
-  const bytes = protobuf.Writer.create().uint32(48).uint64('9007199254740992').finish()
-  assert.throws(() => RoomRecoveryPlan.decode(bytes), /larger than Number.MAX_SAFE_INTEGER/)
+test('completion cutoff accepts the safe-integer boundary and rejects larger uint64 values', () => {
+  const input = { takeoverId: 'id', revokeBefore: Number.MAX_SAFE_INTEGER }
+  assert.deepEqual(TakeoverCompleted.decode(TakeoverCompleted.encode(input).finish()), input)
+  const bytes = protobuf.Writer.create().uint32(16).uint64('9007199254740992').finish()
+  assert.throws(() => TakeoverCompleted.decode(bytes), /larger than Number.MAX_SAFE_INTEGER/)
 })
