@@ -12,21 +12,37 @@ option (common.ecs_component_id) = 1225;
 //
 // The Entity's Transform position determines the center-point of the region, while its size is
 // given as a vector in the `area` property below. The Transform rotation is applied, but the scale
-// is ignored.
+// is ignored. Only players who are inside the region and also standing on this scene's parcels
+// count as inside it.
 //
-// The effect follows the speaker: it applies to the voice of players standing inside the region,
-// for every listener who is also standing in this scene. When a player stands inside several
-// regions, the most restrictive value of each property wins. An excluded player is treated as
-// outside the region, including for isolation. The region does not change PlayerVoiceState: a
-// muted speaker is still reported as speaking.
+// The effect follows the speaker. Each listener's client applies the regions of the scenes it
+// runs to the voices it plays, so enforcement is client-side and the region is not a privacy
+// boundary: a client that doesn't run this scene hears the voice unmodified.
 //
-// The entity cannot also carry another area component that uses a trigger region
-// (AvatarModifierArea, CameraModeArea, TriggerArea).
+// Overlapping regions combine as follows:
+// - `volume_scale` and `max_distance`: the lowest value wins.
+// - `mute`: the speaker is muted if any region mutes them.
+// - `isolate`: a speaker inside one or more isolating regions is only heard by listeners inside at
+//   least one of those same regions, and a listener inside an isolating region only hears
+//   speakers who share one of its isolating regions. Separate isolating regions are separate
+//   rooms.
+//
+// Values: `volume_scale` is clamped to [0, 1]. `max_distance` is raised to at least 0.1, and
+// values beyond the client's Nearby range have no effect. NaN and infinite values are treated as
+// unset. `mute` silences the speaker like `volume_scale` 0 does, and lets clients skip playback.
+//
+// `exclude_ids` holds user IDs (wallet addresses), compared case-insensitively. An excluded player
+// is treated as outside the region, including for isolation.
+//
+// The region does not change PlayerVoiceState: a muted speaker is still reported as speaking.
+//
+// If the entity also carries another component that uses a trigger region (AvatarModifierArea,
+// CameraModeArea, TriggerArea), only one of them takes effect: put each on its own entity.
 message PBVoiceChatModifierArea {
   decentraland.common.Vector3 area = 1; // the 3D size of the region
   repeated string exclude_ids = 2;      // user IDs that can enter and remain unaffected
-  optional float volume_scale = 3;      // voice volume in [0, 1] (default: 1)
-  optional float max_distance = 4;      // meters at which the voice fades out, e.g. 3 to whisper; at least 0.1, and values beyond the client's Nearby range have no effect (default: the client's Nearby range)
+  optional float volume_scale = 3;      // voice volume multiplier (default: 1)
+  optional float max_distance = 4;      // meters at which the voice fades out, e.g. 3 to whisper (default: the client's Nearby range)
   optional bool mute = 5;               // the voice is not heard at all (default: false)
-  optional bool isolate = 6;            // the voice is only heard by listeners inside this region, who in turn only hear speakers inside it (default: false)
+  optional bool isolate = 6;            // the voice is only heard inside the region (default: false)
 }

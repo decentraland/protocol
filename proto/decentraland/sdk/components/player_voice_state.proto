@@ -7,8 +7,17 @@ import "decentraland/sdk/components/common/id.proto";
 option (common.ecs_component_id) = 1224;
 
 // PlayerVoiceState reports whether a player is currently speaking in Nearby voice chat.
-// It is written by the engine on player entities (including `engine.PlayerEntity`) and only
-// reflects Nearby voice chat: private and community calls are never reported.
+//
+// The engine writes it on the entities of players standing on this scene's parcels, including
+// `engine.PlayerEntity` while the local player is here. Scenes never receive it for players
+// standing elsewhere. It only reflects Nearby voice chat: private and community calls are never
+// reported.
+//
+// `is_speaking` follows the voice server's active-speaker detection on the audio the player
+// actually transmits to Nearby. It is never true while the player's microphone is off, muted or
+// idle on push-to-talk. It changes when the voice server reports a change in active speakers,
+// usually within a second, and can toggle between words: debounce it in the scene if a steady
+// signal is needed.
 message PBPlayerVoiceState {
-  bool is_speaking = 1; // true while the player's voice activity is detected
+  bool is_speaking = 1; // true while the player's transmitted voice is detected as speech
 }
