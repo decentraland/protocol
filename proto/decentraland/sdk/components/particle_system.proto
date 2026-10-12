@@ -12,7 +12,7 @@ option (common.ecs_component_id) = 1217;
 
 message PBParticleSystem {
   // --- Emission ---
-  optional bool active = 1;              // default = true
+  optional bool active = 1;              // default = true. If disabled while playing, emission stops but existing particles play their remiaining lifetime.
   optional float rate = 2;              // default = 10. Particles emitted per second.
   optional uint32 max_particles = 3;    // default = 1000. Maximum number of live particles.
   optional float lifetime = 4;          // default = 5. Particle lifetime in seconds.
