@@ -1,5 +1,7 @@
 # CLAUDE.md — MMO Networking Stack
 
+> Scope: this file documents the Pulse / MMO networking stack and the `protoc-gen-bitwise` quantization plugin, which only apply to `proto/decentraland/pulse/*`. For SDK components, fields, restricted actions and scene APIs use the `/protocol-feature` skill (`.claude/skills/protocol-feature/`), which carries the six-phase process across js-sdk-toolchain, unity-explorer, bevy-explorer and godot-explorer.
+
 ## Project Overview
 
 High-performance MMO-style multiplayer networking stack. Protocol is **open** (Unity C# client + others). Infrastructure on **AWS**. Goals: high concurrency, aggressive interest management, low-latency state sync.
