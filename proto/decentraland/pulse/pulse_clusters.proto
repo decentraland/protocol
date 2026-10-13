@@ -10,7 +10,7 @@ package decentraland.pulse;
 // clusters have no size cap, are realm-partitioned, and carry no transport connection details.
 // Comms Gatekeeper subscribes here, mints the LiveKit connection string (the ban check is
 // authority-local to gatekeeper), and re-emits the legacy
-// decentraland.kernel.comms.v3.IslandChangedMessage on `engine.peer.{address}.island_changed`,
+// decentraland.kernel.comms.v3.IslandChangedMessage on `engine.peer.{address}.island_changed.{session}`,
 // so the WebSocket Connector and clients stay untouched.
 message PeerClusterChange {
   // Cluster the peer now belongs to. Stable across passes for an unchanged crowd.
@@ -30,4 +30,32 @@ message PeerClusterChange {
   // into. Empty on every other event, including a same-session reconnect.
   string displaced_session = 4;
   string displaced_cluster_id = 5;
+
+  // Field 6 appeared in an earlier draft artifact; never reinterpret its bytes.
+  reserved 6;
+  reserved "room_recovery";
+
+  // Unfinished takeovers survive notification loss and later ownership changes.
+  // Gatekeeper must complete every entry before issuing current-session credentials.
+  repeated PendingTakeover pending_takeovers = 7;
+
+  // Confirmed revocation floor in whole Unix seconds. Present zero is a first assignment;
+  // absence means this response cannot authorize credentials (old producer or blocked state).
+  // Consumers reject uint64 values outside the JavaScript safe-integer range.
+  optional uint64 token_not_before = 8;
+}
+
+// Retained by Pulse until the matching completion is applied. IDs are globally unique;
+// another takeover in the same room receives a new ID. Hints never create new IDs.
+message PendingTakeover {
+  string takeover_id = 1;
+  string displaced_session = 2;
+  string displaced_cluster_id = 3;
+}
+
+// Gatekeeper-only publication on peer.{wallet}.takeover_completed. A duplicate or unknown
+// ID has no effect. The effective cutoff must exceed the takeover's prior token floor.
+message TakeoverCompleted {
+  string takeover_id = 1;
+  uint64 revoke_before = 2;
 }
