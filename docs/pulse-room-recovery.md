@@ -11,7 +11,7 @@ cleanup and reports completion. One Pulse and one active Gatekeeper are assumed.
 | Reserved field 6 / `room_recovery` | Retired draft plan; never reinterpret its bytes |
 | `pending_takeovers` (7) | Repeated `PendingTakeover` entries still requiring cleanup |
 | Optional `token_not_before` (8) | Confirmed token `nbf` floor in whole Unix seconds |
-| `PendingTakeover.takeover_id` (1) | Globally unique operation ID, stable until completion |
+| `PendingTakeover.takeover_id` (1) | Unguessable, globally unique operation ID (128-bit random), stable until completion |
 | `displaced_session` (2), `displaced_cluster_id` (3) | Previous owner and room to remove/revoke |
 | `TakeoverCompleted.takeover_id` (1) | Exact pending operation being confirmed |
 | `TakeoverCompleted.revoke_before` (2) | Effective confirmed whole-second revocation cutoff |
@@ -32,8 +32,13 @@ Change events, periodic `peer.{wallet}.cluster_snapshot` hints and positive
 `peer.{wallet}.cluster_assignment` replies all use `PeerClusterChange`. The assignment request
 still carries the authenticated session selector. Hints trigger a fresh lookup before action.
 
+Explicitly departed records use the same messages and retained winner session only while pending
+takeovers remain. Their floor remains available for cleanup; the nonempty pending list prevents
+credentials. After completion, departed lookups and hints become silent and never return a ready
+assignment. Active records still require their captured live connection registration.
+
 Gatekeeper publishes the only new NATS event, `TakeoverCompleted`, on
-`peer.{wallet}.takeover_completed`. Restrict publishing to Gatekeeper through broker ACLs.
+`peer.{wallet}.takeover_completed`. Broker ACLs must restrict publishing to Gatekeeper.
 Pulse owns retained pending state; publishing an event does not clear it.
 
 Gatekeeper caches confirmed results in memory and re-reports them after lost completions.
@@ -43,7 +48,7 @@ replacement participant. Never-admitted intermediate owners do not replace earli
 
 ## Scope
 
-There is no plan epoch, revision, admission enum, bootstrap event, cleanup-only record or
+There is no plan epoch, revision, admission enum, bootstrap event, separate cleanup-only message or
 retirement-observation exchange. Uncertain LiveKit calls block the affected wallet in the
 running Gatekeeper. Crash-safe execution, recovery after lost Pulse state and general room
 movement/departure cleanup are outside this narrower contract.
