@@ -12,4 +12,5 @@ message PBAvatarBase {
   decentraland.common.Color3 hair_color = 3;
   string body_shape_urn = 4;
   string name = 5;
+  optional bool talking = 6; // true while the player is speaking in voice chat; unset when the engine does not report voice activity
 }
