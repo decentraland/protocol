@@ -23,4 +23,5 @@ message PBUiText {
   optional common.Font font = 4;                 // font for the text (default: sans-serif)
   optional int32 font_size = 5;                  // size of the text (default: 10)
   optional TextWrap text_wrap = 6;               // wrap text when the border is reached (default: TW_WRAP)
+  optional string font_src = 9;                  // a ttf font file in the scene content or a Google Fonts family name; `font` is the fallback (default: unset)
 }
