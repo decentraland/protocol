@@ -2,7 +2,6 @@ syntax = "proto3";
 package decentraland.sdk.components;
 
 import "decentraland/sdk/components/common/id.proto";
-import "decentraland/common/texture.proto";
 import "decentraland/common/gradient.proto";
 
 option (common.ecs_component_id) = 1223;
@@ -17,12 +16,12 @@ option (common.ecs_component_id) = 1223;
 //
 // While active, the overrides are global: they also change how neighbouring parcels look from inside the scene.
 message PBSkybox {
-  // Replaces the visible sky with an equirectangular (latitude-longitude) image with a 2:1 aspect ratio.
-  // The image centre faces +Z, the top row is the zenith and the bottom row the nadir.
+  // Replaces the visible sky with an image, given as its source path with the same rules as `Texture.src`.
+  // It must be an equirectangular (latitude-longitude) image with a 2:1 aspect ratio:
+  // the image centre faces +Z, the top row is the zenith and the bottom row the nadir.
   // Cube cross, 3x2 and six-face layouts are not supported.
-  // Only `Texture.src` is read: wrap/filter/offset/tiling, AvatarTexture and VideoTexture are ignored.
   // The sun, the fog and the ambient lighting do not change: the ambient still follows `sky_colors`.
-  optional decentraland.common.TextureUnion skybox_texture = 1;
+  optional string skybox_texture = 1;
   // Procedural sky colors. They also drive the ambient lighting, also while `skybox_texture` is set.
   // While `skybox_texture` is set they no longer color the visible sky.
   optional SkyColors sky_colors = 2;
