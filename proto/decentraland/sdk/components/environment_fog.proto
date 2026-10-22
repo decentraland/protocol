@@ -1,0 +1,21 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+import "decentraland/common/gradient.proto";
+
+option (common.ecs_component_id) = 1225;
+
+// PBEnvironmentFog overrides the environment fog while the player is inside the scene.
+// Valid only on the scene root entity (`engine.RootEntity`).
+//
+// An unset field keeps the time-of-day default.
+// Gradient `time` is the normalized time of day: 0 = 00:00, 0.5 = 12:00, 1 = 24:00.
+// Gradients do not wrap around midnight.
+// A scene cannot turn fog on or off. That is a user quality setting.
+//
+// While active, the overrides are global: they also change how neighbouring parcels look from inside the scene.
+message PBEnvironmentFog {
+  optional decentraland.common.ColorGradient color = 1;
+  optional float density = 2; // default = 0.0005, per meter: fog = 1 - e^(-density * distance). Negative values clamp to 0
+}
