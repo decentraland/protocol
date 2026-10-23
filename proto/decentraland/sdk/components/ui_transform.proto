@@ -75,6 +75,17 @@ enum YGEdge {
   YGE_ALL = 8;
 }
 
+enum YGDirection {
+  YGDIR_INHERIT = 0;
+  YGDIR_LTR = 1;
+  YGDIR_RTL = 2;
+}
+
+enum YGBoxSizing {
+  YGBS_BORDER_BOX = 0;
+  YGBS_CONTENT_BOX = 1;
+}
+
 enum PointerFilterMode {
   PFM_NONE = 0;
   PFM_BLOCK = 1;
@@ -175,4 +186,19 @@ message PBUiTransform {
 
   optional float opacity = 73; // default: 1
   optional int32 z_index = 77; // default: 0 — controls render stacking order. Higher values appear in front of lower values.
+
+  // Gap — spacing between rows/columns of a flex container.
+  // YGUnit.YGU_AUTO is not valid here; treated as YGU_UNDEFINED.
+  // row_gap/column_gap take precedence over gap on their axis.
+  optional YGUnit gap_unit = 78; // YGUnit.YGU_UNDEFINED
+  optional float gap = 79;
+  optional YGUnit row_gap_unit = 80; // YGUnit.YGU_UNDEFINED
+  optional float row_gap = 81;
+  optional YGUnit column_gap_unit = 82; // YGUnit.YGU_UNDEFINED
+  optional float column_gap = 83;
+
+  optional float aspect_ratio = 84; // width / height; undefined = no constraint
+  optional float flex = 85; // flex shorthand: sets flex_grow/flex_shrink/flex_basis per Yoga semantics
+  optional YGDirection direction = 86; // default: YGDirection.YGDIR_INHERIT
+  optional YGBoxSizing box_sizing = 87; // default: YGBoxSizing.YGBS_BORDER_BOX
 }
