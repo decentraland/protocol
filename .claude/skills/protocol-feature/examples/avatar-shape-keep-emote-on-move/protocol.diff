@@ -1,0 +1,29 @@
+diff --git a/proto/decentraland/sdk/components/avatar_shape.proto b/proto/decentraland/sdk/components/avatar_shape.proto
+--- a/proto/decentraland/sdk/components/avatar_shape.proto
++++ b/proto/decentraland/sdk/components/avatar_shape.proto
+@@ -13,6 +13,13 @@
+ //
+ // Note that, while AvatarShape can be attached to any Entity, it's only actually used in the global 
+ // Avatar Scene. Other requirements are usually better served by GLTFs.
++//
++// Movement: when the scene moves an AvatarShape entity (Transform or Tween) each explorer derives the
++// locomotion animation from the motion. `keep_emote_on_move` lets a full-body emote started with
++// `expression_trigger_id` play through that motion instead. It is scene-local (never relayed to other
++// players), read only on scene-owned AvatarShape entities, and ignored on `engine.PlayerEntity` and on
++// other players' entities, whose emotes follow the explorer's own input rules. Explorers without
++// support keep their current behaviour.
+ message PBAvatarShape {
+   string id = 1;                  // the user ID
+   optional string name = 2;       // visible name (default: "NPC")
+@@ -40,5 +47,11 @@
+   repeated string emotes = 11; // available emotes (default empty)
+ 
+   optional bool show_only_wearables = 12; // hides the skin + hair + facial features (default: false)
++
++  // 13 is force_render on experimental-bevy
++  // true: a full-body emote keeps playing while the scene moves this entity (Transform or Tween); no walk/run
++  // is blended in until the emote ends or is replaced, then the explorer's locomotion rule applies again.
++  // false: today's behaviour, the explorer's locomotion rule may interrupt the emote
++  optional bool keep_emote_on_move = 14; // keep the running emote while the scene moves this entity (default: false)
+ }
+ 
