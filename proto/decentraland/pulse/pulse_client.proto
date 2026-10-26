@@ -4,11 +4,14 @@ package decentraland.pulse;
 
 import "decentraland/pulse/pulse_shared.proto";
 import "decentraland/common/options.proto";
+import "decentraland/common/auth.proto";
 
 message HandshakeRequest {
 	bytes auth_chain = 1;
   int32 profile_version = 2;
   optional PlayerInitialState initial_state = 3;
+  // Capability bitmask the client offers (absent/0 = the baseline quantized wire; the server masks off unknown bits and negotiates the intersection with its own features, so an old or new peer stays interoperable).
+  uint32 protocol_features = 4;
 }
 
 // Describes the initial state of the player if (re-)connected in the middle of the session
@@ -94,6 +97,8 @@ message SceneListenerHandshakeRequest {
   bytes auth_chain = 1;
   // Announced AoI, one entry per realm; replaceable afterwards with SceneListenerUpdate.
   repeated SceneListenerAoi aoi = 2;
+  // Mirrors HandshakeRequest.protocol_features; a client that omits it decodes to 0 = baseline wire.
+  uint32 protocol_features = 4;
 }
 
 // Scene-listener AoI reassignment: replaces the area of interest announced at connect, in
@@ -103,6 +108,53 @@ message SceneListenerUpdate {
   // The new AoI, replacing (not extending) the current one — realms absent from it are no
   // longer observed. Same rules and SceneListener:MaxParcels budget as the handshake's.
   repeated SceneListenerAoi aoi = 1;
+}
+
+message PulseV4Hello {
+  bytes request_id = 1;
+  bytes session_id = 2;
+  uint64 connection_epoch = 3;
+  repeated string required_capabilities = 4;
+  repeated string optional_capabilities = 5;
+  PulseV4Role role = 6;
+  int32 profile_version = 7;
+  optional PlayerInitialState initial_state = 8;
+  repeated SceneListenerAoi listener_aoi = 9;
+}
+
+message PulseV4Auth {
+  bytes request_id = 1;
+  bytes session_id = 2;
+  uint64 connection_epoch = 3;
+  bytes challenge_id = 4;
+  decentraland.common.AuthChain auth_chain = 5;
+  bytes idempotency_key = 6;
+  string wallet = 7;
+  string auth_session = 8;
+}
+
+message PulseV4AuthTranscript {
+  uint32 protocol_version = 1;
+  string audience = 2;
+  string issuer = 3;
+  bytes process_incarnation = 4;
+  bytes peer_binding = 5;
+  bytes challenge_id = 6;
+  bytes challenge = 7;
+  int64 expires_at_ms = 8;
+  bytes request_id = 9;
+  bytes session_id = 10;
+  uint64 connection_epoch = 11;
+  repeated string required_capabilities = 12;
+  repeated string optional_capabilities = 13;
+  repeated string negotiated_capabilities = 14;
+  PulseV4Role role = 15;
+  int32 profile_version = 16;
+  optional PlayerInitialState initial_state = 17;
+  repeated SceneListenerAoi listener_aoi = 18;
+  bytes idempotency_key = 19;
+  string wallet = 20;
+  string auth_session = 21;
 }
 
 message ClientMessage {
@@ -116,5 +168,28 @@ message ClientMessage {
     TeleportRequest teleport = 7;
     SceneListenerHandshakeRequest scene_listener_handshake = 8;
     SceneListenerUpdate scene_listener_update = 9;
+    ApplicationJoin application_join = 12;
+    ApplicationLeave application_leave = 13;
+    ApplicationSend application_send = 14;
+    PulseV4Hello v4_hello = 20;
+    PulseV4Auth v4_auth = 21;
   }
+}
+
+message ApplicationJoin {
+  uint32 request_id = 1;
+  string jwt_header_payload = 2;
+  bytes proof = 3;
+}
+
+message ApplicationLeave {
+  uint32 room_id = 1;
+}
+
+message ApplicationSend {
+  uint32 room_id = 1;
+  uint32 recipient_id = 2;
+  bytes payload = 3;
+  bool unreliable = 4;
+  uint32 roster_version = 5;
 }

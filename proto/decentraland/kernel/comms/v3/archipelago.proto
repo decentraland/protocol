@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "decentraland/common/vectors.proto";
+import "decentraland/common/auth.proto";
 
 package decentraland.kernel.comms.v3;
 
@@ -8,10 +9,12 @@ package decentraland.kernel.comms.v3;
 message ChallengeResponseMessage {
   string challenge_to_sign = 1;
   bool already_connected = 2;
+  ConnectionSelection selection = 3;
 }
 
 message WelcomeMessage {
   string peer_id = 1;
+  ConnectionSelection context = 2;
 }
 
 message IslandChangedMessage {
@@ -19,6 +22,7 @@ message IslandChangedMessage {
   string conn_str = 2;
   optional string from_island_id = 3;
   map<string, decentraland.common.Position> peers = 4;
+  AssignmentContext assignment_context = 5;
 }
 
 message LeftIslandMessage {
@@ -47,21 +51,27 @@ message ServerPacket {
     LeftIslandMessage  left_island = 4;
     JoinIslandMessage join_island = 5;
     KickedMessage kicked = 6;
+    Ack ack = 7;
+    ControlError error = 8;
   }
+  uint64 request_sequence = 15;
 }
 
 // Client->Server messsages
 message ChallengeRequestMessage {
   string address = 1;
+  ConnectionOffer offer = 2;
 }
 
 message SignedChallengeMessage {
   string auth_chain_json = 1;
+  decentraland.common.AuthChain typed_auth_chain = 2;
 }
 
 message Heartbeat {
   decentraland.common.Position position = 1;
   optional string desired_room = 2;
+  optional uint64 sample_sequence = 3;
 }
 
 message ClientPacket {
@@ -69,7 +79,99 @@ message ClientPacket {
     ChallengeRequestMessage challenge_request = 1;
     SignedChallengeMessage signed_challenge = 2;
     Heartbeat heartbeat = 3;
+    Ack ack = 4;
+    RequestSnapshot request_snapshot = 5;
   }
+  uint64 request_sequence = 15;
+}
+
+message ConnectionOffer {
+  uint32 version = 1;
+  uint64 offered_features = 2;
+  uint64 required_features = 3;
+  bytes client_nonce = 4;
+  bytes session_id = 5;
+  repeated string lanes = 6;
+}
+
+message ConnectionSelection {
+  uint32 version = 1;
+  uint64 selected_features = 2;
+  ConnectionContext context = 3;
+  ConnectionLimits limits = 4;
+  repeated LaneBinding lanes = 5;
+}
+
+message ConnectionContext {
+  bytes server_nonce = 1;
+  string audience = 2;
+  string issuer = 3;
+  bytes process_incarnation = 4;
+  bytes connection_id = 5;
+  uint64 connection_epoch = 6;
+  uint64 expires_at_ms = 7;
+  string authority_incarnation = 8;
+}
+
+message ConnectionLimits {
+  uint32 max_frame_bytes = 1;
+  uint32 max_lanes = 2;
+  uint32 max_pending_requests = 3;
+  uint32 max_retained_responses = 4;
+  uint32 max_retained_response_bytes = 5;
+  uint32 handshake_timeout_ms = 6;
+  uint32 max_public_detail_bytes = 7;
+}
+
+message LaneBinding {
+  uint32 handle = 1;
+  string name = 2;
+}
+
+message AssignmentContext {
+  uint32 lane_handle = 1;
+  uint64 assignment_revision = 2;
+  uint64 realm_revision = 3;
+  uint64 fencing_token = 4;
+  uint64 lease_expires_at_ms = 5;
+  bool removed = 6;
+}
+
+message Ack {
+  uint32 lane_handle = 1;
+  uint64 applied_revision = 2;
+}
+
+message RequestSnapshot {
+  uint32 lane_handle = 1;
+  optional uint64 from_revision = 2;
+}
+
+enum ControlErrorCode {
+  CONTROL_ERROR_CODE_UNSPECIFIED = 0;
+  CONTROL_ERROR_CODE_INVALID_FRAME = 1001;
+  CONTROL_ERROR_CODE_PROTOCOL_VIOLATION = 1002;
+  CONTROL_ERROR_CODE_AUTH_FAILED = 1003;
+  CONTROL_ERROR_CODE_STALE_EPOCH = 1004;
+  CONTROL_ERROR_CODE_AUTHORITY_UNAVAILABLE = 1005;
+  CONTROL_ERROR_CODE_AUTHORITY_CONFLICT = 1006;
+  CONTROL_ERROR_CODE_GAP_REQUIRES_SNAPSHOT = 1007;
+  CONTROL_ERROR_CODE_LIMIT_EXCEEDED = 1008;
+  CONTROL_ERROR_CODE_INVALID_LANE = 1009;
+  CONTROL_ERROR_CODE_STALE_REQUEST = 1010;
+}
+
+enum ControlRetryClass {
+  CONTROL_RETRY_CLASS_UNSPECIFIED = 0;
+  CONTROL_RETRY_CLASS_NEVER = 1;
+  CONTROL_RETRY_CLASS_AFTER_RECONNECT = 2;
+  CONTROL_RETRY_CLASS_LATER = 3;
+}
+
+message ControlError {
+  ControlErrorCode code = 1;
+  ControlRetryClass retry = 2;
+  optional string public_detail = 3;
 }
 
 // Others

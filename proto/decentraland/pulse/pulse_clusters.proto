@@ -59,3 +59,16 @@ message TakeoverCompleted {
   string takeover_id = 1;
   uint64 revoke_before = 2;
 }
+
+// Read-only reply to peer.{wallet}.cluster_lookup, whose payload is the exact session address.
+// Only a Pulse instance holding that live wallet/session in a fresh completed pass replies.
+// This is not a cluster-change event: it carries no takeover side effects or room credential.
+message PeerClusterSnapshot {
+  string wallet = 1;
+  string session = 2;
+  string cluster_id = 3;
+  string realm = 4;
+  // Diagnostic/order scope within one source incarnation only, never across restarts or servers.
+  uint64 pass = 5;
+  string source_incarnation = 6;
+}

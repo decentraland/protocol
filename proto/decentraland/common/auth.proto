@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package decentraland.common;
+
+enum AuthLinkType {
+  AUTH_LINK_TYPE_UNKNOWN = 0;
+  AUTH_LINK_TYPE_SIGNER = 1;
+  AUTH_LINK_TYPE_ECDSA_EPHEMERAL = 2;
+  AUTH_LINK_TYPE_ECDSA_SIGNED_ENTITY = 3;
+  AUTH_LINK_TYPE_ECDSA_EIP_1654_EPHEMERAL = 4;
+  AUTH_LINK_TYPE_ECDSA_EIP_1654_SIGNED_ENTITY = 5;
+}
+
+message AuthLink {
+  AuthLinkType type = 1;
+  string payload = 2;
+  optional string signature = 3;
+}
+
+message AuthChain {
+  repeated AuthLink links = 1;
+}
