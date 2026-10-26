@@ -23,6 +23,42 @@ enum GlideState {
   CLOSING_PROP = 3;
 }
 
+enum PulseV4Role {
+  PULSE_V4_ROLE_PLAYER = 0;
+  PULSE_V4_ROLE_LISTENER = 1;
+}
+
+enum PulseV4ErrorCode {
+  PULSE_V4_ERROR_NONE = 0;
+  PULSE_V4_ERROR_MALFORMED = 1;
+  PULSE_V4_ERROR_UNSUPPORTED_CAPABILITY = 2;
+  PULSE_V4_ERROR_CAPACITY = 3;
+  PULSE_V4_ERROR_EXPIRED = 4;
+  PULSE_V4_ERROR_UNKNOWN_CHALLENGE = 5;
+  PULSE_V4_ERROR_AUTH_INVALID = 6;
+  PULSE_V4_ERROR_INTENT_MISMATCH = 7;
+  PULSE_V4_ERROR_BANNED = 8;
+  PULSE_V4_ERROR_ALREADY_USED = 9;
+  PULSE_V4_ERROR_INVALID_HANDSHAKE_FIELD = 10;
+  PULSE_V4_ERROR_INTERNAL = 11;
+}
+
+enum PulseV4RetryClass {
+  PULSE_V4_RETRY_NONE = 0;
+  PULSE_V4_RETRY_SAME_CONNECTION = 1;
+  PULSE_V4_RETRY_NEW_CONNECTION = 2;
+  PULSE_V4_RETRY_LATER = 3;
+}
+
+message PulseV4Limits {
+  uint32 max_frame_bytes = 1;
+  uint32 max_pending_handshakes = 2;
+  uint32 handshake_deadline_ms = 3;
+  uint32 max_auth_chain_bytes = 4;
+  uint32 max_capabilities = 5;
+  uint32 max_public_detail_bytes = 6;
+}
+
 // Quantized identically to PlayerStateDeltaTier0 so a full state and a stream of deltas land on the same grid.
 message PlayerState {
   int32 parcel_index = 1;

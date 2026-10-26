@@ -8,6 +8,38 @@ import "decentraland/pulse/pulse_shared.proto";
 message HandshakeResponse {
   bool success = 1;
   optional string error = 2;
+  // The capability bitmask this server supports, advertised on every response so a client learns which features were negotiated.
+  uint32 protocol_features = 3;
+  bytes application_relay_nonce = 4;
+}
+
+message PulseV4Challenge {
+  bytes request_id = 1;
+  bytes session_id = 2;
+  uint64 connection_epoch = 3;
+  bytes challenge_id = 4;
+  bytes challenge = 5;
+  string audience = 6;
+  string issuer = 7;
+  bytes process_incarnation = 8;
+  bytes peer_binding = 9;
+  int64 expires_at_ms = 10;
+  repeated string negotiated_capabilities = 11;
+  PulseV4Limits limits = 12;
+}
+
+message PulseV4Result {
+  bytes request_id = 1;
+  bytes session_id = 2;
+  uint64 connection_epoch = 3;
+  bytes idempotency_key = 4;
+  bool success = 5;
+  PulseV4ErrorCode error_code = 6;
+  PulseV4RetryClass retry = 7;
+  string public_detail = 8;
+  repeated string negotiated_capabilities = 9;
+  PulseV4Limits limits = 10;
+  bytes application_relay_nonce = 11;
 }
 
 message PlayerProfileVersionsAnnounced {
@@ -79,6 +111,16 @@ message PlayerStateFull {
   PlayerState state = 4;
 }
 
+// Protocol-version-1 (scheme C) batched egress: one message carries every due per-observer delta
+// for a tick. Still a valid protobuf message; only `payload`'s internal bit-layout is out-of-band
+// (MSB-first bit-packing, see `crate::batch`). `subject_count` is authoritative for the decode loop
+// (a trailing pad byte is ambiguous with a zero-valued element).
+message PlayerStateDeltaBatch {
+  uint32 server_tick = 1;
+  uint32 subject_count = 2;
+  bytes payload = 3;
+}
+
 // Notification to the client, that a peer has joined, it can mean connection or entering the area of interest, it's up to the server to decide
 message PlayerJoined {
   string user_id = 1;
@@ -140,5 +182,65 @@ message ServerMessage {
       EmoteStarted emote_started = 7;
       EmoteStopped emote_stopped = 8;
       TeleportPerformed teleported = 9;
+      // Batched deltas. Sent only to peers that negotiated the FEATURE_DELTA_BATCH capability bit;
+      // peers without it keep receiving per-message player_state_delta (arm 3).
+      PlayerStateDeltaBatch player_state_delta_batch = 10;
+      PlayerStateDeltaBatch player_state_delta_batch_baseline = 11;
+      ApplicationJoinResult application_join_result = 12;
+      ApplicationPeerJoined application_peer_joined = 13;
+      ApplicationPeerLeft application_peer_left = 14;
+      ApplicationData application_data = 15;
+      ApplicationSendFailed application_send_failed = 16;
+      PulseV4Challenge v4_challenge = 20;
+      PulseV4Result v4_result = 21;
   }
+}
+
+message ApplicationPeer {
+  uint32 peer_id = 1;
+  string identity = 2;
+  optional bool is_guest = 3;
+}
+
+enum ApplicationErrorCode {
+  APPLICATION_OK = 0;
+  APPLICATION_INVALID = 1;
+  APPLICATION_NOT_AUTHORIZED = 2;
+  APPLICATION_LIMIT = 3;
+  APPLICATION_UNAVAILABLE = 4;
+}
+
+message ApplicationJoinResult {
+  uint32 request_id = 1;
+  uint32 room_id = 2;
+  uint32 self_id = 3;
+  uint32 max_payload_bytes = 4;
+  repeated ApplicationPeer peers = 5;
+  ApplicationErrorCode error = 6;
+  uint32 max_unreliable_payload_bytes = 7;
+  uint32 roster_version = 8;
+}
+
+message ApplicationPeerJoined {
+  uint32 room_id = 1;
+  ApplicationPeer peer = 2;
+  uint32 roster_version = 3;
+}
+
+message ApplicationPeerLeft {
+  uint32 room_id = 1;
+  uint32 peer_id = 2;
+  uint32 roster_version = 3;
+}
+
+message ApplicationSendFailed {
+  uint32 room_id = 1;
+  repeated string identities = 2;
+  bytes payload = 3;
+}
+
+message ApplicationData {
+  uint32 room_id = 1;
+  uint32 sender_id = 2;
+  bytes payload = 3;
 }

@@ -1,0 +1,164 @@
+syntax = "proto3";
+
+package decentraland.kernel.comms.v4;
+
+import "decentraland/common/auth.proto";
+import "decentraland/common/vectors.proto";
+
+message ClientPacket {
+  oneof message {
+    Authenticate authenticate = 1;
+    Heartbeat heartbeat = 2;
+    Ack ack = 3;
+    RequestSnapshot request_snapshot = 4;
+  }
+  uint64 request_sequence = 15;
+}
+
+message Authenticate {
+  string request_id = 1;
+  string address = 2;
+  string session_id = 3;
+  uint64 connection_epoch = 4;
+  decentraland.common.AuthChain auth_chain = 5;
+  repeated string capabilities = 6;
+  repeated string lanes = 7;
+  map<string, uint64> resume = 8;
+}
+
+message Heartbeat {
+  string request_id = 1;
+  string operation_id = 2;
+  string session_id = 3;
+  uint64 connection_epoch = 4;
+  optional decentraland.common.Position position = 5;
+  optional string desired_room = 6;
+}
+
+message Ack {
+  string request_id = 1;
+  string operation_id = 2;
+  string session_id = 3;
+  uint64 connection_epoch = 4;
+  string lane = 5;
+  uint64 applied_revision = 6;
+}
+
+message RequestSnapshot {
+  string request_id = 1;
+  string operation_id = 2;
+  string session_id = 3;
+  uint64 connection_epoch = 4;
+  string lane = 5;
+  optional uint64 from_revision = 6;
+}
+
+message ServerPacket {
+  oneof message {
+    Hello hello = 1;
+    Welcome welcome = 2;
+    AssignmentSnapshot assignment_snapshot = 3;
+    AssignmentDelta assignment_delta = 4;
+    Ack ack = 5;
+    Error error = 6;
+  }
+  uint64 request_sequence = 15;
+}
+
+message Hello {
+  uint32 protocol_version = 1;
+  string audience = 2;
+  string replica_id = 3;
+  string authority_incarnation = 4;
+  string connection_id = 5;
+  uint64 connection_epoch = 6;
+  string challenge_id = 7;
+  string challenge = 8;
+  uint64 expires_in_ms = 9;
+  repeated string capabilities = 10;
+  Limits limits = 11;
+}
+
+message Limits {
+  uint64 max_frame_bytes = 1;
+  uint64 max_lanes_per_socket = 2;
+  uint64 max_request_id_bytes = 3;
+  uint64 max_requests_per_connection = 4;
+  uint64 max_retained_response_bytes = 5;
+  uint64 handshake_timeout_ms = 6;
+  uint64 max_retained_request_sequences = 7;
+}
+
+message Welcome {
+  string request_id = 1;
+  string session_id = 2;
+  uint64 connection_epoch = 3;
+  string peer_id = 4;
+  repeated AssignmentState lanes = 5;
+}
+
+message AssignmentState {
+  string lane = 1;
+  string authority_incarnation = 2;
+  uint64 assignment_revision = 3;
+  uint64 realm_revision = 4;
+  string owner_session = 5;
+  uint64 owner_epoch = 6;
+  uint64 fencing_token = 7;
+  Assignment assignment = 8;
+}
+
+message AssignmentSnapshot {
+  optional string request_id = 1;
+  string session_id = 2;
+  uint64 connection_epoch = 3;
+  string lane = 4;
+  string authority_incarnation = 5;
+  uint64 assignment_revision = 6;
+  uint64 realm_revision = 7;
+  string owner_session = 8;
+  uint64 owner_epoch = 9;
+  uint64 fencing_token = 10;
+  Assignment assignment = 11;
+}
+
+message AssignmentDelta {
+}
+
+message Assignment {
+  string island_id = 1;
+  string connection_string = 2;
+  optional string from_island_id = 3;
+  map<string, decentraland.common.Position> peers = 4;
+}
+
+message Error {
+  optional string request_id = 1;
+  optional string session_id = 2;
+  optional uint64 connection_epoch = 3;
+  ErrorCode code = 4;
+  string name = 5;
+  RetryClass retry = 6;
+  optional string detail = 7;
+}
+
+enum ErrorCode {
+  ERROR_CODE_UNSPECIFIED = 0;
+  ERROR_CODE_INVALID_FRAME = 1001;
+  ERROR_CODE_PROTOCOL_VIOLATION = 1002;
+  ERROR_CODE_AUTH_FAILED = 1003;
+  ERROR_CODE_STALE_EPOCH = 1004;
+  ERROR_CODE_AUTHORITY_UNAVAILABLE = 1005;
+  ERROR_CODE_AUTHORITY_CONFLICT = 1006;
+  ERROR_CODE_GAP_REQUIRES_SNAPSHOT = 1007;
+  ERROR_CODE_LIMIT_EXCEEDED = 1008;
+  ERROR_CODE_INVALID_LANE = 1009;
+  ERROR_CODE_STALE_REQUEST = 1010;
+}
+
+enum RetryClass {
+  RETRY_CLASS_UNSPECIFIED = 0;
+  RETRY_CLASS_NEVER = 1;
+  RETRY_CLASS_AFTER_RECONNECT = 2;
+  RETRY_CLASS_LATER = 3;
+}
