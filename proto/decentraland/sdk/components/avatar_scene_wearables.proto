@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+
+option (common.ecs_component_id) = 1226;
+
+// The component is written on a player's entity: `engine.PlayerEntity` or another player's reserved entity.
+message PBAvatarSceneWearables {
+  // Paths of GLB files in the scene's own content, one per wearable, named `<name>_<category>.glb`,
+  // for example `wearables/hat/hat_hat.glb`. The category is the longest known wearable category
+  // matching the end of the name. A later item replaces an earlier item of the same category.
+  repeated string wearables = 1;
+}
