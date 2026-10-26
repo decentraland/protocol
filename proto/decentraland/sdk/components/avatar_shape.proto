@@ -6,38 +6,46 @@ option (common.ecs_component_id) = 1080;
 import "decentraland/common/colors.proto";
 
 // The AvatarShape component contains the information required to draw and animate avatar, acting as
-// a simplified GLTF container for this specific case. 
+// a simplified GLTF container for this specific case.
 //
-// All fields (except ID) are optional have reasonable default values. In the case of `wearables`,
+// All fields (except ID) are optional and have reasonable default values. In the case of `wearables`,
 // each slot on the Avatar's body that is not explicitly included in the list has its own default.
 //
-// Note that, while AvatarShape can be attached to any Entity, it's only actually used in the global 
-// Avatar Scene. Other requirements are usually better served by GLTFs.
+// AvatarShape can be attached to any Entity, where it draws an avatar (e.g. an NPC). Other requirements
+// are usually better served by GLTFs.
+//
+// On `engine.PlayerEntity` or another player's reserved entity, AvatarShape draws no separate avatar.
+// It overrides that player's own avatar instead: unset fields keep the player's profile values, and a
+// non-empty `wearables` replaces the player's whole wearable set (with the same default-slot rules as any
+// entity). An empty `wearables` list keeps the player's own wearables. Fields marked as ignored below have
+// no effect there. The override is local to the viewer and is never broadcast.
 message PBAvatarShape {
   string id = 1;                  // the user ID
-  optional string name = 2;       // visible name (default: "NPC")
+  optional string name = 2;       // visible name (default: "NPC"); ignored on player entities
   optional string body_shape = 3; // shape URN (default "urn:decentraland:off-chain:base-avatars:BaseFemale")
 
   optional decentraland.common.Color3 skin_color = 4; // RGB (default [0.6, 0.462, 0.356])
   optional decentraland.common.Color3 hair_color = 5; // RGB (default [0.283, 0.142, 0])
   optional decentraland.common.Color3 eye_color = 6;  // RGB (default [0.6, 0.462, 0.356])
 
-  optional string expression_trigger_id = 7;       // current emote animations
-  optional int64 expression_trigger_timestamp = 8; // start of emote animations (in the same order)
+  optional string expression_trigger_id = 7;       // current emote animations; ignored on player entities
+  optional int64 expression_trigger_timestamp = 8; // start of emote animations (in the same order); ignored on player entities
 
-  optional bool talking = 9; // whether to display the floating voice chat icon
+  optional bool talking = 9; // whether to display the floating voice chat icon; ignored on player entities
 
-  // Wearable URNs, one for each body slot.
+  // Wearables, one per body slot. Each item is a wearable URN, or the path of a scene content GLB named
+  // `<name>_<category>.glb`, where `<category>` is a wearable category such as `hat` or `upper_body`.
+  // A later item replaces an earlier one of the same category.
   //   Default values for each unspecified slot:
-  //     Eyes    : "urn:decentraland:off-chain:base-avatars:f_eyes_00", 
+  //     Eyes    : "urn:decentraland:off-chain:base-avatars:f_eyes_00",
   //     Eyebrows: "urn:decentraland:off-chain:base-avatars:f_eyebrows_00",
-  //     Mouth   : "urn:decentraland:off-chain:base-avatars:f_mouth_00" 
-  //     Hair    : "urn:decentraland:off-chain:base-avatars:standard_hair", 
-  //     Shirt   : "urn:decentraland:off-chain:base-avatars:f_simple_yellow_tshirt", 
-  //     Trousers: "urn:decentraland:off-chain:base-avatars:f_brown_trousers", 
-  //     Shoes   : "urn:decentraland:off-chain:base-avatars:bun_shoes"]
+  //     Mouth   : "urn:decentraland:off-chain:base-avatars:f_mouth_00",
+  //     Hair    : "urn:decentraland:off-chain:base-avatars:standard_hair",
+  //     Shirt   : "urn:decentraland:off-chain:base-avatars:f_simple_yellow_tshirt",
+  //     Trousers: "urn:decentraland:off-chain:base-avatars:f_brown_trousers",
+  //     Shoes   : "urn:decentraland:off-chain:base-avatars:bun_shoes"
   repeated string wearables = 10; 
-  repeated string emotes = 11; // available emotes (default empty)
+  repeated string emotes = 11; // available emotes (default empty); ignored on player entities
 
   optional bool show_only_wearables = 12; // hides the skin + hair + facial features (default: false)
 }
