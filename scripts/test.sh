@@ -26,4 +26,7 @@ echo "> Compiling TS project"
 
 node_modules/.bin/tsc -p tsconfig.json
 
+echo "> Checking room recovery wire compatibility"
+node --test scripts/room-recovery.test.cjs
+
 rm -rf out-cs || true
