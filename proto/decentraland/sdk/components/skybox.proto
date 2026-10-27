@@ -1,0 +1,51 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+import "decentraland/common/gradient.proto";
+
+option (common.ecs_component_id) = 1223;
+
+// PBSkybox overrides the visible sky while the player is inside the scene.
+// Valid only on the scene root entity (`engine.RootEntity`).
+//
+// An unset field keeps the time-of-day default.
+// Gradient `time` is the normalized time of day: 0 = 00:00, 0.5 = 12:00, 1 = 24:00.
+// Gradients do not wrap around midnight.
+// The sun is controlled by `PBSun` and the fog by `PBEnvironmentFog`.
+//
+// While active, the overrides are global: they also change how neighbouring parcels look from inside the scene.
+message PBSkybox {
+  // Replaces the visible sky with an image, given as its source path with the same rules as `Texture.src`.
+  // It must be an equirectangular (latitude-longitude) image with a 2:1 aspect ratio:
+  // the image centre faces +Z, the top row is the zenith and the bottom row the nadir.
+  // Cube cross, 3x2 and six-face layouts are not supported.
+  // The sun, the fog and the ambient lighting do not change: the ambient still follows `sky_colors`.
+  optional string skybox_texture = 1;
+  // Procedural sky colors. They also drive the ambient lighting, also while `skybox_texture` is set.
+  // While `skybox_texture` is set they no longer color the visible sky.
+  optional SkyColors sky_colors = 2;
+  // Ignored while `skybox_texture` is set.
+  optional Clouds clouds = 3;
+  // Ignored while `skybox_texture` is set.
+  optional Stars stars = 4;
+
+  message SkyColors {
+    optional decentraland.common.ColorGradient zenith = 1;  // the sky straight up
+    optional decentraland.common.ColorGradient horizon = 2; // the broad band of sky around the horizon
+    // The sky below the horizon, visible wherever no terrain covers it (landscape disabled, high altitude).
+    optional decentraland.common.ColorGradient nadir = 3;
+    // Narrow glow right on the horizon line, like a sunset glow. Unset = follows `horizon` when that is set.
+    optional decentraland.common.ColorGradient rim = 4;
+  }
+
+  message Clouds {
+    optional float opacity = 1; // default = 1, from 0 to 1
+    optional float speed = 2;   // default = 0.01, in radians per second around the sky axis (0.01 is one turn every ~10 minutes). 0 = static, negative reverses the direction
+    optional decentraland.common.ColorGradient color = 3;
+  }
+
+  message Stars {
+    optional float brightness = 1; // default = 4.62, multiplier on the star texture (1 = as authored, values above 1 are HDR). 0 hides the stars, negative values clamp to 0. Stars are visible only at night
+  }
+}

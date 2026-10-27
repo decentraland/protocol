@@ -1,0 +1,16 @@
+syntax = "proto3";
+package decentraland.common;
+
+import "decentraland/common/colors.proto";
+
+message ColorKey {
+  float time = 1;   // position along the gradient, from 0 to 1. Values outside that range clamp to it
+  Color4 color = 2; // linear color. Values above 1 are allowed (HDR)
+}
+
+// Piecewise-linear, with keys interpolated in ascending order of `time`. Positions before the first key
+// or after the last key take that key's color. No keys means the gradient is unset.
+// If two keys have the same `time`, then the gradient keeps the key that comes later in `keys`.
+message ColorGradient {
+  repeated ColorKey keys = 1;
+}
