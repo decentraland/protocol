@@ -18,7 +18,6 @@
   },
   "devDependencies": {
     "@protobuf-ts/protoc": "^2.8.1",
-    "proto-compatibility-tool": "^1.1.2-20220925163655.commit-25bd040",
     "typescript": "^5.0.4"
   },
   "config": {
