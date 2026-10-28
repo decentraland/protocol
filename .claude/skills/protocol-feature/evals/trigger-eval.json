@@ -1,0 +1,22 @@
+[
+ {"query": "we want AvatarShape NPCs to keep playing their emote when the scene tweens them around instead of switching to the walk animation. can you write a draft proposal for that so I can show the explorer teams?", "should_trigger": true},
+ {"query": "add an optional `loop` param to triggerEmote in restricted_actions.proto and tell me what has to change in unity, bevy and godot", "should_trigger": true},
+ {"query": "is 1223 free as a component id? I ran make check-component-id and it says free but I remember someone saying the skybox PR took it", "should_trigger": true},
+ {"query": "review decentraland/protocol#499 across the explorers before I approve it, I'm mostly worried about the grow-only lists and whether godot can even consume it", "should_trigger": true},
+ {"query": "could the mobile client (godot) support a letter_spacing field on UiText like the font_src thing? just a feasibility check, no proto yet", "should_trigger": true},
+ {"query": "continue proposals/avatar-shape-keep-emote-on-move, we were at the tech check stage last time", "should_trigger": true},
+ {"query": "I need a new SDK component so scenes can request a screenshot of the player's view and get the hash back; plan it end to end but don't open anything yet", "should_trigger": true},
+ {"query": "what field number should I use for a new optional float on PBPointerEvents.Info? experimental-bevy has stuff there too I think", "should_trigger": true},
+ {"query": "simulate the whole process for adding a `max_speed` to AvatarLocomotionSettings, I want to see the PRs it would open in each repo", "should_trigger": true},
+ {"query": "the sdk team wants engineinfo to expose frame time as a double, how do we push that through the protocol and the three engines?", "should_trigger": true},
+ {"query": "in godot-explorer the emote wheel closes when I rotate the phone, can you find why in avatar_emote_controller.gd", "should_trigger": false},
+ {"query": "write the PR description for my godot-explorer branch fix/nametag-overlap following REVIEW.md", "should_trigger": false},
+ {"query": "explain how the Pulse quantization works for velocity deltas, the power-law one with bits 12", "should_trigger": false},
+ {"query": "my scene uses AvatarShape to spawn an NPC but the wearables don't show up in the unity explorer, here is my index.ts", "should_trigger": false},
+ {"query": "bump @dcl/sdk to 7.30.1 in sdk7-test-scenes/scenes/4,19-avatar-shape-movement and fix the type errors", "should_trigger": false},
+ {"query": "run buf lint on the proto folder and fix the naming warnings in the social_service v2 files", "should_trigger": false},
+ {"query": "the bevy explorer HUD (react-web) tab bar overlaps the chat on narrow windows, propose a css fix", "should_trigger": false},
+ {"query": "write an ADR about how we archive old Worlds content on the catalyst, standards track", "should_trigger": false},
+ {"query": "how does the SDK's CRDT suppress unchanged mutable component updates? I'm reading docs/crdt-unchanged-mutable-suppression.md", "should_trigger": false},
+ {"query": "generate the C# quantized accessors for pulse_shared.proto with the bitwise plugin and check them against the golden fixtures", "should_trigger": false}
+]

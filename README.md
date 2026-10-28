@@ -28,45 +28,42 @@ protoc \
 
 # Dev with Decentraland Repositories
 
-Many repositories depend on this protocol definition and that sometimes implies some merge order. We don't have to worry much about compatibility because the checks are running with each PR, if you break something, the CI will warn you. But, in some cases, it's desirable to merge the implementation in a specific order to avoid unexpected behavior in the corner cases (multiple repositories are waiting for the build at the same time).
+Many repositories depend on this protocol definition: [js-sdk-toolchain](https://github.com/decentraland/js-sdk-toolchain) (the SDK), [unity-explorer](https://github.com/decentraland/unity-explorer), [bevy-explorer](https://github.com/decentraland/bevy-explorer) and [godot-explorer](https://github.com/decentraland/godot-explorer) (the explorers), plus [sdk7-test-scenes](https://github.com/decentraland/sdk7-test-scenes), [docs](https://github.com/decentraland/docs) and [sdk-skills](https://github.com/decentraland/sdk-skills). Scenes deployed to the world are immutable, so whatever reaches `main` here is permanent: a field can be deprecated, never renamed, renumbered or retyped (CI runs `buf breaking` against `main` on every push to a branch).
 
-> **Important Note: Avoid Merging Protocol PR Without Completed Unity Implementation**
->
-> Please don't merge a protocol PR into the main branch unless the corresponding implementation in Unity has been completed. This is important to avoid any potential issues or build failures in Unity.
->
-> The ideal order for introducing breaking changes in the protocol is as follows:
->
-> 1. Create a PR in the Protocol repository.
-> 2. Use the npm test link from the CI of the protocol PR in the protocol-dependent application for development.
-> 3. Once both the protocol PR and the protocol-dependent application (e.g. unity-renderer) PR are ready for merging, synchronize their merging as follows:
->    1. Merge the protocol PR.
->    2. Modify protocol-dependent application PR to use the `@dcl/protocol@next` package to stop using the PR npm test link.
->    3. Merge the protocol-dependent application PR.
+## The feature process
 
-Some dev-cases are described here:
+Adding or changing a component, field, enum value, restricted action or scene API follows six phases: need, design, technology verification (can each explorer support it?), definition (the `.proto` change, with ids and field numbers checked across every branch, open PR and engine copy), implementation (one PR per consumer, in merge order) and review. The process, its gates and the policy values in force are documented in [`.claude/skills/protocol-feature/references/process.md`](.claude/skills/protocol-feature/references/process.md) and [`references/policy.md`](.claude/skills/protocol-feature/references/policy.md); the state of a feature lives in a proposal bundle under [`proposals/`](proposals/README.md).
+
+With Claude Code in this repo, `/protocol-feature "<idea>"` starts a proposal and `/protocol-feature --draft "<idea>"` simulates all six phases without opening anything; `/protocol-review <PR>` reviews a protocol PR against the SDK and the three explorers.
+
+## Merge order
+
+> **Important Note: Avoid Merging Protocol PR Without The Consumers Validated Against It**
+>
+> Don't merge a protocol PR into `main` until the SDK and the explorers have validated the change end to end against the PR package, and every explorer is accounted for (an implementation PR, or a filed parity-gap issue).
+>
+> The order for introducing changes in the protocol is:
+>
+> 1. Create a PR in the Protocol repository. CI comments a `npm install "https://sdk-team-cdn.decentraland.org/@dcl/protocol/branch/..."` link.
+> 2. Point the consumers at that package while developing: `js-sdk-toolchain` (both `package.json` files), `unity-explorer` (`scripts/package.json` + `npm run build-protocol`), `godot-explorer` (`PROTOCOL_FIXED_VERSION_URL`), `bevy-explorer` (copy the touched `.proto` into its vendored tree).
+> 3. Once the protocol PR and the consumer PRs are ready, merge the protocol PR first; `main` publishes `@dcl/protocol@next`.
+> 4. Repin every consumer to the published package (`@dcl/protocol@next` or the exact `1.0.0-<runId>.commit-<sha>` version), then merge the SDK and explorer PRs in any order, the test scene last.
+
+Testing locally: install the PR package in a scene, or link the SDK and the protocol by path (`npm install ../protocol` in `js-sdk-toolchain`, `npm install ../../js-sdk-toolchain/packages/@dcl/sdk` from a test scene). The SDK's CI rejects URL or file dependencies on PRs to `main`, which is why the repin step cannot be skipped.
 
 ## SDK: New component or component modification
 
-Repositories: [unity-renderer](https://github.com/decentraland/unity-renderer/) and [js-sdk-toolchain](https://github.com/decentraland/js-sdk-toolchain/)
+Repositories: `js-sdk-toolchain`, `unity-explorer`, `bevy-explorer`, `godot-explorer`
 
-At the protocol level both operations shouldn't be a problem, but `js-sdk-toolchain` CI will fail if the component is not tested. This can happen if the PR **`A`** from the protocol is merged, and you update your PR **`B`** from `js-sdk-toolchain` with the changes before the PR **`A`** from `js-sdk-toolchain` is merged.
-
-Some guidelines and testing before merge:
-
-- The protocol package is uploaded to S3 while developing in a PR. This can be used in the target repositories
-- Testing in the playground: Playground allows us to test by adding query parameters: `https://playground.decentraland.org/?&renderer-branch=**feat/my-new-component**&sdk-branch=**feat/new-component-approach**`
-- Testing locally: you can write an example scene and install the package `@dcl/sdk` uploaded to S3 commented in the PR comments.
-- Testing in the Unity Editor: if you need to test with the editor opened, write the `ws` query parameter in your local or playground test.
-- Start merging when the three PRs are already to merge: first merge the Protocol one, then update the other two with the version @next and merge them at the same time.
+At the protocol level the component is one `.proto` file under `proto/decentraland/sdk/components/` with a unique `option (common.ecs_component_id)` (take the next free id with the skill's `scripts/next-component-id.sh`, which also sees open PRs and the `experimental-bevy` branch; `make check-component-id ID=xxx` only sees the local tree) and an `import public` line in `public/sdk-components.proto`. `js-sdk-toolchain` CI fails if the component has no serialization test (`test/ecs/components/<Name>.spec.ts`). Each explorer registers the component by hand; the per-engine steps are in [`.claude/skills/protocol-feature/references/repos/`](.claude/skills/protocol-feature/references/repos/).
 
 ## SDK: New APIs or APIs modifications
 
-Repositories: [kernel](https://github.com/decentraland/kernel/), [js-sdk-toolchain](https://github.com/decentraland/js-sdk-toolchain/) and [scene-runtime](https://github.com/decentraland/scene-runtime/)
-In this case, there is no problem with when each PR is merged. It's recommendable to merge first the rpc server-side (in this case, Kernel), second the `scene-runtime` (and this would require a second update from `kernel`) and last the `js-sdk-toolchain`.
+Repositories: `js-sdk-toolchain` and the explorers. Scene APIs are the services under `proto/decentraland/kernel/apis/`, indexed by `public/sdk-apis.proto`. The explorers wire each RPC by hand (JavaScript module, native bridge, handler), so a new parameter is a change in every explorer plus the SDK's `make compile_apis` types. Merge the protocol PR first, then the explorers, then the SDK.
 
 ## Comms
 
-TODO
+`proto/decentraland/kernel/comms/rfc4/comms.proto` (LiveKit) requires updating [ADR-104 (RFC-4)](https://adr.decentraland.org/adr/ADR-104) whenever it changes; `proto/decentraland/pulse/*` is the authoritative-server protocol and the only place the quantization options in `CLAUDE.md` apply.
 
 ---
 
