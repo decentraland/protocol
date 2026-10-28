@@ -6,8 +6,17 @@ option (common.ecs_component_id) = 1091;
 
 // AvatarEquipData is used to read the information about the avatar's owneables.
 // this component is written by the engine using the communications transports'
-// data.
+// data. It describes the player's own outfit from their profile; an AvatarShape
+// written by a scene on the player entity does not change it.
 message PBAvatarEquippedData {
   repeated string wearable_urns = 1;
   repeated string emote_urns = 2;
+  repeated EquippedWearable wearables = 3; // one per item of wearable_urns, in the same order
+
+  message EquippedWearable {
+    string urn = 1;
+    // whether the wearable is shown in the player's own outfit, after hides, replaces and
+    // force-rendered categories; unset until the wearable has loaded
+    optional bool visible = 2;
+  }
 }

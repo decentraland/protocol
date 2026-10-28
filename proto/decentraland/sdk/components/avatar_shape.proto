@@ -39,6 +39,8 @@ message PBAvatarShape {
   // `<name>_<category>.glb`, where `<category>` is a wearable category such as `hat` or `upper_body`.
   // A later item replaces an earlier one of the same category. A scene GLB is always rendered and hides
   // nothing, except that a `skin` one hides the body parts it replaces; URNs keep their own hiding rules.
+  // An item that is neither a URN nor a `.glb` path, or that cannot be resolved, is skipped and the rest
+  // still applies.
   //   Default values for each unspecified slot:
   //     Eyes    : "urn:decentraland:off-chain:base-avatars:f_eyes_00",
   //     Eyebrows: "urn:decentraland:off-chain:base-avatars:f_eyebrows_00",
