@@ -1,0 +1,26 @@
+syntax = "proto3";
+package decentraland.sdk.components;
+
+import "decentraland/sdk/components/common/id.proto";
+import "decentraland/common/gradient.proto";
+import "decentraland/common/vectors.proto";
+
+option (common.ecs_component_id) = 1224;
+
+// PBSun overrides the directional light (sun and moon) while the player is inside the scene.
+// Valid only on the scene root entity (`engine.RootEntity`).
+//
+// An unset field keeps the time-of-day default.
+// Gradient `time` is the normalized time of day: 0 = 00:00, 0.5 = 12:00, 1 = 24:00.
+// Gradients do not wrap around midnight.
+//
+// While active, the overrides are global: they also change how neighbouring parcels look from inside the scene.
+message PBSun {
+  optional decentraland.common.ColorGradient color = 1; // tints the directional light and the sun disc
+  optional bool visible = 2;    // default = true. false hides the sun and moon discs and the lens flare, but not their light
+  optional float intensity = 3; // default = 1, multiplier on the renderer's time-of-day light intensity. Negative values clamp to 0
+  // Direction the sunlight travels, in scene space: (0,-1,0) = sun straight overhead. Normalized by the renderer.
+  // Set = the sun stays fixed at every time of day; its color and intensity still follow the time of day.
+  // Unset or zero = the time-of-day path.
+  optional decentraland.common.Vector3 direction = 4;
+}
