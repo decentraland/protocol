@@ -16,8 +16,9 @@ import "decentraland/common/colors.proto";
 //
 // On a player entity (`engine.PlayerEntity` or the entity of another player), AvatarShape changes the
 // look of that player's avatar:
-// - An unset field keeps the value from the player's profile.
-// - A non-empty `wearables` replaces all the wearables. An empty `wearables` is the same as unset.
+// - An unset field keeps the value from the player's profile. The defaults below apply only to other entities.
+// - A non-empty `wearables` replaces all the wearables. A body slot that it does not fill stays empty.
+//   An empty `wearables` is the same as unset.
 // - Fields marked "ignored on player entities" have no effect.
 // - The change is local to this client. It is not broadcast.
 // - The change applies only while the scene that wrote it is the current scene.
