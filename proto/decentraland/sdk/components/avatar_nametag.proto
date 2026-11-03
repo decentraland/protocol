@@ -30,4 +30,9 @@ message PBAvatarNametag {
   optional decentraland.common.Color3 label_color = 2;      // (default: the client's native nametag text color)
   optional decentraland.common.Color3 background_color = 3; // (default: the client's native nametag background color)
   optional decentraland.common.Color3 border_color = 4;     // (default: background_color, so the plate carries no visible border)
+
+  // Distance in meters from the camera beyond which this avatar's whole nametag (label and plate)
+  // is hidden. An active VirtualCamera's nametag_max_distance takes priority over this field.
+  // (default: 40 m; <= 0 or NaN = unset)
+  optional float max_distance = 5;
 }
