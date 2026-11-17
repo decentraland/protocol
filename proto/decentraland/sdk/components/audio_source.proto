@@ -28,4 +28,10 @@ message PBAudioSource {
   string audio_clip_url = 5; // the clip path as given in the `files` array of the scene's manifest.
   optional float current_time = 6;  // specifies the current playback time of the clip in seconds (default: 0).
   optional bool global = 7; // whether the audio plays at constant volume across the scene.
+
+  // Whether the renderer should report this source's playback position in `PBAudioEvent` while it plays
+  // (default: false). Media state changes are reported either way; this only enables the position reports,
+  // which a renderer writes far more often. Scenes that align gameplay with the audio they can actually hear
+  // set it; scenes playing fire-and-forget sounds leave it unset and pay nothing.
+  optional bool report_playback_position = 8;
 }
