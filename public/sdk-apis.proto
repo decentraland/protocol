@@ -5,6 +5,7 @@ package decentraland.sdk;
 // resolve all files without conflicts
 
 
+import public "decentraland/kernel/apis/badges.proto";
 import public "decentraland/kernel/apis/communications_controller.proto";
 import public "decentraland/kernel/apis/dev_tools.proto";
 import public "decentraland/kernel/apis/engine_api.proto";
