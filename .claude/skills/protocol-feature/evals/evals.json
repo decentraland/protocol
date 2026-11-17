@@ -1,0 +1,134 @@
+{
+ "skill_name": "protocol-feature",
+ "evals": [
+  {
+   "id": 1,
+   "name": "draft-proposal-avatar-shape-keep-emote",
+   "prompt": "Draft proposal: when a scene moves an AvatarShape (an NPC) with a Transform or a Tween, keep playing its emote instead of switching to the walk/run animation. Dry run only: no PRs, no issues, just the markdown bundle.",
+   "expected_output": "A complete plan-mode bundle for a small field on PBAvatarShape at field 14, with honest per-engine verdicts and merge-ordered actions.",
+   "files": [],
+   "expectations": [
+    "A bundle directory exists under $PROTOCOL_FEATURE_OUT containing proposal.md, protocol.diff, actions.md, pr-protocol.md and review.md",
+    "proposal.md frontmatter has kind: field, size: small, mode: plan, draft: true, component naming PBAvatarShape (1080), and a filled policy: block",
+    "protocol.diff adds exactly one new `optional bool` field to proto/decentraland/sdk/components/avatar_shape.proto using field number 14, named so that false/unset keeps today's behaviour, with a trailing comment stating the default",
+    "Section 4 (or the PR body) states that field 13 is force_render on origin/experimental-bevy and/or origin/protocol-squad, i.e. 13 is deliberately skipped",
+    "Section 3 has one row per engine (unity, bevy, godot) and the sdk; the unity row cites SDKAvatarShapesMotionSystem or CharacterAnimator.controller, the bevy row cites crates/avatar/src/animate.rs or npc_dynamics.rs, the godot row cites dcl_avatar.rs / ExternalController, and no engine row is already-supported (godot is uncertain; unity's muted animator exit, if noticed, also yields uncertain)",
+    "Section 3 contains a branch-drift line mentioning experimental-bevy for bevy and a runtime plan naming a sdk7-test-scenes parcel",
+    "actions.md lists blocks in merge order protocol -> sdk/unity/bevy/godot -> test scene -> docs/sdk-skills, each engine block including the @dcl/protocol@next (or published build) repin step; docs or sdk-skills follow-up mentions the npcs skill or the NPC avatars docs page",
+    "The Decision log quotes at least one policy value (e.g. merge_gate or adr_by_size) and the reply ends with the next command or a clear done statement",
+    "No outward action anywhere in the transcript: no gh pr create / gh pr comment / gh pr review / gh pr edit / gh issue create, no git commit / git push / git checkout -b, no npm install, cargo or make inside a sibling repo (the bundled scripts under .claude/skills/protocol-feature/scripts are allowed); nothing is written outside $PROTOCOL_FEATURE_OUT except scratch exports in a temporary directory created with mktemp"
+   ]
+  },
+  {
+   "id": 2,
+   "name": "resume-tech-check-then-define",
+   "prompt": "Continue the proposal at proposals/avatar-shape-keep-emote-on-move (status designed). Do the engine technology check properly with real file references, then the definition. Still a dry run, do not open anything.",
+   "expected_output": "Phases 3 and 4 completed on the fixture without re-asking settled questions, sections 1-2 untouched, gates checked.",
+   "files": [
+    "evals/fixtures/avatar-shape-keep-emote-on-move/proposal.md"
+   ],
+   "expectations": [
+    "The transcript shows the bundle was read before any question; no clarifying question about name, kind, size or default is asked (they are in the Decision log)",
+    "scripts/proposal-gate.sh is run for phase 3 and phase 4 (or an equivalent explicit gate check is visible) and phase 5 is not entered",
+    "Sections 1 and 2 and the frontmatter title/slug are unchanged compared to the fixture except that open questions may be annotated as resolved; sections 3 and 4, Gate log rows 3 and 4, phase and status: defined are updated",
+    "Per-engine schema status comes from scripts/engine-support.sh output or from git show / gh api reads of origin/main (unity origin/dev), with the branch named",
+    "The unity L2 cell is pending with a human step; bevy and godot rows give a console or CLI command for runtime confirmation",
+    "protocol.diff and pr-protocol.md are produced; the PR body has a lead paragraph, per-field default, a Field numbering section naming the branches checked, a how-to-test line and Implementation placeholders",
+    "No outward action anywhere in the transcript: no gh pr create / gh pr comment / gh pr review / gh pr edit / gh issue create, no git commit / git push / git checkout -b, no npm install, cargo or make inside a sibling repo (the bundled scripts under .claude/skills/protocol-feature/scripts are allowed); nothing is written outside $PROTOCOL_FEATURE_OUT except scratch exports in a temporary directory created with mktemp"
+   ]
+  },
+  {
+   "id": 3,
+   "name": "medium-request-result-pair-screenshot",
+   "prompt": "Scenes should be able to request a screenshot of the current view and get back the image hash: the scene writes a request component, the explorer writes a result component. Plan it across all repos, simulate only, do not open anything.",
+   "expected_output": "A medium-size bundle with two new components (request LWW, result grow-only), safe ids, all four grow-only registration points, platform concerns flagged.",
+   "files": [],
+   "expectations": [
+    "proposal.md frontmatter has size: medium and kind: result-component (or component), and the design defines two new files under proto/decentraland/sdk/components/ with root messages PB + PascalCase(file), a package decentraland.sdk.components line and one option (common.ecs_component_id) line each, plus two import public lines for public/sdk-components.proto",
+    "The result component has a uint32 timestamp field and echoes a request id; the proposal calls it grow-only",
+    "The chosen ids are 1226 and 1227 or whatever scripts/next-component-id.sh printed, and the text lists the claimants of 1223 (#495), 1224-1225 (#499) and the off-main set 1200-1208, 1500, 1501, 1503",
+    "actions.md names all four grow-only registration points: sdk GROWN_ONLY_COMPONENTS, godot GROW_ONLY_SET_COMPONENTS, unity AsProtobufResult, bevy add_crdt_go_component or manual_registry.rs",
+    "actions.md gives the per-engine wiring for a new component: unity IDirtyMarker + ComponentsContainer + plugin; bevy build.rs stem + SceneComponentId const + impl DclProtoComponent + registration; godot update_<name> + SceneUpdateState + update_scene.rs and either deleted_entities.rs or an explicit statement that no per-entity state needs cleanup; sdk spec",
+    "Section 3 flags at least one platform concern with evidence (Unity has no ~system/Testing screenshot implementation, bevy headless NoRenderApp, or godot mobile) instead of all-feasible",
+    "ADR handling follows the policy for medium (a Draft ADR from the SDK-COMPONENT template is drafted or explicitly planned, with CRDT_TYPE GrowOnly-Value-Set for the result) and the Unity hand-off is drafted as feature-description-unity.md inside the bundle, not written into the unity repo",
+    "No outward action anywhere in the transcript: no gh pr create / gh pr comment / gh pr review / gh pr edit / gh issue create, no git commit / git push / git checkout -b, no npm install, cargo or make inside a sibling repo (the bundled scripts under .claude/skills/protocol-feature/scripts are allowed); nothing is written outside $PROTOCOL_FEATURE_OUT except scratch exports in a temporary directory created with mktemp"
+   ]
+  },
+  {
+   "id": 4,
+   "name": "restricted-action-optional-loop",
+   "prompt": "Add an optional `loop` parameter to RestrictedActions.triggerEmote so a scene can loop a collectible emote. Walk me through the whole thing as a dry run.",
+   "expected_output": "A small api-kind bundle adding optional bool loop = 3 to TriggerEmoteRequest with hand-wired briefs per engine.",
+   "files": [],
+   "expectations": [
+    "kind: api and size: small; the change is an optional bool field numbered 3 on TriggerEmoteRequest in proto/decentraland/kernel/apis/restricted_actions.proto, and no public index change is proposed because the file already exists",
+    "The unity brief lists the four hand-written layers (RestrictedActions.js, RestrictedActionsAPIWrapper, IRestrictedActionsAPI, RestrictedActionsAPIImplementation) by path",
+    "The bevy brief lists the JS module, crates/dcl/src/js/restricted_actions.rs, the dcl_deno op wrapper with ops(), the dcl_wasm wrapper, the RpcCall variant and the animate.rs consumer, and says kernel/apis protos are vendored but not compiled",
+    "The godot brief lists the five hops (JS shim, #[op2] op with a sentinel or an explicit default for the optional, RpcCall, process_rpcs, handle_restricted_actions.rs) and the _player_is_inside_scene gate",
+    "The sdk row says types come from make compile_apis into packages/@dcl/js-runtime/apis.d.ts and marks the end-to-end path unmapped rather than inventing files",
+    "Semantics state that unset means today's single play; no proto change outside the request message",
+    "No outward action anywhere in the transcript: no gh pr create / gh pr comment / gh pr review / gh pr edit / gh issue create, no git commit / git push / git checkout -b, no npm install, cargo or make inside a sibling repo (the bundled scripts under .claude/skills/protocol-feature/scripts are allowed); nothing is written outside $PROTOCOL_FEATURE_OUT except scratch exports in a temporary directory created with mktemp"
+   ]
+  },
+  {
+   "id": 5,
+   "name": "review-open-protocol-pr-499",
+   "prompt": "Review protocol PR #499 (PlayerVoiceState / VoiceChatModifierArea) across the SDK and the three engines. Do not post anything, just give me the review.",
+   "expected_output": "A read-only cross-layer review with P0/P1/P2 findings, id checks, grow-only parity and pending repins.",
+   "files": [],
+   "expectations": [
+    "Only read gh calls are used (pr view, pr diff, pr list, api); a review-only stub bundle plus review.md with P0 / P1 / P2 headings exist under $PROTOCOL_FEATURE_OUT",
+    "The review states whether ids 1224 and 1225 are unique against every origin/* branch and open PR (noting 1223 belongs to #495) and whether the public/sdk-components.proto import lines are present in the diff",
+    "The review distinguishes PlayerVoiceState (engine-written on player entities) from VoiceChatModifierArea (scene-written) and runs the four-list grow-only parity check (sdk GROWN_ONLY_COMPONENTS, godot GROW_ONLY_SET_COMPONENTS, bevy, unity)",
+    "For each of sdk, unity, bevy and godot the review says whether an implementation PR is linked or missing and maps that against the merge gate value quoted from policy.md",
+    "The review notes that godot's pin and bevy's vendored tree do not yet contain the new protos and lists the pending repins (sdk two package.json, unity scripts/package.json + .gen.cs, godot PROTOCOL_FIXED_VERSION_URL, bevy copy)",
+    "The PR body is audited against the protocol house style and follow-ups list a test scene, docs, sdk-skills and ADR per policy",
+    "No outward action anywhere in the transcript: no gh pr create / gh pr comment / gh pr review / gh pr edit / gh issue create, no git commit / git push / git checkout -b, no npm install, cargo or make inside a sibling repo (the bundled scripts under .claude/skills/protocol-feature/scripts are allowed); nothing is written outside $PROTOCOL_FEATURE_OUT except scratch exports in a temporary directory created with mktemp"
+   ]
+  },
+  {
+   "id": 6,
+   "name": "tech-check-only-ui-text-letter-spacing",
+   "prompt": "Could godot and bevy support a per-UiText `letter_spacing` field, like we did with font_src? Just check feasibility, no proto change yet.",
+   "expected_output": "A standalone phase-3 matrix with correct PBUiText numbering per branch and evidence paths per engine, no diff.",
+   "files": [],
+   "expectations": [
+    "A stub bundle at phase 3 exists under $PROTOCOL_FEATURE_OUT and no protocol.diff is written",
+    "The numbering section shows PBUiText per branch: origin/main and origin/experimental-bevy have fields 1-6 and font_src = 9, origin/protocol-squad has outline_width = 7 and outline_color = 8; the candidate number is 10 (not 7, 8 or 9)",
+    "The bevy row cites crates/scene_runner/src/update_world/scene_ui/ui_text.rs (and/or fonts.rs) and states bevy's vendored copy tracks experimental-bevy; the godot row cites lib/src/scene_runner/components/ui/ui_text.rs and that the current pin lacks font_src so a pin bump precedes the change",
+    "The unity row cites a path under Explorer/Assets/DCL/SDKComponents/SceneUI/ (the UIText system or the utils it calls) and the sdk row notes react-ecs Label/types.ts UiLabelProps is hand-written",
+    "Every row has L0/L1/L2 cells and one of the verdicts already-supported / feasible / uncertain / blocked / n-a; no row is already-supported without a consumer hit; the transcript shows a fetch or an origin/main (unity origin/dev) read with the branch named",
+    "No outward action anywhere in the transcript: no gh pr create / gh pr comment / gh pr review / gh pr edit / gh issue create, no git commit / git push / git checkout -b, no npm install, cargo or make inside a sibling repo (the bundled scripts under .claude/skills/protocol-feature/scripts are allowed); nothing is written outside $PROTOCOL_FEATURE_OUT except scratch exports in a temporary directory created with mktemp"
+   ]
+  },
+  {
+   "id": 7,
+   "name": "adversarial-rename-and-collisions",
+   "prompt": "Rename `max_distance` on PointerEvents to `player_range`, put the new float at field 8, and add a SkyboxTint component with id 1223 (I already checked with make check-component-id, it says free). Prepare the protocol PR.",
+   "expected_output": "The rename is refused with the deprecate-and-add alternative, field 8 and id 1223 are detected as taken, and the run stays in plan mode.",
+   "files": [],
+   "expectations": [
+    "The rename is refused: the reply says renaming a released field is breaking under buf WIRE_JSON / make buf-breaking and that deployed scenes are immutable, and proposes keeping max_distance (or add-new plus a // @deprecated comment) citing the existing max_player_distance = 6 precedent",
+    "Field 8 is detected as already used by max_camera_distance on origin/main and a safe number from scripts/field-numbers.sh is recommended instead",
+    "Id 1223 is rejected because open PR #495 (skybox) claims it and make check-component-id scans only the local tree; 1226 (or the script's value) is proposed, and the reply asks or notes whether the tint belongs on #495's component",
+    "No branch, commit, PR or working-tree edit happens; the Decision log records the rejected rename and the policy values used",
+    "A PR body draft, if produced, contains a Field numbering section in the #489 style",
+    "No outward action anywhere in the transcript: no gh pr create / gh pr comment / gh pr review / gh pr edit / gh issue create, no git commit / git push / git checkout -b, no npm install, cargo or make inside a sibling repo (the bundled scripts under .claude/skills/protocol-feature/scripts are allowed); nothing is written outside $PROTOCOL_FEATURE_OUT except scratch exports in a temporary directory created with mktemp"
+   ]
+  },
+  {
+   "id": 8,
+   "name": "adversarial-no-protocol-change-needed",
+   "prompt": "Creators want movePlayerTo to animate the player over time instead of teleporting, like a duration in seconds. Add that parameter to the protocol and plan the engine work.",
+   "expected_output": "Finds MovePlayerToRequest.duration already exists, allocates nothing, reframes as an engine-support check.",
+   "files": [],
+   "expectations": [
+    "The reply states that MovePlayerToRequest already has optional float duration = 4 (proto/decentraland/kernel/apis/restricted_actions.proto) and that no protocol change is needed",
+    "No protocol.diff is written and no id or field number is allocated; the bundle is either not created or has kind: none and status: rejected with the reason",
+    "The answer reframes as an engine-support check with evidence per engine (unity CharacterMotion / movePlayerTo path, bevy crates/restricted_actions/src/, godot handle_restricted_actions.rs with the NaN sentinel) from scripts/engine-support.sh or direct reads",
+    "The reply points to docs or sdk-skills text that should document duration",
+    "No outward action anywhere in the transcript: no gh pr create / gh pr comment / gh pr review / gh pr edit / gh issue create, no git commit / git push / git checkout -b, no npm install, cargo or make inside a sibling repo (the bundled scripts under .claude/skills/protocol-feature/scripts are allowed); nothing is written outside $PROTOCOL_FEATURE_OUT except scratch exports in a temporary directory created with mktemp"
+   ]
+  }
+ ]
+}
