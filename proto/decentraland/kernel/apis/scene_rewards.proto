@@ -1,0 +1,41 @@
+syntax = "proto3";
+package decentraland.kernel.apis;
+
+message GrantRewardRequest {
+    // The reward program Decentraland ops configured for the studio and
+    // pinned to this scene.
+    string program_id = 1;
+    // The address of the player to reward. A new payment needs the player
+    // connected to this scene's authoritative server when the call is made.
+    string recipient = 2;
+    // The scene's own id for what is rewarded (a match, a round, a quest).
+    // A program pays the same recipient for the same outcome id at most once:
+    // repeating the call, for example after a lost response, returns the
+    // first payment's receipt.
+    string outcome_id = 3;
+}
+
+message GrantRewardResponse {
+    bool ok = 1;
+    // The outcome was already paid: this is the first payment's receipt.
+    optional bool replayed = 2;
+    optional string receipt_id = 3;
+    // The Credits paid, as a decimal string.
+    optional string credits = 4;
+    // When not ok: NOT_AVAILABLE, INVALID_REQUEST, RATE_LIMITED, UNAVAILABLE,
+    // NOT_AUTHORIZED, RECIPIENT_NOT_CONNECTED, PROGRAM_PAUSED,
+    // OUTSIDE_SCHEDULE, BUDGET_EXHAUSTED, PROGRAM_CAP_REACHED,
+    // PLAYER_CAP_REACHED, REQUIREMENT_NOT_MET or RECIPIENT_NOT_ELIGIBLE.
+    // Back off on UNAVAILABLE or RATE_LIMITED. For other refusals, retry only
+    // after the relevant condition changes: a paused program can resume and
+    // an exhausted budget can be replenished. Reuse the same outcome id.
+    optional string error = 5;
+}
+
+service SceneRewardsService {
+    // Pays the recipient the program's Credits for the outcome. Only a
+    // scene's authoritative server can pay; in an explorer the call resolves
+    // with error NOT_AVAILABLE. The amount, the budget and the limits are
+    // the program's, never the scene's.
+    rpc GrantReward(GrantRewardRequest) returns (GrantRewardResponse) {}
+}
