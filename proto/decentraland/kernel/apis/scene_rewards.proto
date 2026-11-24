@@ -1,41 +1,105 @@
 syntax = "proto3";
 package decentraland.kernel.apis;
 
+// Why a reward was not paid. The numbers are stable, and values may be added
+// later: treat a value you do not know as a refusal, and do not retry it on
+// the same assumptions.
+enum GrantRewardError {
+    // A refusal this version does not name, such as a code added later. Do
+    // not retry it with the same request.
+    GRE_UNSPECIFIED = 0;
+    // Scene rewards are not available here. An explorer always answers this,
+    // and so does an authoritative server while new rewards are off or the
+    // pinned scene is no longer the one deployed.
+    GRE_NOT_AVAILABLE = 1;
+    // The request is malformed: see the request's field formats.
+    GRE_INVALID_REQUEST = 2;
+    // Too many requests for this scene, this program or the server right now.
+    // Retry later with the same outcome id.
+    GRE_RATE_LIMITED = 3;
+    // The outcome could not be decided, or its answer was lost: the reward may
+    // have been paid. Retry later with the same outcome id; a paid reward is
+    // then answered with its receipt.
+    GRE_UNAVAILABLE = 4;
+    // This scene may not pay from this program: the server's credential was
+    // not accepted, the program is unknown or not pinned to this scene, or the
+    // outcome was paid in another location.
+    GRE_NOT_AUTHORIZED = 5;
+    // A new payment needs the recipient connected to this scene's
+    // authoritative server.
+    GRE_RECIPIENT_NOT_CONNECTED = 6;
+    // The program or its studio is paused.
+    GRE_PROGRAM_PAUSED = 7;
+    // The program's schedule has no open slot for this outcome now.
+    GRE_OUTSIDE_SCHEDULE = 8;
+    // The program's ceiling or the studio's budget cannot cover the reward.
+    GRE_BUDGET_EXHAUSTED = 9;
+    // The program paid all it may pay today.
+    GRE_PROGRAM_CAP_REACHED = 10;
+    // The recipient got all the rewards this program gives a player, today
+    // or in total.
+    GRE_PLAYER_CAP_REACHED = 11;
+    // The recipient does not meet one of the program's public requirements,
+    // such as holding a NAME.
+    GRE_REQUIREMENT_NOT_MET = 12;
+    // The recipient may not receive rewards from this program.
+    GRE_RECIPIENT_NOT_ELIGIBLE = 13;
+}
+
 message GrantRewardRequest {
     // The reward program Decentraland ops configured for the studio and
-    // pinned to this scene.
+    // pinned to this scene, as a UUID. Anything else is answered like an
+    // unknown program.
     string program_id = 1;
-    // The address of the player to reward. A new payment needs the player
-    // connected to this scene's authoritative server when the call is made.
+    // The player to reward: a literal lowercase "0x" followed by 40
+    // hexadecimal digits of either case; anything else is
+    // GRE_INVALID_REQUEST. The host normalizes it to check that the player is
+    // connected, and Credits normalizes it for the pay-once key and the
+    // per-player caps.
     string recipient = 2;
-    // The scene's own id for what is rewarded (a match, a round, a quest).
-    // A program pays the same recipient for the same outcome id at most once:
-    // repeating the call, for example after a lost response, returns the
-    // first payment's receipt.
+    // The scene's own id for what is rewarded (a match, a round, a quest):
+    // 1 to 128 characters from A-Z, a-z, 0-9 and ". _ : -"; anything else is
+    // GRE_INVALID_REQUEST. A program pays the same recipient for the same
+    // outcome id at most once: repeating the call, for example after a lost
+    // response, returns the first payment's receipt.
     string outcome_id = 3;
 }
 
 message GrantRewardResponse {
+    // Whether the recipient has been paid for the outcome, now or before.
+    // When ok, replayed, receipt_id and credits are set and error is not;
+    // when not ok, only error is set.
     bool ok = 1;
-    // The outcome was already paid: this is the first payment's receipt.
+    // False for the first payment, true when this is an earlier payment's
+    // receipt.
     optional bool replayed = 2;
     optional string receipt_id = 3;
-    // The Credits paid, as a decimal string.
+    // The whole Credits paid, as a decimal string of digits with no sign,
+    // decimals or exponent, e.g. "5".
     optional string credits = 4;
-    // When not ok: NOT_AVAILABLE, INVALID_REQUEST, RATE_LIMITED, UNAVAILABLE,
-    // NOT_AUTHORIZED, RECIPIENT_NOT_CONNECTED, PROGRAM_PAUSED,
-    // OUTSIDE_SCHEDULE, BUDGET_EXHAUSTED, PROGRAM_CAP_REACHED,
-    // PLAYER_CAP_REACHED, REQUIREMENT_NOT_MET or RECIPIENT_NOT_ELIGIBLE.
-    // Back off on UNAVAILABLE or RATE_LIMITED. For other refusals, retry only
+    // Set on every refusal, GRE_UNSPECIFIED included. Back off on
+    // GRE_UNAVAILABLE or GRE_RATE_LIMITED. For other refusals, retry only
     // after the relevant condition changes: a paused program can resume and
     // an exhausted budget can be replenished. Reuse the same outcome id.
-    optional string error = 5;
+    optional GrantRewardError error = 5;
 }
 
 service SceneRewardsService {
-    // Pays the recipient the program's Credits for the outcome. Only a
-    // scene's authoritative server can pay; in an explorer the call resolves
-    // with error NOT_AVAILABLE. The amount, the budget and the limits are
-    // the program's, never the scene's.
+    // Pays the recipient the program's Credits for the outcome. The amount,
+    // the budget and the limits are the program's, never the scene's.
+    //
+    // Only a scene's authoritative server can pay. In an explorer the call
+    // always resolves with ok false and GRE_NOT_AVAILABLE, whatever the
+    // request: the formats and checks described here apply on the
+    // authoritative server.
+    //
+    // There, the scene's identity comes from the server's authenticated
+    // credential, never from the request. Basic validation and throttling can
+    // answer first. A new payment then checks that the program is pinned to
+    // this scene before anything about the program's state or the
+    // recipient's eligibility, so the answers say nothing about other
+    // studios' programs or other wallets. A program pinned here can learn
+    // that a recipient does not meet one of its public requirements.
+    // Recovering a paid outcome checks the location it was paid in.
     rpc GrantReward(GrantRewardRequest) returns (GrantRewardResponse) {}
 }
