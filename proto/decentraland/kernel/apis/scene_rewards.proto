@@ -1,9 +1,10 @@
 syntax = "proto3";
 package decentraland.kernel.apis;
 
-// Why a reward was not paid. The numbers are stable, and values may be added
-// later: treat a value you do not know as a refusal, and do not retry it on
-// the same assumptions.
+// Why a response does not confirm a paid receipt. It does not always mean
+// nothing was paid: after GRE_UNAVAILABLE the outcome is unknown. The numbers
+// are stable, and values may be added later: treat a value you do not know as
+// a refusal, and do not retry it on the same assumptions.
 enum GrantRewardError {
     // A refusal this version does not name, such as a code added later. Do
     // not retry it with the same request.
@@ -14,12 +15,13 @@ enum GrantRewardError {
     GRE_NOT_AVAILABLE = 1;
     // The request is malformed: see the request's field formats.
     GRE_INVALID_REQUEST = 2;
-    // Too many requests for this scene, this program or the server right now.
-    // Retry later with the same outcome id.
+    // Too many requests for this scene or this program, or the server is
+    // momentarily busy. Retry shortly, with a short backoff, and the same
+    // outcome id.
     GRE_RATE_LIMITED = 3;
     // The outcome could not be decided, or its answer was lost: the reward may
-    // have been paid. Retry later with the same outcome id; a paid reward is
-    // then answered with its receipt.
+    // have been paid. Retry later with the same program, recipient and
+    // outcome id; a paid reward is then answered with its receipt.
     GRE_UNAVAILABLE = 4;
     // This scene may not pay from this program: the server's credential was
     // not accepted, the program is unknown or not pinned to this scene, or the
@@ -37,7 +39,9 @@ enum GrantRewardError {
     // The program paid all it may pay today.
     GRE_PROGRAM_CAP_REACHED = 10;
     // The recipient got all the rewards this program gives a player, today
-    // or in total.
+    // or in total. For a program that requires a NAME, also when every
+    // eligible NAME this wallet holds was already rewarded for the reward
+    // day, even if other wallets received those rewards.
     GRE_PLAYER_CAP_REACHED = 11;
     // The recipient does not meet one of the program's public requirements,
     // such as holding a NAME.
@@ -66,9 +70,9 @@ message GrantRewardRequest {
 }
 
 message GrantRewardResponse {
-    // Whether the recipient has been paid for the outcome, now or before.
-    // When ok, replayed, receipt_id and credits are set and error is not;
-    // when not ok, only error is set.
+    // This response confirms a paid receipt. When ok, replayed, receipt_id
+    // and credits are set and error is not; when not ok, only error is set.
+    // Not ok does not always mean nothing was paid: see GRE_UNAVAILABLE.
     bool ok = 1;
     // False for the first payment, true when this is an earlier payment's
     // receipt.
@@ -97,9 +101,8 @@ service SceneRewardsService {
     // credential, never from the request. Basic validation and throttling can
     // answer first. A new payment then checks that the program is pinned to
     // this scene before anything about the program's state or the
-    // recipient's eligibility, so the answers say nothing about other
-    // studios' programs or other wallets. A program pinned here can learn
-    // that a recipient does not meet one of its public requirements.
+    // recipient's eligibility. A program pinned here can learn that a
+    // recipient does not meet one of its public requirements.
     // Recovering a paid outcome checks the location it was paid in.
     rpc GrantReward(GrantRewardRequest) returns (GrantRewardResponse) {}
 }
