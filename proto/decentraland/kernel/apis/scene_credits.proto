@@ -1,0 +1,108 @@
+syntax = "proto3";
+package decentraland.kernel.apis;
+
+// Why a response does not confirm a paid receipt. It does not always mean
+// nothing was paid: after GCE_UNAVAILABLE the outcome is unknown. The numbers
+// are stable, and values may be added later: treat a value you do not know as
+// a refusal, and do not retry it on the same assumptions.
+enum GrantCreditsError {
+    // A refusal this version does not name, such as a code added later. Do
+    // not retry it with the same request.
+    GCE_UNSPECIFIED = 0;
+    // Paying Credits is not available here. An explorer always answers this,
+    // and so does an authoritative server while new payments are off or the
+    // pinned scene is no longer the one deployed.
+    GCE_NOT_AVAILABLE = 1;
+    // The request is malformed: see the request's field formats.
+    GCE_INVALID_REQUEST = 2;
+    // Too many requests for this scene or this program, or the server is
+    // momentarily busy. Retry shortly, with a short backoff, and the same
+    // outcome id.
+    GCE_RATE_LIMITED = 3;
+    // The outcome could not be decided, or its answer was lost: the Credits
+    // may have been paid. Retry later with the same program, recipient and
+    // outcome id; a paid outcome is then answered with its receipt.
+    GCE_UNAVAILABLE = 4;
+    // This scene may not pay from this program: the server's credential was
+    // not accepted, the program is unknown or not pinned to this scene, or the
+    // outcome was paid in another location.
+    GCE_NOT_AUTHORIZED = 5;
+    // A new payment needs the recipient connected to this scene's
+    // authoritative server.
+    GCE_RECIPIENT_NOT_CONNECTED = 6;
+    // The program or its studio is paused.
+    GCE_PROGRAM_PAUSED = 7;
+    // The program's schedule has no open slot for this outcome now.
+    GCE_OUTSIDE_SCHEDULE = 8;
+    // The program's ceiling or the studio's budget cannot cover the payment.
+    GCE_BUDGET_EXHAUSTED = 9;
+    // The program paid all it may pay today.
+    GCE_PROGRAM_CAP_REACHED = 10;
+    // The recipient was paid as many times as this program pays a player,
+    // for the program's payment day or in total. For a program that requires
+    // a NAME, also when every eligible NAME this wallet holds was already paid
+    // for that day, even if other wallets received those payments.
+    GCE_PLAYER_CAP_REACHED = 11;
+    // The recipient does not meet one of the program's public requirements,
+    // such as holding a NAME.
+    GCE_REQUIREMENT_NOT_MET = 12;
+    // The recipient may not be paid by this program.
+    GCE_RECIPIENT_NOT_ELIGIBLE = 13;
+}
+
+message GrantCreditsRequest {
+    // The Credits program Decentraland ops configured for the studio and
+    // pinned to this scene, as a UUID. Anything else is answered like an
+    // unknown program.
+    string program_id = 1;
+    // The player to pay: a literal lowercase "0x" followed by 40
+    // hexadecimal digits of either case; anything else is
+    // GCE_INVALID_REQUEST. The host normalizes it to check that the player is
+    // connected, and Credits normalizes it for the pay-once key and the
+    // per-player caps.
+    string recipient = 2;
+    // The scene's own id for what the player earned (a match, a round, a
+    // quest): 1 to 128 characters from A-Z, a-z, 0-9 and ". _ : -"; anything
+    // else is GCE_INVALID_REQUEST. A program pays the same recipient for the
+    // same outcome id at most once: repeating the call, for example after a
+    // lost response, returns the first payment's receipt.
+    string outcome_id = 3;
+}
+
+message GrantCreditsResponse {
+    // This response confirms a paid receipt. When ok, replayed, receipt_id
+    // and credits are set and error is not; when not ok, only error is set.
+    // Not ok does not always mean nothing was paid: see GCE_UNAVAILABLE.
+    bool ok = 1;
+    // False for the first payment, true when this is an earlier payment's
+    // receipt.
+    optional bool replayed = 2;
+    optional string receipt_id = 3;
+    // The whole Credits paid, as a decimal string of digits with no sign,
+    // decimals or exponent, e.g. "5".
+    optional string credits = 4;
+    // Set on every refusal, GCE_UNSPECIFIED included. Back off on
+    // GCE_UNAVAILABLE or GCE_RATE_LIMITED. For other refusals, retry only
+    // after the relevant condition changes: a paused program can resume and
+    // an exhausted budget can be replenished. Reuse the same outcome id.
+    optional GrantCreditsError error = 5;
+}
+
+service SceneCreditsService {
+    // Pays the recipient the program's Credits for the outcome. The amount,
+    // the budget and the limits are the program's, never the scene's.
+    //
+    // Only a scene's authoritative server can pay. In an explorer the call
+    // always resolves with ok false and GCE_NOT_AVAILABLE, whatever the
+    // request: the formats and checks described here apply on the
+    // authoritative server.
+    //
+    // There, the scene's identity comes from the server's authenticated
+    // credential, never from the request. Basic validation and throttling can
+    // answer first. A new payment then checks that the program is pinned to
+    // this scene before anything about the program's state or the
+    // recipient's eligibility. A program pinned here can learn that a
+    // recipient does not meet one of its public requirements.
+    // Recovering a paid outcome checks the location it was paid in.
+    rpc GrantCredits(GrantCreditsRequest) returns (GrantCreditsResponse) {}
+}
