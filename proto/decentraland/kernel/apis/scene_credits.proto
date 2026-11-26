@@ -39,9 +39,9 @@ enum GrantCreditsError {
     // The program paid all it may pay today.
     GCE_PROGRAM_CAP_REACHED = 10;
     // The recipient was paid as many times as this program pays a player,
-    // today or in total. For a program that requires a NAME, also when every
-    // eligible NAME this wallet holds was already paid for the day, even if
-    // other wallets received those payments.
+    // for the program's payment day or in total. For a program that requires
+    // a NAME, also when every eligible NAME this wallet holds was already paid
+    // for that day, even if other wallets received those payments.
     GCE_PLAYER_CAP_REACHED = 11;
     // The recipient does not meet one of the program's public requirements,
     // such as holding a NAME.
