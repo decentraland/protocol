@@ -35,6 +35,9 @@ message WsPeerUpdate {
   uint32 from_alias = 1;
   bytes body = 2;
   bool unreliable = 3;
+  // Addresses (or "host") the update is addressed to; empty means every peer in the room.
+  // Read by the scene preview's mini-comms server (dcl-scene-cli); other servers ignore it.
+  repeated string recipients = 10000;
 }
 
 
