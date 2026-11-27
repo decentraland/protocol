@@ -30,4 +30,5 @@ enum AvatarModifierType {
   AMT_HIDE_AVATARS = 0;      // avatars are invisible
   AMT_DISABLE_PASSPORTS = 1; // selecting (e.g. clicking) an avatar will not bring up their profile.
   AMT_HIDE_NAMETAGS = 2;     // the name tag displayed above an avatar is hidden.
+  AMT_DISABLE_NAMETAG_CULLING = 3; // the name tag is not hidden by distance; AMT_HIDE_NAMETAGS takes priority.
 }
