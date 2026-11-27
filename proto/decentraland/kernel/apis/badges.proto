@@ -1,0 +1,13 @@
+syntax = "proto3";
+package decentraland.kernel.apis;
+
+message CheckAwardsRequest {}
+
+message CheckAwardsResponse {}
+
+service BadgesService {
+  // Hint that this scene just awarded the player a badge. Carries no data: the
+  // explorer re-reads the player's awards from the badges service, and may
+  // throttle the hint or ignore it when the scene is not the current one.
+  rpc CheckAwards(CheckAwardsRequest) returns (CheckAwardsResponse) {}
+}
